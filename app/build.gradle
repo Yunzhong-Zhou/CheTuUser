@@ -1,0 +1,178 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion "29.0.3"
+    defaultConfig {
+        applicationId "com.chetu.user"
+        minSdkVersion 21
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        multiDexEnabled true
+
+        ndk {
+            //选择要添加的对应 cpu 类型的 .so 库。
+            abiFilters 'armeabi', 'armeabi-v7a'
+            // 还可以添加 'x86', 'x86_64', 'mips', 'mips64','arm64-v8a'
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    /*//签名
+    signingConfigs {
+        release {
+            keyAlias 'lenglianpeisong'
+            keyPassword '123456'
+            storeFile file('/Users/YunZhong/Desktop/鲜鲜拉/lenglianpeisong.jks')
+            storePassword '123456'
+        }
+//        keytool -list -v -keystore /Users/YunZhong/Desktop/鲜鲜拉/lenglianpeisong.jks -alias lenglianpeisong -storepass 123456 -keypass 123456
+    }
+    buildTypes {
+        release {
+            //是否混淆
+            minifyEnabled false
+            //是否移除无用资源
+            zipAlignEnabled true
+            //混淆的配置文件
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+        debug {
+            minifyEnabled false
+            signingConfig signingConfigs.release
+        }
+    }*/
+}
+
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    testImplementation 'junit:junit:4.13'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+    //recyclerView封装
+    implementation 'com.zhy:base-rvadapter:3.0.3'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+
+    //网络请求、解析
+    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'com.loopj.android:android-async-http:1.4.9'
+    implementation 'com.squareup.okhttp:okhttp:2.7.5'
+    implementation 'com.alibaba:fastjson:1.2.68'
+
+    //加载网络图片
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+
+    //图片压缩
+    implementation 'id.zelory:compressor:2.1.0'
+
+    //圆形图片
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+
+    //图片点击放大
+    implementation 'com.bm.photoview:library:1.4.1'
+
+    //banner
+    implementation 'com.youth.banner:banner:1.4.10'
+
+    //沉浸式
+    // 基础依赖包，必须要依赖
+    implementation 'com.gyf.immersionbar:immersionbar:3.0.0'
+    // fragment快速实现（可选）
+//    implementation 'com.gyf.immersionbar:immersionbar-components:3.0.0-beta03'
+
+    //底部选项栏
+    implementation 'com.hjm:BottomTabBar:1.2.2'
+
+    //toast提示框
+    implementation 'com.hjq:toast:8.0'
+
+    //侧滑返回
+    implementation 'me.imid.swipebacklayout.lib:library:1.1.0'
+
+    //下拉刷新、上拉加载更多
+    //SpringView核心库 (只包含DefaultHeader/Footer)
+    implementation 'com.liaoinstan.springview:library:1.5.1'
+
+    //以下是各个风格的Header/Footer，选择自己喜欢的引入
+
+    //    implementation 'com.liaoinstan.springview:AcfunHeader:1.5.1'         //AcFun风格 （header and footer）
+    implementation 'com.liaoinstan.springview:AliHeader:1.5.1'
+
+    //阿里旅行风格 （header and footer）
+
+    //    implementation 'com.liaoinstan.springview:MeituanHeader:1.5.1'       //美团风格 （header and footer）
+
+    //    implementation 'com.liaoinstan.springview:RotationHeader:1.5.1'      //齿轮机械风格 （header and footer）
+
+    //    implementation 'com.liaoinstan.springview:WeixinHeader:1.5.1'        //微信小程序header（只有header）
+
+    //异常上报-腾讯bugly
+    implementation 'com.tencent.bugly:crashreport:latest.release'
+
+    //apk更新
+    implementation 'com.github.maning0303:MNUpdateAPK:V2.0.3'
+
+    //自定义弹框
+    implementation 'com.github.AnJiaoDe:BaseDialog:V1.1.8'
+
+    //zxing 二维码框架
+    implementation 'com.google.zxing:core:3.4.0'
+
+}
+apply plugin: 'com.mob.sdk'
+MobSDK {
+    appKey ""
+    appSecret ""
+    MobPush {
+        bradge true//设置是否开启角标开关
+        devInfo {
+            /*HUAWEI {
+                appId "101920333"
+            }
+            MEIZU {
+                appId "129123"
+                appKey "6fe3e75d91414c38863f045332751a71"
+            }
+            XIAOMI {
+                appId "2882303761518347763"
+                appKey "5411834734763"
+            }
+            FCM {
+                iconRes "@mipmap/ic_launcher"
+            }*/
+            /*OPPO {
+                appKey "OPPO的appKey"
+                appSecret "OPPO的appSecret"
+            }
+            VIVO {
+                appId "VIVO的appId"
+                appKey  "VIVO的appSecret"
+            }*/
+
+        }
+    }
+}
+
+apply plugin: 'com.google.gms.google-services'//谷歌服务

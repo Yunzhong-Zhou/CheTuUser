@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "384303794891",
+    "firebase_url": "https://chetu-c8c0a.firebaseio.com",
+    "project_id": "chetu-c8c0a",
+    "storage_bucket": "chetu-c8c0a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:384303794891:android:0743dcc5b2c442ccfe694e",
+        "android_client_info": {
+          "package_name": "com.chetu.user"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "384303794891-50oa4h0k1shmusn93l0t2prjmbinjh1b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJwHdgymLUsv_s_4VGEjipgl3MpASLu04"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "384303794891-50oa4h0k1shmusn93l0t2prjmbinjh1b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
