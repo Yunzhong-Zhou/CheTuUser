@@ -5,18 +5,23 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.chetu.user.R;
 import com.chetu.user.activity.MainActivity;
 import com.chetu.user.base.BaseFragment;
 import com.chetu.user.model.Fragment4Model;
 import com.chetu.user.net.OkHttpClientManager;
 import com.chetu.user.net.URLs;
-import com.chetu.user.utils.MyLogger;
+import com.chetu.user.utils.CommonUtil;
 import com.liaoinstan.springview.widget.SpringView;
 import com.squareup.okhttp.Request;
 
-import java.util.Map;
+import static com.chetu.user.net.OkHttpClientManager.IMGHOST;
 
 
 /**
@@ -24,10 +29,13 @@ import java.util.Map;
  * 我的
  */
 public class Fragment4 extends BaseFragment {
-    /*ImageView imageView1;
-    TextView textView1, textView2, tv_banbenhao, tv_xiaoxinum, tv_xiaoxinum2;
+    ImageView iv_shezhi, iv_jinbi, imageView1;
+    RelativeLayout rl_xiaoxi;
+    TextView textView1, textView2, textView3, textView4, textView5, textView6, textView7, textView8, textView9,
+            tv_xiaoxinum;
     LinearLayout linearLayout1, linearLayout2, linearLayout3, linearLayout4, linearLayout5, linearLayout6,
-            linearLayout7, linearLayout8, linearLayout9, linearLayout10, linearLayout11, linearLayout12;*/
+            linearLayout7, linearLayout8, linearLayout9, linearLayout10, linearLayout11, linearLayout12,
+            linearLayout13, linearLayout14, linearLayout15;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -64,7 +72,8 @@ public class Fragment4 extends BaseFragment {
 
     @Override
     protected void initView(View view) {
-//        CommonUtil.setMargins(findViewByID_My(R.id.springView),0, (int) CommonUtil.getStatusBarHeight(getActivity()),0,0);
+//        CommonUtil.setMargins(findViewByID_My(R.id.headView),0, (int) CommonUtil.getStatusBarHeight(getActivity()),0,0);
+        findViewByID_My(R.id.headView).setPadding(0, (int) CommonUtil.getStatusBarHeight(getActivity()), 0, 0);
         setSpringViewMore(false);//不需要加载更多
         springView.setListener(new SpringView.OnFreshListener() {
             @Override
@@ -77,16 +86,29 @@ public class Fragment4 extends BaseFragment {
 
             }
         });
-        /*
+        iv_shezhi = findViewByID_My(R.id.iv_shezhi);
+        iv_shezhi.setOnClickListener(this);
+        iv_jinbi = findViewByID_My(R.id.iv_jinbi);
+        iv_jinbi.setOnClickListener(this);
+        rl_xiaoxi = findViewByID_My(R.id.rl_xiaoxi);
+        rl_xiaoxi.setOnClickListener(this);
+        tv_xiaoxinum = findViewByID_My(R.id.tv_xiaoxinum);
+
         imageView1 = findViewByID_My(R.id.imageView1);
         textView1 = findViewByID_My(R.id.textView1);
-        textView1.setOnClickListener(this);
         textView2 = findViewByID_My(R.id.textView2);
+        textView3 = findViewByID_My(R.id.textView3);
+        textView4 = findViewByID_My(R.id.textView4);
+        textView5 = findViewByID_My(R.id.textView5);
+        textView6 = findViewByID_My(R.id.textView6);
+        textView7 = findViewByID_My(R.id.textView7);
+        textView8 = findViewByID_My(R.id.textView8);
+        textView9 = findViewByID_My(R.id.textView9);
         if (!localUserInfo.getNickname().equals("")) {
-            textView1.setText(localUserInfo.getNickname());
+            textView3.setText(localUserInfo.getNickname());
         }
+        textView4.setText(localUserInfo.getPhonenumber());
 
-        textView2.setText(localUserInfo.getPhonenumber());
         if (!localUserInfo.getUserImage().equals(""))
             Glide.with(getActivity())
                     .load(IMGHOST + localUserInfo.getUserImage())
@@ -94,8 +116,6 @@ public class Fragment4 extends BaseFragment {
 //                    .placeholder(R.mipmap.headimg)//加载站位图
 //                    .error(R.mipmap.headimg)//加载失败
                     .into(imageView1);//加载图片
-        else
-            imageView1.setImageResource(R.mipmap.headimg);
 
         linearLayout1 = findViewByID_My(R.id.linearLayout1);
         linearLayout2 = findViewByID_My(R.id.linearLayout2);
@@ -109,6 +129,10 @@ public class Fragment4 extends BaseFragment {
         linearLayout10 = findViewByID_My(R.id.linearLayout10);
         linearLayout11 = findViewByID_My(R.id.linearLayout11);
         linearLayout12 = findViewByID_My(R.id.linearLayout12);
+        linearLayout13 = findViewByID_My(R.id.linearLayout13);
+        linearLayout14 = findViewByID_My(R.id.linearLayout14);
+        linearLayout15 = findViewByID_My(R.id.linearLayout15);
+
         linearLayout1.setOnClickListener(this);
         linearLayout2.setOnClickListener(this);
         linearLayout3.setOnClickListener(this);
@@ -121,12 +145,9 @@ public class Fragment4 extends BaseFragment {
         linearLayout10.setOnClickListener(this);
         linearLayout11.setOnClickListener(this);
         linearLayout12.setOnClickListener(this);
-
-        tv_banbenhao = findViewByID_My(R.id.tv_banbenhao);
-        tv_banbenhao.setText("版本号：" + CommonUtil.getVersionName(getActivity()));
-
-        tv_xiaoxinum = findViewByID_My(R.id.tv_xiaoxinum);
-        tv_xiaoxinum2 = findViewByID_My(R.id.tv_xiaoxinum2);*/
+        linearLayout13.setOnClickListener(this);
+        linearLayout14.setOnClickListener(this);
+        linearLayout15.setOnClickListener(this);
     }
 
     @Override
@@ -189,157 +210,80 @@ public class Fragment4 extends BaseFragment {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            /*case R.id.textView1:
-                //修改昵称
-                dialog = new BaseDialog(getActivity());
-                dialog.contentView(R.layout.dialog_changename)
-                        .layoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                                ViewGroup.LayoutParams.WRAP_CONTENT))
-                        .animType(BaseDialog.AnimInType.CENTER)
-                        .canceledOnTouchOutside(true)
-                        .dimAmount(0.8f)
-                        .show();
-//                        TextView textView1 = dialog.findViewById(R.id.textView1);
-//                        textView1.setText(e.getMessage());
-                final EditText editText1 = dialog.findViewById(R.id.editText1);
-                dialog.findViewById(R.id.textView3).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (!editText1.getText().toString().trim().equals("")) {
-                            CommonUtil.hideSoftKeyboard_fragment(v, getActivity());
-                            dialog.dismiss();
-                            showProgress(true, "正在修改，请稍候...");
-                            HashMap<String, String> params = new HashMap<>();
-                            params.put("nickname", editText1.getText().toString().trim());
-                            params.put("head", "");
-                            params.put("token", localUserInfo.getToken());
-                            RequestNickname(params, editText1.getText().toString().trim());
-                        } else {
-                            myToast("请输入昵称");
-                        }
-                    }
-                });
-                dialog.findViewById(R.id.dismiss).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                    }
-                });
+            case R.id.iv_shezhi:
+                //设置
+//                CommonUtil.gotoActivity(getActivity(), .class);
+                break;
+            case R.id.iv_jinbi:
+                //金币
+//                CommonUtil.gotoActivity(getActivity(), .class);
+                break;
+            case R.id.rl_xiaoxi:
+                //消息
+//                CommonUtil.gotoActivity(getActivity(), .class);
                 break;
             case R.id.linearLayout1:
                 //个人资料
-                CommonUtil.gotoActivity(getActivity(), MyProfileActivity.class);
+//                CommonUtil.gotoActivity(getActivity(), .class);
                 break;
             case R.id.linearLayout2:
-                //车主认证
-                CommonUtil.gotoActivity(getActivity(), Auth_CheZhuActivity.class);
+                //违章
+//                CommonUtil.gotoActivity(getActivity(), .class);
                 break;
             case R.id.linearLayout3:
-                //车主助手
-                CommonUtil.gotoActivity(getActivity(), CheZhuZhuShouActivity.class);
+                //保养
+//                CommonUtil.gotoActivity(getActivity(), .class);
                 break;
             case R.id.linearLayout4:
-                //我的钱包
-                CommonUtil.gotoActivity(getActivity(), WalletActivity.class);
+                //保险（交）
+//                CommonUtil.gotoActivity(getActivity(), .class);
                 break;
             case R.id.linearLayout5:
-                //积分商城
-                CommonUtil.gotoActivity(getActivity(), JiFenShangChengActivity.class);
+                //保险（商）
+//                CommonUtil.gotoActivity(getActivity(), .class);
                 break;
             case R.id.linearLayout6:
-                //奖励活动
-                CommonUtil.gotoActivity(getActivity(), JiangLiHuoDongActivity.class);
+                //年检
+//                CommonUtil.gotoActivity(getActivity(), .class);
                 break;
+
             case R.id.linearLayout7:
-                //修改密码
-                CommonUtil.gotoActivity(getActivity(), ChangePasswordActivity.class);
+                //我的订单
+//                CommonUtil.gotoActivity(getActivity(), .class);
                 break;
             case R.id.linearLayout8:
-                //退出登录
-                showToast("确认退出登录吗？",
-                        getString(R.string.app_confirm),
-                        getString(R.string.app_cancel), new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                dialog.dismiss();
-                                showProgress(true, "正在注销登录，请稍候...");
-                                requestOut("?token=" + localUserInfo.getToken());
-
-                            }
-                        }, new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                dialog.dismiss();
-                            }
-                        });
+                //优惠券
+//                CommonUtil.gotoActivity(getActivity(), .class);
                 break;
             case R.id.linearLayout9:
-                //会话列表
-//                CommonUtil.gotoActivity(getActivity(), ChatMainActivity.class);
-                CommonUtil.gotoActivity(getActivity(), MyConversationListActivity.class);
+                //待发布
+//                CommonUtil.gotoActivity(getActivity(), .class);
                 break;
             case R.id.linearLayout10:
-                //上报轨迹
-                CommonUtil.gotoActivity(getActivity(), TrackServiceActivity.class);
+                //记事本
+//                CommonUtil.gotoActivity(getActivity(), .class);
                 break;
             case R.id.linearLayout11:
-                //查看轨迹
-                CommonUtil.gotoActivity(getActivity(), TrackSearchActivity.class);
+                //足迹
+//                CommonUtil.gotoActivity(getActivity(), .class);
                 break;
             case R.id.linearLayout12:
-                //消息列表
-                CommonUtil.gotoActivity(getActivity(), NoticeListActivity.class);
-                break;*/
+                //我的车库
+//                CommonUtil.gotoActivity(getActivity(), .class);
+                break;
+            case R.id.linearLayout13:
+                //分享有礼
+//                CommonUtil.gotoActivity(getActivity(), .class);
+                break;
+            case R.id.linearLayout14:
+                //申请加盟
+//                CommonUtil.gotoActivity(getActivity(), .class);
+                break;
+            case R.id.linearLayout15:
+                //客服中心
+//                CommonUtil.gotoActivity(getActivity(), .class);
+                break;
         }
-    }
-
-    private void requestOut(String string) {
-        OkHttpClientManager.getAsyn(getActivity(), URLs.Out + string, new OkHttpClientManager.ResultCallback<String>() {
-            @Override
-            public void onError(Request request, String info, Exception e) {
-                hideProgress();
-                if (!info.equals("")) {
-                    myToast(info);
-                }
-            }
-
-            @Override
-            public void onResponse(String response) {
-                MyLogger.i(">>>>>>>>>退出" + response);
-                hideProgress();
-                localUserInfo.setUserId("");
-                localUserInfo.setUserName("");
-                localUserInfo.setToken("");
-                localUserInfo.setPhoneNumber("");
-                localUserInfo.setNickname("");
-                localUserInfo.setWalletaddr("");
-                localUserInfo.setEmail("");
-                localUserInfo.setUserImage("");
-
-            }
-        });
-    }
-
-    private void RequestNickname(Map<String, String> params, String string) {
-        OkHttpClientManager.postAsyn(getActivity(), URLs.ChangeProfile, params, new OkHttpClientManager.ResultCallback<String>() {
-            @Override
-            public void onError(Request request, String info, Exception e) {
-                hideProgress();
-                if (!info.equals("")) {
-                    showToast(info);
-                }
-            }
-
-            @Override
-            public void onResponse(String response) {
-                hideProgress();
-                MyLogger.i(">>>>>>>>>修改昵称" + response);
-                myToast("修改昵称成功");
-                localUserInfo.setNickname(string);
-//                textView1.setText(string);
-            }
-        }, false);
-
     }
 
     @Override

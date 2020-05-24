@@ -12,10 +12,10 @@ import com.chetu.user.activity.MainActivity;
 import com.chetu.user.utils.LocalUserInfo;
 import com.chetu.user.utils.MyLogger;
 import com.chetu.user.view.LoadingLayout;
+import com.chetu.user.view.MyDefaultFooter;
+import com.chetu.user.view.MyDefaultHeader;
 import com.cy.dialog.BaseDialog;
 import com.hjq.toast.ToastUtils;
-import com.liaoinstan.springview.container.DefaultFooter;
-import com.liaoinstan.springview.container.DefaultHeader;
 import com.liaoinstan.springview.widget.SpringView;
 
 import java.util.HashMap;
@@ -76,10 +76,10 @@ public abstract class BaseFragment extends Fragment implements IBaseView_Respons
         springView = findViewByID_My(R.id.springView);
         if (springView != null) {
             //默认风格
-        /*springView.setHeader(new DefaultHeader(getActivity(),R.drawable.progress_circular,R.mipmap.arrow));
-          springView.setFooter(new DefaultFooter(getActivity(),R.drawable.progress_circular));*/
-            springView.setHeader(new DefaultHeader(getActivity()));
-            springView.setFooter(new DefaultFooter(getActivity()));
+            springView.setHeader(new MyDefaultHeader(getActivity()));
+            springView.setFooter(new MyDefaultFooter(getActivity()));
+            /*springView.setHeader(new DefaultHeader(getActivity()));
+            springView.setFooter(new DefaultFooter(getActivity()));*/
             //阿里风格
 //        springView.setHeader(new AliHeader(getActivity(), true));
 //        springView.setFooter(new AliFooter(getActivity(), true));

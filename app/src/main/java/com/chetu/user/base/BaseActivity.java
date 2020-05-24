@@ -17,12 +17,12 @@ import android.widget.TextView;
 import com.chetu.user.R;
 import com.chetu.user.utils.LocalUserInfo;
 import com.chetu.user.view.LoadingLayout;
+import com.chetu.user.view.MyDefaultFooter;
+import com.chetu.user.view.MyDefaultHeader;
 import com.chetu.user.view.TitleView;
 import com.cy.dialog.BaseDialog;
 import com.gyf.immersionbar.ImmersionBar;
 import com.hjq.toast.ToastUtils;
-import com.liaoinstan.springview.container.DefaultFooter;
-import com.liaoinstan.springview.container.DefaultHeader;
 import com.liaoinstan.springview.widget.SpringView;
 
 import java.util.HashMap;
@@ -118,8 +118,10 @@ public abstract class BaseActivity extends SwipeBackActivity implements IBaseVie
         springView = findViewByID_My(R.id.springView);
         if (springView != null) {
             //默认风格
-            springView.setHeader(new DefaultHeader(this));
-            springView.setFooter(new DefaultFooter(this));
+           /* springView.setHeader(new DefaultHeader(this));
+            springView.setFooter(new DefaultFooter(this));*/
+            springView.setHeader(new MyDefaultHeader(this));
+            springView.setFooter(new MyDefaultFooter(this));
 
             //阿里风格
 //        springView.setHeader(new AliHeader(getActivity(),true));

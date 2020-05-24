@@ -71,6 +71,7 @@ public class MainActivity extends BaseActivity {
             Manifest.permission.VIBRATE*/
     };
     private PermissionsChecker mPermissionsChecker; // 权限检测器
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,7 +102,7 @@ public class MainActivity extends BaseActivity {
 //                .setImgSize(50,50)//设置ICON图片的尺寸
 //                .setFontSize(8)//设置文字的尺寸
 //                .setTabPadding(4,6,10)//设置ICON图片与上部分割线的间隔、图片与文字的间隔、文字与底部的间隔
-                .setChangeColor(getResources().getColor(R.color.blue), getResources().getColor(R.color.black1))//设置选中的颜色、未选中的颜色
+                .setChangeColor(getResources().getColor(R.color.tab_blue), getResources().getColor(R.color.tab_black))//设置选中的颜色、未选中的颜色
                 .addTabItem(getString(R.string.fragment1), R.mipmap.tab1_1, R.mipmap.tab1_0, Fragment1.class)//设置文字、选中图片、未选中图片、fragment
                 .addTabItem(getString(R.string.fragment2), R.mipmap.tab2_1, R.mipmap.tab2_0, Fragment2.class)//设置文字、选中图片、未选中图片、fragment
                 .addTabItem(getString(R.string.fragment3), R.mipmap.tab3_1, R.mipmap.tab3_0, Fragment3.class)//设置文字、选中图片、未选中图片、fragment
@@ -110,7 +111,7 @@ public class MainActivity extends BaseActivity {
 
                 .isShowDivider(false)//设置是否显示分割线
                 .setTabBarBackgroundColor(Color.WHITE)//设置底部导航栏颜色
-//                .setTabBarBackgroundResource(R.mipmap.ic_launcher)//设置底部导航栏的背景图片【与设置底部导航栏颜色方法不能同时使用，否则会覆盖掉前边设置的颜色】
+//                .setTabBarBackgroundResource(R.drawable.yuanjiao_10_baise_top)//设置底部导航栏的背景图片【与设置底部导航栏颜色方法不能同时使用，否则会覆盖掉前边设置的颜色】
                 .setOnTabChangeListener(new BottomTabBar.OnTabChangeListener() {
                     @Override
                     public void onTabChange(int position, String name, View view) {
@@ -146,6 +147,7 @@ public class MainActivity extends BaseActivity {
                             case 3:
                                 MainActivity.item = 3;
                                 mImmersionBar.reset()
+//                                        .statusBarColor(R.color.blue)
                                         .statusBarDarkFont(true, 0.2f) //原理：如果当前设备支持状态栏字体变色，会设置状态栏字体为黑色，如果当前设备不支持状态栏字体变色，会使当前状态栏加上透明度，否则不执行透明度
                                         .init();
                                 break;
@@ -320,6 +322,7 @@ public class MainActivity extends BaseActivity {
             }
         });
     }
+
     //显示是否要更新的对话框
     private void showUpdateDialog() {
         dialog.contentView(R.layout.dialog_upgrade)

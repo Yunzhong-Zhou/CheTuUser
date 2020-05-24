@@ -9,10 +9,10 @@
     <color name="btn_bg">#6380a4</color>
 
     <color name="default_text">#333333</color>
-    <color name="xian">#E3E7EE</color>
+    <color name="xian">#E3E3E3</color>
 
-    <color name="tab_black">#8C9FAD</color>
-    <color name="tab_blue">#7007BC</color>
+    <color name="tab_black">#2E3B47</color>
+    <color name="tab_blue">#0667F4</color>
 
 
     <color name="white">#FFFFFF</color>
