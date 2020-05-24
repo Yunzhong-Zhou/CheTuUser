@@ -63,7 +63,9 @@
         android:requestLegacyExternalStorage="true"
         android:usesCleartextTraffic="true"
         android:windowIsTranslucent="false">
-        <activity android:name=".activity.MainActivity">
+        <activity
+            android:name=".activity.HelloActivity"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"><!--//全屏-->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -74,7 +76,22 @@
         <activity
             android:name=".utils.permission.PermissionsActivity"
             android:label="权限页" />
-
+        <activity
+            android:name=".activity.GuideActivity"
+            android:label="引导页"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+        <activity
+            android:name=".activity.MainActivity"
+            android:label="主页" />
+        <activity
+            android:name=".activity.LoginActivity"
+            android:label="登录" />
+        <activity
+            android:name=".activity.WebContentActivity"
+            android:label="网页" />
+        <activity
+            android:name=".view.zxing.CaptureActivity"
+            android:label="扫一扫" />
 
 
 

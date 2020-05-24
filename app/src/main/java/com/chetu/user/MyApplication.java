@@ -9,6 +9,8 @@ import com.hjq.toast.ToastUtils;
 import com.mob.MobSDK;
 import com.tencent.bugly.crashreport.CrashReport;
 
+import androidx.multidex.MultiDex;
+
 /**
  * Created by zyz on 2018/1/18.
  */
@@ -79,7 +81,7 @@ public class MyApplication extends Application {
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
 
-//        MultiDex.install(this);//方法数超过64k
+        MultiDex.install(this);//方法数超过64k
     }
 
     @Override

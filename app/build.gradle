@@ -71,6 +71,7 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
+    implementation 'com.android.support:multidex:1.0.3'
     //recyclerView封装
     implementation 'com.zhy:base-rvadapter:3.0.3'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
@@ -113,20 +114,16 @@ dependencies {
 
     //下拉刷新、上拉加载更多
     //SpringView核心库 (只包含DefaultHeader/Footer)
-    implementation 'com.liaoinstan.springview:library:1.5.1'
+    implementation 'com.liaoinstan.springview:library:1.7.0'
 
     //以下是各个风格的Header/Footer，选择自己喜欢的引入
-
-    //    implementation 'com.liaoinstan.springview:AcfunHeader:1.5.1'         //AcFun风格 （header and footer）
-    implementation 'com.liaoinstan.springview:AliHeader:1.5.1'
-
-    //阿里旅行风格 （header and footer）
-
-    //    implementation 'com.liaoinstan.springview:MeituanHeader:1.5.1'       //美团风格 （header and footer）
-
-    //    implementation 'com.liaoinstan.springview:RotationHeader:1.5.1'      //齿轮机械风格 （header and footer）
-
-    //    implementation 'com.liaoinstan.springview:WeixinHeader:1.5.1'        //微信小程序header（只有header）
+//    implementation 'com.liaoinstan.springview:AcfunHeader:1.7.0'         //AcFun style （header and footer）
+    implementation 'com.liaoinstan.springview:AliHeader:1.7.0'
+    //Alitrip style （header and footer）
+//    implementation 'com.liaoinstan.springview:MeituanHeader:1.7.0'       //Meituan style （header and footer）
+//    implementation 'com.liaoinstan.springview:RotationHeader:1.7.0'      //Mechanical gear style （header and footer）
+//    implementation 'com.liaoinstan.springview:WeixinHeader:1.7.0'        //WeChat Mini Program header（only header）
+//    implementation 'com.liaoinstan.springview:DuHeader:1.7.0'		//Du app header（only header）
 
     //异常上报-腾讯bugly
     implementation 'com.tencent.bugly:crashreport:latest.release'
@@ -139,6 +136,9 @@ dependencies {
 
     //zxing 二维码框架
     implementation 'com.google.zxing:core:3.4.0'
+
+    //微信
+    implementation 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+'
 
 }
 apply plugin: 'com.mob.sdk'

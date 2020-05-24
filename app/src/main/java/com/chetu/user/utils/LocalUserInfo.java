@@ -27,7 +27,7 @@ public class LocalUserInfo {
     public static final String Language_Type= "language_type";//语言
     public static final String Mobile_State_Code= "mobile_state_code";//国家代码
     public static final String Country_IMG= "country_img";//国家代码
-    public static final String Country_NAME= "country_name";//语言名称
+    public static final String Pay= "pay";//是否开通支付(1:否，2：是)
     public static final String Merchant= "merchant";//是否为商户(1:否，2：是)
     public static final String Gather= "gather";//是否开通收款(1:否，2：是)
     public static final String InvuteCode = "invite_code";//邀请码
@@ -42,11 +42,8 @@ public class LocalUserInfo {
     public static final String ISREALNAMEVALIDATED = "isRealNameValidated";//用户是否实名验证
     public static final String USERREALNAME = "userRealName";//用户真实姓名
 
-    public static final String WINNUM = "winNum";//中奖信息
+    public static final String HXID = "hx_id";//环信id
     public static final String WINNUM1 = "winNum1";//中奖信息
-    public static final String WINNUM2 = "winNum2";//中奖信息
-    public static final String WINNUM3 = "winNum3";//中奖信息
-
     public static final String LOSENUM = "loseNum";//未中奖信息
     public static final String LOSENUM1 = "loseNum1";//未中奖信息
 
@@ -135,9 +132,9 @@ public class LocalUserInfo {
         editor.putString(Country_IMG, string);
         editor.commit();
     }
-    //语言名字
-    public void setCountry_NAME(String string) {
-        editor.putString(Country_NAME, string);
+    //是否开通支付
+    public void setPay(String string) {
+        editor.putString(Pay, string);
         editor.commit();
     }
     //是否开通收款
@@ -201,9 +198,9 @@ public class LocalUserInfo {
         editor.commit();
     }
 
-    //保存中奖信息
-    public void setWinnum(String string) {
-        editor.putString(WINNUM, string);
+    //保存环信ID
+    public void setHxid(String string) {
+        editor.putString(HXID, string);
         editor.commit();
     }
     //保存中奖信息
@@ -211,17 +208,6 @@ public class LocalUserInfo {
         editor.putString(WINNUM1, string);
         editor.commit();
     }
-    //保存中奖信息
-    public void setWinnum2(String string) {
-        editor.putString(WINNUM2, string);
-        editor.commit();
-    }
-    //保存中奖信息
-    public void setWinnum3(String string) {
-        editor.putString(WINNUM3, string);
-        editor.commit();
-    }
-
     //保存未中奖信息
     public void setLosenum(String string) {
         editor.putString(LOSENUM, string);
@@ -492,8 +478,7 @@ public class LocalUserInfo {
         if (!TextUtils.isEmpty(string)) {
             return string;
         }
-//        return "zh";
-        return "en";
+        return "zh";
     }
     public String getUserRealName(){
         String userRealName=getString(USERREALNAME);
@@ -537,12 +522,12 @@ public class LocalUserInfo {
         }
         return "无";
     }
-    public String getIsrealnamevalidated(){
+    public String getIsVerified(){
         String isrealnamevalidated=getString(ISREALNAMEVALIDATED);
         if (!TextUtils.isEmpty(isrealnamevalidated)) {
             return isrealnamevalidated;
         }
-        return "";
+        return "2";//1 认证 2 未认证
     }
     public String getMobile_State_Code(){
         String string=getString(Mobile_State_Code);
@@ -551,12 +536,12 @@ public class LocalUserInfo {
         }
         return "86";
     }
-    public String getCountry_NAME(){
-        String string=getString(Country_NAME);
+    public String getPay(){
+        String string=getString(Pay);
         if (!TextUtils.isEmpty(string)) {
             return string;
         }
-        return "English";
+        return "1";
     }
     public String getGather(){
         String string=getString(Gather);
@@ -581,9 +566,9 @@ public class LocalUserInfo {
         return "";
     }
 
-    //获取中奖信息
-    public String getWinnum() {
-        String string = getString(WINNUM);
+    //获取环信ID
+    public String getHxid() {
+        String string = getString(HXID);
         if (!TextUtils.isEmpty(string)) {
             return string;
         }
@@ -592,22 +577,6 @@ public class LocalUserInfo {
     //获取中奖信息
     public String getWinnum1() {
         String string = getString(WINNUM1);
-        if (!TextUtils.isEmpty(string)) {
-            return string;
-        }
-        return "";
-    }
-    //获取中奖信息
-    public String getWinnum2() {
-        String string = getString(WINNUM2);
-        if (!TextUtils.isEmpty(string)) {
-            return string;
-        }
-        return "";
-    }
-    //获取中奖信息
-    public String getWinnum3() {
-        String string = getString(WINNUM3);
         if (!TextUtils.isEmpty(string)) {
             return string;
         }

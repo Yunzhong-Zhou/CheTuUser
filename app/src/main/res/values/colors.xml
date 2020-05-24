@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#00BDB6</color>
-    <color name="colorPrimaryDark">#00BDB6</color>
-    <color name="colorAccent">#00BDB6</color>
+    <color name="colorPrimary">#0567F5</color>
+    <color name="colorPrimaryDark">#0567F5</color>
+    <color name="colorAccent">#0567F5</color>
 
-    <color name="background">#F5F5F5</color>
+    <color name="background">#ECF0F3</color>
     <color name="title_bg">#FFFFFF</color>
     <color name="btn_bg">#6380a4</color>
 
@@ -25,7 +25,7 @@
     <color name="yellow">#F8BE39</color>
     <color name="green">#6BE201</color>
     <color name="grey">#9fb3e6</color>
-    <color name="blue">#00BDB6</color>
+    <color name="blue">#0567F5</color>
     <color name="qianblue">#3ECAC4</color>
     <color name="purple">#7C08C5</color>
     <color name="red">#FF1C1C</color>
