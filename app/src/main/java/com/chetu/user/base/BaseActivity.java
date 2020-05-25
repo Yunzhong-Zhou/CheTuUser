@@ -26,6 +26,7 @@ import com.hjq.toast.ToastUtils;
 import com.liaoinstan.springview.widget.SpringView;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
@@ -43,7 +44,8 @@ public abstract class BaseActivity extends SwipeBackActivity implements IBaseVie
     protected LocalUserInfo localUserInfo;
     protected LoadingLayout loadingLayout;
     protected LayoutInflater inflater;
-    public HashMap<String, String> params = new HashMap<>();
+    public Map<String, String> params = new HashMap<>();
+    public Map<String, String> headerMap = new HashMap<>();
 
     protected ImmersionBar mImmersionBar;
 
@@ -63,6 +65,8 @@ public abstract class BaseActivity extends SwipeBackActivity implements IBaseVie
             e.printStackTrace();
         }
 
+        headerMap.put("apikey","773EDB6D2715FACF9C93354CAC5B1A3372872DC4D5AC085867C7490E9984D33E");
+        headerMap.put("hversion","1.0");
 
         localUserInfo = LocalUserInfo.getInstance(this);
         inflater = LayoutInflater.from(this);

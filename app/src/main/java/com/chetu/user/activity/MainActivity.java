@@ -23,16 +23,11 @@ import com.chetu.user.fragment.Fragment2;
 import com.chetu.user.fragment.Fragment3;
 import com.chetu.user.fragment.Fragment4;
 import com.chetu.user.model.UpgradeModel;
-import com.chetu.user.net.OkHttpClientManager;
-import com.chetu.user.net.URLs;
-import com.chetu.user.utils.CommonUtil;
-import com.chetu.user.utils.MyLogger;
 import com.chetu.user.utils.permission.PermissionsActivity;
 import com.chetu.user.utils.permission.PermissionsChecker;
 import com.cy.dialog.BaseDialog;
 import com.hjm.bottomtabbar.BottomTabBar;
 import com.maning.updatelibrary.InstallUtils;
-import com.squareup.okhttp.Request;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -272,7 +267,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void RequestUpgrade(String string) {
-        OkHttpClientManager.getAsyn(MainActivity.this, URLs.Upgrade + string, new OkHttpClientManager.ResultCallback<UpgradeModel>() {
+        /*OkHttpClientManager.getAsyn(MainActivity.this, URLs.Upgrade + string, new OkHttpClientManager.ResultCallback<UpgradeModel>() {
             @Override
             public void onError(Request request, String info, Exception e) {
 //                hideProgress();
@@ -290,11 +285,11 @@ public class MainActivity extends BaseActivity {
 //                    showToast("已经是最新版，无需更新");
                 }
             }
-        });
+        });*/
     }
 
     private void RequestQianDao(String string) {
-        OkHttpClientManager.getAsyn(MainActivity.this, URLs.QianDao + string, new OkHttpClientManager.ResultCallback<String>() {
+        /*OkHttpClientManager.getAsyn(MainActivity.this, URLs.QianDao + string, new OkHttpClientManager.ResultCallback<String>() {
             @Override
             public void onError(Request request, String info, Exception e) {
 //                hideProgress();
@@ -320,7 +315,7 @@ public class MainActivity extends BaseActivity {
                     }
                 });
             }
-        });
+        });*/
     }
 
     //显示是否要更新的对话框

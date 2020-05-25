@@ -11,19 +11,13 @@ import android.view.ViewGroup;
 import com.chetu.user.R;
 import com.chetu.user.activity.MainActivity;
 import com.chetu.user.base.BaseFragment;
-import com.chetu.user.model.Fragment1Model;
-import com.chetu.user.net.OkHttpClientManager;
-import com.chetu.user.net.URLs;
-import com.chetu.user.utils.MyLogger;
 import com.chetu.user.view.zxing.CaptureActivity;
 import com.chetu.user.view.zxing.Constant;
-import com.squareup.okhttp.Request;
 
 import java.util.Map;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-
 
 
 /**
@@ -173,7 +167,7 @@ public class Fragment1 extends BaseFragment {
     }
 
     private void Request(String string) {
-        OkHttpClientManager.getAsyn(getActivity(), URLs.Fragment1 + string, new OkHttpClientManager.ResultCallback<Fragment1Model>() {
+        /*OkHttpClientManager.getAsyn(getActivity(), URLs.Fragment1 + string, new OkHttpClientManager.ResultCallback<Fragment1Model>() {
             @Override
             public void onError(Request request, String info, Exception e) {
 //                showErrorPage();
@@ -188,91 +182,13 @@ public class Fragment1 extends BaseFragment {
                 showContentPage();
                 hideProgress();
                 MyLogger.i(">>>>>>>>>首页" + response);
-                /*//保存是否认证
-                localUserInfo.setIsVerified(response.getIs_certification()+"");//1 认证 2 未认证
 
-                model = response;
-                textView1.setText(response.getNickname());//昵称
-                textView2.setText("¥ " + response.getToday_money());//今日流水
-                textView3.setText(response.getMoney());//账户余额
-//                textView4.setText(response.getOnline_time());//在线时长
-                time = response.getOnline_time() * 1000;
-
-                if (timerTask == null) {
-                    timerTask = new TimerTask() {
-                        @Override
-                        public void run() {
-                            time = time + 1000;
-//                        String dd = new DecimalFormat("00").format(time / 3600 / 24);
-//                        String hh = new DecimalFormat("00").format(time / 3600);
-//                        String mm = new DecimalFormat("00").format(time % 3600 / 60);
-//                        String ss = new DecimalFormat("00").format(time % 60);
-//                        String timeFormat = new String(hh + "小时" + mm + "分" + ss + "秒");
-                            String timeFormat = CommonUtil.timedate5(time);//格式化时间
-
-                            Message msg = new Message();
-                            msg.obj = timeFormat;
-                            startTimehandler.sendMessage(msg);
-                        }
-
-                    };
-                    new Timer("在线计时器").scheduleAtFixedRate(timerTask, 0, 1000L);
-                }
-
-                textView5.setText(response.getIndent_count());//今日单量
-                textView6.setText(response.getComment_score());//当前评分
-                if (!response.getHead().equals(""))
-                    Glide.with(getActivity())
-                            .load(IMGHOST + response.getHead())
-                            .centerCrop()
-//                    .placeholder(R.mipmap.headimg)//加载站位图
-//                    .error(R.mipmap.headimg)//加载失败
-                            .into(imageView1);//加载图片
-
-                //倒计时
-                if (response.getFresh_second() > 0) {
-                    if (isStartJieDan)
-                        startTime();//开始倒计时
-                }
-
-                // 公告消息
-                if (response.getNotice_list().size() > 0) {
-                    ll_xiaoxi.setVisibility(View.VISIBLE);
-                    xiaoxiArray.clear();
-                    for (int i = 0; i < response.getNotice_list().size(); i++) {
-                        xiaoxiArray.add(response.getNotice_list().get(i).getTitle());
-                    }
-                    rollingView.setPageSize(1);
-                    rollingView.setClickColor(0xff888888);
-//        rollingView.setLeftDrawable(R.drawable.drawable_red_dot);
-                    rollingView.setRollingText(xiaoxiArray);// 绑定数据
-                    rollingView.setOnItemClickListener(new RollingView.onItemClickListener() {
-                        @Override
-                        public void onItemClick(TextView v) {
-//                        MyLogger.i(">>>>"+v.getText());
-                            CommonUtil.gotoActivity(getActivity(), NoticeListActivity.class);
-                        }
-                    });
-                } else {
-                    ll_xiaoxi.setVisibility(View.GONE);
-                }
-
-                //订单类型
-                indent_use_type = response.getIndent_use_type_list().get(0).getKey() + "";
-                //距离
-                distance = response.getDistance_list().get(0).getKey() + "";
-                //温度
-                temperature = response.getTemperature_list().get(0).getKey() + "";
-                //开始
-                time_start = response.getTime_start_list().get(0).getKey() + "";
-                //结束
-                time_end = response.getTime_end_list().get(0).getKey() + "";*/
             }
-        });
+        });*/
     }
 
     private void RequestList(Map<String, String> params) {
-        OkHttpClientManager.postAsyn(getActivity(), URLs.Fragment1List, params, new OkHttpClientManager.ResultCallback<String>() {
+        /*OkHttpClientManager.postAsyn(getActivity(), URLs.Fragment1List, params, new OkHttpClientManager.ResultCallback<String>() {
             @Override
             public void onError(Request request, String info, Exception e) {
 //                showErrorPage();
@@ -287,7 +203,7 @@ public class Fragment1 extends BaseFragment {
                 MyLogger.i(">>>>>>>>>接单列表" + response);
 
             }
-        }, false);
+        }, false);*/
     }
 
     @Override

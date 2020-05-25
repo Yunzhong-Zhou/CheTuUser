@@ -25,8 +25,8 @@
     </style>
 
     <style name="MyEditText" parent="Theme.AppCompat.Light">
-        <item name="colorControlNormal">@color/white2</item>
-        <item name="colorControlActivated">@color/white1</item>
+        <item name="colorControlNormal">@color/txt_hint</item>
+        <item name="colorControlActivated">@color/black4</item>
     </style>
     <!--popupwindow 底部弹出动画-->
     <style name="take_pop_anim" parent="android:Animation">

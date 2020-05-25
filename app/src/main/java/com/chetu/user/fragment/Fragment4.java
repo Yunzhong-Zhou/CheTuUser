@@ -13,16 +13,22 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.chetu.user.R;
 import com.chetu.user.activity.MainActivity;
+import com.chetu.user.activity.SetUpActivity;
 import com.chetu.user.base.BaseFragment;
 import com.chetu.user.model.Fragment4Model;
-import com.chetu.user.net.OkHttpClientManager;
 import com.chetu.user.net.URLs;
+import com.chetu.user.okhttp.CallBackUtil;
+import com.chetu.user.okhttp.OkhttpUtil;
 import com.chetu.user.utils.CommonUtil;
 import com.liaoinstan.springview.widget.SpringView;
-import com.squareup.okhttp.Request;
 
-import static com.chetu.user.net.OkHttpClientManager.IMGHOST;
+import java.util.HashMap;
+import java.util.Map;
 
+import okhttp3.Call;
+import okhttp3.Response;
+
+import static com.chetu.user.net.URLs.IMGHOST;
 
 /**
  * Created by fafukeji01 on 2016/1/6.
@@ -78,7 +84,9 @@ public class Fragment4 extends BaseFragment {
         springView.setListener(new SpringView.OnFreshListener() {
             @Override
             public void onRefresh() {
-                requestCenter("?token=" + localUserInfo.getToken());
+                Map<String, String> params = new HashMap<>();
+                params.put("u_token", localUserInfo.getToken());
+                requestCenter(params);
             }
 
             @Override
@@ -155,46 +163,33 @@ public class Fragment4 extends BaseFragment {
         requestServer();
     }
 
-    private void requestCenter(String string) {
-        OkHttpClientManager.getAsyn(getActivity(), URLs.Center + string, new OkHttpClientManager.ResultCallback<Fragment4Model>() {
+    private void requestCenter(Map<String, String> params) {
+        OkhttpUtil.okHttpPost(URLs.Fragment4, params, headerMap, new CallBackUtil<Fragment4Model>() {
             @Override
-            public void onError(Request request, String info, Exception e) {
+            public Fragment4Model onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
                 hideProgress();
-                if (!info.equals("")) {
-                    myToast(info);
+                if (!err.equals("")) {
+                    myToast(err);
                 }
             }
 
             @Override
             public void onResponse(Fragment4Model response) {
-                /*MyLogger.i(">>>>>>>>>我的" + response);
-                //昵称
-                if (!response.getNickname().equals("")) {
-                    textView1.setText(response.getNickname());
-                    localUserInfo.setNickname(response.getNickname());
-                }
+                hideProgress();
                 //头像
-                localUserInfo.setUserImage(response.getHead());
-                if (!response.getHead().equals(""))
+                /*localUserInfo.setUserImage(response.getUser_info().);
+                if (!response.getHead().equals("") && getActivity() != null)
                     Glide.with(getActivity()).load(IMGHOST + response.getHead())
                             .centerCrop()
 //                            .placeholder(R.mipmap.headimg)//加载站位图
 //                            .error(R.mipmap.headimg)//加载失败
-                            .into(imageView1);//加载图片
-                else
-                    imageView1.setImageResource(R.mipmap.headimg);
+                            .into(imageView1);//加载图片*/
 
-                //未读信息
-                if (response.getMsg() > 0) {
-                    tv_xiaoxinum2.setVisibility(View.VISIBLE);
-                    tv_xiaoxinum2.setText(response.getMsg() + "");
-                } else {
-                    tv_xiaoxinum2.setVisibility(View.GONE);
-                }*/
-
-//                setEaseUser();//设置环信昵称、头像
-
-                hideProgress();
             }
         });
     }
@@ -203,8 +198,10 @@ public class Fragment4 extends BaseFragment {
     public void requestServer() {
         super.requestServer();
 //        this.showLoadingPage();
-//        showProgress(true, getString(R.string.app_loading));
-//        requestCenter("?token=" + localUserInfo.getToken());
+        showProgress(true, getString(R.string.app_loading));
+        Map<String, String> params = new HashMap<>();
+        params.put("u_token", localUserInfo.getToken());
+        requestCenter(params);
     }
 
     @Override
@@ -212,7 +209,7 @@ public class Fragment4 extends BaseFragment {
         switch (v.getId()) {
             case R.id.iv_shezhi:
                 //设置
-//                CommonUtil.gotoActivity(getActivity(), .class);
+                CommonUtil.gotoActivity(getActivity(), SetUpActivity.class);
                 break;
             case R.id.iv_jinbi:
                 //金币

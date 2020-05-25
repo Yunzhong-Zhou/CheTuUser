@@ -53,6 +53,7 @@ public class HelloActivity extends Activity {
     }
 
     private void enterHomeActivity() {
+//        LocalUserInfo.getInstance(HelloActivity.this).setUserId("");
         if (LocalUserInfo.getInstance(HelloActivity.this).getUserId().equals("")) {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);

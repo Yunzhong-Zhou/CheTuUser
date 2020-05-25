@@ -4,9 +4,10 @@
     <color name="colorPrimaryDark">#0567F5</color>
     <color name="colorAccent">#0567F5</color>
 
-    <color name="background">#ECF0F3</color>
+    <color name="background">#EDEFF2</color>
     <color name="title_bg">#FFFFFF</color>
     <color name="btn_bg">#6380a4</color>
+    <color name="txt_hint">#D9CECE</color>
 
     <color name="default_text">#333333</color>
     <color name="xian">#E3E3E3</color>
@@ -24,9 +25,9 @@
 
     <color name="yellow">#F8BE39</color>
     <color name="green">#6BE201</color>
-    <color name="grey">#9fb3e6</color>
+    <color name="grey">#C1C1C1</color>
     <color name="blue">#0567F5</color>
-    <color name="qianblue">#3ECAC4</color>
+    <color name="qianblue">#0567F5</color>
     <color name="purple">#7C08C5</color>
     <color name="red">#FF1C1C</color>
     <color name="orange">#FF7D3A</color>

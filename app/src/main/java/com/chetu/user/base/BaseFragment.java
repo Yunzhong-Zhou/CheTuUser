@@ -36,8 +36,7 @@ public abstract class BaseFragment extends Fragment implements IBaseView_Respons
     protected SpringView springView;
     protected LoadingLayout loadingLayout;
     protected LocalUserInfo localUserInfo;
-    protected Map<String, String> maps = new HashMap<>();
-
+    public Map<String, String> headerMap = new HashMap<>();
     //    protected ImmersionBar mImmersionBar;
     protected BaseDialog dialog;
 
@@ -50,6 +49,9 @@ public abstract class BaseFragment extends Fragment implements IBaseView_Respons
             mActivity = (BaseActivity) getActivity();
         }
         localUserInfo = LocalUserInfo.getInstance(getActivity());
+
+        headerMap.put("apikey","773EDB6D2715FACF9C93354CAC5B1A3372872DC4D5AC085867C7490E9984D33E");
+        headerMap.put("hversion","1.0");
 
         dialog = new BaseDialog(getActivity());
 

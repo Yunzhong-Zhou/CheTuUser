@@ -11,13 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.chetu.user.R;
-import com.chetu.user.model.GuideModel;
-import com.chetu.user.net.OkHttpClientManager;
-import com.chetu.user.net.URLs;
-import com.chetu.user.utils.MyLogger;
-import com.squareup.okhttp.Request;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,7 +20,6 @@ import java.util.Map;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import static com.chetu.user.net.OkHttpClientManager.IMGHOST;
 
 
 /**
@@ -111,14 +104,14 @@ public class GuideActivity extends Activity {
     }
 
     private void Request(Map<String, String> params) {
-        OkHttpClientManager.postAsyn(this, URLs.Guide, params, new OkHttpClientManager.ResultCallback<GuideModel>() {
+       /* OkHttpClientManager.postAsyn(this, URLs.Guide, params, new OkHttpClientManager.ResultCallback<GuideModel>() {
             @Override
             public void onError(Request request, String info, Exception e) {
 //                showErrorPage();
-               /* hideProgress();
+               *//* hideProgress();
                 if (!info.equals("")) {
                     myToast(info);
-                }*/
+                }*//*
             }
 
             @Override
@@ -170,7 +163,7 @@ public class GuideActivity extends Activity {
 
 
             }
-        });
+        });*/
     }
 
     private static final String SHAREDPREFERENCES_NAME = "my_pref";

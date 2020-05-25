@@ -8,10 +8,6 @@ import android.view.ViewGroup;
 import com.chetu.user.R;
 import com.chetu.user.activity.MainActivity;
 import com.chetu.user.base.BaseFragment;
-import com.chetu.user.net.OkHttpClientManager;
-import com.chetu.user.net.URLs;
-import com.chetu.user.utils.MyLogger;
-import com.squareup.okhttp.Request;
 
 
 /**
@@ -265,102 +261,10 @@ public class Fragment3 extends BaseFragment {
     }
 
     private void Request(String string) {
-        OkHttpClientManager.getAsyn(getActivity(), URLs.Fragment2 + string,
-                new OkHttpClientManager.ResultCallback<String>() {
-                    @Override
-                    public void onError(Request request, String info, Exception e) {
-                        showErrorPage();
-                        hideProgress();
-                        if (!info.equals("")) {
-                            myToast(info);
-                        }
-                    }
 
-                    @Override
-                    public void onResponse(String response) {
-                        showContentPage();
-                        MyLogger.i(">>>>>>>>>订单" + response);
-                    }
-                });
     }
 
     private void RequestMore(String string) {
-        OkHttpClientManager.getAsyn(getActivity(), URLs.Fragment2 + string, new OkHttpClientManager.ResultCallback<String>() {
-            @Override
-            public void onError(Request request, String info, Exception e) {
-                /*switch (status) {
-                    case 1:
-                        page1--;
-                        break;
-                    case 2:
-                        page2--;
-                        break;
-                    case 3:
-                        page3--;
-                        break;
-                }
-                showErrorPage();
-                hideProgress();
-                if (!info.equals("")) {
-                    showToast(info);
-                }*/
-            }
-
-            @Override
-            public void onResponse(String response) {
-                showContentPage();
-                hideProgress();
-                MyLogger.i(">>>>>>>>>订单列表更多" + response);
-                /*JSONObject jObj;
-                try {
-                    jObj = new JSONObject(response);
-                    JSONArray jsonArray = jObj.getJSONArray("data");
-                    switch (status) {
-                        case 1:
-                            List<Fragment2Model1> list1_1 = new ArrayList<>();
-                            list1_1 = JSON.parseArray(jsonArray.toString(), Fragment2Model1.class);
-                            if (list1_1.size() == 0) {
-                                page1--;
-                                myToast(getString(R.string.app_nomore));
-                            } else {
-                                list1.addAll(list1_1);
-                                mAdapter1.notifyDataSetChanged();
-                            }
-                            break;
-                        case 2:
-                            List<Fragment2Model1> list2_1 = new ArrayList<>();
-                            list2_1 = JSON.parseArray(jsonArray.toString(), Fragment2Model1.class);
-                            if (list2_1.size() == 0) {
-                                page2--;
-                                myToast(getString(R.string.app_nomore));
-                            } else {
-                                list2.addAll(list2_1);
-                                mAdapter2.notifyDataSetChanged();
-                            }
-                            break;
-                        case 3:
-                            List<Fragment2Model1> list3_1 = new ArrayList<>();
-                            list3_1 = JSON.parseArray(jsonArray.toString(), Fragment2Model1.class);
-                            if (list3_1.size() == 0) {
-                                page3--;
-                                myToast(getString(R.string.app_nomore));
-                            } else {
-                                list3.addAll(list3_1);
-                                mAdapter3.notifyDataSetChanged();
-                            }
-                            break;
-                        default:
-                            break;
-                    }
-
-                } catch (JSONException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }*/
-
-
-            }
-        });
 
     }
 

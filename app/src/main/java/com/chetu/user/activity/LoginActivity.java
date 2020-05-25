@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Environment;
 import android.provider.Settings;
 import android.text.TextUtils;
@@ -21,24 +22,20 @@ import com.chetu.user.R;
 import com.chetu.user.base.BaseActivity;
 import com.chetu.user.model.LoginModel;
 import com.chetu.user.model.UpgradeModel;
-import com.chetu.user.model.WeChatLoginModel;
-import com.chetu.user.net.OkHttpClientManager;
 import com.chetu.user.net.URLs;
+import com.chetu.user.okhttp.CallBackUtil;
+import com.chetu.user.okhttp.OkhttpUtil;
 import com.chetu.user.utils.CommonUtil;
 import com.chetu.user.utils.MyLogger;
 import com.chetu.user.utils.permission.PermissionsActivity;
 import com.chetu.user.utils.permission.PermissionsChecker;
 import com.cy.dialog.BaseDialog;
 import com.maning.updatelibrary.InstallUtils;
-import com.squareup.okhttp.Call;
-import com.squareup.okhttp.Callback;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -47,6 +44,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import androidx.appcompat.app.AlertDialog;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 
 /**
@@ -56,10 +58,12 @@ import androidx.appcompat.app.AlertDialog;
 public class LoginActivity extends BaseActivity {
     String code = "";
     private EditText editText1, editText2;
-    private TextView textView1, textView2, textView3, textView4;
+    private TextView textView1, textView2;
     private ImageView image_wechat;
 
     private String phonenum = "", password = "";
+
+    private TimeCount time;
 
     //更新
     UpgradeModel model_up;
@@ -112,24 +116,29 @@ public class LoginActivity extends BaseActivity {
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (time != null)
+            time.cancel();
+    }
+
+    @Override
     protected void initView() {
+        time = new TimeCount(60000, 1000);//构造CountDownTimer对象
 
         editText1 = findViewByID_My(R.id.editText1);
         editText2 = findViewByID_My(R.id.editText2);
 
         textView1 = findViewByID_My(R.id.textView1);
         textView2 = findViewByID_My(R.id.textView2);
-        textView3 = findViewByID_My(R.id.textView3);
-        textView4 = findViewByID_My(R.id.textView4);
-
 
         image_wechat = findViewByID_My(R.id.image_wechat);
     }
 
     @Override
     protected void initData() {
-        RequestUpgrade("?app_type=" + 1
-                + "&type=" + "owner");//检查更新//"driver 司机 owner货主端"
+//        RequestUpgrade("?app_type=" + 1
+//                + "&type=" + "owner");//检查更新//"driver 司机 owner货主端"
 
         /*byte[] mBytes = null;
         String mString = "{阿达大as家阿sdf什顿附asd件好久}";
@@ -150,20 +159,36 @@ public class LoginActivity extends BaseActivity {
         switch (v.getId()) {
             case R.id.textView1:
                 //获取验证码
+                phonenum = editText1.getText().toString().trim();
+                if (TextUtils.isEmpty(phonenum)) {
+                    myToast("请输入手机号");
+                } else {
+                    showProgress(true, "正在获取短信验证码...");
+                    textView1.setClickable(false);
+                    HashMap<String, String> params = new HashMap<>();
+                    params.put("user_phone", phonenum);
+//                    params.put("type", "1");
+                    RequestCode(params);//获取验证码
+                }
                 break;
 
             case R.id.textView2:
                 //确认登录
-                /*if (match()) {
+                if (match()) {
                     textView2.setClickable(false);
                     this.showProgress(true, "正在登录，请稍候...");
-                    params.put("uuid", CommonUtil.getIMEI(LoginActivity.this));//IMEI
-                    params.put("mobile", phonenum);
-                    params.put("password", password);
-//                    params.put("mobile_state_code", localUserInfo.getMobile_State_Code());
+                    params.put("user_phone", phonenum);
+                    params.put("vcode", password);
+                    params.put("t_token", "");
+                    params.put("action", "1");//1为验证码登陆 2为第三方登陆
+                    /*//测试数据
+                    params.put("user_phone", "18203048656");
+                    params.put("vcode", "155119");
+                    params.put("t_token", "");
+                    params.put("action", "1");//1为验证码登陆 2为第三方登陆*/
                     RequestLogin(params);//登录
-                }*/
-                CommonUtil.gotoActivity(LoginActivity.this, MainActivity.class, true);
+                }
+//                CommonUtil.gotoActivity(LoginActivity.this, MainActivity.class, true);
                 break;
             case R.id.image_wechat:
                 //微信登录
@@ -182,36 +207,65 @@ public class LoginActivity extends BaseActivity {
 
     //登录
     private void RequestLogin(Map<String, String> params) {
-        OkHttpClientManager.postAsyn(LoginActivity.this, URLs.Login, params, new OkHttpClientManager.ResultCallback<LoginModel>() {
+        OkhttpUtil.okHttpPost(URLs.Login, params, headerMap, new CallBackUtil<LoginModel>() {
             @Override
-            public void onError(final Request request, String info, Exception e) {
+            public LoginModel onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
                 hideProgress();
                 textView2.setClickable(true);
 //                myToast("密码错误，请重新输入");
-                if (!info.equals("")) {
-                    myToast(info);
+                if (!err.equals("")) {
+                    myToast(err);
                 }
             }
 
             @Override
-            public void onResponse(final LoginModel response) {
-                MyLogger.i(">>>>>>>>>登录" + response);
+            public void onResponse(LoginModel response) {
                 textView2.setClickable(true);
-//                localUserInfo.setTime(System.currentTimeMillis() + "");
-               /* //保存Token
-                localUserInfo.setToken(response.getFresh_token());
+                localUserInfo.setUserId(response.getUser_info().getUserHash());
+                //保存Token
+                localUserInfo.setToken(response.getUser_info().getUToken());
                 //保存电话号码
-                localUserInfo.setPhoneNumber(response.getMobile());
+//                localUserInfo.setPhoneNumber(response.getMobile());
                 //保存是否认证
-                localUserInfo.setIsVerified(response.getIs_certification() + "");//1 认证 2 未认证
+//                localUserInfo.setIsVerified(response.getIs_certification() + "");//1 认证 2 未认证
                 //保存昵称
-                localUserInfo.setNickname(response.getNickname());
-                //保存环信ID
-                localUserInfo.setHxid(response.getHx_username());*/
+                localUserInfo.setNickname(response.getUser_info().getUserName());
 
+                hideProgress();
+                CommonUtil.gotoActivity(LoginActivity.this, MainActivity.class, true);
             }
-        }, false);
+        });
+    }
+    private void RequestCode(Map<String, String> params) {
+        OkhttpUtil.okHttpPost(URLs.Code, params, headerMap, new CallBackUtil<LoginModel>() {
+            @Override
+            public LoginModel onParseResponse(Call call, Response response) {
+                return null;
+            }
 
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+                hideProgress();
+                textView1.setClickable(true);
+                if (!err.equals("")) {
+                    showToast(err);
+                }
+            }
+
+            @Override
+            public void onResponse(LoginModel response) {
+                hideProgress();
+                textView1.setClickable(true);
+                MyLogger.i(">>>>>>>>>验证码" + response);
+                time.start();//开始计时
+                myToast(getString(R.string.app_sendcode_hint));
+            }
+        });
     }
 
     private boolean match() {
@@ -234,6 +288,24 @@ public class LoginActivity extends BaseActivity {
         titleView.setVisibility(View.GONE);
     }
 
+    //获取验证码倒计时
+    class TimeCount extends CountDownTimer {
+        public TimeCount(long millisInFuture, long countDownInterval) {
+            super(millisInFuture, countDownInterval);//参数依次为总时长,和计时的时间间隔
+        }
+
+        @Override
+        public void onFinish() {//计时完毕时触发
+            textView1.setText(getString(R.string.app_reacquirecode));
+            textView1.setClickable(true);
+        }
+
+        @Override
+        public void onTick(long millisUntilFinished) {//计时过程显示
+            textView1.setClickable(false);
+            textView1.setText(millisUntilFinished / 1000 + getString(R.string.app_codethen));
+        }
+    }
     /*//屏蔽返回键
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -243,7 +315,7 @@ public class LoginActivity extends BaseActivity {
     }*/
 
     private void RequestUpgrade(String string) {
-        OkHttpClientManager.getAsyn(LoginActivity.this, URLs.Upgrade + string, new OkHttpClientManager.ResultCallback<UpgradeModel>() {
+        /*OkHttpClientManager.getAsyn(LoginActivity.this, URLs.Upgrade + string, new OkHttpClientManager.ResultCallback<UpgradeModel>() {
             @Override
             public void onError(Request request, String info, Exception e) {
 //                hideProgress();
@@ -261,7 +333,7 @@ public class LoginActivity extends BaseActivity {
 //                    showToast("已经是最新版，无需更新");
                 }
             }
-        });
+        });*/
     }
 
     //显示是否要更新的对话框
@@ -440,7 +512,6 @@ public class LoginActivity extends BaseActivity {
         });
     }
 
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -458,11 +529,14 @@ public class LoginActivity extends BaseActivity {
                     +"&code="+code
                     +"&grant_type=authorization_code";
             requestWeChat1(url);*/
+
             getIntent().removeExtra("code");
             this.showProgress(true, "正在登录，请稍候...");
             Map<String, String> params = new HashMap<>();
-            params.put("code", code);
-            params.put("type", "1");
+            params.put("user_phone", phonenum);
+            params.put("vcode", password);
+            params.put("t_token", code);
+            params.put("action", "2");//1为验证码登陆 2为第三方登陆
             RequestWeChatLogin(params);//微信登录
         }
     }
@@ -482,7 +556,7 @@ public class LoginActivity extends BaseActivity {
 
     //微信登录
     private void RequestWeChatLogin(Map<String, String> params) {
-        OkHttpClientManager.postAsyn(LoginActivity.this, URLs.Login1, params, new OkHttpClientManager.ResultCallback<WeChatLoginModel>() {
+        /*OkHttpClientManager.postAsyn(LoginActivity.this, URLs.Login1, params, new OkHttpClientManager.ResultCallback<WeChatLoginModel>() {
             @Override
             public void onError(final Request request, String info, Exception e) {
                 hideProgress();
@@ -495,7 +569,7 @@ public class LoginActivity extends BaseActivity {
             public void onResponse(final WeChatLoginModel response) {
                 MyLogger.i(">>>>>>>>>登录" + response);
 //                localUserInfo.setTime(System.currentTimeMillis() + "");
-                /*if (response.getThird_id().equals("0")) {//登录通过
+                if (response.getThird_id().equals("0")) {//登录通过
                     //保存Token
                     localUserInfo.setToken(response.getLogin_data().getFresh_token());
                     //保存电话号码
@@ -511,16 +585,15 @@ public class LoginActivity extends BaseActivity {
                     Bundle bundle = new Bundle();
                     bundle.putString("third_id", response.getThird_id());
                     CommonUtil.gotoActivityWithData(LoginActivity.this, RegisteredActivity.class, bundle, false);
-                }*/
+                }
 
             }
-        }, false);
+        }, false);*/
 
     }
 
     //获取微信数据1
     private void requestWeChat1(String string) {
-
         OkHttpClient okHttpClient = new OkHttpClient();
         Request request = new Request.Builder()
                 .url(string)
@@ -529,13 +602,7 @@ public class LoginActivity extends BaseActivity {
         Call call = okHttpClient.newCall(request);
         call.enqueue(new Callback() {
             @Override
-            public void onFailure(Request request, IOException e) {
-                hideProgress();
-
-            }
-
-            @Override
-            public void onResponse(Response response) throws IOException {
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 String responseInfo = response.body().string();
                 MyLogger.i(">>>>>>>>>微信数据1:\n" + responseInfo);
                 String access_token = "";
@@ -555,7 +622,11 @@ public class LoginActivity extends BaseActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+            }
 
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                hideProgress();
             }
         });
 
@@ -571,13 +642,7 @@ public class LoginActivity extends BaseActivity {
         Call call = okHttpClient.newCall(request);
         call.enqueue(new Callback() {
             @Override
-            public void onFailure(Request request, IOException e) {
-                hideProgress();
-
-            }
-
-            @Override
-            public void onResponse(Response response) throws IOException {
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 String responseInfo = response.body().string();
                 MyLogger.i(">>>>>>>>>微信数据2:\n" + responseInfo);
 				/*
@@ -604,12 +669,14 @@ public class LoginActivity extends BaseActivity {
                     openid = jsonObject.getString("openid");
                     nickname = jsonObject.getString("nickname");
                     headimgurl = jsonObject.getString("headimgurl");
-
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+            }
 
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                hideProgress();
             }
         });
 
