@@ -95,7 +95,10 @@ public abstract class CallBackUtil<T> {
                         mMainHandler.post(new Runnable() {
                             @Override
                             public void run() {
-                                onFailure(call, null, msg);
+                                if (!msg.equals(""))
+                                    onFailure(call, null, msg);
+                                else
+                                    onFailure(call, null, "数据请求失败");
                             }
                         });
                         break;

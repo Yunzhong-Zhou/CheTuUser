@@ -37,9 +37,12 @@ public class URLs {
      */
     public static final String Login1 = HOST+"/api/member/quick-login";
 
-
     /**
-     * *********************************我的*****************************************8
+     * *********************************门店*****************************************
+     */
+    public static final String Fragment3 = HOST+"/api/v1/public/get_store_list";
+    /**
+     * *********************************我的*****************************************
      */
     public static final String Fragment4 = HOST+"/api/v1/user/get_user_info";
 

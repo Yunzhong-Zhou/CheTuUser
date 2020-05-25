@@ -62,7 +62,7 @@ public class Fragment4 extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (MainActivity.item == 2) {
+        if (MainActivity.item == 3) {
             requestServer();
         }
 
@@ -71,7 +71,7 @@ public class Fragment4 extends BaseFragment {
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        /*if (MainActivity.item == 2) {
+        /*if (MainActivity.item == 3) {
             requestServer();
         }*/
     }
@@ -160,7 +160,7 @@ public class Fragment4 extends BaseFragment {
 
     @Override
     protected void initData() {
-        requestServer();
+//        requestServer();
     }
 
     private void requestCenter(Map<String, String> params) {
@@ -173,9 +173,7 @@ public class Fragment4 extends BaseFragment {
             @Override
             public void onFailure(Call call, Exception e, String err) {
                 hideProgress();
-                if (!err.equals("")) {
-                    myToast(err);
-                }
+                myToast(err);
             }
 
             @Override
