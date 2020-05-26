@@ -10,6 +10,7 @@ import com.chetu.user.utils.CommonUtil;
 
 /**
  * Created by zyz on 2020/5/25.
+ * 设置
  */
 public class SetUpActivity extends BaseActivity {
     TextView textView1;
@@ -78,6 +79,5 @@ public class SetUpActivity extends BaseActivity {
     @Override
     protected void updateView() {
         titleView.setTitle("系统设置");
-        titleView.setBackgroundResource(R.color.white);
     }
 }

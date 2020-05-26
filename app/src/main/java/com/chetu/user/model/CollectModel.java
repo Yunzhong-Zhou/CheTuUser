@@ -4,9 +4,9 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * Created by zyz on 2020-05-23.
+ * Created by zyz on 2020/5/26.
  */
-public class Fragment2Model implements Serializable {
+public class CollectModel implements Serializable {
     private List<ListBean> list;
 
     public List<ListBean> getList() {

@@ -12,7 +12,6 @@ import com.chetu.user.BuildConfig;
 
 
 /**
- * User: kulik Date: 2/8/13 Time: 5:56 PM
  */
 public class MyLogger {
 

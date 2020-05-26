@@ -103,8 +103,24 @@
         <activity
             android:name=".activity.SetUpActivity"
             android:label="系统设置" />
-
-
+        <activity
+            android:name=".activity.MyProfileActivity"
+            android:label="我的资料" />
+        <activity
+            android:name=".activity.FootprintActivity"
+            android:label="足迹" />
+        <activity
+            android:name=".activity.CouponActivity"
+            android:label="优惠券" />
+        <activity
+            android:name=".activity.MyGarageActivity"
+            android:label="我的车库" />
+        <activity
+            android:name=".activity.NotebookActivity"
+            android:label="记事本" />
+        <activity
+            android:name=".activity.AddNotebookActivity"
+            android:label="添加记事本" />
         <!--查看mob推送日志-->
         <meta-data
             android:name="com.mob.mobpush.debugLevel"

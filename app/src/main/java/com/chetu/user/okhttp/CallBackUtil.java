@@ -6,6 +6,10 @@ import android.os.Handler;
 import android.os.Looper;
 import android.widget.ImageView;
 
+import com.chetu.user.MyApplication;
+import com.chetu.user.activity.LoginActivity;
+import com.chetu.user.utils.CommonUtil;
+import com.chetu.user.utils.LocalUserInfo;
 import com.chetu.user.utils.MyLogger;
 import com.google.gson.Gson;
 import com.google.gson.internal.$Gson$Types;
@@ -59,9 +63,9 @@ public abstract class CallBackUtil<T> {
                 MyLogger.i("请求到的数据onSeccess", string);
                 JSONObject mJsonObject = new JSONObject(string);
                 int result_code = mJsonObject.getInt("code");
-                String result = mJsonObject.getString("data");
                 switch (result_code) {
                     case 200:
+                        String result = mJsonObject.getString("data");
                         //数据请求成功-解析数据
                         if (mType == String.class) {
                             mMainHandler.post(new Runnable() {
@@ -82,12 +86,19 @@ public abstract class CallBackUtil<T> {
                         }
                         break;
                     case 600:
+                    case 800:
                         mMainHandler.post(new Runnable() {
                             @Override
                             public void run() {
                                 onFailure(call, null, "Headers验证失败");
                             }
                         });
+                        break;
+                    case 700:
+                    case 500:
+                        //会员token无效 - 跳转登录
+                        LocalUserInfo.getInstance(MyApplication.getContext()).setUserId("");
+                        CommonUtil.gotoActivity(MyApplication.getContext(), LoginActivity.class);
                         break;
                     default:
                         //数据请求失败
@@ -96,9 +107,9 @@ public abstract class CallBackUtil<T> {
                             @Override
                             public void run() {
                                 if (!msg.equals(""))
-                                    onFailure(call, null, msg);
-                                else
-                                    onFailure(call, null, "数据请求失败");
+                                    onFailure(call, null, msg.trim());
+                                /*else
+                                    onFailure(call, null, "数据请求失败");*/
                             }
                         });
                         break;
@@ -139,7 +150,8 @@ public abstract class CallBackUtil<T> {
     static Type getSuperclassTypeParameter(Class<?> subclass) {
         Type superclass = subclass.getGenericSuperclass();
         if (superclass instanceof Class) {
-            throw new RuntimeException("缺少类型参数");
+//            throw new RuntimeException("缺少类型参数");
+            return String.class;
         }
         ParameterizedType parameterized = (ParameterizedType) superclass;
         return $Gson$Types.canonicalize(parameterized.getActualTypeArguments()[0]);

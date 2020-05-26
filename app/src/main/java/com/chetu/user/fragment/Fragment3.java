@@ -40,7 +40,7 @@ import okhttp3.Response;
  */
 public class Fragment3 extends BaseFragment {
     int page = 0;
-    String longitude = "", latitude = "";
+    String longitude = "", latitude = "", y_parent_id = "0", y_service_id = "0";
     private RecyclerView recyclerView;
     List<Fragment3Model.ListBean> list = new ArrayList<>();
     CommonAdapter<Fragment3Model.ListBean> mAdapter;
@@ -90,16 +90,17 @@ public class Fragment3 extends BaseFragment {
 
     @Override
     protected void initView(View view) {
+//        CommonUtil.setMargins(findViewByID_My(R.id.headView), 0, (int) CommonUtil.getStatusBarHeight(getActivity()), 0, 0);
         findViewByID_My(R.id.headView).setPadding(0, (int) CommonUtil.getStatusBarHeight(getActivity()), 0, 0);
         //刷新
         setSpringViewMore(true);//不需要加载更多
         springView.setListener(new SpringView.OnFreshListener() {
             @Override
             public void onRefresh() {
-                String string = "";
                 page = 0;
                 Map<String, String> params = new HashMap<>();
-                params.put("y_service_id", "");
+                params.put("y_parent_id", y_parent_id);
+                params.put("y_service_id", y_service_id);
                 params.put("page", page + "");
                 params.put("longitude", longitude);
                 params.put("latitude", latitude);
@@ -108,10 +109,10 @@ public class Fragment3 extends BaseFragment {
 
             @Override
             public void onLoadmore() {
-                String string = "";
                 page++;
                 Map<String, String> params = new HashMap<>();
-                params.put("y_service_id", "");
+                params.put("y_parent_id", y_parent_id);
+                params.put("y_service_id", y_service_id);
                 params.put("page", page + "");
                 params.put("longitude", longitude);
                 params.put("latitude", latitude);
@@ -239,9 +240,6 @@ public class Fragment3 extends BaseFragment {
 //                        register_addr = aMapLocation.getAddress();
                         longitude = aMapLocation.getLongitude() + "";
                         latitude = aMapLocation.getLatitude() + "";
-
-                        longitude = "116.45798";
-                        latitude = "39.816485";
                     } else {
                         //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
                         MyLogger.e("定位失败：", "location Error, ErrCode:"
@@ -280,62 +278,6 @@ public class Fragment3 extends BaseFragment {
         }*/
     }
 
-    private void changeUI() {
-        /*switch (status) {
-            case 1:
-                textView1.setTextColor(getResources().getColor(R.color.blue));
-                textView2.setTextColor(getResources().getColor(R.color.black2));
-                textView3.setTextColor(getResources().getColor(R.color.black2));
-                view1.setVisibility(View.VISIBLE);
-                view2.setVisibility(View.INVISIBLE);
-                view3.setVisibility(View.INVISIBLE);
-                if (list1.size() > 0) {
-                    showContentPage();
-                    recyclerView.setAdapter(mAdapter1);
-                    mAdapter1.notifyDataSetChanged();
-                } else {
-                    showEmptyPage();//空数据
-                }
-
-                break;
-            case 2:
-                textView1.setTextColor(getResources().getColor(R.color.black2));
-                textView2.setTextColor(getResources().getColor(R.color.blue));
-                textView3.setTextColor(getResources().getColor(R.color.black2));
-
-                view1.setVisibility(View.INVISIBLE);
-                view2.setVisibility(View.VISIBLE);
-                view3.setVisibility(View.INVISIBLE);
-
-                if (list2.size() > 0) {
-                    showContentPage();
-                    recyclerView.setAdapter(mAdapter2);
-                    mAdapter2.notifyDataSetChanged();
-                } else {
-                    showEmptyPage();//空数据
-                }
-                break;
-            case 3:
-                textView1.setTextColor(getResources().getColor(R.color.black2));
-                textView2.setTextColor(getResources().getColor(R.color.black2));
-                textView3.setTextColor(getResources().getColor(R.color.blue));
-                view1.setVisibility(View.INVISIBLE);
-                view2.setVisibility(View.INVISIBLE);
-                view3.setVisibility(View.VISIBLE);
-                if (list3.size() > 0) {
-                    showContentPage();
-                    recyclerView.setAdapter(mAdapter3);
-                    mAdapter3.notifyDataSetChanged();
-                } else {
-                    showEmptyPage();//空数据
-                }
-                break;
-            default:
-                break;
-        }*/
-//        requestServer();
-    }
-
     @Override
     protected void updateView() {
 
@@ -348,7 +290,8 @@ public class Fragment3 extends BaseFragment {
         page = 0;
         Map<String, String> params = new HashMap<>();
 //        params.put("u_token", localUserInfo.getToken());
-        params.put("y_service_id", "");
+        params.put("y_parent_id", y_parent_id);
+        params.put("y_service_id", y_service_id);
         params.put("page", page + "");
         params.put("longitude", longitude);
         params.put("latitude", latitude);
@@ -365,7 +308,7 @@ public class Fragment3 extends BaseFragment {
             @Override
             public void onFailure(Call call, Exception e, String err) {
                 hideProgress();
-                showErrorPage();
+                showEmptyPage();
                 myToast(err);
             }
 
@@ -373,12 +316,12 @@ public class Fragment3 extends BaseFragment {
             public void onResponse(Fragment3Model response) {
                 hideProgress();
                 list = response.getList();
-                if (list.size() >0){
+                if (list.size() > 0) {
                     showContentPage();
                     mAdapter = new CommonAdapter<Fragment3Model.ListBean>
-                        (getActivity(), R.layout.item_fragment3, list) {
-                    @Override
-                    protected void convert(ViewHolder holder, Fragment3Model.ListBean model, int position) {
+                            (getActivity(), R.layout.item_fragment3, list) {
+                        @Override
+                        protected void convert(ViewHolder holder, Fragment3Model.ListBean model, int position) {
                        /* TextView tv1 = holder.getView(R.id.tv1);
                         TextView tv2 = holder.getView(R.id.tv2);
                         LinearLayout ll = holder.getView(R.id.ll);
@@ -393,21 +336,21 @@ public class Fragment3 extends BaseFragment {
                             tv1.setVisibility(View.VISIBLE);
                         }*/
 
-                    }
-                };
-                mAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                        }
+                    };
+                    mAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
 
-                    }
+                        }
 
-                    @Override
-                    public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
-                        return false;
-                    }
-                });
-                recyclerView.setAdapter(mAdapter);
-                }else {
+                        @Override
+                        public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                            return false;
+                        }
+                    });
+                    recyclerView.setAdapter(mAdapter);
+                } else {
                     showEmptyPage();
                 }
             }

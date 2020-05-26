@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.chetu.user.R;
 import com.chetu.user.activity.MainActivity;
+import com.chetu.user.net.URLs;
 import com.chetu.user.utils.LocalUserInfo;
 import com.chetu.user.utils.MyLogger;
 import com.chetu.user.view.LoadingLayout;
@@ -50,8 +51,8 @@ public abstract class BaseFragment extends Fragment implements IBaseView_Respons
         }
         localUserInfo = LocalUserInfo.getInstance(getActivity());
 
-        headerMap.put("apikey","773EDB6D2715FACF9C93354CAC5B1A3372872DC4D5AC085867C7490E9984D33E");
-        headerMap.put("hversion","1.0");
+        headerMap.put("apikey", URLs.APIKEY);
+        headerMap.put("hversion",URLs.HVERSION);
 
         dialog = new BaseDialog(getActivity());
 

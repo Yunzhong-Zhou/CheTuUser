@@ -18,7 +18,7 @@ import com.chetu.user.utils.MyLogger;
 
 /**
  * Created by zyz on 2017/9/12.
- * 文章详情
+ * 网页详情
  */
 
 public class WebContentActivity extends BaseActivity {

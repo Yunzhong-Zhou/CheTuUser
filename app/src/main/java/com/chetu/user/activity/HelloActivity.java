@@ -12,6 +12,7 @@ import com.chetu.user.utils.LocalUserInfo;
 
 /**
  * Created by zyz on 2019-09-27.
+ * 启动页
  */
 public class HelloActivity extends Activity {
     private static final String SHARE_APP_TAG = "HelloActivity";

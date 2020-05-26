@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.chetu.user.R;
 import com.chetu.user.base.BaseActivity;
+import com.chetu.user.model.CodeModel;
 import com.chetu.user.model.LoginModel;
 import com.chetu.user.model.UpgradeModel;
 import com.chetu.user.net.URLs;
@@ -242,9 +243,9 @@ public class LoginActivity extends BaseActivity {
         });
     }
     private void RequestCode(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.Code, params, headerMap, new CallBackUtil<LoginModel>() {
+        OkhttpUtil.okHttpPost(URLs.Code, params, headerMap, new CallBackUtil<CodeModel>() {
             @Override
-            public LoginModel onParseResponse(Call call, Response response) {
+            public CodeModel onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -258,12 +259,12 @@ public class LoginActivity extends BaseActivity {
             }
 
             @Override
-            public void onResponse(LoginModel response) {
+            public void onResponse(CodeModel response) {
                 hideProgress();
                 textView1.setClickable(true);
-                MyLogger.i(">>>>>>>>>验证码" + response);
                 time.start();//开始计时
                 myToast(getString(R.string.app_sendcode_hint));
+                editText2.setText(response.getV_code());
             }
         });
     }

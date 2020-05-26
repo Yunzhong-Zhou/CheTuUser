@@ -12,7 +12,12 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.chetu.user.R;
+import com.chetu.user.activity.CouponActivity;
+import com.chetu.user.activity.FootprintActivity;
 import com.chetu.user.activity.MainActivity;
+import com.chetu.user.activity.MyGarageActivity;
+import com.chetu.user.activity.MyProfileActivity;
+import com.chetu.user.activity.NotebookActivity;
 import com.chetu.user.activity.SetUpActivity;
 import com.chetu.user.base.BaseFragment;
 import com.chetu.user.model.Fragment4Model;
@@ -219,7 +224,7 @@ public class Fragment4 extends BaseFragment {
                 break;
             case R.id.linearLayout1:
                 //个人资料
-//                CommonUtil.gotoActivity(getActivity(), .class);
+                CommonUtil.gotoActivity(getActivity(), MyProfileActivity.class);
                 break;
             case R.id.linearLayout2:
                 //违章
@@ -248,7 +253,7 @@ public class Fragment4 extends BaseFragment {
                 break;
             case R.id.linearLayout8:
                 //优惠券
-//                CommonUtil.gotoActivity(getActivity(), .class);
+                CommonUtil.gotoActivity(getActivity(), CouponActivity.class);
                 break;
             case R.id.linearLayout9:
                 //待发布
@@ -256,15 +261,15 @@ public class Fragment4 extends BaseFragment {
                 break;
             case R.id.linearLayout10:
                 //记事本
-//                CommonUtil.gotoActivity(getActivity(), .class);
+                CommonUtil.gotoActivity(getActivity(), NotebookActivity.class);
                 break;
             case R.id.linearLayout11:
                 //足迹
-//                CommonUtil.gotoActivity(getActivity(), .class);
+                CommonUtil.gotoActivity(getActivity(), FootprintActivity.class);
                 break;
             case R.id.linearLayout12:
                 //我的车库
-//                CommonUtil.gotoActivity(getActivity(), .class);
+                CommonUtil.gotoActivity(getActivity(), MyGarageActivity.class);
                 break;
             case R.id.linearLayout13:
                 //分享有礼
