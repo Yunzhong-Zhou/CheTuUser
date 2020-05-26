@@ -12,8 +12,10 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.chetu.user.R;
+import com.chetu.user.activity.AddMerchantActivity;
 import com.chetu.user.activity.CouponActivity;
 import com.chetu.user.activity.FootprintActivity;
+import com.chetu.user.activity.IntegralActivity;
 import com.chetu.user.activity.MainActivity;
 import com.chetu.user.activity.MyGarageActivity;
 import com.chetu.user.activity.MyProfileActivity;
@@ -215,8 +217,8 @@ public class Fragment4 extends BaseFragment {
                 CommonUtil.gotoActivity(getActivity(), SetUpActivity.class);
                 break;
             case R.id.iv_jinbi:
-                //金币
-//                CommonUtil.gotoActivity(getActivity(), .class);
+                //积分
+                CommonUtil.gotoActivity(getActivity(), IntegralActivity.class);
                 break;
             case R.id.rl_xiaoxi:
                 //消息
@@ -277,7 +279,7 @@ public class Fragment4 extends BaseFragment {
                 break;
             case R.id.linearLayout14:
                 //申请加盟
-//                CommonUtil.gotoActivity(getActivity(), .class);
+                CommonUtil.gotoActivity(getActivity(), AddMerchantActivity.class);
                 break;
             case R.id.linearLayout15:
                 //客服中心

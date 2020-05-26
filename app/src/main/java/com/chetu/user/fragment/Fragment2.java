@@ -4,12 +4,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.chetu.user.R;
+import com.chetu.user.activity.DraftActivity;
 import com.chetu.user.activity.MainActivity;
 import com.chetu.user.base.BaseFragment;
 import com.chetu.user.model.Fragment2Model;
@@ -44,6 +46,8 @@ public class Fragment2 extends BaseFragment {
     private RecyclerView recyclerView;
     List<Fragment2Model.ListBean> list = new ArrayList<>();
     CommonAdapter<Fragment2Model.ListBean> mAdapter;
+
+    TextView tv_addr,tv_caogao;
 
     //定位
     //声明AMapLocationClient类对象
@@ -128,6 +132,10 @@ public class Fragment2 extends BaseFragment {
         LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLinearLayoutManager);
 
+        tv_addr = findViewByID_My(R.id.tv_addr);
+        tv_caogao = findViewByID_My(R.id.tv_caogao);
+        tv_addr.setOnClickListener(this);
+        tv_caogao.setOnClickListener(this);
 
         /*et_addr.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -250,21 +258,14 @@ public class Fragment2 extends BaseFragment {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            /*case R.id.linearLayout1:
-                status = 1;
-                changeUI();
-                requestServer();
+            case R.id.tv_addr:
+                //地址
                 break;
-            case R.id.linearLayout2:
-                status = 2;
-                changeUI();
-                requestServer();
+            case R.id.tv_caogao:
+                //草稿
+                CommonUtil.gotoActivity(getActivity(), DraftActivity.class);
                 break;
-            case R.id.linearLayout3:
-                status = 3;
-                changeUI();
-                requestServer();
-                break;*/
+
         }
     }
 

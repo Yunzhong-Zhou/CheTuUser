@@ -99,10 +99,21 @@
             android:name=".view.zxing.CaptureActivity"
             android:label="扫一扫" />
 
+
+        <!--养车-->
+        <activity
+            android:name=".activity.DraftActivity"
+            android:label="草稿" />
+
+
+
         <!--我的-->
         <activity
             android:name=".activity.SetUpActivity"
             android:label="系统设置" />
+        <activity
+            android:name=".activity.IntegralActivity"
+            android:label="积分" />
         <activity
             android:name=".activity.MyProfileActivity"
             android:label="我的资料" />
@@ -121,6 +132,9 @@
         <activity
             android:name=".activity.AddNotebookActivity"
             android:label="添加记事本" />
+        <activity
+            android:name=".activity.AddMerchantActivity"
+            android:label="申请加盟-商户入驻-添加商户" />
         <!--查看mob推送日志-->
         <meta-data
             android:name="com.mob.mobpush.debugLevel"
