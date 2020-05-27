@@ -132,6 +132,13 @@ public class TitleView extends FrameLayout {
 		right_text.setText(str);
 		right_text.setOnClickListener(listener);
 	}
+	public void showRightTextview(String str,int color, OnClickListener listener){
+		right_text.setVisibility(View.VISIBLE);
+		btn_right.setVisibility(View.GONE);
+		right_text.setText(str);
+		right_text.setTextColor(mActivity.getResources().getColor(color));
+		right_text.setOnClickListener(listener);
+	}
 //	public void setActivity(Activity curActivity){
 //		this.mActivity = curActivity;
 //	}

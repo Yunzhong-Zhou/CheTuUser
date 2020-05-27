@@ -191,7 +191,7 @@ public class MyGarageActivity extends BaseActivity {
             }
         });
         titleView.setBackground(R.color.blue);
-        titleView.showRightTextview("编辑", new View.OnClickListener() {
+        titleView.showRightTextview("编辑",R.color.white, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 

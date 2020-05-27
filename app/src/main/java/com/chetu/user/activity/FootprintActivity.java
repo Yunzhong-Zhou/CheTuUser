@@ -36,8 +36,9 @@ public class FootprintActivity extends BaseActivity {
     TextView textView1, textView2;
     private RecyclerView recyclerView;
     List<FootprintModel.ListBean> list1 = new ArrayList<>();
-    List<CollectModel.ListBean> list2 = new ArrayList<>();
+    CommonAdapter<FootprintModel.ListBean> mAdapter1;
 
+    List<CollectModel.ListBean> list2 = new ArrayList<>();
     CommonAdapter<CollectModel.ListBean> mAdapter2;
 
     @Override
@@ -100,58 +101,47 @@ public class FootprintActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        requestServer();
-       /* MultiItemTypeAdapter adapter = new MultiItemTypeAdapter(this,list);
-        adapter.addItemViewDelegate(new MsgSendItemDelagate());
-        adapter.addItemViewDelegate(new MsgComingItemDelagate());*/
+//        requestServer();
 
+        //测试
+        list1.add(new FootprintModel.ListBean());
+        list1.add(new FootprintModel.ListBean());
+        list1.add(new FootprintModel.ListBean());
+        list1.add(new FootprintModel.ListBean());
+        mAdapter1 = new CommonAdapter<FootprintModel.ListBean>
+                (FootprintActivity.this, R.layout.item_footprint_title, list1) {
+            @Override
+            protected void convert(ViewHolder holder, FootprintModel.ListBean model, int position) {
+                RecyclerView rv = holder.getView(R.id.rv);
+                rv.setLayoutManager(new LinearLayoutManager(FootprintActivity.this));
+                List<String> list = new ArrayList<>();
+                list.add("");
+                list.add("");
+                list.add("");
+                list.add("");
+                CommonAdapter<String> mAdapter = new CommonAdapter<String>(FootprintActivity.this, R.layout.item_footprint, list) {
+                    @Override
+                    protected void convert(ViewHolder holder, String s, int position) {
+
+                    }
+                };
+                rv.setAdapter(mAdapter);
+            }
+        };
+        mAdapter1.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                return false;
+            }
+        });
+        recyclerView.setAdapter(mAdapter1);
 
     }
-    /*public class MsgComingItemDelagate implements ItemViewDelegate<String>
-    {
-        @Override
-        public int getItemViewLayoutId()
-        {
-            return R.layout.main_chat_from_msg;
-        }
-
-        @Override
-        public boolean isForViewType(String item, int position)
-        {
-            return true;
-        }
-
-        @Override
-        public void convert(ViewHolder holder, String chatMessage, int position)
-        {
-                *//*holder.setText(R.id.chat_from_content, chatMessage.getContent());
-                holder.setText(R.id.chat_from_name, chatMessage.getName());
-                holder.setImageResource(R.id.chat_from_icon, chatMessage.getIcon());*//*
-        }
-    }
-    public class MsgSendItemDelagate implements ItemViewDelegate<String>
-    {
-
-        @Override
-        public int getItemViewLayoutId()
-        {
-            return R.layout.main_chat_from_msg;
-        }
-
-        @Override
-        public boolean isForViewType(String item, int position)
-        {
-            return true;
-        }
-
-        @Override
-        public void convert(ViewHolder holder, String chatMessage, int position)
-        {
-                *//*holder.setText(R.id.chat_from_content, chatMessage.getContent());
-                holder.setText(R.id.chat_from_name, chatMessage.getName());
-                holder.setImageResource(R.id.chat_from_icon, chatMessage.getIcon());*//*
-        }
-    }*/
 
     @Override
     public void requestServer() {
@@ -196,14 +186,28 @@ public class FootprintActivity extends BaseActivity {
                 list1 = response.getList();
                 if (list1.size() > 0) {
                     showContentPage();
-                    /*mAdapter = new CommonAdapter<Fragment3Model.ListBean>
-                            (getActivity(), R.layout.item_fragment3, list1) {
+
+                    mAdapter1 = new CommonAdapter<FootprintModel.ListBean>
+                            (FootprintActivity.this, R.layout.item_footprint_title, list1) {
                         @Override
-                        protected void convert(ViewHolder holder, Fragment3Model.ListBean model, int position) {
+                        protected void convert(ViewHolder holder, FootprintModel.ListBean model, int position) {
+                            RecyclerView rv = holder.getView(R.id.rv);
+                            rv.setLayoutManager(new LinearLayoutManager(FootprintActivity.this));
+                            List<String> list = new ArrayList<>();
+                            list.add("");
+                            list.add("");
+                            list.add("");
+                            list.add("");
+                            CommonAdapter<String> mAdapter = new CommonAdapter<String>(FootprintActivity.this, R.layout.item_footprint, list) {
+                                @Override
+                                protected void convert(ViewHolder holder, String s, int position) {
+
+                                }
+                            };
 
                         }
                     };
-                    mAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+                    mAdapter1.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
                         @Override
                         public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
 
@@ -214,7 +218,7 @@ public class FootprintActivity extends BaseActivity {
                             return false;
                         }
                     });
-                    recyclerView.setAdapter(mAdapter);*/
+                    recyclerView.setAdapter(mAdapter1);
                 } else {
                     showEmptyPage();
                 }

@@ -82,7 +82,8 @@
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
         <activity
             android:name=".activity.MainActivity"
-            android:label="主页">
+            android:label="主页"
+            android:theme="@style/DefaultCityPickerTheme">
             <!--点击通知默认打开-->
             <intent-filter>
                 <action android:name="${applicationId}.default.MAIN" />
@@ -140,6 +141,25 @@
         <activity
             android:name=".activity.AddMerchantActivity"
             android:label="申请加盟-商户入驻-添加商户" />
+
+
+
+        <!--微信支付回调-->
+        <activity
+            android:name=".wxapi.WXPayEntryActivity"
+            android:exported="true"
+            android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:scheme="wx79d0350178a9ff3a" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".wxapi.WXEntryActivity"
+            android:launchMode="singleTop"
+            android:exported="true"/>
         <!--查看mob推送日志-->
         <meta-data
             android:name="com.mob.mobpush.debugLevel"

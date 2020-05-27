@@ -4,11 +4,12 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
@@ -16,8 +17,6 @@ import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.chetu.user.R;
 import com.chetu.user.activity.MainActivity;
-import com.chetu.user.adapter.Fragment1_GridViewAdapter1;
-import com.chetu.user.adapter.Fragment1_GridViewAdapter2;
 import com.chetu.user.adapter.ImageAdapter;
 import com.chetu.user.base.BaseFragment;
 import com.chetu.user.model.Fragment1Model;
@@ -32,6 +31,15 @@ import com.liaoinstan.springview.widget.SpringView;
 import com.youth.banner.Banner;
 import com.youth.banner.indicator.CircleIndicator;
 import com.youth.banner.listener.OnBannerListener;
+import com.zaaach.citypicker.CityPicker;
+import com.zaaach.citypicker.adapter.OnPickListener;
+import com.zaaach.citypicker.model.City;
+import com.zaaach.citypicker.model.HotCity;
+import com.zaaach.citypicker.model.LocateState;
+import com.zaaach.citypicker.model.LocatedCity;
+import com.zhy.adapter.recyclerview.CommonAdapter;
+import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
+import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,6 +48,8 @@ import java.util.Map;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -56,16 +66,22 @@ public class Fragment1 extends BaseFragment {
     List<String> images = new ArrayList<>();
     int page1 = 0, page2 = 0;
 
-    GridView gridView1;
+    ImageView tv_scan;
+
+    RecyclerView recyclerView1;
     List<Fragment1Model.ListBean> list1 = new ArrayList<>();
-    Fragment1_GridViewAdapter1 gridViewAdapter1;
-    GridView gridView2;
+    CommonAdapter<Fragment1Model.ListBean> mAdapter1;
+    RecyclerView recyclerView2;
     List<Fragment1Model.ListBean> list2 = new ArrayList<>();
-    Fragment1_GridViewAdapter2 gridViewAdapter2;
+    CommonAdapter<Fragment1Model.ListBean> mAdapter2;
 
     //定位
     //声明AMapLocationClient类对象
     private AMapLocationClient mLocationClient = null;
+    //城市选择
+    TextView tv_addr;
+    List<HotCity> hotCities = new ArrayList<>();
+    String province = "", city = "", cityCode = "";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -131,9 +147,14 @@ public class Fragment1 extends BaseFragment {
             public void onLoadmore() {
             }
         });
+        tv_addr = findViewByID_My(R.id.tv_addr);
+        tv_scan = findViewByID_My(R.id.tv_scan);
+        tv_scan.setOnClickListener(this);
 
-        gridView1 = findViewByID_My(R.id.gridView1);
-        gridView2 = findViewByID_My(R.id.gridView2);
+        recyclerView1 = findViewByID_My(R.id.recyclerView1);
+        recyclerView1.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+        recyclerView2 = findViewByID_My(R.id.recyclerView2);
+        recyclerView2.setLayoutManager(new GridLayoutManager(getActivity(), 2));
 
 
         banner = findViewByID_My(R.id.banner);
@@ -167,6 +188,12 @@ public class Fragment1 extends BaseFragment {
     @Override
     protected void initData() {
 //        requestServer();
+        //热门城市
+        hotCities.add(new HotCity("北京", "北京", "101010100")); //code为城市代码
+        hotCities.add(new HotCity("上海", "上海", "101020100"));
+        hotCities.add(new HotCity("广州", "广东", "101280101"));
+        hotCities.add(new HotCity("深圳", "广东", "101280601"));
+        hotCities.add(new HotCity("杭州", "浙江", "101210101"));
         //初始化定位
         mLocationClient = new AMapLocationClient(getActivity());
         AMapLocationClientOption option = new AMapLocationClientOption();
@@ -206,6 +233,13 @@ public class Fragment1 extends BaseFragment {
 //                        register_addr = aMapLocation.getAddress();
                         longitude = aMapLocation.getLongitude() + "";
                         latitude = aMapLocation.getLatitude() + "";
+
+                        tv_addr.setText(aMapLocation.getCity() + "");
+
+                        province = aMapLocation.getProvince();//省信息
+                        city = aMapLocation.getCity();//城市信息
+                        cityCode = aMapLocation.getCityCode();//城市编码
+
                     } else {
                         //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
                         MyLogger.e("定位失败：", "location Error, ErrCode:"
@@ -257,37 +291,45 @@ public class Fragment1 extends BaseFragment {
                 hideProgress();
                 list1 = response.getList();
                 list2 = response.getList();
-                gridViewAdapter1 = new Fragment1_GridViewAdapter1(getActivity(), list1);
-                gridView1.setAdapter(gridViewAdapter1);
-                gridView1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                mAdapter1 = new CommonAdapter<Fragment1Model.ListBean>
+                        (getActivity(), R.layout.item_fragment1_gridview1, list1) {
                     @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            /*showToast("确认兑换该商品吗？", "确认", "取消",
-                                    new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            dialog.dismiss();
-                                            HashMap<String, String> params = new HashMap<>();
-                                            params.put("token", localUserInfo.getToken());
-                                            params.put("goods_id", list.get(position).getId() + "");
-                                            RequestAdd(params);
-                                        }
-                                    }, new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            dialog.dismiss();
-                                        }
-                                    });*/
-                    }
-                });
-                gridViewAdapter2 = new Fragment1_GridViewAdapter2(getActivity(), list2);
-                gridView2.setAdapter(gridViewAdapter2);
-                gridView2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    protected void convert(ViewHolder holder, Fragment1Model.ListBean model, int position) {
 
                     }
+                };
+                mAdapter1.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+
+                    }
+
+                    @Override
+                    public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                        return false;
+                    }
                 });
+                recyclerView1.setAdapter(mAdapter1);
+                mAdapter2 = new CommonAdapter<Fragment1Model.ListBean>
+                        (getActivity(), R.layout.item_fragment1_gridview2, list2) {
+                    @Override
+                    protected void convert(ViewHolder holder, Fragment1Model.ListBean model, int position) {
+
+                    }
+                };
+                mAdapter2.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+
+                    }
+
+                    @Override
+                    public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                        return false;
+                    }
+                });
+                recyclerView2.setAdapter(mAdapter2);
+
                 /*if (list1.size() > 0) {
                     showContentPage();
                 } else {
@@ -300,7 +342,47 @@ public class Fragment1 extends BaseFragment {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.tv_addr:
+                //选择地址
+                CityPicker.from(getActivity()) //activity或者fragment
+                        .enableAnimation(true)    //启用动画效果，默认无
+//                        .setAnimationStyle(anim)	//自定义动画
+//                        .setLocatedCity(new LocatedCity("杭州", "浙江", "101210101"))  //APP自身已定位的城市，传null会自动定位（默认）
+                        .setHotCities(hotCities)    //指定热门城市
+                        .setOnPickListener(new OnPickListener() {
+                            @Override
+                            public void onPick(int position, City data) {
+                                //选择的城市
+                                tv_addr.setText(data.getName() + "");
+                                city = data.getName();
 
+                            }
+
+                            @Override
+                            public void onCancel() {
+                                //取消
+                                /*Toast.makeText(getApplicationContext(), "取消选择", Toast.LENGTH_SHORT).show();*/
+                            }
+
+                            @Override
+                            public void onLocate() {
+                                //定位接口，需要APP自身实现，这里模拟一下定位
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        //定位完成之后更新数据到城市选择器
+                                        CityPicker.from(getActivity()).locateComplete(new LocatedCity(province,
+                                                city, cityCode), LocateState.SUCCESS);
+                                    }
+                                }, 3000);
+                            }
+                        })
+                        .show();
+                break;
+            case R.id.tv_scan:
+                //扫一扫
+                startQrCode();
+                break;
         }
     }
 

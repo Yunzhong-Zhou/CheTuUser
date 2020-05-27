@@ -61,7 +61,7 @@
                 android:maxEms="4"
                 android:singleLine="true"
                 android:text="重庆"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:textSize="13sp"
                 android:visibility="gone" />
         </RelativeLayout>
