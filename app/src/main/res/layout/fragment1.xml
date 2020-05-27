@@ -1,70 +1,271 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <com.liaoinstan.springview.widget.SpringView
+        android:id="@+id/springView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <LinearLayout
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:scrollbars="none">
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:padding="14dp"
-                android:textSize="14sp"
-                android:text="" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:padding="14dp"
-                android:textSize="14sp"
-                android:text="" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:padding="14dp"
-                android:textSize="14sp"
-                android:text="" />
-
-        </LinearLayout>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="@color/xian"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"/>
-        <com.chetu.user.view.LoadingLayout
-            android:id="@+id/loading_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <!--只需要刷新只写header-->
-            <!--<com.liaoinstan.springview.widget.SpringView
-                android:id="@+id/springView"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
--->
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerView"
+                android:layout_height="match_parent"
+                android:background="@color/background"
+                android:orientation="vertical">
+
+                <!--搜索框-->
+                <LinearLayout
+                    android:id="@+id/headView"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-            <!--</com.liaoinstan.springview.widget.SpringView>-->
-        </com.chetu.user.view.LoadingLayout>
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
-    </LinearLayout>
+                    <TextView
+                        android:id="@+id/tv_addr"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@mipmap/ic_addr_black"
+                        android:drawablePadding="5dp"
+                        android:padding="14dp"
+                        android:text="地址"
+                        android:textColor="@color/black"
+                        android:textSize="15sp" />
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:background="@drawable/yuanjiao_15_huise1"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="8dp"
+                            android:src="@mipmap/ic_search_gray" />
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="25dp"
+                            android:background="@color/transparent"
+                            android:gravity="center_vertical"
+                            android:hint="搜索您想要的车或点名"
+                            android:imeOptions="actionSearch"
+                            android:singleLine="true"
+                            android:textColor="@color/black3"
+                            android:textColorHint="#B2B2B2"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="14dp"
+                        android:paddingTop="10dp"
+                        android:paddingRight="7dp"
+                        android:paddingBottom="10dp"
+                        android:src="@mipmap/ic_scan_black" />
+
+                    <RelativeLayout
+                        android:id="@+id/rl_xiaoxi"
+                        android:layout_width="44dp"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="8dp"
+                            android:paddingTop="14dp"
+                            android:paddingRight="14dp"
+                            android:paddingBottom="14dp"
+                            android:src="@mipmap/ic_message_black1" />
+
+                        <TextView
+                            android:id="@+id/tv_xiaoxinum"
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginRight="5dp"
+                            android:background="@drawable/yuanxing_hongse"
+                            android:gravity="center"
+                            android:text="0"
+                            android:textColor="@color/white"
+                            android:textSize="10sp" />
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <!--banner-->
+                <com.youth.banner.Banner
+                    android:id="@+id/banner"
+                    android:layout_width="match_parent"
+                    android:layout_height="180dp"
+                    app:indicator_normal_color="@color/transparentwhite2"
+                    app:indicator_normal_width="8dp"
+                    app:indicator_selected_color="@color/white"
+                    app:indicator_selected_width="10dp"
+                    app:indicator_space="6dp" />
+
+                <!--发布需求-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingTop="8dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="80dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/yuanjiao_10_baise"
+                        android:elevation="3dp"
+                        android:gravity="center">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableLeft="@mipmap/ic_fragment1"
+                            android:drawablePadding="8dp"
+                            android:gravity="center"
+                            android:text="发布需求"
+                            android:textColor="@color/black"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="80dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/yuanjiao_10_baise"
+                        android:elevation="3dp"
+                        android:gravity="center">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableLeft="@mipmap/ic_fragment1"
+                            android:drawablePadding="8dp"
+                            android:gravity="center"
+                            android:text="发布需求"
+                            android:textColor="@color/black"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!--列表-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <!--附近活动-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/yuanjiao_10_baise"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableLeft="@mipmap/ic_fragment2"
+                            android:drawablePadding="8dp"
+                            android:gravity="center"
+                            android:paddingLeft="13dp"
+                            android:paddingTop="15dp"
+                            android:paddingBottom="15dp"
+                            android:text="附近活动"
+                            android:textColor="@color/black"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <GridView
+                            android:id="@+id/gridView1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:columnWidth="180dp"
+                            android:gravity="center"
+                            android:numColumns="2"
+                            android:scrollbars="none"
+                            android:stretchMode="spacingWidthUniform" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:drawableRight="@mipmap/ic_down_gray"
+                            android:drawablePadding="8dp"
+                            android:gravity="center"
+                            android:padding="15dp"
+                            android:text="加载更多"
+                            android:textColor="@color/black3"
+                            android:textSize="10sp" />
+                    </LinearLayout>
+
+                    <!--附近活动-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/yuanjiao_10_baise"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableLeft="@mipmap/ic_fragment3"
+                            android:drawablePadding="8dp"
+                            android:gravity="center"
+                            android:paddingLeft="13dp"
+                            android:paddingTop="15dp"
+                            android:paddingBottom="15dp"
+                            android:text="口碑商家"
+                            android:textColor="@color/black"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <GridView
+                            android:id="@+id/gridView2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:columnWidth="180dp"
+                            android:gravity="center"
+                            android:numColumns="2"
+                            android:scrollbars="none"
+                            android:stretchMode="spacingWidthUniform" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:drawableRight="@mipmap/ic_down_gray"
+                            android:drawablePadding="8dp"
+                            android:gravity="center"
+                            android:padding="15dp"
+                            android:text="加载更多"
+                            android:textColor="@color/black3"
+                            android:textSize="10sp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+    </com.liaoinstan.springview.widget.SpringView>
+</RelativeLayout>

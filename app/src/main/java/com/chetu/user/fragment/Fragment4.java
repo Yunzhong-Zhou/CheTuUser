@@ -18,9 +18,11 @@ import com.chetu.user.activity.FootprintActivity;
 import com.chetu.user.activity.IntegralActivity;
 import com.chetu.user.activity.MainActivity;
 import com.chetu.user.activity.MyGarageActivity;
+import com.chetu.user.activity.MyOrderActivity;
 import com.chetu.user.activity.MyProfileActivity;
 import com.chetu.user.activity.NotebookActivity;
 import com.chetu.user.activity.SetUpActivity;
+import com.chetu.user.activity.WaitingReleaseActivity;
 import com.chetu.user.base.BaseFragment;
 import com.chetu.user.model.Fragment4Model;
 import com.chetu.user.net.URLs;
@@ -251,7 +253,7 @@ public class Fragment4 extends BaseFragment {
 
             case R.id.linearLayout7:
                 //我的订单
-//                CommonUtil.gotoActivity(getActivity(), .class);
+                CommonUtil.gotoActivity(getActivity(), MyOrderActivity.class);
                 break;
             case R.id.linearLayout8:
                 //优惠券
@@ -259,7 +261,7 @@ public class Fragment4 extends BaseFragment {
                 break;
             case R.id.linearLayout9:
                 //待发布
-//                CommonUtil.gotoActivity(getActivity(), .class);
+                CommonUtil.gotoActivity(getActivity(), WaitingReleaseActivity.class);
                 break;
             case R.id.linearLayout10:
                 //记事本
@@ -276,6 +278,16 @@ public class Fragment4 extends BaseFragment {
             case R.id.linearLayout13:
                 //分享有礼
 //                CommonUtil.gotoActivity(getActivity(), .class);
+                Intent share_intent1 = new Intent();
+                share_intent1.setAction(Intent.ACTION_SEND);
+//                    share_intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                share_intent1.setType("text/plain");
+//                share_intent1.putExtra(Intent.EXTRA_TEXT, model.getShare().getText() + "\n"
+//                        + model.getShare().getUrl());
+                share_intent1.putExtra(Intent.EXTRA_TEXT, "我发现一个很好用的APP" + "\n"
+                        + "www.xxxxxx.com");
+                share_intent1 = Intent.createChooser(share_intent1, "分享");
+                startActivity(share_intent1);
                 break;
             case R.id.linearLayout14:
                 //申请加盟

@@ -100,7 +100,7 @@ dependencies {
     implementation 'com.bm.photoview:library:1.4.1'
 
     //banner
-    implementation 'com.youth.banner:banner:1.4.10'
+    implementation 'com.youth.banner:banner:2.0.10'
 
     //沉浸式
     // 基础依赖包，必须要依赖
@@ -110,6 +110,9 @@ dependencies {
 
     //底部选项栏
     implementation 'com.hjm:BottomTabBar:1.2.2'
+
+    //流式布局-标签
+    implementation 'com.github.AnJiaoDe:MultiFlowLayout:V1.1.2'
 
     //toast提示框
     implementation 'com.hjq:toast:8.0'

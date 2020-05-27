@@ -7,17 +7,41 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.GridView;
 
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationClient;
+import com.amap.api.location.AMapLocationClientOption;
+import com.amap.api.location.AMapLocationListener;
 import com.chetu.user.R;
 import com.chetu.user.activity.MainActivity;
+import com.chetu.user.adapter.Fragment1_GridViewAdapter1;
+import com.chetu.user.adapter.Fragment1_GridViewAdapter2;
+import com.chetu.user.adapter.ImageAdapter;
 import com.chetu.user.base.BaseFragment;
+import com.chetu.user.model.Fragment1Model;
+import com.chetu.user.net.URLs;
+import com.chetu.user.okhttp.CallBackUtil;
+import com.chetu.user.okhttp.OkhttpUtil;
+import com.chetu.user.utils.CommonUtil;
+import com.chetu.user.utils.MyLogger;
 import com.chetu.user.view.zxing.CaptureActivity;
 import com.chetu.user.view.zxing.Constant;
+import com.liaoinstan.springview.widget.SpringView;
+import com.youth.banner.Banner;
+import com.youth.banner.indicator.CircleIndicator;
+import com.youth.banner.listener.OnBannerListener;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import okhttp3.Call;
+import okhttp3.Response;
 
 
 /**
@@ -26,44 +50,22 @@ import androidx.core.content.ContextCompat;
  */
 
 public class Fragment1 extends BaseFragment {
-    /*ImageView imageView1;
-    TextView textView1, textView2, textView3, textView4, textView5, textView6;
+    String longitude = "", latitude = "", y_parent_id = "0", y_service_id = "0";
 
-    String indent_use_type = "", distance = "", temperature = "", time_start = "", time_end = "",
-            addr = "";
-    double lat = 0, lng = 0, juli = 0;
-    long time = 0;
-    Fragment1Model model;
-    private RecyclerView recyclerView;
-    LinearLayoutManager mLinearLayoutManager;
-    List<Fragment1ListModel> list = new ArrayList<>();
-    CommonAdapter<Fragment1ListModel> mAdapter;
+    Banner banner;
+    List<String> images = new ArrayList<>();
+    int page1 = 0, page2 = 0;
 
-    RollingView rollingView;//消息滚动
-    List<String> xiaoxiArray = new ArrayList<>();
+    GridView gridView1;
+    List<Fragment1Model.ListBean> list1 = new ArrayList<>();
+    Fragment1_GridViewAdapter1 gridViewAdapter1;
+    GridView gridView2;
+    List<Fragment1Model.ListBean> list2 = new ArrayList<>();
+    Fragment1_GridViewAdapter2 gridViewAdapter2;
 
-    ImageView btn_right;
-    LinearLayout ll_xiaoxi, ll_pingfen;
-    TextView tv_zijintongji, tv_type, tv_distance, tv_temperature, tv_timestart, tv_timestop,
-            tv_kaishijiedan, tv_hint,tv_chongzhi;
-    int i1 = 0, i2 = 0, i3 = 0, i4 = 0, i5 = 0;
-
-    Boolean isStartJieDan = false;//是否开始接单
     //定位
     //声明AMapLocationClient类对象
     private AMapLocationClient mLocationClient = null;
-    TimeCount time1 = null;
-
-    private DPoint mStartPoint = null;
-    private DPoint mEndPoint = null;
-
-    Handler startTimehandler = new Handler() {
-        public void handleMessage(Message msg) {
-            textView4.setText("" + (String) msg.obj);
-        }
-    };
-
-    TimerTask timerTask = null;*/
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -93,117 +95,206 @@ public class Fragment1 extends BaseFragment {
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        if (MainActivity.item == 0) {
+        /*if (MainActivity.item == 0) {
             requestServer();
-        }
+        }*/
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-
+        if (mLocationClient != null)
+            mLocationClient.onDestroy();//销毁定位客户端，同时销毁本地定位服务。
     }
 
     @Override
     protected void initView(View view) {
-        /*setSpringViewMore(false);//需要加载更多
+        findViewByID_My(R.id.headView).setPadding(0, (int) CommonUtil.getStatusBarHeight(getActivity()), 0, 0);
+
+        //刷新
+        setSpringViewMore(false);//不需要加载更多
         springView.setListener(new SpringView.OnFreshListener() {
             @Override
             public void onRefresh() {
-                String string = "?token=" + localUserInfo.getToken();
-                Request(string);
+                page1 = 0;
+                page2 = 0;
+                Map<String, String> params = new HashMap<>();
+                params.put("page", page1 + "");
+                params.put("y_parent_id", y_parent_id);
+                params.put("y_service_id", y_service_id);
+                params.put("longitude", longitude);
+                params.put("latitude", latitude);
+                Request(params);
             }
 
             @Override
             public void onLoadmore() {
-
             }
         });
-        recyclerView = findViewByID_My(R.id.recyclerView);
-        mLinearLayoutManager = new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(mLinearLayoutManager);
 
-        //公告消息
-        rollingView = findViewByID_My(R.id.rollingView);
+        gridView1 = findViewByID_My(R.id.gridView1);
+        gridView2 = findViewByID_My(R.id.gridView2);
 
-        btn_right = findViewByID_My(R.id.btn_right);
-        btn_right.setOnClickListener(this);
-        ll_xiaoxi = findViewByID_My(R.id.ll_xiaoxi);
-        ll_xiaoxi.setOnClickListener(this);
-        tv_zijintongji = findViewByID_My(R.id.tv_zijintongji);
-        tv_zijintongji.setOnClickListener(this);
-        ll_pingfen = findViewByID_My(R.id.ll_pingfen);
-        ll_pingfen.setOnClickListener(this);
 
-        tv_type = findViewByID_My(R.id.tv_type);
-        tv_type.setOnClickListener(this);
-        tv_distance = findViewByID_My(R.id.tv_distance);
-        tv_distance.setOnClickListener(this);
-        tv_temperature = findViewByID_My(R.id.tv_temperature);
-        tv_temperature.setOnClickListener(this);
-        tv_timestart = findViewByID_My(R.id.tv_timestart);
-        tv_timestart.setOnClickListener(this);
-        tv_timestop = findViewByID_My(R.id.tv_timestop);
-        tv_timestop.setOnClickListener(this);
-        tv_kaishijiedan = findViewByID_My(R.id.tv_kaishijiedan);
-        tv_kaishijiedan.setOnClickListener(this);
-        tv_hint = findViewByID_My(R.id.tv_hint);
-        tv_chongzhi = findViewByID_My(R.id.tv_chongzhi);
-        tv_chongzhi.setOnClickListener(this);
+        banner = findViewByID_My(R.id.banner);
+        //banner
+        images.add("http://file02.16sucai.com/d/file/2014/0825/dcb017b51479798f6c60b7b9bd340728.jpg");
+        images.add("http://file02.16sucai.com/d/file/2014/0825/dcb017b51479798f6c60b7b9bd340728.jpg");
+        images.add("http://file02.16sucai.com/d/file/2014/0825/dcb017b51479798f6c60b7b9bd340728.jpg");
+        images.add("http://file02.16sucai.com/d/file/2014/0825/dcb017b51479798f6c60b7b9bd340728.jpg");
+        /*images.clear();
+        for (int i = 0; i < response.getBanner().size(); i++) {
+            images.add(OkHttpClientManager.IMGHOST+response.getBanner().get(i).getUrl());
+        }*/
+        banner.addBannerLifecycleObserver(this)//添加生命周期观察者
+                .setDelayTime(3000)//设置轮播时间
+                .setBannerGalleryEffect(10, 10)//为banner添加画廊效果
+                .setAdapter(new ImageAdapter(images))
+                .setIndicator(new CircleIndicator(getActivity()))
+                .start();
+        banner.setOnBannerListener(new OnBannerListener() {
+            @Override
+            public void OnBannerClick(Object data, int position) {
+                /*Bundle bundle = new Bundle();
+                bundle.putInt("type", response.getBanner().get(position).getType());
+                CommonUtil.gotoActivityWithData(JiFenShangChengActivity.this, JiFenLieBiaoActivity.class, bundle, false);*/
+            }
+        });
 
-        imageView1 = findViewByID_My(R.id.imageView1);
-        textView1 = findViewByID_My(R.id.textView1);
-        textView2 = findViewByID_My(R.id.textView2);
-        textView3 = findViewByID_My(R.id.textView3);
-        textView4 = findViewByID_My(R.id.textView4);
-        textView5 = findViewByID_My(R.id.textView5);
-        textView6 = findViewByID_My(R.id.textView6);*/
 
     }
 
     @Override
     protected void initData() {
 //        requestServer();
+        //初始化定位
+        mLocationClient = new AMapLocationClient(getActivity());
+        AMapLocationClientOption option = new AMapLocationClientOption();
+        //设置定位场景，目前支持三种场景（签到、出行、运动，默认无场景）
+        option.setLocationPurpose(AMapLocationClientOption.AMapLocationPurpose.Transport);
+
+        //设置定位模式为AMapLocationMode.Hight_Accuracy，高精度模式。AMapLocationMode.Battery_Saving，低功耗模式。AMapLocationMode.Device_Sensors，仅设备模式。
+        option.setLocationMode(AMapLocationClientOption.AMapLocationMode.Battery_Saving);
+        //获取一次定位结果：默认为false。
+        option.setOnceLocation(true);
+        //获取最近3s内精度最高的一次定位结果：
+        //设置setOnceLocationLatest(boolean b)接口为true，启动定位时SDK会返回最近3s内精度最高的一次定位结果。如果设置其为true，setOnceLocation(boolean b)接口也会被设置为true，反之不会，默认为false。
+        option.setOnceLocationLatest(true);
+        //设置定位间隔,单位毫秒,默认为2000ms，最低1000ms。
+        option.setInterval(5 * 1000);
+        //设置是否返回地址信息（默认返回地址信息）
+        option.setNeedAddress(true);
+        //设置是否允许模拟位置,默认为true，允许模拟位置
+        option.setMockEnable(true);
+        //单位是毫秒，默认30000毫秒，建议超时时间不要低于8000毫秒。
+        option.setHttpTimeOut(30000);
+        //是否开启定位缓存机制
+        option.setLocationCacheEnable(false);
+
+        mLocationClient.setLocationOption(option);
+
+        //设置定位回调监听
+        mLocationClient.setLocationListener(new AMapLocationListener() {
+            @Override
+            public void onLocationChanged(AMapLocation aMapLocation) {
+                if (aMapLocation != null) {
+                    if (aMapLocation.getErrorCode() == 0) {
+
+                        MyLogger.i(">>>>>>>>>>定位信息：\n纬度：" + aMapLocation.getLatitude()
+                                + "\n经度:" + aMapLocation.getLongitude()
+                                + "\n地址:" + aMapLocation.getAddress());
+//                        register_addr = aMapLocation.getAddress();
+                        longitude = aMapLocation.getLongitude() + "";
+                        latitude = aMapLocation.getLatitude() + "";
+                    } else {
+                        //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
+                        MyLogger.e("定位失败：", "location Error, ErrCode:"
+                                + aMapLocation.getErrorCode() + ", errInfo:"
+                                + aMapLocation.getErrorInfo());
+                        myToast("" + aMapLocation.getErrorInfo());
+                    }
+                }
+            }
+        });
+
+        //设置场景模式后最好调用一次stop，再调用start以保证场景模式生效
+//        mLocationClient.stopLocation();
+        // 在单次定位情况下，定位无论成功与否，都无需调用stopLocation()方法移除请求，定位sdk内部会移除
+        mLocationClient.startLocation();
     }
 
-    private void Request(String string) {
-        /*OkHttpClientManager.getAsyn(getActivity(), URLs.Fragment1 + string, new OkHttpClientManager.ResultCallback<Fragment1Model>() {
+    @Override
+    public void requestServer() {
+        super.requestServer();
+        this.showLoadingPage();
+        page1 = 0;
+        page2 = 0;
+        Map<String, String> params = new HashMap<>();
+//        params.put("u_token", localUserInfo.getToken());
+        params.put("y_parent_id", y_parent_id);
+        params.put("y_service_id", y_service_id);
+        params.put("longitude", longitude);
+        params.put("latitude", latitude);
+        Request(params);
+    }
+
+    private void Request(Map<String, String> params) {
+        OkhttpUtil.okHttpPost(URLs.Fragment3, params, headerMap, new CallBackUtil<Fragment1Model>() {
             @Override
-            public void onError(Request request, String info, Exception e) {
-//                showErrorPage();
+            public Fragment1Model onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
                 hideProgress();
-                if (!info.equals("")) {
-                    myToast(info);
-                }
+                showEmptyPage();
+                myToast(err);
             }
 
             @Override
             public void onResponse(Fragment1Model response) {
-                showContentPage();
                 hideProgress();
-                MyLogger.i(">>>>>>>>>首页" + response);
+                list1 = response.getList();
+                list2 = response.getList();
+                gridViewAdapter1 = new Fragment1_GridViewAdapter1(getActivity(), list1);
+                gridView1.setAdapter(gridViewAdapter1);
+                gridView1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            /*showToast("确认兑换该商品吗？", "确认", "取消",
+                                    new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            dialog.dismiss();
+                                            HashMap<String, String> params = new HashMap<>();
+                                            params.put("token", localUserInfo.getToken());
+                                            params.put("goods_id", list.get(position).getId() + "");
+                                            RequestAdd(params);
+                                        }
+                                    }, new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            dialog.dismiss();
+                                        }
+                                    });*/
+                    }
+                });
+                gridViewAdapter2 = new Fragment1_GridViewAdapter2(getActivity(), list2);
+                gridView2.setAdapter(gridViewAdapter2);
+                gridView2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+                    }
+                });
+                /*if (list1.size() > 0) {
+                    showContentPage();
+                } else {
+                    showEmptyPage();
+                }*/
             }
-        });*/
-    }
-
-    private void RequestList(Map<String, String> params) {
-        /*OkHttpClientManager.postAsyn(getActivity(), URLs.Fragment1List, params, new OkHttpClientManager.ResultCallback<String>() {
-            @Override
-            public void onError(Request request, String info, Exception e) {
-//                showErrorPage();
-                hideProgress();
-
-            }
-
-            @Override
-            public void onResponse(String response) {
-                showContentPage();
-                hideProgress();
-                MyLogger.i(">>>>>>>>>接单列表" + response);
-
-            }
-        }, false);*/
+        });
     }
 
     @Override
@@ -229,17 +320,6 @@ public class Fragment1 extends BaseFragment {
     protected void updateView() {
 
     }
-
-    @Override
-    public void requestServer() {
-        super.requestServer();
-//        this.showLoadingPage();
-        /*showProgress(true, getString(R.string.app_loading));
-        String string = "?token=" + localUserInfo.getToken();
-        Request(string);*/
-    }
-
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

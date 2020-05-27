@@ -177,7 +177,7 @@ public class Fragment2 extends BaseFragment {
     @Override
     protected void initData() {
 //        requestServer();
-//初始化定位
+        //初始化定位
         mLocationClient = new AMapLocationClient(getActivity());
         AMapLocationClientOption option = new AMapLocationClientOption();
         //设置定位场景，目前支持三种场景（签到、出行、运动，默认无场景）
