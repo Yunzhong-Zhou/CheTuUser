@@ -121,6 +121,27 @@
             android:name=".activity.MyOrderActivity"
             android:label="我的订单" />
         <activity
+            android:name=".activity.DaiJieCheActivity"
+            android:label="待接车" />
+        <activity
+            android:name=".activity.DaiFenPeiActivity"
+            android:label="待分配" />
+        <activity
+            android:name=".activity.DaiShiGongActivity"
+            android:label="待施工" />
+        <activity
+            android:name=".activity.JinXingZhongActivity"
+            android:label="进行中" />
+        <activity
+            android:name=".activity.DaiFuJianActivity"
+            android:label="待复检" />
+        <activity
+            android:name=".activity.YiWanGongActivity"
+            android:label="已完工" />
+        <activity
+            android:name=".activity.YiTiCheActivity"
+            android:label="已完工" />
+        <activity
             android:name=".activity.CouponActivity"
             android:label="优惠券" />
         <activity
@@ -141,7 +162,9 @@
         <activity
             android:name=".activity.AddMerchantActivity"
             android:label="申请加盟-商户入驻-添加商户" />
-
+        <activity
+            android:name=".activity.ServiceCenterActivity"
+            android:label="客服中心" />
 
 
         <!--微信支付回调-->

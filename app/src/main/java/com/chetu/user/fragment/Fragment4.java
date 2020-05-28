@@ -21,6 +21,7 @@ import com.chetu.user.activity.MyGarageActivity;
 import com.chetu.user.activity.MyOrderActivity;
 import com.chetu.user.activity.MyProfileActivity;
 import com.chetu.user.activity.NotebookActivity;
+import com.chetu.user.activity.ServiceCenterActivity;
 import com.chetu.user.activity.SetUpActivity;
 import com.chetu.user.activity.WaitingReleaseActivity;
 import com.chetu.user.base.BaseFragment;
@@ -295,7 +296,7 @@ public class Fragment4 extends BaseFragment {
                 break;
             case R.id.linearLayout15:
                 //客服中心
-//                CommonUtil.gotoActivity(getActivity(), .class);
+                CommonUtil.gotoActivity(getActivity(), ServiceCenterActivity.class);
                 break;
         }
     }

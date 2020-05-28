@@ -191,7 +191,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@mipmap/ic_addr_black"
+                android:drawableLeft="@mipmap/ic_addr_gray"
                 android:text="0.0km"
                 android:drawablePadding="5dp"
                 android:textColor="@color/black3"

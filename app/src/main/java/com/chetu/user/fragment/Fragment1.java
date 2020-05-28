@@ -75,6 +75,10 @@ public class Fragment1 extends BaseFragment {
     List<Fragment1Model.ListBean> list2 = new ArrayList<>();
     CommonAdapter<Fragment1Model.ListBean> mAdapter2;
 
+    RecyclerView rv_tab;
+    List<Fragment1Model.ListBean> list_tab = new ArrayList<>();
+    CommonAdapter<Fragment1Model.ListBean> mAdapter_tab;
+
     //定位
     //声明AMapLocationClient类对象
     private AMapLocationClient mLocationClient = null;
@@ -147,10 +151,13 @@ public class Fragment1 extends BaseFragment {
             public void onLoadmore() {
             }
         });
-        tv_addr = findViewByID_My(R.id.tv_addr);
         tv_scan = findViewByID_My(R.id.tv_scan);
         tv_scan.setOnClickListener(this);
+        tv_addr = findViewByID_My(R.id.tv_addr);
+        tv_addr.setOnClickListener(this);
 
+        rv_tab = findViewByID_My(R.id.rv_tab);
+        rv_tab.setLayoutManager(new GridLayoutManager(getActivity(), 3));
         recyclerView1 = findViewByID_My(R.id.recyclerView1);
         recyclerView1.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         recyclerView2 = findViewByID_My(R.id.recyclerView2);
@@ -291,6 +298,26 @@ public class Fragment1 extends BaseFragment {
                 hideProgress();
                 list1 = response.getList();
                 list2 = response.getList();
+                list_tab = response.getList();
+                mAdapter_tab = new CommonAdapter<Fragment1Model.ListBean>
+                        (getActivity(), R.layout.item_fragment1_tab, list1) {
+                    @Override
+                    protected void convert(ViewHolder holder, Fragment1Model.ListBean model, int position) {
+
+                    }
+                };
+                mAdapter_tab.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+
+                    }
+
+                    @Override
+                    public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                        return false;
+                    }
+                });
+                rv_tab.setAdapter(mAdapter_tab);
                 mAdapter1 = new CommonAdapter<Fragment1Model.ListBean>
                         (getActivity(), R.layout.item_fragment1_gridview1, list1) {
                     @Override

@@ -57,6 +57,10 @@ public class URLs {
      */
     public static final String Footprint = HOST+"/api/v1/user/user_footprint_list_page";
     /**
+     * 待接车
+     */
+    public static final String DaiJieChe = HOST+"/api/v1/user/user_collection_list_page";
+    /**
      * 收藏列表
      */
     public static final String Collect = HOST+"/api/v1/user/user_collection_list_page";
