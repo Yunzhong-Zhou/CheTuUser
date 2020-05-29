@@ -53,6 +53,14 @@ public class URLs {
      */
     public static final String Fragment4 = HOST+"/api/v1/user/get_user_info";
     /**
+     * 意见反馈分类
+     */
+    public static final String FeedBack_List = HOST+"/api/v1/public/get_feedback_classify_list";
+    /**
+     * 意见反馈提交
+     */
+    public static final String FeedBack = HOST+"/api/v1/public/increase_user_feedback";
+    /**
      * 足迹列表
      */
     public static final String Footprint = HOST+"/api/v1/user/user_footprint_list_page";

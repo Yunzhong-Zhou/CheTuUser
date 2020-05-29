@@ -4,11 +4,14 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.chetu.user.R;
 import com.chetu.user.base.BaseActivity;
+import com.chetu.user.model.FeedBackModel;
 import com.chetu.user.net.URLs;
 import com.chetu.user.okhttp.CallBackUtil;
 import com.chetu.user.okhttp.OkhttpUtil;
@@ -17,6 +20,7 @@ import com.chetu.user.view.pictureselector.FullyGridLayoutManager;
 import com.chetu.user.view.pictureselector.GlideCacheEngine;
 import com.chetu.user.view.pictureselector.GlideEngine;
 import com.chetu.user.view.pictureselector.GridImageAdapter;
+import com.cy.dialog.BaseDialog;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
@@ -25,14 +29,19 @@ import com.luck.picture.lib.entity.LocalMedia;
 import com.luck.picture.lib.listener.OnResultCallbackListener;
 import com.luck.picture.lib.tools.ScreenUtils;
 import com.luck.picture.lib.tools.SdkVersionUtils;
+import com.zhy.adapter.recyclerview.CommonAdapter;
+import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
+import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import okhttp3.Call;
 import okhttp3.Response;
@@ -44,11 +53,10 @@ import okhttp3.Response;
 public class FeedBackActivity extends BaseActivity {
     EditText editText1, editText2;
     TextView textView, textView1;
-
     String v_classify = "", y_msg = "", contact = "";
 
-
-    ArrayList<File> listFiles = new ArrayList<>();
+    List<FeedBackModel.ListBean> list = new ArrayList<>();
+    int i1 = 0;
 
     /**
      * 选择图片
@@ -57,6 +65,7 @@ public class FeedBackActivity extends BaseActivity {
     GridImageAdapter mAdapter;
     int maxSelectNum = 6;//选择最多图片数量
     int spanCount = 3;//一行显示张数
+    ArrayList<File> listFiles = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,24 +94,117 @@ public class FeedBackActivity extends BaseActivity {
         textView = findViewByID_My(R.id.textView);
         editText1 = findViewByID_My(R.id.editText1);
         editText2 = findViewByID_My(R.id.editText2);
-
         textView1 = findViewByID_My(R.id.textView1);
+        //选择类型
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BaseDialog dialog1 = new BaseDialog(FeedBackActivity.this);
+                dialog1.contentView(R.layout.dialog_list)
+                        .layoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                                ViewGroup.LayoutParams.WRAP_CONTENT))
+                        .animType(BaseDialog.AnimInType.CENTER)
+                        .canceledOnTouchOutside(true)
+                        .dimAmount(0.8f)
+                        .show();
+                TextView title = dialog1.findViewById(R.id.textView1);
+                title.setText("请选择反馈类型");
+                RecyclerView rv = dialog1.findViewById(R.id.recyclerView);
+                rv.setLayoutManager(new LinearLayoutManager(FeedBackActivity.this));
+
+                CommonAdapter<FeedBackModel.ListBean> adapter = new CommonAdapter<FeedBackModel.ListBean>
+                        (FeedBackActivity.this, R.layout.item_dialog_list, list) {
+                    @Override
+                    protected void convert(ViewHolder holder, FeedBackModel.ListBean model, int position) {
+                        TextView tv = holder.getView(R.id.textView);
+                        ImageView iv = holder.getView(R.id.imageView);
+                        tv.setText(model.getYName());
+                        if (position == i1) {
+                            tv.setTextColor(getResources().getColor(R.color.blue));
+                            iv.setImageResource(R.mipmap.ic_xuanzhong);
+                        } else {
+                            tv.setTextColor(getResources().getColor(R.color.black1));
+                            iv.setImageResource(R.mipmap.ic_weixuan);
+                        }
+                    }
+                };
+                adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                        i1 = i;
+                        v_classify = list.get(i).getYUserFeedbackClassifyId() + "";
+                        adapter.notifyDataSetChanged();
+                        textView.setText(list.get(i).getYName());
+                        dialog1.dismiss();
+                    }
+
+                    @Override
+                    public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                        return false;
+                    }
+                });
+                rv.setAdapter(adapter);
+                dialog1.findViewById(R.id.dismiss).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog1.dismiss();
+                    }
+                });
+            }
+        });
         textView1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (match()) {
                     showProgress(false, getString(R.string.app_loading1));
-                    params.put("u_token", localUserInfo.getToken());
-                    params.put("v_classify", v_classify);
-                    params.put("y_msg", y_msg);
-                    params.put("contact", contact);
-                    RequestUpFile(params, listFiles, "imgstr");
+                    Map<String, String> params = new HashMap<>();
+                    params.put("sn", "773EDB6D2715FACF9C93354CAC5B1A3372872DC4D5AC085867C7490E9984D33E");
+                    RequestUpFile(params, listFiles, "picture");
                 }
             }
         });
-
     }
 
+    @Override
+    protected void initData() {
+        requestServer();
+    }
+
+    @Override
+    public void requestServer() {
+        super.requestServer();
+//        this.showLoadingPage();
+        showProgress(true, getString(R.string.app_loading));
+        Request(params);
+    }
+
+    //获取反馈类型
+    private void Request(Map<String, String> params) {
+        OkhttpUtil.okHttpPost(URLs.FeedBack_List, params, headerMap, new CallBackUtil<FeedBackModel>() {
+            @Override
+            public FeedBackModel onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+                hideProgress();
+                myToast(err);
+            }
+
+            @Override
+            public void onResponse(FeedBackModel response) {
+                hideProgress();
+                list = response.getList();
+                if (list.size() > 0) {
+                    v_classify = list.get(0).getYUserFeedbackClassifyId();
+                    textView.setText(list.get(0).getYName());
+                }
+            }
+        });
+    }
+
+    //上传图片
     private void RequestUpFile(Map<String, String> params, List<File> fileList, String fileKey) {
         OkhttpUtil.okHttpUploadListFile(URLs.UpFile, params, fileList, fileKey, "image", headerMap, new CallBackUtil() {
             @Override
@@ -120,11 +222,22 @@ public class FeedBackActivity extends BaseActivity {
 
             @Override
             public void onResponse(Object response) {
-                hideProgress();
-                myToast("反馈提交成功");
+//                hideProgress();
+//                myToast("上传图片成功");
+
+                /*Map<String, String> params = new HashMap<>();
+                params.put("u_token", localUserInfo.getToken());
+                params.put("v_classify", textView.getText().toString().trim());
+                params.put("y_msg", y_msg);
+                params.put("imgstr", imgstr);
+                params.put("contact", contact);
+                */
+
             }
         });
     }
+
+    //提交意见-图片用|连接
 
 
     private boolean match() {
@@ -132,13 +245,13 @@ public class FeedBackActivity extends BaseActivity {
             showToast("请选择反馈类型");
             return false;
         }
-        contact = editText1.getText().toString().trim();
-        if (TextUtils.isEmpty(contact)) {
+        y_msg = editText1.getText().toString().trim();
+        if (TextUtils.isEmpty(y_msg)) {
             showToast("请输入反馈内容");
             return false;
         }
-        y_msg = editText2.getText().toString().trim();
-        /*if (TextUtils.isEmpty(y_msg)) {
+        contact = editText2.getText().toString().trim();
+        /*if (TextUtils.isEmpty(contact)) {
             showToast("请输入联系方式");
             return false;
         }*/
@@ -147,12 +260,6 @@ public class FeedBackActivity extends BaseActivity {
             return false;
         }
         return true;
-    }
-
-    @Override
-    protected void initData() {
-        //获取反馈类型
-
     }
 
     @Override
@@ -247,21 +354,11 @@ public class FeedBackActivity extends BaseActivity {
 
         @Override
         public void onResult(List<LocalMedia> result) {
+            listFiles.clear();
             for (LocalMedia media : result) {
                 MyLogger.i(">>>>>>压缩地址：" + media.getCompressPath());
                 File file = new File(media.getCompressPath());
                 listFiles.add(file);
-                /*Log.i(TAG, "是否压缩:" + media.isCompressed());
-                Log.i(TAG, "压缩:" + media.getCompressPath());
-                Log.i(TAG, "原图:" + media.getPath());
-                Log.i(TAG, "是否裁剪:" + media.isCut());
-                Log.i(TAG, "裁剪:" + media.getCutPath());
-                Log.i(TAG, "是否开启原图:" + media.isOriginal());
-                Log.i(TAG, "原图路径:" + media.getOriginalPath());
-                Log.i(TAG, "Android Q 特有Path:" + media.getAndroidQToPath());
-                Log.i(TAG, "宽高: " + media.getWidth() + "x" + media.getHeight());
-                Log.i(TAG, "Size: " + media.getSize());*/
-
                 // TODO 可以通过PictureSelectorExternalUtils.getExifInterface();方法获取一些额外的资源信息，如旋转角度、经纬度等信息
             }
             if (mAdapterWeakReference.get() != null) {

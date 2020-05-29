@@ -199,6 +199,7 @@ public class OkhttpUtil {
      * @param callBack：回调接口，onFailure方法在请求失败时调用，onResponse方法在请求成功后调用，这两个方法都执行在UI线程。还可以重写onProgress方法，得到上传进度
      */
     public static void okHttpUploadFile(String url, File file, String fileKey, String fileType, Map<String, String> paramsMap, Map<String, String> headerMap, CallBackUtil callBack) {
+
         new RequestUtil(METHOD_POST, url,paramsMap, file, fileKey,fileType,  headerMap, callBack).execute();
     }
 
@@ -238,6 +239,7 @@ public class OkhttpUtil {
      * @param callBack：回调接口，onFailure方法在请求失败时调用，onResponse方法在请求成功后调用，这两个方法都执行在UI线程。
      */
     public static void okHttpUploadListFile(String url, Map<String, String> paramsMap, List<File> fileList, String fileKey, String fileType, Map<String, String> headerMap, CallBackUtil callBack) {
+        MyLogger.i(">>>>>post接口：>>" + url + "\n传入的参数：" + paramsMap);
         new RequestUtil(METHOD_POST, url,  paramsMap,fileList, fileKey, fileType, headerMap, callBack).execute();
     }
 
