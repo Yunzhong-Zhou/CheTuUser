@@ -25,7 +25,6 @@ import com.chetu.user.model.MyProfileModel;
 import com.chetu.user.net.URLs;
 import com.chetu.user.okhttp.CallBackUtil;
 import com.chetu.user.okhttp.OkhttpUtil;
-import com.chetu.user.utils.FileUtil;
 import com.chetu.user.utils.MyChooseImages;
 import com.chetu.user.utils.MyLogger;
 
@@ -52,7 +51,7 @@ import static com.chetu.user.utils.MyChooseImages.REQUEST_CODE_PICK_IMAGE;
 
 public class MyProfileActivity extends BaseActivity {
     //选择图片及上传
-    ArrayList<String> listFileNames = new ArrayList<>();
+//    ArrayList<String> listFileNames = new ArrayList<>();
     ArrayList<File> listFiles = new ArrayList<>();
     ImageView imageView1, iv_nan, iv_nv;
     TextView textView, textView1, textView2;
@@ -381,25 +380,26 @@ public class MyProfileActivity extends BaseActivity {
                 imageView1.setImageBitmap(bitmap);
                 imageView1.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
-                listFileNames = new ArrayList<>();
-                listFileNames.add("head");
+//                listFileNames = new ArrayList<>();
+//                listFileNames.add("head");
 
                 Uri uri1 = Uri.parse("");
-                uri1 = Uri.fromFile(new File(imagePath));
-                File file1 = new File(FileUtil.getPath(this, uri1));
+                /*uri1 = Uri.fromFile(new File(imagePath));
+                File file1 = new File(FileUtil.getPath(this, uri1));*/
+                File file1 = new File(imagePath);
                 listFiles = new ArrayList<>();
                 File newFile = null;
                 try {
                     newFile = new Compressor(this).compressToFile(file1);
                     listFiles.add(newFile);
-                    MyLogger.i(">>>>>选择图片结果>>>>>>>>>" + listFileNames.toString() + ">>>>>>" + listFiles.toString());
+//                    MyLogger.i(">>>>>选择图片结果>>>>>>>>>" + listFileNames.toString() + ">>>>>>" + listFiles.toString());
 
                     Map<String, File> fileMap = new HashMap<>();
-                    fileMap.put("picture", newFile);
+//                    fileMap.put("picture", newFile);
                     Map<String, String> params = new HashMap<>();
                     params.put("sn", "773EDB6D2715FACF9C93354CAC5B1A3372872DC4D5AC085867C7490E9984D33E");
-                    RequestUpFile(fileMap, params);
-//                    RequestUpFile(params,listFiles,"picture");
+//                    RequestUpFile(fileMap, params);
+                    RequestUpFile(params,listFiles,"picture");
 
                 } catch (IOException e) {
                     e.printStackTrace();

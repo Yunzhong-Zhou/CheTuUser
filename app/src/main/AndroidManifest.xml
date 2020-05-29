@@ -112,6 +112,9 @@
             android:name=".activity.SetUpActivity"
             android:label="系统设置" />
         <activity
+            android:name=".activity.FeedBackActivity"
+            android:label="意见反馈" />
+        <activity
             android:name=".activity.IntegralActivity"
             android:label="积分" />
         <activity

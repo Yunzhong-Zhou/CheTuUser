@@ -14,6 +14,7 @@ import com.chetu.user.utils.CommonUtil;
  */
 public class SetUpActivity extends BaseActivity {
     TextView textView1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,12 +34,13 @@ public class SetUpActivity extends BaseActivity {
     @Override
     public void onClick(View v) {
         super.onClick(v);
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.linearLayout1:
                 //清除缓存
                 break;
             case R.id.linearLayout2:
                 //意见反馈
+                CommonUtil.gotoActivity(SetUpActivity.this, FeedBackActivity.class, false);
                 break;
             case R.id.linearLayout3:
                 //关于我们
