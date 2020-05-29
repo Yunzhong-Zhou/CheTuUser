@@ -1,5 +1,6 @@
 package com.chetu.user.activity;
 
+import android.app.Dialog;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
@@ -11,11 +12,18 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bigkoo.pickerview.builder.TimePickerBuilder;
+import com.bigkoo.pickerview.listener.OnTimeSelectListener;
+import com.bigkoo.pickerview.view.TimePickerView;
 import com.bumptech.glide.Glide;
 import com.chetu.user.R;
 import com.chetu.user.base.BaseActivity;
@@ -25,12 +33,15 @@ import com.chetu.user.model.MyProfileModel;
 import com.chetu.user.net.URLs;
 import com.chetu.user.okhttp.CallBackUtil;
 import com.chetu.user.okhttp.OkhttpUtil;
+import com.chetu.user.utils.CommonUtil;
 import com.chetu.user.utils.MyChooseImages;
 import com.chetu.user.utils.MyLogger;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,6 +68,8 @@ public class MyProfileActivity extends BaseActivity {
     TextView textView, textView1, textView2;
     EditText editText1, editText2, editText3;
     private TimeCount time;
+
+    TimePickerView pvTime1;
 
     String phonenum = "", code = "", industry = "";
 
@@ -243,7 +256,7 @@ public class MyProfileActivity extends BaseActivity {
                 break;
             case R.id.textView2:
                 //年龄
-
+                setDate("请选择出生日期",textView2);
                 break;
         }
     }
@@ -336,6 +349,85 @@ public class MyProfileActivity extends BaseActivity {
         titleView.setBackground(R.color.background);
     }
 
+    //预约时间
+    private void setDate(String string, TextView textView) {
+        //获取当前时间
+        Calendar calendar = Calendar.getInstance();
+        //年
+        int year = calendar.get(Calendar.YEAR);
+        //月
+        int month = calendar.get(Calendar.MONTH);
+        //日
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        //小时
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        //分钟
+        int minute = calendar.get(Calendar.MINUTE);
+        //秒
+        int second = calendar.get(Calendar.SECOND);
+
+        Calendar selectedDate = Calendar.getInstance();
+        Calendar startDate = Calendar.getInstance();
+        Calendar endDate = Calendar.getInstance();
+
+        //正确设置方式 原因：注意事项有说明
+//        startDate.set(year, month, day);
+        startDate.set(1900, 1, 1);
+
+        //当前时间加3天
+//        calendar.add(Calendar.YEAR, 100);
+        endDate.set(year, month, day);
+        /*endDate.set(calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH));*/
+
+
+        pvTime1 = new TimePickerBuilder(MyProfileActivity.this, new OnTimeSelectListener() {
+            @Override
+            public void onTimeSelect(Date date, View v) {//选中事件回调
+                textView.setText(CommonUtil.getTime(date));
+            }
+        })
+                .setType(new boolean[]{true, true, true, false, false, false})// 默认全部显示
+                .setCancelText("取消")//取消按钮文字
+                .setSubmitText("确定")//确认按钮文字
+                .setContentTextSize(15)//滚轮文字大小
+                .setTitleSize(16)//标题文字大小
+                .setTitleText(string)//标题文字
+                .setOutSideCancelable(true)//点击屏幕，点在控件外部范围时，是否取消显示
+                .isCyclic(false)//是否循环滚动
+                .setTitleColor(getResources().getColor(R.color.black2))//标题文字颜色
+                .setSubmitColor(getResources().getColor(R.color.blue))//确定按钮文字颜色
+                .setCancelColor(getResources().getColor(R.color.blue))//取消按钮文字颜色
+                .setTitleBgColor(getResources().getColor(R.color.black5))//标题背景颜色 Night mode
+                .setBgColor(getResources().getColor(R.color.white))//滚轮背景颜色 Night mode
+                .setDate(selectedDate)// 如果不设置的话，默认是系统时间*/
+                .setRangDate(startDate, endDate)//起始终止年月日设定
+                .setLabel("年", "月", "日", "时", "分", "秒")//默认设置为年月日时分秒
+                .isCenterLabel(false) //是否只显示中间选中项的label文字，false则每项item全部都带有label。
+                .isDialog(true)//是否显示为对话框样式
+                .build();
+
+        Dialog mDialog = pvTime1.getDialog();
+        if (mDialog != null) {
+
+            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    Gravity.BOTTOM);
+            params.leftMargin = 0;
+            params.rightMargin = 0;
+            pvTime1.getDialogContainerLayout().setLayoutParams(params);
+
+            Window dialogWindow = mDialog.getWindow();
+            if (dialogWindow != null) {
+                dialogWindow.setWindowAnimations(com.bigkoo.pickerview.R.style.picker_view_slide_anim);//修改动画样式
+                dialogWindow.setGravity(Gravity.BOTTOM);//改成Bottom,底部显示
+                dialogWindow.setDimAmount(0.1f);
+            }
+        }
+        pvTime1.show();
+    }
     /**
      * *****************************************选择图片********************************************
      */

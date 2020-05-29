@@ -2,6 +2,7 @@ package com.chetu.user.activity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 import com.chetu.user.R;
 import com.chetu.user.base.BaseActivity;
@@ -9,6 +10,7 @@ import com.chetu.user.model.Fragment2Model;
 import com.chetu.user.net.URLs;
 import com.chetu.user.okhttp.CallBackUtil;
 import com.chetu.user.okhttp.OkhttpUtil;
+import com.chetu.user.utils.CommonUtil;
 import com.liaoinstan.springview.widget.SpringView;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
@@ -34,6 +36,7 @@ public class MyGarageActivity extends BaseActivity {
     List<Fragment2Model.ListBean> list = new ArrayList<>();
     CommonAdapter<Fragment2Model.ListBean> mAdapter;
 
+    TextView tv_addcar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +76,13 @@ public class MyGarageActivity extends BaseActivity {
         recyclerView = findViewByID_My(R.id.recyclerView);
         LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(mLinearLayoutManager);
+
+        tv_addcar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CommonUtil.gotoActivity(MyGarageActivity.this,AddCarActivity.class,false);
+            }
+        });
     }
 
     @Override

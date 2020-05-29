@@ -258,7 +258,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/transparent"
-                android:hint="请选择年龄"
+                android:hint="请选择出生日期"
                 android:inputType="phone"
                 android:onClick="onClick"
                 android:paddingTop="14dp"

@@ -115,6 +115,9 @@
             android:name=".activity.FeedBackActivity"
             android:label="意见反馈" />
         <activity
+            android:name=".activity.VersionActivity"
+            android:label="版本说明" />
+        <activity
             android:name=".activity.IntegralActivity"
             android:label="积分" />
         <activity
@@ -162,6 +165,9 @@
         <activity
             android:name=".activity.MyGarageActivity"
             android:label="我的车库" />
+        <activity
+            android:name=".activity.AddCarActivity"
+            android:label="添加车辆" />
         <activity
             android:name=".activity.AddMerchantActivity"
             android:label="申请加盟-商户入驻-添加商户" />

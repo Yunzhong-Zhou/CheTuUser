@@ -47,6 +47,7 @@ public class SetUpActivity extends BaseActivity {
                 break;
             case R.id.linearLayout4:
                 //版本说明
+                CommonUtil.gotoActivity(SetUpActivity.this, VersionActivity.class, false);
                 break;
             case R.id.tv_out:
                 //退出

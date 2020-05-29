@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.chetu.user.R;
 import com.chetu.user.base.BaseActivity;
 import com.chetu.user.model.FeedBackModel;
+import com.chetu.user.model.UpFileModel;
 import com.chetu.user.net.URLs;
 import com.chetu.user.okhttp.CallBackUtil;
 import com.chetu.user.okhttp.OkhttpUtil;
@@ -156,7 +157,7 @@ public class FeedBackActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 if (match()) {
-                    showProgress(false, getString(R.string.app_loading1));
+                    showProgress(true, getString(R.string.app_loading1));
                     Map<String, String> params = new HashMap<>();
                     params.put("sn", "773EDB6D2715FACF9C93354CAC5B1A3372872DC4D5AC085867C7490E9984D33E");
                     RequestUpFile(params, listFiles, "picture");
@@ -206,7 +207,43 @@ public class FeedBackActivity extends BaseActivity {
 
     //上传图片
     private void RequestUpFile(Map<String, String> params, List<File> fileList, String fileKey) {
-        OkhttpUtil.okHttpUploadListFile(URLs.UpFile, params, fileList, fileKey, "image", headerMap, new CallBackUtil() {
+        OkhttpUtil.okHttpUploadListFile(URLs.UpFile, params, fileList, fileKey, "image", headerMap, new CallBackUtil<UpFileModel>() {
+            @Override
+            public UpFileModel onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+                hideProgress();
+                if (!err.equals("")) {
+                    showToast(err);
+                }
+            }
+
+            @Override
+            public void onResponse(UpFileModel response) {
+//                hideProgress();
+//                myToast("上传图片成功");
+                String imgstr = "";
+                for (String s : response.getList()) {
+                    imgstr += s + "||";
+                }
+                MyLogger.i(">>>>>" + imgstr.substring(0, imgstr.length() - 2));
+                Map<String, String> params = new HashMap<>();
+                params.put("u_token", localUserInfo.getToken());
+                params.put("v_classify", textView.getText().toString().trim());
+                params.put("y_msg", y_msg);
+                params.put("imgstr", imgstr);
+                params.put("contact", contact);
+                RequestUpData(params);
+            }
+        });
+    }
+
+    //提交意见-图片用|连接
+    private void RequestUpData(Map<String, String> params) {
+        OkhttpUtil.okHttpPost(URLs.FeedBack, params, headerMap, new CallBackUtil() {
             @Override
             public Object onParseResponse(Call call, Response response) {
                 return null;
@@ -222,22 +259,18 @@ public class FeedBackActivity extends BaseActivity {
 
             @Override
             public void onResponse(Object response) {
-//                hideProgress();
-//                myToast("上传图片成功");
-
-                /*Map<String, String> params = new HashMap<>();
-                params.put("u_token", localUserInfo.getToken());
-                params.put("v_classify", textView.getText().toString().trim());
-                params.put("y_msg", y_msg);
-                params.put("imgstr", imgstr);
-                params.put("contact", contact);
-                */
+                hideProgress();
+                showToast("提交成功，感谢您的反馈", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                        finish();
+                    }
+                });
 
             }
         });
     }
-
-    //提交意见-图片用|连接
 
 
     private boolean match() {

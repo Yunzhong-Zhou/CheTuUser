@@ -8,7 +8,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 29
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         multiDexEnabled true
@@ -76,13 +76,9 @@ dependencies {
     implementation 'com.zhy:base-rvadapter:3.0.3'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
 
-    //侧滑删除
-    implementation 'com.github.mcxtzhang:SwipeDelMenuLayout:V1.3.0'
-
     //网络请求、解析
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'com.squareup.okhttp3:okhttp:4.7.2'
-
 //    implementation 'com.loopj.android:android-async-http:1.4.9'
 //    implementation 'com.squareup.okhttp:okhttp:2.7.5'
 //    implementation 'com.alibaba:fastjson:1.2.68'
@@ -98,6 +94,8 @@ dependencies {
     //图片选择器
     implementation 'com.github.LuckSiege.PictureSelector:picture_library:v2.5.6'
 
+    //侧滑删除
+    implementation 'com.github.mcxtzhang:SwipeDelMenuLayout:V1.3.0'
     //banner
     implementation 'com.youth.banner:banner:2.0.10'
 
@@ -141,6 +139,9 @@ dependencies {
     //城市联动选择
     implementation 'liji.library.dev:citypickerview:4.1.1'//底部选择器
     implementation 'com.zaaach:citypicker:2.0.3'//页面选择
+
+    //时间选择器
+    implementation 'com.contrarywind:Android-PickerView:4.1.8'
 
     //自定义弹框
     implementation 'com.github.AnJiaoDe:BaseDialog:V1.1.8'

@@ -35,15 +35,20 @@ import okhttp3.Response;
 public abstract class CallBackUtil<T> {
     Type mType;
     private Gson mGson;
-
-    //异步线程-传参给activity时需要
+    /**
+     * 异步线程-传参给activity时需要
+     */
     public static Handler mMainHandler = new Handler(Looper.getMainLooper());
 
-    //下载文件时需要
+    /**
+     *下载进度
+     */
     public void onProgress(float progress, long total) {
     }
 
-    //请求错误
+    /**
+     *请求错误
+     */
     public void onError(final Call call, final Exception e) {
         mMainHandler.post(new Runnable() {
             @Override
@@ -53,7 +58,9 @@ public abstract class CallBackUtil<T> {
         });
     }
 
-    //请求成功
+    /**
+     *请求成功
+     */
     public void onSeccess(Call call, Response response) {
         mType = getSuperclassTypeParameter(getClass());
         mGson = new Gson();
@@ -146,7 +153,9 @@ public abstract class CallBackUtil<T> {
         }
     }
 
-    //判断传入数据类型
+    /**
+     *判断传入数据类型
+     */
     static Type getSuperclassTypeParameter(Class<?> subclass) {
         Type superclass = subclass.getGenericSuperclass();
         if (superclass instanceof Class) {
@@ -173,6 +182,9 @@ public abstract class CallBackUtil<T> {
     public abstract void onResponse(T response);
 
 
+    /**
+     * 默认返回
+     */
     public static abstract class CallBackDefault extends CallBackUtil<Response> {
         @Override
         public Response onParseResponse(Call call, Response response) {
@@ -180,6 +192,9 @@ public abstract class CallBackUtil<T> {
         }
     }
 
+    /**
+     * 返回string
+     */
     public static abstract class CallBackString extends CallBackUtil<String> {
         @Override
         public String onParseResponse(Call call, Response response) {
@@ -192,6 +207,9 @@ public abstract class CallBackUtil<T> {
         }
     }
 
+    /**
+     * 下载图片时的回调类
+     */
     public static abstract class CallBackBitmap extends CallBackUtil<Bitmap> {
         private int mTargetWidth;
         private int mTargetHeight;
@@ -199,14 +217,10 @@ public abstract class CallBackUtil<T> {
         public CallBackBitmap() {
         }
 
-        ;
-
         public CallBackBitmap(int targetWidth, int targetHeight) {
             mTargetWidth = targetWidth;
             mTargetHeight = targetHeight;
         }
-
-        ;
 
         public CallBackBitmap(ImageView imageView) {
             int width = imageView.getWidth();
@@ -217,8 +231,6 @@ public abstract class CallBackUtil<T> {
             mTargetWidth = width;
             mTargetHeight = height;
         }
-
-        ;
 
         @Override
         public Bitmap onParseResponse(Call call, Response response) {
@@ -266,10 +278,8 @@ public abstract class CallBackUtil<T> {
      * 下载文件时的回调类
      */
     public static abstract class CallBackFile extends CallBackUtil<File> {
-
         private final String mDestFileDir;
         private final String mdestFileName;
-
         /**
          * @param destFileDir:文件目录
          * @param destFileName：文件名
@@ -281,7 +291,6 @@ public abstract class CallBackUtil<T> {
 
         @Override
         public File onParseResponse(Call call, Response response) {
-
             InputStream is = null;
             byte[] buf = new byte[1024 * 8];
             int len = 0;
@@ -325,7 +334,6 @@ public abstract class CallBackUtil<T> {
                     if (fos != null) fos.close();
                 } catch (IOException e) {
                 }
-
             }
             return null;
         }
