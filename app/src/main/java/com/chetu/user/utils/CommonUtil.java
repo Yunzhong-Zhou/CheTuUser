@@ -33,6 +33,8 @@ import java.util.regex.Pattern;
 
 import androidx.fragment.app.Fragment;
 
+import static android.content.Context.INPUT_METHOD_SERVICE;
+
 /**
  * 辅助类
  */
@@ -510,12 +512,21 @@ public class CommonUtil {
             }
         }
     }
-
+    /**
+     * 隐藏键盘
+     */
+    public static void hideInput(Activity context) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(INPUT_METHOD_SERVICE);
+        View v = context.getWindow().peekDecorView();
+        if (null != v) {
+            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+        }
+    }
     /**
      * 隐藏软键盘 - Fragment
      */
     public static void hideSoftKeyboard_fragment(View v, Context context) {
-        InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
     }
 

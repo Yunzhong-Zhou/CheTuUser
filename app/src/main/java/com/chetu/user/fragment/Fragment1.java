@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.amap.api.location.AMapLocation;
@@ -67,6 +68,8 @@ public class Fragment1 extends BaseFragment {
     int page1 = 0, page2 = 0;
 
     ImageView tv_scan;
+    RelativeLayout rl_xiaoxi;
+    TextView tv_xiaoxinum;
 
     RecyclerView recyclerView1;
     List<Fragment1Model.ListBean> list1 = new ArrayList<>();
@@ -155,6 +158,9 @@ public class Fragment1 extends BaseFragment {
         tv_scan.setOnClickListener(this);
         tv_addr = findViewByID_My(R.id.tv_addr);
         tv_addr.setOnClickListener(this);
+        rl_xiaoxi = findViewByID_My(R.id.rl_xiaoxi);
+        rl_xiaoxi.setOnClickListener(this);
+        tv_xiaoxinum = findViewByID_My(R.id.tv_xiaoxinum);
 
         rv_tab = findViewByID_My(R.id.rv_tab);
         rv_tab.setLayoutManager(new GridLayoutManager(getActivity(), 3));
@@ -409,6 +415,10 @@ public class Fragment1 extends BaseFragment {
             case R.id.tv_scan:
                 //扫一扫
                 startQrCode();
+                break;
+            case R.id.rl_xiaoxi:
+                //消息
+
                 break;
         }
     }

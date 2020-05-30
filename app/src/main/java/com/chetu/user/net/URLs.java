@@ -61,6 +61,18 @@ public class URLs {
      */
     public static final String FeedBack = HOST+"/api/v1/public/increase_user_feedback";
     /**
+     * 我的车辆
+     */
+    public static final String MyCar = HOST+"/api/v1/user/user_sedan_list";
+    /**
+     * 获取汽车品牌
+     */
+    public static final String CarNameList = HOST+"/api/v1/public/user_sedan_brand_list";
+    /**
+     * 添加车辆
+     */
+    public static final String AddCar = HOST+"/api/v1/user/user_sedan_add";
+    /**
      * 足迹列表
      */
     public static final String Footprint = HOST+"/api/v1/user/user_footprint_list_page";

@@ -85,7 +85,7 @@ public class DaiJieCheActivity extends BaseActivity {
     public void requestServer() {
         super.requestServer();
 //        this.showLoadingPage();
-        showProgress(true, getString(R.string.app_loading1));
+        showProgress(true, getString(R.string.app_loading));
         Map<String, String> params = new HashMap<>();
         params.put("id", id);
         params.put("u_token", localUserInfo.getToken());
