@@ -4,6 +4,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.chetu.user.MyApplication;
 import com.youth.banner.adapter.BannerAdapter;
 
@@ -14,11 +16,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by zyz on 2020/5/27.
- * 直角图片banner是适配器
+ * 圆角图片banner是适配器
  */
-public class ImageAdapter extends BannerAdapter<String, ImageAdapter.BannerViewHolder> {
+public class CircleImageAdapter extends BannerAdapter<String, CircleImageAdapter.BannerViewHolder> {
 
-    public ImageAdapter(List<String> mDatas) {
+    public CircleImageAdapter(List<String> mDatas) {
         //设置数据，也可以调用banner提供的方法,或者自己在adapter中实现
         super(mDatas);
     }
@@ -44,7 +46,7 @@ public class ImageAdapter extends BannerAdapter<String, ImageAdapter.BannerViewH
         //Glide 加载图片简单用法
         Glide.with(MyApplication.getContext())
                 .load(data)
-//                .apply(RequestOptions.bitmapTransform(new RoundedCorners(20)))
+                .apply(RequestOptions.bitmapTransform(new RoundedCorners(20)))
                 .into(holder.imageView);
     }
 

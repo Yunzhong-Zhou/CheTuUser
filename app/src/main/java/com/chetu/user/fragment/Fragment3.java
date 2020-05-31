@@ -13,6 +13,7 @@ import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.chetu.user.R;
 import com.chetu.user.activity.MainActivity;
+import com.chetu.user.activity.StoreDetailActivity;
 import com.chetu.user.base.BaseFragment;
 import com.chetu.user.model.Fragment3Model;
 import com.chetu.user.net.URLs;
@@ -381,7 +382,9 @@ public class Fragment3 extends BaseFragment {
                     mAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
                         @Override
                         public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
-
+                            Bundle bundle = new Bundle();
+                            bundle.putString("id", list.get(i).getId());
+                            CommonUtil.gotoActivityWithData(getActivity(), StoreDetailActivity.class, bundle, false);
                         }
 
                         @Override

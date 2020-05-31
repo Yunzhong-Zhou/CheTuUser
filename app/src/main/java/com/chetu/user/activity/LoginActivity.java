@@ -181,6 +181,7 @@ public class LoginActivity extends BaseActivity {
                     params.put("user_phone", phonenum);
                     params.put("vcode", password);
                     params.put("t_token", "");
+                    params.put("head_portrait", "");
                     params.put("action", "1");//1为验证码登陆 2为第三方登陆
                     /*//测试数据
                     params.put("user_phone", "18203048656");
@@ -523,22 +524,24 @@ public class LoginActivity extends BaseActivity {
         code = getIntent().getStringExtra("code");
         MyLogger.i(">>>>>>>" + code);
         if (code != null && !code.equals("")) {
-            /*this.showProgress(true, "正在获取微信登录参数，请稍候...");
+
+            this.showProgress(true, "正在获取微信登录参数，请稍候...");
             String url = "https://api.weixin.qq.com/sns/oauth2/access_token"
                     + "?appid="+"wx79d0350178a9ff3a"
                     +"&secret="+"77c539b9b3375eca54641a12b35b463b"
                     +"&code="+code
                     +"&grant_type=authorization_code";
-            requestWeChat1(url);*/
+            requestWeChat1(url);
 
             getIntent().removeExtra("code");
+           /* getIntent().removeExtra("code");
             this.showProgress(true, "正在登录，请稍候...");
             Map<String, String> params = new HashMap<>();
             params.put("user_phone", phonenum);
             params.put("vcode", password);
             params.put("t_token", code);
             params.put("action", "2");//1为验证码登陆 2为第三方登陆
-            RequestWeChatLogin(params);//微信登录
+            RequestWeChatLogin(params);//微信登录*/
         }
     }
 
@@ -618,7 +621,6 @@ public class LoginActivity extends BaseActivity {
                     String url = "https://api.weixin.qq.com/sns/userinfo"
                             + "?access_token=" + access_token
                             + "&openid=" + openId;
-
                     requestWeChat2(url);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -670,6 +672,17 @@ public class LoginActivity extends BaseActivity {
                     openid = jsonObject.getString("openid");
                     nickname = jsonObject.getString("nickname");
                     headimgurl = jsonObject.getString("headimgurl");
+
+                    hideProgress();
+                    showProgress(true, "正在登录，请稍候...");
+                    Map<String, String> params = new HashMap<>();
+                    params.put("user_phone", phonenum);
+                    params.put("vcode", password);
+                    params.put("t_token", openid);
+                    params.put("head_portrait", headimgurl);
+                    params.put("action", "2");//1为验证码登陆 2为第三方登陆
+                    RequestWeChatLogin(params);//微信登录
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

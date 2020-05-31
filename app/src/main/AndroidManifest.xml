@@ -106,6 +106,10 @@
             android:name=".activity.DraftActivity"
             android:label="草稿" />
 
+        <!--门店-->
+        <activity
+            android:name=".activity.StoreDetailActivity"
+            android:label="门店详情" />
 
         <!--我的-->
         <activity

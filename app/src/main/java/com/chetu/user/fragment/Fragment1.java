@@ -18,7 +18,7 @@ import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.chetu.user.R;
 import com.chetu.user.activity.MainActivity;
-import com.chetu.user.adapter.ImageAdapter;
+import com.chetu.user.adapter.CircleImageAdapter;
 import com.chetu.user.base.BaseFragment;
 import com.chetu.user.model.Fragment1Model;
 import com.chetu.user.net.URLs;
@@ -183,7 +183,7 @@ public class Fragment1 extends BaseFragment {
         banner.addBannerLifecycleObserver(this)//添加生命周期观察者
                 .setDelayTime(3000)//设置轮播时间
                 .setBannerGalleryEffect(10, 10)//为banner添加画廊效果
-                .setAdapter(new ImageAdapter(images))
+                .setAdapter(new CircleImageAdapter(images))
                 .setIndicator(new CircleIndicator(getActivity()))
                 .start();
         banner.setOnBannerListener(new OnBannerListener() {
