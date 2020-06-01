@@ -1,299 +1,281 @@
 package com.chetu.user.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.Gravity;
-import android.view.KeyEvent;
+import android.os.CountDownTimer;
+import android.text.TextUtils;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.widget.AdapterView;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.PopupWindow;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.chetu.user.R;
 import com.chetu.user.base.BaseActivity;
-import com.chetu.user.model.AddCarModel;
+import com.chetu.user.model.AddCarModelBean;
+import com.chetu.user.model.CodeModel;
 import com.chetu.user.net.URLs;
 import com.chetu.user.okhttp.CallBackUtil;
 import com.chetu.user.okhttp.OkhttpUtil;
-import com.chetu.user.popupwindow.AddCarPopupWindow;
-import com.chetu.user.utils.CommonUtil;
-import com.chetu.user.view.sidebar.Contact;
-import com.chetu.user.view.sidebar.ContactAdapter;
-import com.chetu.user.view.sidebar.HanziToPinyin;
-import com.chetu.user.view.sidebar.SideBar;
-import com.zhy.adapter.recyclerview.CommonAdapter;
-import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
-import com.zhy.adapter.recyclerview.base.ViewHolder;
+import com.cy.cyflowlayoutlibrary.FlowLayout;
+import com.cy.cyflowlayoutlibrary.FlowLayoutAdapter;
+import com.cy.dialog.BaseDialog;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import okhttp3.Call;
 import okhttp3.Response;
 
 /**
- * Created by zyz on 2020/5/29.
- * 添加车辆
+ * Created by zyz on 2020/6/1.
  */
-public class AddCarActivity extends BaseActivity implements PopupWindow.OnDismissListener {
-    //热门列表
-    View headView;
-    RecyclerView recyclerView1;
-    List<AddCarModel.HostListBean> list1 = new ArrayList<>();
-    CommonAdapter<AddCarModel.HostListBean> mAdapter1;
+public class AddCarActivity extends BaseActivity {
+    String y_sedan_brand_id = "", user_phone = "", v_code = "", s_number = "";
+    private TimeCount time;
 
-    /**
-     * 带索引、搜索的列表
-     */
-    private ListView mListView;
-    private ArrayList<Contact> datas = new ArrayList<>();
-    private ContactAdapter mAdapter;
+    int s_cy = 2;
+    TextView tv_pingpai, tv_chepai, tv_yanzhengma, tv_shangyexian, tv_jiaoqiangxian, tv_confirm;
+    EditText et_carnum, et_phone, et_code;
+    LinearLayout ll_geren, ll_gongsi;
+    ImageView iv_geren, iv_gongsi, iv_moren;
+
+    FlowLayoutAdapter<String> flowLayoutAdapter;
+    List<String> stringList = new ArrayList<>();
+    int i = 19;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_selectcar);
+        setContentView(R.layout.activity_addcar);
     }
 
     @Override
     protected void initView() {
-        headView = View.inflate(this, R.layout.head_addcar, null);
-        recyclerView1 = headView.findViewById(R.id.recyclerView1);
-        recyclerView1.setLayoutManager(new GridLayoutManager(this, 5));
+        tv_pingpai = findViewByID_My(R.id.tv_pingpai);
+        tv_chepai = findViewByID_My(R.id.tv_chepai);
+        tv_yanzhengma = findViewByID_My(R.id.tv_yanzhengma);
+        tv_shangyexian = findViewByID_My(R.id.tv_shangyexian);
+        tv_jiaoqiangxian = findViewByID_My(R.id.tv_jiaoqiangxian);
+        tv_confirm = findViewByID_My(R.id.tv_confirm);
+        et_carnum = findViewByID_My(R.id.et_carnum);
+        et_phone = findViewByID_My(R.id.et_phone);
+        et_code = findViewByID_My(R.id.et_code);
+        ll_geren = findViewByID_My(R.id.ll_geren);
+        ll_gongsi = findViewByID_My(R.id.ll_gongsi);
+        iv_geren = findViewByID_My(R.id.iv_geren);
+        iv_gongsi = findViewByID_My(R.id.iv_gongsi);
+        iv_moren = findViewByID_My(R.id.iv_moren);
 
-        /**
-         * 带索引、搜索的列表
-         */
-        mListView = findViewByID_My(R.id.school_friend_member);
-        SideBar mSideBar = (SideBar) findViewById(R.id.school_friend_sidrbar);
-        TextView mDialog = (TextView) findViewById(R.id.school_friend_dialog);
-        EditText mSearchInput = (EditText) findViewById(R.id.school_friend_member_search_input);
-        mSideBar.setTextView(mDialog);
-        mSideBar.setOnTouchingLetterChangedListener(new SideBar.OnTouchingLetterChangedListener() {
-            @Override
-            public void onTouchingLetterChanged(String s) {
-                int position = 0;
-                // 该字母首次出现的位置
-                if (mAdapter != null) {
-                    position = mAdapter.getPositionForSection(s.charAt(0));
-                }
-                if (position != -1) {
-                    mListView.setSelection(position);
-                } else if (s.contains("#")) {
-                    mListView.setSelection(0);
-                }
-            }
-        });
-        mSearchInput.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                ArrayList<Contact> temp = new ArrayList<>();
-                for (Contact data : datas) {
-                    if (data.getName().contains(s) || data.getPinyin().contains(s)) {
-                        temp.add(data);
-                    }
-                }
-                if (mAdapter != null) {
-                    mAdapter = new ContactAdapter(AddCarActivity.this, temp);
-                    mListView.setAdapter(mAdapter);
-
-                    //再次获取焦点
-                    mSearchInput.setFocusable(true);
-                    mSearchInput.setFocusableInTouchMode(true);
-                    mSearchInput.requestFocus();
-                    mSearchInput.findFocus();
-                }
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
-        mSearchInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    //关闭软键盘
-                    CommonUtil.hideInput(AddCarActivity.this);
-                    //doSearch();
-                    return true;
-                }
-                return false;
-            }
-        });
     }
 
     @Override
     protected void initData() {
-        //获取汽车品牌
-        showProgress(true, getString(R.string.app_loading));
-        Map<String, String> params = new HashMap<>();
-        params.put("parent_id", "0");
-        params.put("u_token", localUserInfo.getToken());
-        Request(params);
+        time = new TimeCount(60000, 1000);//构造CountDownTimer对象
+        stringList.add("川");
+        stringList.add("京");
+        stringList.add("津");
+        stringList.add("冀");
+        stringList.add("晋");
+        stringList.add("蒙");
+        stringList.add("辽");
+        stringList.add("吉");
+        stringList.add("黑");
+        stringList.add("沪");
+        stringList.add("苏");
+        stringList.add("浙");
+        stringList.add("皖");
+        stringList.add("闽");
+        stringList.add("赣");
+        stringList.add("鲁");
+        stringList.add("豫");
+        stringList.add("鄂");
+        stringList.add("湘");
+        stringList.add("粤");
+        stringList.add("桂");
+        stringList.add("琼");
+        stringList.add("渝");
+        stringList.add("贵");
+        stringList.add("云");
+        stringList.add("藏");
+        stringList.add("陕");
+        stringList.add("甘");
+        stringList.add("青");
+        stringList.add("宁");
+        stringList.add("新");
     }
 
-    private void Request(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.CarNameList, params, headerMap, new CallBackUtil<AddCarModel>() {
+    @Override
+    public void onClick(View v) {
+        super.onClick(v);
+        switch (v.getId()) {
+            case R.id.tv_pingpai:
+                //品牌型号
+                Intent intent1 = new Intent(AddCarActivity.this, AddCarModelActivity.class);
+                Bundle bundle1 = new Bundle();
+                bundle1.putInt("type", 10001);
+                intent1.putExtras(bundle1);
+                startActivityForResult(intent1, 10001, bundle1);
+
+                break;
+            case R.id.tv_chepai:
+                //绑定车牌
+                dialog.contentView(R.layout.dialog_chepai)
+                        .layoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                                ViewGroup.LayoutParams.MATCH_PARENT))
+                        .animType(BaseDialog.AnimInType.BOTTOM)
+                        .canceledOnTouchOutside(true)
+                        .dimAmount(0.8f)
+                        .show();
+                //标签
+                flowLayoutAdapter = new FlowLayoutAdapter<String>(stringList) {
+                    @Override
+                    public void bindDataToView(FlowLayoutAdapter.ViewHolder holder, int position, String bean) {
+//                                holder.setText(R.id.tv,bean);
+                        TextView tv = holder.getView(R.id.tv);
+                        tv.setText(bean);
+
+                        if (i == position)
+                            tv.setTextColor(getResources().getColor(R.color.blue));
+                        else
+                            tv.setTextColor(getResources().getColor(R.color.black));
+
+                    }
+
+                    @Override
+                    public void onItemClick(int position, String bean) {
+//                        showToast("点击" + position);
+                        i = position;
+                        tv_chepai.setText(bean);
+
+                        flowLayoutAdapter.notifyDataSetChanged();
+
+                        dialog.dismiss();
+                    }
+
+                    @Override
+                    public int getItemLayoutID(int position, String bean) {
+                        return R.layout.item_flowlayout_chepai;
+                    }
+                };
+                ((FlowLayout) dialog.findViewById(R.id.flowLayout)).setAdapter(flowLayoutAdapter);
+                break;
+            case R.id.ll_geren:
+                //个人
+                s_cy = 1;
+                iv_geren.setImageResource(R.mipmap.ic_xuanzhong_yuan);
+                iv_gongsi.setImageResource(R.mipmap.ic_weixuan);
+                break;
+            case R.id.ll_gongsi:
+                //公司
+                s_cy = 2;
+                iv_geren.setImageResource(R.mipmap.ic_weixuan);
+                iv_gongsi.setImageResource(R.mipmap.ic_xuanzhong_yuan);
+                break;
+            case R.id.iv_moren:
+                //是否默认
+
+                break;
+            case R.id.tv_yanzhengma:
+                //验证码
+                user_phone = et_phone.getText().toString().trim();
+                if (TextUtils.isEmpty(user_phone)) {
+                    myToast("请输入手机号");
+                } else {
+                    showProgress(true, "正在获取短信验证码...");
+                    tv_yanzhengma.setClickable(false);
+                    HashMap<String, String> params = new HashMap<>();
+                    params.put("user_phone", user_phone);
+//                    params.put("type", "1");
+                    RequestCode(params);//获取验证码
+                }
+                break;
+            case R.id.tv_shangyexian:
+                //商业险
+
+                break;
+            case R.id.tv_jiaoqiangxian:
+                //交强险
+
+                break;
+            case R.id.tv_confirm:
+                //提交
+                if (match()) {
+                    showProgress(true, getString(R.string.app_loading1));
+                    Map<String, String> params = new HashMap<>();
+                    params.put("y_sedan_brand_id", y_sedan_brand_id);
+                    params.put("s_number", s_number);//车牌
+                    params.put("s_cy", s_cy + "");//1为个人  2为公司
+                    params.put("user_phone", user_phone);
+                    params.put("v_code", v_code);
+
+                    params.put("u_token", localUserInfo.getToken());
+                    RequestUpData(params);
+                }
+                break;
+        }
+    }
+
+    private boolean match() {
+        user_phone = et_phone.getText().toString().trim();
+        if (TextUtils.isEmpty(user_phone)) {
+            myToast("请输入手机号");
+            return false;
+        }
+        v_code = et_code.getText().toString().trim();
+        if (TextUtils.isEmpty(v_code)) {
+            myToast("请输入验证码");
+            return false;
+        }
+        s_number = et_carnum.getText().toString().trim();
+        if (TextUtils.isEmpty(s_number)) {
+            myToast("请输入车牌号");
+            return false;
+        }
+        s_number = tv_chepai.getText().toString() + et_carnum.getText().toString().trim();
+
+        return true;
+    }
+
+    private void RequestCode(Map<String, String> params) {
+        OkhttpUtil.okHttpPost(URLs.Code, params, headerMap, new CallBackUtil<CodeModel>() {
             @Override
-            public AddCarModel onParseResponse(Call call, Response response) {
+            public CodeModel onParseResponse(Call call, Response response) {
                 return null;
             }
 
             @Override
             public void onFailure(Call call, Exception e, String err) {
                 hideProgress();
-                myToast(err);
+                tv_yanzhengma.setClickable(true);
+                if (!err.equals("")) {
+                    showToast(err);
+                }
             }
 
             @Override
-            public void onResponse(AddCarModel response) {
-
-                //耗时操作
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        AddCarActivity.this.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                //热门列表
-                                list1 = response.getHost_list();
-                                mAdapter1 = new CommonAdapter<AddCarModel.HostListBean>
-                                        (AddCarActivity.this, R.layout.item_addcar_hot, list1) {
-                                    @Override
-                                    protected void convert(ViewHolder holder, AddCarModel.HostListBean model, int position) {
-                                        holder.setText(R.id.textView, model.getSName());
-                                        ImageView imageView = holder.getView(R.id.imageView);
-//                        if (!model.getSLogo().equals(""))
-                                        Glide.with(AddCarActivity.this)
-                                                .load(URLs.IMGHOST + model.getSLogo())
-                                                .centerCrop()
-//                    .placeholder(R.mipmap.headimg)//加载站位图
-//                    .error(R.mipmap.headimg)//加载失败
-                                                .into(imageView);//加载图片
-                                    }
-                                };
-                                mAdapter1.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
-                                    @Override
-                                    public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
-                                        Map<String, String> params = new HashMap<>();
-                                        params.put("parent_id", list1.get(i).getYSedanBrandId());
-                                        params.put("u_token", localUserInfo.getToken());
-                                        Request1(params,URLs.IMGHOST + list1.get(i).getSLogo(),list1.get(i).getSBrand());
-                                    }
-
-                                    @Override
-                                    public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
-                                        return false;
-                                    }
-                                });
-                                recyclerView1.setAdapter(mAdapter1);
-
-                                //索引列表
-                                datas.clear();
-                                for (AddCarModel.ListBean bean : response.getList()) {
-                                    Contact data = new Contact();
-                                    data.setName(bean.getSBrand());
-                                    data.setUrl(URLs.IMGHOST + bean.getSLogo());
-                                    data.setId(bean.getYSedanBrandId());
-                                    data.setPinyin(HanziToPinyin.getPinYin(data.getName()));
-                                    datas.add(data);
-                                }
-                                /*//虚拟数据
-                                Contact data = new Contact();
-                                data.setName("12阿斯顿马丁");
-                                data.setUrl(URLs.IMGHOST + response.getList().get(0).getSLogo());
-                                data.setId(response.getList().get(0).getYSedanBrandId());
-                                data.setPinyin(HanziToPinyin.getPinYin(data.getName()));
-                                datas.add(data);
-                                Contact data_1 = new Contact();
-                                data_1.setName("阿斯顿马丁");
-                                data_1.setUrl(URLs.IMGHOST + response.getList().get(0).getSLogo());
-                                data_1.setId(response.getList().get(0).getYSedanBrandId());
-                                data_1.setPinyin(HanziToPinyin.getPinYin(data_1.getName()));
-                                datas.add(data_1);
-                                Contact data1 = new Contact();
-                                data1.setName("宝马");
-                                data1.setUrl(URLs.IMGHOST + response.getList().get(0).getSLogo());
-                                data1.setId(response.getList().get(0).getYSedanBrandId());
-                                data1.setPinyin(HanziToPinyin.getPinYin(data1.getName()));
-                                datas.add(data1);
-                                Contact data2 = new Contact();
-                                data2.setName("大众");
-                                data2.setUrl(URLs.IMGHOST + response.getList().get(0).getSLogo());
-                                data2.setId(response.getList().get(0).getYSedanBrandId());
-                                data2.setPinyin(HanziToPinyin.getPinYin(data2.getName()));
-                                datas.add(data2);
-                                Contact data3 = new Contact();
-                                data3.setName("丰田");
-                                data3.setUrl(URLs.IMGHOST + response.getList().get(0).getSLogo());
-                                data3.setId(response.getList().get(0).getYSedanBrandId());
-                                data3.setPinyin(HanziToPinyin.getPinYin(data3.getName()));
-                                datas.add(data3);
-                                Contact data4 = new Contact();
-                                data4.setName("现代");
-                                data4.setUrl(URLs.IMGHOST + response.getList().get(0).getSLogo());
-                                data4.setId(response.getList().get(0).getYSedanBrandId());
-                                data4.setPinyin(HanziToPinyin.getPinYin(data4.getName()));
-                                datas.add(data4);
-                                Contact data5 = new Contact();
-                                data5.setName("日产");
-                                data5.setUrl(URLs.IMGHOST + response.getList().get(0).getSLogo());
-                                data5.setId(response.getList().get(0).getYSedanBrandId());
-                                data5.setPinyin(HanziToPinyin.getPinYin(data5.getName()));
-                                datas.add(data5);
-                                Contact data6 = new Contact();
-                                data6.setName("奔驰");
-                                data6.setUrl(URLs.IMGHOST + response.getList().get(0).getSLogo());
-                                data6.setId(response.getList().get(0).getYSedanBrandId());
-                                data6.setPinyin(HanziToPinyin.getPinYin(data6.getName()));
-                                datas.add(data6);*/
-
-
-                                //添加头部，必须设置adapter，不然不会显示,头部不可点击
-                                mListView.addHeaderView(headView, null, false);
-
-                                mAdapter = new ContactAdapter(AddCarActivity.this, datas);
-                                mListView.setAdapter(mAdapter);
-                                mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                    @Override
-                                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                        Map<String, String> params = new HashMap<>();
-                                        params.put("parent_id", datas.get(position - 1).getId());
-                                        params.put("u_token", localUserInfo.getToken());
-                                        Request1(params,datas.get(position - 1).getUrl(),datas.get(position - 1).getName());
-                                    }
-                                });
-
-                                hideProgress();
-                            }
-                        });
-                    }
-                }).start();
-
+            public void onResponse(CodeModel response) {
+                hideProgress();
+                tv_yanzhengma.setClickable(true);
+                time.start();//开始计时
+                myToast(getString(R.string.app_sendcode_hint));
+                et_code.setText(response.getV_code());
             }
         });
     }
 
-    private void Request1(Map<String, String> params,String logo,String brand) {
-        OkhttpUtil.okHttpPost(URLs.CarNameList, params, headerMap, new CallBackUtil<AddCarModel>() {
+    /**
+     * 添加车辆
+     *
+     * @param params
+     */
+    private void RequestUpData(Map<String, String> params) {
+        OkhttpUtil.okHttpPost(URLs.AddCar, params, headerMap, new CallBackUtil<AddCarModelBean>() {
             @Override
-            public AddCarModel onParseResponse(Call call, Response response) {
+            public AddCarModelBean onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -304,15 +286,10 @@ public class AddCarActivity extends BaseActivity implements PopupWindow.OnDismis
             }
 
             @Override
-            public void onResponse(AddCarModel response) {
+            public void onResponse(AddCarModelBean response) {
                 hideProgress();
-                /**
-                 * 弹出弹窗
-                 */
-
-                AddCarPopupWindow popupwindow = new AddCarPopupWindow(AddCarActivity.this, response.getList(), logo, brand);
-                popupwindow.showAtLocation(AddCarActivity.this.findViewById(R.id.linearLayout), Gravity.CENTER, 0, 0);
-                popupwindow.setOnDismissListener(AddCarActivity.this);
+                myToast("添加成功");
+                finish();
             }
         });
     }
@@ -322,9 +299,40 @@ public class AddCarActivity extends BaseActivity implements PopupWindow.OnDismis
         titleView.setTitle("添加车辆");
     }
 
+    //获取验证码倒计时
+    class TimeCount extends CountDownTimer {
+        public TimeCount(long millisInFuture, long countDownInterval) {
+            super(millisInFuture, countDownInterval);//参数依次为总时长,和计时的时间间隔
+        }
+
+        @Override
+        public void onFinish() {//计时完毕时触发
+            tv_yanzhengma.setText(getString(R.string.app_reacquirecode));
+            tv_yanzhengma.setClickable(true);
+        }
+
+        @Override
+        public void onTick(long millisUntilFinished) {//计时过程显示
+            tv_yanzhengma.setClickable(false);
+            tv_yanzhengma.setText(millisUntilFinished / 1000 + getString(R.string.app_codethen));
+        }
+    }
+
     @Override
-    public void onDismiss() {
-        //popupwindow 消失监听
-        finish();
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case 10001:
+                //车型
+                if (data != null) {
+                    Bundle bundle1 = data.getExtras();
+                    y_sedan_brand_id = bundle1.getString("y_sedan_brand_id");
+                    String pingpai = bundle1.getString("pingpai");
+                    String xinghao = bundle1.getString("xinghao");
+                    tv_pingpai.setText(pingpai + "\n" + xinghao);
+                }
+                break;
+        }
+
     }
 }

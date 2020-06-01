@@ -17,6 +17,7 @@
         android:layout_height="wrap_content"
         android:text="NAME"
         android:textSize="15sp"
+        android:singleLine="true"
         android:textColor="@color/black"/>
 
 

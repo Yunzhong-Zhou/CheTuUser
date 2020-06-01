@@ -50,9 +50,15 @@ public class MyGarageActivity extends BaseActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        requestServer();
+    }
+
+    @Override
     protected void initView() {
         //刷新
-        setSpringViewMore(true);//不需要加载更多
+        setSpringViewMore(false);//不需要加载更多
         springView.setListener(new SpringView.OnFreshListener() {
             @Override
             public void onRefresh() {
@@ -81,14 +87,13 @@ public class MyGarageActivity extends BaseActivity {
         tv_addcar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CommonUtil.gotoActivity(MyGarageActivity.this,AddCarActivity.class,false);
+                CommonUtil.gotoActivity(MyGarageActivity.this, AddCarActivity.class,false);
             }
         });
     }
 
     @Override
     protected void initData() {
-        requestServer();
     }
 
     @Override

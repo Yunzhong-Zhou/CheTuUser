@@ -24,33 +24,34 @@
             android:textColor="@color/black"
             android:textSize="15sp" />
 
-        <LinearLayout
+        <RelativeLayout
+            android:id="@+id/rl_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:background="@drawable/yuanjiao_15_huise1"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:visibility="visible">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:src="@mipmap/ic_search_gray" />
-
-            <EditText
+            <com.chetu.user.view.sidebar.CustomEditText
+                android:id="@+id/et_search"
                 android:layout_width="match_parent"
                 android:layout_height="25dp"
+                android:layout_gravity="center_vertical"
                 android:background="@color/transparent"
+                android:drawableLeft="@mipmap/ic_search_gray"
+                android:drawableRight="@mipmap/ic_edit_text_delbtn"
+                android:drawablePadding="5dp"
+                android:freezesText="true"
                 android:gravity="center_vertical"
-                android:hint="搜索您想要的车或点名"
+                android:hint="搜索您想要的车或品牌"
                 android:imeOptions="actionSearch"
                 android:singleLine="true"
-                android:textColor="@color/black3"
+                android:textColor="@color/black"
                 android:textColorHint="#B2B2B2"
-                android:textSize="11sp" />
-        </LinearLayout>
+                android:textSize="12sp" />
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/tv_caogao"

@@ -26,7 +26,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.chetu.user.R;
-import com.chetu.user.net.URLs;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -83,7 +82,7 @@ public class ContactAdapter extends BaseAdapter implements SectionIndexer {
         holder.contact_title.setText(datas.get(position).getName());
         if (!datas.get(position).getUrl().equals(""))
             Glide.with(context)
-                    .load(URLs.IMGHOST + datas.get(position).getUrl())
+                    .load(datas.get(position).getUrl())
                     .centerCrop()
 //                    .placeholder(R.mipmap.headimg)//加载站位图
 //                    .error(R.mipmap.headimg)//加载失败

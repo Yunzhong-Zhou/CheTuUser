@@ -5,6 +5,8 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.amap.api.location.AMapLocation;
@@ -14,6 +16,7 @@ import com.amap.api.location.AMapLocationListener;
 import com.chetu.user.R;
 import com.chetu.user.activity.DraftActivity;
 import com.chetu.user.activity.MainActivity;
+import com.chetu.user.activity.SearchActivity;
 import com.chetu.user.base.BaseFragment;
 import com.chetu.user.model.Fragment2Model;
 import com.chetu.user.net.URLs;
@@ -48,6 +51,9 @@ import okhttp3.Response;
  * 订单
  */
 public class Fragment2 extends BaseFragment {
+    RelativeLayout rl_search;
+    EditText et_search;
+
     int page = 0;
     String longitude = "", latitude = "", y_parent_id = "0", y_service_id = "0";
     private RecyclerView recyclerView;
@@ -147,7 +153,10 @@ public class Fragment2 extends BaseFragment {
         tv_caogao = findViewByID_My(R.id.tv_caogao);
         tv_addr.setOnClickListener(this);
         tv_caogao.setOnClickListener(this);
-
+        rl_search = findViewByID_My(R.id.rl_search);
+        rl_search.setOnClickListener(this);
+        et_search = findViewByID_My(R.id.et_search);
+        et_search.setOnClickListener(this);
         /*et_addr.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -295,6 +304,11 @@ public class Fragment2 extends BaseFragment {
                             }
                         })
                         .show();
+                break;
+            case R.id.rl_search:
+            case R.id.et_search:
+                //搜索
+                CommonUtil.gotoActivity(getActivity(), SearchActivity.class);
                 break;
             case R.id.tv_caogao:
                 //草稿

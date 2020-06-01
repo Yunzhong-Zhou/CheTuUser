@@ -8,6 +8,7 @@ import com.chetu.user.R;
 import com.chetu.user.adapter.ImageAdapter;
 import com.chetu.user.base.BaseActivity;
 import com.chetu.user.utils.MyLogger;
+import com.liaoinstan.springview.widget.SpringView;
 import com.youth.banner.Banner;
 import com.youth.banner.config.IndicatorConfig;
 import com.youth.banner.listener.OnBannerListener;
@@ -35,6 +36,28 @@ public class StoreDetailActivity extends BaseActivity {
 
     @Override
     protected void initView() {
+        //刷新
+        setSpringViewMore(false);//不需要加载更多
+        springView.setListener(new SpringView.OnFreshListener() {
+            @Override
+            public void onRefresh() {
+                /*page1 = 0;
+                page2 = 0;
+                Map<String, String> params = new HashMap<>();
+                params.put("page", page1 + "");
+                params.put("y_parent_id", y_parent_id);
+                params.put("y_service_id", y_service_id);
+                params.put("longitude", longitude);
+                params.put("latitude", latitude);
+                Request(params);*/
+            }
+
+            @Override
+            public void onLoadmore() {
+            }
+        });
+
+
         banner = findViewByID_My(R.id.banner);
         banner_indicator = findViewByID_My(R.id.banner_indicator);
         //banner

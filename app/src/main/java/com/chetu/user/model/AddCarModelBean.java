@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Created by zyz on 2020/5/30.
  */
-public class AddCarModel implements Serializable {
+public class AddCarModelBean implements Serializable {
     private List<ListBean> list;
     private List<HostListBean> host_list;
 
@@ -28,22 +28,18 @@ public class AddCarModel implements Serializable {
 
     public static class ListBean {
         /**
-         * id : 801
-         * ySedanBrandId : 20180531104813
+         * id : 59138
+         * ySedanBrandId : 716704191015288832
          * parentId : 0
-         * sName : 奥迪
-         * sBrand : 奥迪
-         * sLogo : /timg.jpg
+         * sName : AC Schnitzer
+         * sLogo : /upload/head/716723974607732736.jpg
          * sLetter : A
          */
-
-
 
         private String id;
         private String ySedanBrandId;
         private String parentId;
         private String sName;
-        private String sBrand;
         private String sLogo;
         private String sLetter;
 
@@ -77,14 +73,6 @@ public class AddCarModel implements Serializable {
 
         public void setSName(String sName) {
             this.sName = sName;
-        }
-
-        public String getSBrand() {
-            return sBrand;
-        }
-
-        public void setSBrand(String sBrand) {
-            this.sBrand = sBrand;
         }
 
         public String getSLogo() {
@@ -106,12 +94,11 @@ public class AddCarModel implements Serializable {
 
     public static class HostListBean {
         /**
-         * id : 801
-         * ySedanBrandId : 20180531104813
+         * id : 59138
+         * ySedanBrandId : 716704191015288832
          * parentId : 0
-         * sName : 奥迪
-         * sBrand : 奥迪
-         * sLogo : /timg.jpg
+         * sName : AC Schnitzer
+         * sLogo : /upload/head/716723974607732736.jpg
          * sLetter : A
          */
 
@@ -119,7 +106,6 @@ public class AddCarModel implements Serializable {
         private String ySedanBrandId;
         private String parentId;
         private String sName;
-        private String sBrand;
         private String sLogo;
         private String sLetter;
 
@@ -153,14 +139,6 @@ public class AddCarModel implements Serializable {
 
         public void setSName(String sName) {
             this.sName = sName;
-        }
-
-        public String getSBrand() {
-            return sBrand;
-        }
-
-        public void setSBrand(String sBrand) {
-            this.sBrand = sBrand;
         }
 
         public String getSLogo() {

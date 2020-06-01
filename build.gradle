@@ -21,9 +21,10 @@ buildscript {
 
 allprojects {
     repositories {
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public' }//优先从阿里云下载，提高编译速度
+        maven { url "https://jitpack.io" }
         google()
         jcenter()
-        maven { url "https://jitpack.io" }
     }
 }
 

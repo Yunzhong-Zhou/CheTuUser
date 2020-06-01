@@ -1,10 +1,17 @@
 package com.chetu.user.fragment;
 
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.amap.api.location.AMapLocation;
@@ -13,7 +20,9 @@ import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.chetu.user.R;
 import com.chetu.user.activity.MainActivity;
+import com.chetu.user.activity.SearchActivity;
 import com.chetu.user.activity.StoreDetailActivity;
+import com.chetu.user.adapter.Pop_ListAdapter;
 import com.chetu.user.base.BaseFragment;
 import com.chetu.user.model.Fragment3Model;
 import com.chetu.user.net.URLs;
@@ -21,6 +30,7 @@ import com.chetu.user.okhttp.CallBackUtil;
 import com.chetu.user.okhttp.OkhttpUtil;
 import com.chetu.user.utils.CommonUtil;
 import com.chetu.user.utils.MyLogger;
+import com.chetu.user.view.FixedPopupWindow;
 import com.liaoinstan.springview.widget.SpringView;
 import com.zaaach.citypicker.CityPicker;
 import com.zaaach.citypicker.adapter.OnPickListener;
@@ -48,16 +58,20 @@ import okhttp3.Response;
  * 门店
  */
 public class Fragment3 extends BaseFragment {
+    //搜索
+    RelativeLayout rl_search;
+    EditText et_search;
+
+    //筛选
+    TextView tv_pingfen, tv_juli, tv_shaixuan;
+    int i1 = -1, i2 = -1;
+    private LinearLayout pop_view;
+    //数据
     int page = 0;
     String longitude = "", latitude = "", y_parent_id = "0", y_service_id = "0";
     private RecyclerView recyclerView;
     List<Fragment3Model.ListBean> list = new ArrayList<>();
     CommonAdapter<Fragment3Model.ListBean> mAdapter;
-
-
-   /* private LinearLayout linearLayout1, linearLayout2, linearLayout3;
-    private TextView textView1, textView2, textView3;
-    private View view1, view2, view3;*/
 
     //定位
     //声明AMapLocationClient类对象
@@ -140,56 +154,20 @@ public class Fragment3 extends BaseFragment {
 
         tv_addr = findViewByID_My(R.id.tv_addr);
         tv_addr.setOnClickListener(this);
-        /*linearLayout1 = findViewByID_My(R.id.linearLayout1);
-        linearLayout2 = findViewByID_My(R.id.linearLayout2);
-        linearLayout3 = findViewByID_My(R.id.linearLayout3);
+        rl_search = findViewByID_My(R.id.rl_search);
+        rl_search.setOnClickListener(this);
+        et_search = findViewByID_My(R.id.et_search);
+        et_search.setOnClickListener(this);
 
-        linearLayout1.setOnClickListener(this);
-        linearLayout2.setOnClickListener(this);
-        linearLayout3.setOnClickListener(this);
+        tv_pingfen = findViewByID_My(R.id.tv_pingfen);
+        tv_pingfen.setOnClickListener(this);
+        tv_juli = findViewByID_My(R.id.tv_juli);
+        tv_juli.setOnClickListener(this);
+        tv_shaixuan = findViewByID_My(R.id.tv_shaixuan);
+        tv_shaixuan.setOnClickListener(this);
 
-        textView1 = findViewByID_My(R.id.textView1);
-        textView2 = findViewByID_My(R.id.textView2);
-        textView3 = findViewByID_My(R.id.textView3);
+        pop_view = findViewByID_My(R.id.pop_view);
 
-        view1 = findViewByID_My(R.id.view1);
-        view2 = findViewByID_My(R.id.view2);
-        view3 = findViewByID_My(R.id.view3);*/
-
-        /*et_addr.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    //关闭软键盘
-                    hideInput();
-                    //do something
-                    //doSearch();
-                    MyLogger.i(">>>>>>>>输入后：" + et_addr.getText().toString().trim());
-                    if (!et_addr.getText().toString().trim().equals("")) {
-                        //第二个参数传入null或者“”代表在全国进行检索，否则按照传入的city进行检索
-                        InputtipsQuery inputquery = new InputtipsQuery(et_addr.getText().toString().trim(), city);
-                        inputquery.setCityLimit(false);//限制在当前城市
-                        Inputtips inputTips = new Inputtips(SelectAddressActivity.this, inputquery);
-                        inputTips.setInputtipsListener(new Inputtips.InputtipsListener() {
-                            @Override
-                            public void onGetInputtips(List<Tip> list, int i) {
-                                if (list.size() > 0) {
-                                    //显示弹窗
-//                                    showPopupWindow1(et_addr, list);
-                                    showMapAddr(list);
-                                }
-                            }
-                        });
-                        inputTips.requestInputtipsAsyn();
-                    } else {
-                        recyclerView_addr.setVisibility(View.GONE);
-                    }
-
-                    return true;
-                }
-                return false;
-            }
-        });*/
     }
 
     @Override
@@ -301,21 +279,23 @@ public class Fragment3 extends BaseFragment {
                         })
                         .show();
                 break;
-            /*case R.id.linearLayout1:
-                status = 1;
-//                changeUI();
-                requestServer();
+            case R.id.rl_search:
+            case R.id.et_search:
+                //搜索
+                CommonUtil.gotoActivity(getActivity(), SearchActivity.class);
                 break;
-            case R.id.linearLayout2:
-                status = 2;
-//                changeUI();
-                requestServer();
+
+            case R.id.tv_pingfen:
+                //评分
                 break;
-            case R.id.linearLayout3:
-                status = 3;
-//                changeUI();
-                requestServer();
-                break;*/
+            case R.id.tv_juli:
+                //记录
+                break;
+            case R.id.tv_shaixuan:
+                //筛选
+                showPopupWindow1(pop_view);
+                break;
+
         }
     }
 
@@ -431,4 +411,73 @@ public class Fragment3 extends BaseFragment {
         });
     }
 
+
+    private void showPopupWindow1(View v) {
+        // 一个自定义的布局，作为显示的内容
+        final View contentView = LayoutInflater.from(getActivity()).inflate(
+                R.layout.pop_fragment3, null);
+        final FixedPopupWindow popupWindow = new FixedPopupWindow(contentView,
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, true);
+        // mMenuView添加OnTouchListener监听判断获取触屏位置如果在选择框外面则销毁弹出框
+        contentView.setOnTouchListener(new View.OnTouchListener() {
+            public boolean onTouch(View v, MotionEvent event) {
+                int height = contentView.findViewById(R.id.pop_listView).getTop();
+                int height1 = contentView.findViewById(R.id.pop_listView).getBottom();
+                int y = (int) event.getY();
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    if (y < height) {
+                        popupWindow.dismiss();
+                    }
+                    if (y > height1) {
+                        popupWindow.dismiss();
+                    }
+                }
+                return true;
+            }
+        });
+        // 设置按钮的点击事件
+        ListView pop_listView = (ListView) contentView.findViewById(R.id.pop_listView1);
+        contentView.findViewById(R.id.pop_listView2).setVisibility(View.INVISIBLE);
+        final List<String> list = new ArrayList<String>();
+        list.add(getString(R.string.app_type_quanbu));
+        list.add(getString(R.string.app_type_CNY));
+        list.add(getString(R.string.app_type_USDT));
+        list.add(getString(R.string.app_type_BWIN));
+
+        final Pop_ListAdapter adapter = new Pop_ListAdapter(getActivity(), list);
+        adapter.setSelectItem(i1);
+        pop_listView.setAdapter(adapter);
+        pop_listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                adapter.setSelectItem(i);
+                adapter.notifyDataSetChanged();
+                i1 = i;
+               /* if (i == 0) {
+                    money_type = "";
+                } else {
+                    money_type = i + "";
+                }
+                textView1.setText(list.get(i));*/
+                requestServer();
+                popupWindow.dismiss();
+            }
+        });
+
+        popupWindow.setTouchable(true);
+        popupWindow.setTouchInterceptor(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return false;
+                // 这里如果返回true的话，touch事件将被拦截
+                // 拦截后 PopupWindow的onTouchEvent不被调用，这样点击外部区域无法dismiss
+            }
+        });
+
+        ColorDrawable dw = new ColorDrawable(this.getResources().getColor(R.color.transparentblack2));
+        // 设置弹出窗体的背景
+        popupWindow.setBackgroundDrawable(dw);
+        // 设置好参数之后再show
+        popupWindow.showAsDropDown(v);
+    }
 }

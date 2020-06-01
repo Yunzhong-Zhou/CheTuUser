@@ -2,8 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:background="@color/background"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/background">
 
     <com.liaoinstan.springview.widget.SpringView
         android:id="@+id/springView"
@@ -40,33 +40,34 @@
                         android:textColor="@color/black"
                         android:textSize="15sp" />
 
-                    <LinearLayout
+                    <RelativeLayout
+                        android:id="@+id/rl_search"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
                         android:layout_weight="1"
                         android:background="@drawable/yuanjiao_15_huise1"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:visibility="visible">
 
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="8dp"
-                            android:src="@mipmap/ic_search_gray" />
-
-                        <EditText
+                        <com.chetu.user.view.sidebar.CustomEditText
+                            android:id="@+id/et_search"
                             android:layout_width="match_parent"
                             android:layout_height="25dp"
+                            android:layout_gravity="center_vertical"
                             android:background="@color/transparent"
+                            android:drawableLeft="@mipmap/ic_search_gray"
+                            android:drawableRight="@mipmap/ic_edit_text_delbtn"
+                            android:drawablePadding="5dp"
+                            android:freezesText="true"
                             android:gravity="center_vertical"
-                            android:hint="搜索您想要的车或点名"
+                            android:hint="搜索您想要的车或品牌"
                             android:imeOptions="actionSearch"
                             android:singleLine="true"
-                            android:textColor="@color/black3"
+                            android:textColor="@color/black"
                             android:textColorHint="#B2B2B2"
-                            android:textSize="11sp" />
-                    </LinearLayout>
+                            android:textSize="12sp" />
+                    </RelativeLayout>
 
                     <ImageView
                         android:id="@+id/tv_scan"
@@ -124,7 +125,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:paddingTop="8dp">
-
+                    <!--发布需求-->
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="80dp"
@@ -147,7 +148,7 @@
                             android:textSize="15sp"
                             android:textStyle="bold" />
                     </RelativeLayout>
-
+                    <!--待办事项-->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="80dp"
@@ -157,18 +158,110 @@
                         android:layout_weight="1"
                         android:background="@drawable/yuanjiao_10_baise"
                         android:elevation="3dp"
-                        android:gravity="center">
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp">
 
-                        <TextView
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:drawableLeft="@mipmap/ic_fragment1"
-                            android:drawablePadding="8dp"
-                            android:gravity="center"
-                            android:text="发布需求"
-                            android:textColor="@color/black"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
+                            android:layout_marginBottom="10dp"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="28dp"
+                                android:layout_height="28dp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10dp"
+                                android:gravity="center"
+                                android:singleLine="true"
+                                android:text="CarName"
+                                android:textColor="@color/black"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="0.5dp"
+                            android:background="@color/xian" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="7dp"
+                                    android:background="@drawable/yuanjiaobiankuang_3_huise"
+                                    android:paddingLeft="8dp"
+                                    android:paddingTop="2dp"
+                                    android:paddingRight="8dp"
+                                    android:layout_centerInParent="true"
+                                    android:paddingBottom="2dp"
+                                    android:text="CarNumber"
+                                    android:textColor="@color/black3"
+                                    android:textSize="11sp" />
+                            </RelativeLayout>
+
+                            <View
+                                android:layout_width="0.5dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginBottom="5dp"
+                                android:background="@color/xian" />
+
+                            <RelativeLayout
+                                android:id="@+id/rl_daiban"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:paddingTop="5dp"
+                                android:paddingBottom="5dp">
+
+                                <RelativeLayout
+                                    android:layout_width="50dp"
+                                    android:layout_height="30dp"
+                                    android:layout_centerInParent="true">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_centerInParent="true"
+                                        android:text="待办"
+                                        android:textColor="@color/black"
+                                        android:textSize="15sp" />
+
+                                    <TextView
+                                        android:id="@+id/tv_daiban"
+                                        android:layout_width="15dp"
+                                        android:layout_height="15dp"
+                                        android:layout_alignParentRight="true"
+                                        android:background="@drawable/yuanxing_hongse"
+                                        android:gravity="center"
+                                        android:text="0"
+                                        android:textColor="@color/white"
+                                        android:textSize="10sp"
+                                        android:textStyle="bold" />
+                                </RelativeLayout>
+                            </RelativeLayout>
+
+                        </LinearLayout>
+
+
                     </LinearLayout>
                 </LinearLayout>
 
@@ -177,10 +270,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/yuanjiao_10_baise">
+
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_tab"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content" />
 
                 </RelativeLayout>
                 <!--列表-->
@@ -222,7 +316,7 @@
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/recyclerView1"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -263,7 +357,7 @@
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/recyclerView2"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content" />
 
                         <TextView
                             android:layout_width="wrap_content"

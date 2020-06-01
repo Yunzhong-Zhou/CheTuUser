@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -18,6 +19,7 @@ import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.chetu.user.R;
 import com.chetu.user.activity.MainActivity;
+import com.chetu.user.activity.SearchActivity;
 import com.chetu.user.adapter.CircleImageAdapter;
 import com.chetu.user.base.BaseFragment;
 import com.chetu.user.model.Fragment1Model;
@@ -61,6 +63,9 @@ import okhttp3.Response;
  */
 
 public class Fragment1 extends BaseFragment {
+    RelativeLayout rl_search;
+    EditText et_search;
+
     String longitude = "", latitude = "", y_parent_id = "0", y_service_id = "0";
 
     Banner banner;
@@ -161,6 +166,10 @@ public class Fragment1 extends BaseFragment {
         rl_xiaoxi = findViewByID_My(R.id.rl_xiaoxi);
         rl_xiaoxi.setOnClickListener(this);
         tv_xiaoxinum = findViewByID_My(R.id.tv_xiaoxinum);
+        rl_search = findViewByID_My(R.id.rl_search);
+        rl_search.setOnClickListener(this);
+        et_search = findViewByID_My(R.id.et_search);
+        et_search.setOnClickListener(this);
 
         rv_tab = findViewByID_My(R.id.rv_tab);
         rv_tab.setLayoutManager(new GridLayoutManager(getActivity(), 3));
@@ -412,6 +421,11 @@ public class Fragment1 extends BaseFragment {
                         })
                         .show();
                 break;
+            case R.id.rl_search:
+            case R.id.et_search:
+                //搜索
+                CommonUtil.gotoActivity(getActivity(), SearchActivity.class);
+                break;
             case R.id.tv_scan:
                 //扫一扫
                 startQrCode();
@@ -439,6 +453,7 @@ public class Fragment1 extends BaseFragment {
     protected void updateView() {
 
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.chetu.user.R;
-import com.chetu.user.model.AddCarModel;
+import com.chetu.user.model.AddCarModelBean;
 import com.chetu.user.net.URLs;
 import com.chetu.user.okhttp.CallBackUtil;
 import com.chetu.user.okhttp.OkhttpUtil;
@@ -38,7 +38,7 @@ import okhttp3.Response;
  * description：选择车型弹窗
  */
 public class AddCarPopupWindow extends PopupWindow {
-    String y_sedan_brand_id = "";
+    public static String y_sedan_brand_id = "", pingpai = "", xinghao = "";
     private Context mContext;
     private View view;
 
@@ -48,28 +48,30 @@ public class AddCarPopupWindow extends PopupWindow {
     int i3 = -1;
 
     RecyclerView rv1;
-    List<AddCarModel.ListBean> list = new ArrayList<>();
+    List<AddCarModelBean.ListBean> list = new ArrayList<>();
     RecyclerView rv2;
     RecyclerView rv3;
 
     String logo = "";
-    String brand = "";
+    //    String brand = "";
+    String xinghao1 = "", xinghao2 = "", xinghao3 = "";
 
     private ProgressDialog pd;
 
-    public AddCarPopupWindow(Context mContext, List<AddCarModel.ListBean> list, String logo, String brand) {
+    public AddCarPopupWindow(Context mContext, List<AddCarModelBean.ListBean> list, String logo, String brand) {
         this.view = LayoutInflater.from(mContext).inflate(R.layout.pop_addcar, null);
 
         this.mContext = mContext;
         this.list = list;
         this.logo = logo;
-        this.brand = brand;
+        this.pingpai = brand;
+        xinghao = "";
 
         initView(view);
         initData();
 
         // 设置外部可点击
-        this.setOutsideTouchable(true);
+        this.setOutsideTouchable(false);
         // mMenuView添加OnTouchListener监听判断获取触屏位置如果在选择框外面则销毁弹出框
         this.view.setOnTouchListener(new View.OnTouchListener() {
             public boolean onTouch(View v, MotionEvent event) {
@@ -118,20 +120,23 @@ public class AddCarPopupWindow extends PopupWindow {
                 .into(iv_logo);//加载图片
         //品牌
         TextView tv_brand = (TextView) view.findViewById(R.id.tv_brand);
-        tv_brand.setText(brand);
+        tv_brand.setText(pingpai);
         //确定
         TextView tv_confirm = (TextView) view.findViewById(R.id.tv_confirm);
         tv_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (page == 4) {
-                    showProgress(true, mContext.getString(R.string.app_loading1));
+                    /*showProgress(true, mContext.getString(R.string.app_loading1));
                     Map<String, String> params = new HashMap<>();
                     params.put("y_sedan_brand_id", y_sedan_brand_id);
                     params.put("s_number", "");//车牌
                     params.put("s_cy", "2");//1为个人  2为公司
                     params.put("u_token", LocalUserInfo.getInstance(mContext).getToken());
-                    RequestUpData(params);
+                    RequestUpData(params);*/
+                    xinghao = xinghao1 + xinghao2 + xinghao3;
+
+                    dismiss();
                 } else {
                     Toast.makeText(mContext, "请选择具体的车型", Toast.LENGTH_SHORT).show();
                 }
@@ -149,10 +154,10 @@ public class AddCarPopupWindow extends PopupWindow {
 
     private void initData() {
         //第一个列表
-        CommonAdapter<AddCarModel.ListBean> mAdapter1 = new CommonAdapter<AddCarModel.ListBean>
+        CommonAdapter<AddCarModelBean.ListBean> mAdapter1 = new CommonAdapter<AddCarModelBean.ListBean>
                 (mContext, R.layout.item_pop_list, list) {
             @Override
-            protected void convert(ViewHolder holder, AddCarModel.ListBean listBean, int position) {
+            protected void convert(ViewHolder holder, AddCarModelBean.ListBean listBean, int position) {
                 TextView textView1 = holder.getView(R.id.textView1);
                 textView1.setText(listBean.getSName());
                 if (i1 == position) {
@@ -172,6 +177,7 @@ public class AddCarPopupWindow extends PopupWindow {
                 params.put("parent_id", list.get(i).getYSedanBrandId());
                 params.put("u_token", LocalUserInfo.getInstance(mContext).getToken());
                 Request1(params);
+                xinghao1 = list.get(i).getSName();
             }
 
             @Override
@@ -184,21 +190,22 @@ public class AddCarPopupWindow extends PopupWindow {
 
     /**
      * 获取2级、3级列表
+     *
      * @param params
      */
     private void Request1(Map<String, String> params) {
         Map<String, String> headerMap = new HashMap<>();
         headerMap.put("apikey", URLs.APIKEY);
         headerMap.put("hversion", URLs.HVERSION);
-        OkhttpUtil.okHttpPost(URLs.CarNameList, params, headerMap, new CallBackUtil<AddCarModel>() {
+        OkhttpUtil.okHttpPost(URLs.CarNameList, params, headerMap, new CallBackUtil<AddCarModelBean>() {
             @Override
-            public AddCarModel onParseResponse(Call call, Response response) {
+            public AddCarModelBean onParseResponse(Call call, Response response) {
                 return null;
             }
 
             @Override
             public void onFailure(Call call, Exception e, String err) {
-                Toast.makeText(mContext,err,Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, err, Toast.LENGTH_SHORT).show();
                 if (page == 2) {
                     page = 1;
                     rv2.setVisibility(View.GONE);
@@ -211,17 +218,17 @@ public class AddCarPopupWindow extends PopupWindow {
             }
 
             @Override
-            public void onResponse(AddCarModel response) {
+            public void onResponse(AddCarModelBean response) {
                 switch (page) {
                     case 2:
                         i2 = -1;
                         rv2.setVisibility(View.VISIBLE);
                         rv3.setVisibility(View.GONE);
                         //2层列表
-                        CommonAdapter<AddCarModel.ListBean> mAdapter2 = new CommonAdapter<AddCarModel.ListBean>
+                        CommonAdapter<AddCarModelBean.ListBean> mAdapter2 = new CommonAdapter<AddCarModelBean.ListBean>
                                 (mContext, R.layout.item_pop_list, response.getList()) {
                             @Override
-                            protected void convert(ViewHolder holder, AddCarModel.ListBean listBean, int position) {
+                            protected void convert(ViewHolder holder, AddCarModelBean.ListBean listBean, int position) {
                                 TextView textView1 = holder.getView(R.id.textView1);
                                 textView1.setText(listBean.getSName());
                                 if (i2 == position) {
@@ -241,6 +248,7 @@ public class AddCarPopupWindow extends PopupWindow {
                                 params.put("parent_id", response.getList().get(i).getYSedanBrandId());
                                 params.put("u_token", LocalUserInfo.getInstance(mContext).getToken());
                                 Request1(params);
+                                xinghao2 = response.getList().get(i).getSName();
                             }
 
                             @Override
@@ -255,10 +263,10 @@ public class AddCarPopupWindow extends PopupWindow {
                         i3 = -1;
                         rv2.setVisibility(View.VISIBLE);
                         rv3.setVisibility(View.VISIBLE);
-                        CommonAdapter<AddCarModel.ListBean> mAdapter3 = new CommonAdapter<AddCarModel.ListBean>
+                        CommonAdapter<AddCarModelBean.ListBean> mAdapter3 = new CommonAdapter<AddCarModelBean.ListBean>
                                 (mContext, R.layout.item_pop_list, response.getList()) {
                             @Override
-                            protected void convert(ViewHolder holder, AddCarModel.ListBean listBean, int position) {
+                            protected void convert(ViewHolder holder, AddCarModelBean.ListBean listBean, int position) {
 
                                 TextView textView1 = holder.getView(R.id.textView1);
                                 textView1.setText(listBean.getSName());
@@ -276,6 +284,7 @@ public class AddCarPopupWindow extends PopupWindow {
                                 i3 = i;
                                 mAdapter3.notifyDataSetChanged();
                                 page = 4;
+                                xinghao3 = response.getList().get(i).getSName();
                             }
 
                             @Override
@@ -292,32 +301,34 @@ public class AddCarPopupWindow extends PopupWindow {
 
     /**
      * 添加车辆
+     *
      * @param params
      */
     private void RequestUpData(Map<String, String> params) {
         Map<String, String> headerMap = new HashMap<>();
         headerMap.put("apikey", URLs.APIKEY);
         headerMap.put("hversion", URLs.HVERSION);
-        OkhttpUtil.okHttpPost(URLs.AddCar, params, headerMap, new CallBackUtil<AddCarModel>() {
+        OkhttpUtil.okHttpPost(URLs.AddCar, params, headerMap, new CallBackUtil<AddCarModelBean>() {
             @Override
-            public AddCarModel onParseResponse(Call call, Response response) {
+            public AddCarModelBean onParseResponse(Call call, Response response) {
                 return null;
             }
 
             @Override
             public void onFailure(Call call, Exception e, String err) {
                 hideProgress();
-                Toast.makeText(mContext,err,Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, err, Toast.LENGTH_SHORT).show();
             }
 
             @Override
-            public void onResponse(AddCarModel response) {
+            public void onResponse(AddCarModelBean response) {
                 hideProgress();
-                Toast.makeText(mContext,"添加成功",Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "添加成功", Toast.LENGTH_SHORT).show();
                 dismiss();
             }
         });
     }
+
     public void showProgress(boolean flag, String message) {
         if (pd == null) {
             pd = new ProgressDialog(mContext);
