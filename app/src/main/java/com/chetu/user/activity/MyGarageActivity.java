@@ -157,7 +157,7 @@ public class MyGarageActivity extends BaseActivity {
                                 tv_moren.setVisibility(View.GONE);
                             //是否填写保险
                             LinearLayout ll_baoxian = holder.getView(R.id.ll_baoxian);
-                            if (model.getPoliceInfo() == null || model.getJpoliceInfo() == null) {
+                            if (model.getPoliceInfo() == null && model.getJpoliceInfo() == null) {
                                 ll_baoxian.setVisibility(View.GONE);
                             } else {
                                 //商业险
@@ -166,7 +166,7 @@ public class MyGarageActivity extends BaseActivity {
                                     holder.setText(R.id.tv_syphone, "电话：" + model.getPoliceInfo().getTelephone());
                                 }
                                 //交强险
-                                if (model.getPoliceInfo() != null) {
+                                if (model.getJpoliceInfo() != null) {
                                     holder.setText(R.id.tv_jiaoqiangxian, "交强险：" + model.getJpoliceInfo().getVName());
                                     holder.setText(R.id.tv_jqphone, "电话：" + model.getJpoliceInfo().getTelephone());
                                 }
@@ -186,16 +186,26 @@ public class MyGarageActivity extends BaseActivity {
                                     CommonUtil.gotoActivityWithData(MyGarageActivity.this, AddCarActivity.class, bundle, false);
                                 }
                             });
-
                             //删除
                             holder.getView(R.id.tv_delete).setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    showProgress(true, "正在删除...");
-                                    HashMap<String, String> params2 = new HashMap<>();
-                                    params2.put("y_user_sedan_id", model.getYUserSedanId());
-                                    params2.put("u_token", localUserInfo.getToken());
-                                    RequestDelete(params2);
+                                    showToast("确认删除该车辆吗？", "确认", "取消", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            dialog.dismiss();
+                                            showProgress(true, "正在删除...");
+                                            HashMap<String, String> params2 = new HashMap<>();
+                                            params2.put("y_user_sedan_id", model.getYUserSedanId());
+                                            params2.put("u_token", localUserInfo.getToken());
+                                            RequestDelete(params2);
+                                        }
+                                    }, new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            dialog.dismiss();
+                                        }
+                                    });
                                 }
                             });
 

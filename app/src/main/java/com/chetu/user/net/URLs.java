@@ -81,6 +81,10 @@ public class URLs {
      */
     public static final String AddCar = HOST+"/api/v1/user/user_sedan_add";
     /**
+     * 修改车辆
+     */
+    public static final String ChageCar = HOST+"/api/v1/user/user_sedan_edit";
+    /**
      * 删除车辆
      */
     public static final String DeleteCar = HOST+"/api/v1/user/user_sedan_del";

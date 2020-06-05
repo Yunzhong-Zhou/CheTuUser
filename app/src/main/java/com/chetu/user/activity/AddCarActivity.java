@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 import com.chetu.user.R;
 import com.chetu.user.base.BaseActivity;
-import com.chetu.user.model.AddCarModelBean;
 import com.chetu.user.model.BaoXianModel;
 import com.chetu.user.model.CarDetailModel;
 import com.chetu.user.model.CodeModel;
@@ -153,13 +152,62 @@ public class AddCarActivity extends BaseActivity {
             @Override
             public void onFailure(Call call, Exception e, String err) {
                 hideProgress();
-                showEmptyPage();
-//                myToast(err);
+//                showEmptyPage();
+                myToast(err);
             }
 
             @Override
             public void onResponse(CarDetailModel response) {
                 hideProgress();
+                //品牌型号
+                y_sedan_brand_id = response.getInfo().getBrandInfo().getYSedanBrandId();
+                tv_pingpai.setText(response.getInfo().getBrandInfo().getBrandName() + "\n" +
+                        response.getInfo().getBrandInfo().getGroupName() +
+                        response.getInfo().getBrandInfo().getSeriesName() +
+                        response.getInfo().getBrandInfo().getSName());
+                //车牌号
+                String s1 = response.getInfo().getSNumber().substring(0, 1);//提取第一个文字
+                tv_chepai.setText(s1);
+                for (int j = 0; j < stringList.size(); j++) {
+                    if (s1.equals(stringList.get(j))) {
+                        i = j;
+                    }
+                }
+                String s2 = response.getInfo().getSNumber().substring(1);//提取第一个文字后面的文字
+                et_carnum.setText(s2);
+                //车辆归属
+                if (response.getInfo().getSCy() == 1){
+                    s_cy = 1;
+                    iv_geren.setImageResource(R.mipmap.ic_xuanzhong_yuan);
+                    iv_gongsi.setImageResource(R.mipmap.ic_weixuan);
+                } else{
+                    s_cy = 2;
+                    iv_geren.setImageResource(R.mipmap.ic_weixuan);
+                    iv_gongsi.setImageResource(R.mipmap.ic_xuanzhong_yuan);
+                }
+                //是否默认
+                if (response.getInfo().getIsF() == 1){
+                    is_f = 1;
+                    iv_moren.setImageResource(R.mipmap.ic_shi);
+                }else {
+                    is_f = 2;
+                    iv_moren.setImageResource(R.mipmap.ic_fou);
+                }
+                //手机号
+                et_phone.setText(response.getInfo().getUserPhone());
+
+                //商业险
+                if (response.getInfo().getPoliceInfo() != null) {
+                    tv_shangyexian.setText(response.getInfo().getPoliceInfo().getVName());
+                    y_report_police_id = response.getInfo().getPoliceInfo().getYReportPoliceId();
+                }
+                //交强险
+                if (response.getInfo().getJpoliceInfo() != null) {
+                    tv_jiaoqiangxian.setText(response.getInfo().getJpoliceInfo().getVName());
+                    j_report_police_id = response.getInfo().getJpoliceInfo().getYReportPoliceId();
+                }
+
+                tv_confirm.setText("确认修改");
 
             }
         });
@@ -199,7 +247,6 @@ public class AddCarActivity extends BaseActivity {
                             tv.setTextColor(getResources().getColor(R.color.blue));
                         else
                             tv.setTextColor(getResources().getColor(R.color.black));
-
                     }
 
                     @Override
@@ -291,7 +338,13 @@ public class AddCarActivity extends BaseActivity {
                     params.put("y_report_police_id", y_report_police_id);//保险公司id
                     params.put("j_report_police_id", j_report_police_id);//交强险公司id
                     params.put("u_token", localUserInfo.getToken());
-                    RequestUpData(params);
+                    if (!y_user_sedan_id.equals("")) {
+                        params.put("y_user_sedan_id", y_user_sedan_id);
+                        RequestChage(params);//修改
+                    }else {
+                        RequestUpData(params);//添加
+                    }
+
                 }
                 break;
         }
@@ -354,9 +407,9 @@ public class AddCarActivity extends BaseActivity {
      * @param params
      */
     private void RequestUpData(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.AddCar, params, headerMap, new CallBackUtil<AddCarModelBean>() {
+        OkhttpUtil.okHttpPost(URLs.AddCar, params, headerMap, new CallBackUtil<Object>() {
             @Override
-            public AddCarModelBean onParseResponse(Call call, Response response) {
+            public Object onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -367,9 +420,35 @@ public class AddCarActivity extends BaseActivity {
             }
 
             @Override
-            public void onResponse(AddCarModelBean response) {
+            public void onResponse(Object response) {
                 hideProgress();
                 myToast("添加成功");
+                finish();
+            }
+        });
+    }
+    /**
+     * 修改车辆
+     *
+     * @param params
+     */
+    private void RequestChage(Map<String, String> params) {
+        OkhttpUtil.okHttpPost(URLs.ChageCar, params, headerMap, new CallBackUtil<Object>() {
+            @Override
+            public Object onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+                hideProgress();
+                myToast(err);
+            }
+
+            @Override
+            public void onResponse(Object response) {
+                hideProgress();
+                myToast("修改成功");
                 finish();
             }
         });
