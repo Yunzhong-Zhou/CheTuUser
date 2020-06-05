@@ -129,7 +129,7 @@ public class Fragment4 extends BaseFragment {
 
         if (!localUserInfo.getUserImage().equals(""))
             Glide.with(getActivity())
-                    .load(IMGHOST + localUserInfo.getUserImage())
+                    .load(URLs.IMGHOST + localUserInfo.getUserImage())
                     .centerCrop()
 //                    .placeholder(R.mipmap.headimg)//加载站位图
 //                    .error(R.mipmap.headimg)//加载失败
@@ -192,7 +192,7 @@ public class Fragment4 extends BaseFragment {
                 //保存头像
                 localUserInfo.setUserImage(response.getUser_info().getHeadPortrait());
                 if (!response.getUser_info().getHeadPortrait().equals("") && getActivity() != null)
-                    Glide.with(getActivity()).load(IMGHOST + response.getUser_info().getHeadPortrait())
+                    Glide.with(getActivity()).load(IMGHOST + localUserInfo.getUserImage())
                             .centerCrop()
 //                            .placeholder(R.mipmap.headimg)//加载站位图
 //                            .error(R.mipmap.headimg)//加载失败

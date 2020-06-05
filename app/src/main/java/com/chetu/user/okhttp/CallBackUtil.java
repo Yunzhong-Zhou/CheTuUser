@@ -67,7 +67,7 @@ public abstract class CallBackUtil<T> {
         try {
             String string = response.body().string();
             if (!string.equals("")) {
-                MyLogger.i("请求到的数据onSeccess", string);
+                MyLogger.i("数据返回onSeccess", string);
                 JSONObject mJsonObject = new JSONObject(string);
                 int result_code = mJsonObject.getInt("code");
                 switch (result_code) {

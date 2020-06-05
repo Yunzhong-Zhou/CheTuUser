@@ -30,6 +30,7 @@ import com.chetu.user.base.BaseActivity;
 import com.chetu.user.model.CodeModel;
 import com.chetu.user.model.Fragment4Model;
 import com.chetu.user.model.MyProfileModel;
+import com.chetu.user.model.UpFileModel;
 import com.chetu.user.net.URLs;
 import com.chetu.user.okhttp.CallBackUtil;
 import com.chetu.user.okhttp.OkhttpUtil;
@@ -71,7 +72,7 @@ public class MyProfileActivity extends BaseActivity {
 
     TimePickerView pvTime1;
 
-    String phonenum = "", code = "", industry = "";
+    String user_phone = "", vcode = "", user_name = "", head_portrait = "", u_gender = "男", birthday = "";
 
     MyProfileModel model;
     int i1 = -1;
@@ -153,63 +154,32 @@ public class MyProfileActivity extends BaseActivity {
             public void onResponse(Fragment4Model response) {
                 hideProgress();
                 //头像
-                /*localUserInfo.setUserImage(response.getUser_info().);
-                if (!response.getHead().equals("") && getActivity() != null)
-                    Glide.with(getActivity()).load(IMGHOST + response.getHead())
-                            .centerCrop()
+                head_portrait = response.getUser_info().getHeadPortrait();
+                Glide.with(MyProfileActivity.this).load(URLs.IMGHOST + response.getUser_info().getHeadPortrait())
+                        .centerCrop()
 //                            .placeholder(R.mipmap.headimg)//加载站位图
 //                            .error(R.mipmap.headimg)//加载失败
-                            .into(imageView1);//加载图片*/
+                        .into(imageView1);//加载图片
+                //姓名
+                editText1.setText(response.getUser_info().getUserName());
+                //手机
+                editText2.setText(response.getUser_info().getUserPhone());
+                //性别
+                if (response.getUser_info().getSetup_info().getU_gender().equals("男")) {
+                    u_gender = "男";
+                    iv_nan.setImageResource(R.mipmap.ic_xuanzhong);
+                    iv_nv.setImageResource(R.mipmap.ic_weixuan);
+                } else {
+                    u_gender = "女";
+                    iv_nan.setImageResource(R.mipmap.ic_weixuan);
+                    iv_nv.setImageResource(R.mipmap.ic_xuanzhong);
+                }
+                //生日
+                birthday = response.getUser_info().getSetup_info().getBirthday();
+                textView2.setText(response.getUser_info().getSetup_info().getBirthday());
+
             }
         });
-
-        /*OkHttpClientManager.getAsyn(MyProfileActivity.this, URLs.Info + string, new OkHttpClientManager.ResultCallback<MyProfileModel>() {
-            @Override
-            public void onError(Request request, String info, Exception e) {
-                hideProgress();
-                if (!info.equals("")) {
-                    showToast(info);
-                }
-            }
-            @Override
-            public void onResponse(MyProfileModel response) {
-                MyLogger.i(">>>>>>>>>个人信息" + response);
-                model = response;
-                //头像
-                if (!response.getHead().equals(""))
-                    Glide.with(MyProfileActivity.this)
-                            .load(OkHttpClientManager.IMGHOST + response.getHead())
-                            .centerCrop()
-//                            .placeholder(R.mipmap.headimg)//加载站位图
-//                            .error(R.mipmap.headimg)//加载失败
-                            .into(imageView1);//加载图片
-                else
-                    imageView1.setImageResource(R.mipmap.headimg);
-
-                //昵称
-                textView1.setText(response.getNickname());
-                //手机号
-                textView2.setText(response.getMobile());
-                //行业
-                textView3.setText(response.getIndustry());
-
-                //保存是否认证
-                localUserInfo.setIsVerified(response.getIs_certification()+"");//1 认证 2 未认证
-                //实名认证//1已认证2未认证
-                if (response.getIs_certification() == 1) {
-                    textView4.setText("已认证");
-                } else {
-                    textView4.setText("未认证");
-                }
-
-                localUserInfo.setPhoneNumber(response.getMobile());
-                localUserInfo.setNickname(response.getNickname());
-//                localUserInfo.setEmail(response.getEmail());
-                localUserInfo.setUserImage(response.getHead());
-
-                hideProgress();
-            }
-        });*/
     }
 
     @Override
@@ -219,11 +189,15 @@ public class MyProfileActivity extends BaseActivity {
                 //上传资料
                 if (match()) {
                     textView.setClickable(false);
-//                    showProgress(true, "正在修改，请稍候...");
-//                    params.put("token", localUserInfo.getToken());
-//                    params.put("nickname", textView1.getText().toString().trim());
-//                    params.put("industry", industry);
-//                    RequestChangeProfile(filenames, files, params);//修改
+                    showProgress(true, "正在提交数据，请稍候...");
+                    params.put("u_token", localUserInfo.getToken());
+                    params.put("user_name", user_name);
+                    params.put("u_gender", u_gender);
+                    params.put("birthday", birthday);
+                    params.put("user_phone", user_phone);
+                    params.put("vcode", vcode);
+                    params.put("head_portrait", head_portrait);
+                    RequestChage(params);//修改
                 }
                 break;
             case R.id.linearLayout1:
@@ -232,31 +206,33 @@ public class MyProfileActivity extends BaseActivity {
                 break;
             case R.id.textView1:
                 //获取验证码
-                phonenum = editText2.getText().toString().trim();
-                if (TextUtils.isEmpty(phonenum)) {
+                user_phone = editText2.getText().toString().trim();
+                if (TextUtils.isEmpty(user_phone)) {
                     myToast("请输入手机号");
                 } else {
                     showProgress(true, "正在获取短信验证码...");
                     textView1.setClickable(false);
                     HashMap<String, String> params = new HashMap<>();
-                    params.put("user_phone", phonenum);
+                    params.put("user_phone", user_phone);
 //                    params.put("type", "1");
                     RequestCode(params);//获取验证码
                 }
                 break;
             case R.id.ll_nan:
                 //男
+                u_gender = "男";
                 iv_nan.setImageResource(R.mipmap.ic_xuanzhong);
                 iv_nv.setImageResource(R.mipmap.ic_weixuan);
                 break;
             case R.id.ll_nv:
                 //女
+                u_gender = "女";
                 iv_nan.setImageResource(R.mipmap.ic_weixuan);
                 iv_nv.setImageResource(R.mipmap.ic_xuanzhong);
                 break;
             case R.id.textView2:
                 //年龄
-                setDate("请选择出生日期",textView2);
+                setDate("请选择出生日期", textView2);
                 break;
         }
     }
@@ -288,7 +264,39 @@ public class MyProfileActivity extends BaseActivity {
         });
     }
 
-    //修改信息
+    /**
+     * 修改信息
+     *
+     * @param params
+     */
+    private void RequestChage(Map<String, String> params) {
+        OkhttpUtil.okHttpPost(URLs.ChageProfile, params, headerMap, new CallBackUtil<Object>() {
+            @Override
+            public Object onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+                hideProgress();
+                myToast(err);
+            }
+
+            @Override
+            public void onResponse(Object response) {
+                hideProgress();
+                myToast("修改成功");
+                finish();
+            }
+        });
+    }
+
+    /**
+     * 上传文件 map 方式 暂时不用，用下面list方式
+     *
+     * @param fileMap
+     * @param params
+     */
     private void RequestUpFile(Map<String, File> fileMap, Map<String, String> params) {
         OkhttpUtil.okHttpUploadMapFile(URLs.UpFile, fileMap, "image", params, headerMap, new CallBackUtil() {
             @Override
@@ -312,10 +320,17 @@ public class MyProfileActivity extends BaseActivity {
         });
     }
 
+    /**
+     * 上传文件 list 方式
+     *
+     * @param params
+     * @param fileList
+     * @param fileKey
+     */
     private void RequestUpFile(Map<String, String> params, List<File> fileList, String fileKey) {
-        OkhttpUtil.okHttpUploadListFile(URLs.UpFile, params, fileList, fileKey, "image", headerMap, new CallBackUtil() {
+        OkhttpUtil.okHttpUploadListFile(URLs.UpFile, params, fileList, fileKey, "image", headerMap, new CallBackUtil<UpFileModel>() {
             @Override
-            public Object onParseResponse(Call call, Response response) {
+            public UpFileModel onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -328,18 +343,36 @@ public class MyProfileActivity extends BaseActivity {
             }
 
             @Override
-            public void onResponse(Object response) {
-                myToast("头像修改成功");
+            public void onResponse(UpFileModel response) {
+//                myToast("头像修改成功");
+                for (String s : response.getList()) {
+                    head_portrait = s;
+                }
             }
         });
     }
 
     private boolean match() {
-//        phonenum = textView2.getText().toString().trim();
-        /*if (TextUtils.isEmpty(phonenum)) {
-            myToast("请输入新手机号码");
+        user_name = editText1.getText().toString().trim();
+        if (TextUtils.isEmpty(user_name)) {
+            myToast("请输入姓名");
             return false;
-        }*/
+        }
+        user_phone = editText2.getText().toString().trim();
+        if (TextUtils.isEmpty(user_phone)) {
+            myToast("请输入手机号");
+            return false;
+        }
+        vcode = editText3.getText().toString().trim();
+        if (TextUtils.isEmpty(vcode)) {
+            myToast("请输入验证码");
+            return false;
+        }
+        birthday = textView2.getText().toString().trim();
+        if (TextUtils.isEmpty(birthday)) {
+            myToast("请选择出生日期");
+            return false;
+        }
         return true;
     }
 
@@ -428,6 +461,7 @@ public class MyProfileActivity extends BaseActivity {
         }
         pvTime1.show();
     }
+
     /**
      * *****************************************选择图片********************************************
      */
@@ -490,7 +524,7 @@ public class MyProfileActivity extends BaseActivity {
                     Map<String, String> params = new HashMap<>();
                     params.put("sn", "773EDB6D2715FACF9C93354CAC5B1A3372872DC4D5AC085867C7490E9984D33E");
 //                    RequestUpFile(fileMap, params);
-                    RequestUpFile(params,listFiles,"picture");
+                    RequestUpFile(params, listFiles, "picture");
 
                 } catch (IOException e) {
                     e.printStackTrace();

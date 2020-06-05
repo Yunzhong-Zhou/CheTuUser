@@ -57,6 +57,10 @@ public class URLs {
      */
     public static final String Fragment4 = HOST+"/api/v1/user/get_user_info";
     /**
+     * 修改个人信息
+     */
+    public static final String ChageProfile = HOST+"/api/v1/user/user_setup";
+    /**
      * 意见反馈分类
      */
     public static final String FeedBack_List = HOST+"/api/v1/public/get_feedback_classify_list";
