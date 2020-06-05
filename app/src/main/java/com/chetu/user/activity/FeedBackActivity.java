@@ -3,6 +3,7 @@ package com.chetu.user.activity;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -104,9 +105,10 @@ public class FeedBackActivity extends BaseActivity {
                 dialog1.contentView(R.layout.dialog_list)
                         .layoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                                 ViewGroup.LayoutParams.WRAP_CONTENT))
-                        .animType(BaseDialog.AnimInType.CENTER)
+                        .animType(BaseDialog.AnimInType.BOTTOM)
                         .canceledOnTouchOutside(true)
-                        .dimAmount(0.8f)
+                        .gravity(Gravity.BOTTOM)
+                        .dimAmount(0.7f)
                         .show();
                 TextView title = dialog1.findViewById(R.id.textView1);
                 title.setText("请选择反馈类型");
@@ -133,10 +135,8 @@ public class FeedBackActivity extends BaseActivity {
                     @Override
                     public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
                         i1 = i;
-                        v_classify = list.get(i).getYUserFeedbackClassifyId() + "";
                         adapter.notifyDataSetChanged();
-                        textView.setText(list.get(i).getYName());
-                        dialog1.dismiss();
+//                        dialog1.dismiss();
                     }
 
                     @Override
@@ -145,9 +145,11 @@ public class FeedBackActivity extends BaseActivity {
                     }
                 });
                 rv.setAdapter(adapter);
-                dialog1.findViewById(R.id.dismiss).setOnClickListener(new View.OnClickListener() {
+                dialog1.findViewById(R.id.tv_confirm).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        v_classify = list.get(i1).getYUserFeedbackClassifyId() + "";
+                        textView.setText(list.get(i1).getYName());
                         dialog1.dismiss();
                     }
                 });

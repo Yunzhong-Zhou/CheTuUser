@@ -41,13 +41,13 @@ public abstract class CallBackUtil<T> {
     public static Handler mMainHandler = new Handler(Looper.getMainLooper());
 
     /**
-     *下载进度
+     * 下载进度
      */
     public void onProgress(float progress, long total) {
     }
 
     /**
-     *请求错误
+     * 请求错误
      */
     public void onError(final Call call, final Exception e) {
         mMainHandler.post(new Runnable() {
@@ -59,7 +59,7 @@ public abstract class CallBackUtil<T> {
     }
 
     /**
-     *请求成功
+     * 请求成功
      */
     public void onSeccess(Call call, Response response) {
         mType = getSuperclassTypeParameter(getClass());
@@ -72,22 +72,35 @@ public abstract class CallBackUtil<T> {
                 int result_code = mJsonObject.getInt("code");
                 switch (result_code) {
                     case 200:
-                        String result = mJsonObject.getString("data");
-                        //数据请求成功-解析数据
-                        if (mType == String.class) {
+                        if (string.indexOf("data") != -1) {
+                            //包含data 解析data
+                            String result = mJsonObject.getString("data");
+                            //数据请求成功-解析数据
+                            if (mType == String.class) {
+                                mMainHandler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+//                                    T obj = onParseResponse(call, response);
+                                        onResponse((T) result);
+                                    }
+                                });
+                            } else {
+                                mMainHandler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Object o = mGson.fromJson(result, mType);
+                                        onResponse((T) o);
+                                    }
+                                });
+                            }
+                        } else {
+                            //不包含data -解析message
+                            String msg = mJsonObject.getString("message");
                             mMainHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
 //                                    T obj = onParseResponse(call, response);
-                                    onResponse((T) result);
-                                }
-                            });
-                        } else {
-                            mMainHandler.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Object o = mGson.fromJson(result, mType);
-                                    onResponse((T) o);
+                                    onResponse((T) msg);
                                 }
                             });
                         }
@@ -154,7 +167,7 @@ public abstract class CallBackUtil<T> {
     }
 
     /**
-     *判断传入数据类型
+     * 判断传入数据类型
      */
     static Type getSuperclassTypeParameter(Class<?> subclass) {
         Type superclass = subclass.getGenericSuperclass();
@@ -280,6 +293,7 @@ public abstract class CallBackUtil<T> {
     public static abstract class CallBackFile extends CallBackUtil<File> {
         private final String mDestFileDir;
         private final String mdestFileName;
+
         /**
          * @param destFileDir:文件目录
          * @param destFileName：文件名

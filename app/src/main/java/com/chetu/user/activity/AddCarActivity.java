@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -14,6 +15,8 @@ import android.widget.TextView;
 import com.chetu.user.R;
 import com.chetu.user.base.BaseActivity;
 import com.chetu.user.model.AddCarModelBean;
+import com.chetu.user.model.BaoXianModel;
+import com.chetu.user.model.CarDetailModel;
 import com.chetu.user.model.CodeModel;
 import com.chetu.user.net.URLs;
 import com.chetu.user.okhttp.CallBackUtil;
@@ -21,12 +24,17 @@ import com.chetu.user.okhttp.OkhttpUtil;
 import com.cy.cyflowlayoutlibrary.FlowLayout;
 import com.cy.cyflowlayoutlibrary.FlowLayoutAdapter;
 import com.cy.dialog.BaseDialog;
+import com.zhy.adapter.recyclerview.CommonAdapter;
+import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
+import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -34,10 +42,11 @@ import okhttp3.Response;
  * Created by zyz on 2020/6/1.
  */
 public class AddCarActivity extends BaseActivity {
-    String y_sedan_brand_id = "", user_phone = "", v_code = "", s_number = "";
+    String y_user_sedan_id = "", y_sedan_brand_id = "", user_phone = "", v_code = "", s_number = "",
+            y_report_police_id = "0", j_report_police_id = "0";
     private TimeCount time;
 
-    int s_cy = 2;
+    int s_cy = 2, is_f = 2;//1为个人  2为公司  1为默认
     TextView tv_pingpai, tv_chepai, tv_yanzhengma, tv_shangyexian, tv_jiaoqiangxian, tv_confirm;
     EditText et_carnum, et_phone, et_code;
     LinearLayout ll_geren, ll_gongsi;
@@ -46,6 +55,11 @@ public class AddCarActivity extends BaseActivity {
     FlowLayoutAdapter<String> flowLayoutAdapter;
     List<String> stringList = new ArrayList<>();
     int i = 19;
+
+    //保险数据
+    List<BaoXianModel.ListBean> list_sy = new ArrayList<>();
+    List<BaoXianModel.ListBean> list_jq = new ArrayList<>();
+    int i1 = -1, i2 = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,6 +120,49 @@ public class AddCarActivity extends BaseActivity {
         stringList.add("青");
         stringList.add("宁");
         stringList.add("新");
+
+        y_user_sedan_id = getIntent().getStringExtra("y_user_sedan_id");
+        if (!y_user_sedan_id.equals("")) {
+            requestServer();
+        }
+    }
+
+    @Override
+    public void requestServer() {
+        super.requestServer();
+//        this.showLoadingPage();
+        showProgress(true, getString(R.string.app_loading));
+        Map<String, String> params = new HashMap<>();
+        params.put("y_user_sedan_id", y_user_sedan_id + "");
+        params.put("u_token", localUserInfo.getToken());
+        Request(params);
+    }
+
+    /**
+     * 获取车辆详情及保险列表
+     *
+     * @param params
+     */
+    private void Request(Map<String, String> params) {
+        OkhttpUtil.okHttpPost(URLs.MyCarDetail, params, headerMap, new CallBackUtil<CarDetailModel>() {
+            @Override
+            public CarDetailModel onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+                hideProgress();
+                showEmptyPage();
+//                myToast(err);
+            }
+
+            @Override
+            public void onResponse(CarDetailModel response) {
+                hideProgress();
+
+            }
+        });
     }
 
     @Override
@@ -177,7 +234,13 @@ public class AddCarActivity extends BaseActivity {
                 break;
             case R.id.iv_moren:
                 //是否默认
-
+                if (is_f == 1) {
+                    is_f = 2;
+                    iv_moren.setImageResource(R.mipmap.ic_fou);
+                } else {
+                    is_f = 1;
+                    iv_moren.setImageResource(R.mipmap.ic_shi);
+                }
                 break;
             case R.id.tv_yanzhengma:
                 //验证码
@@ -187,19 +250,32 @@ public class AddCarActivity extends BaseActivity {
                 } else {
                     showProgress(true, "正在获取短信验证码...");
                     tv_yanzhengma.setClickable(false);
-                    HashMap<String, String> params = new HashMap<>();
-                    params.put("user_phone", user_phone);
+                    HashMap<String, String> params1 = new HashMap<>();
+                    params1.put("user_phone", user_phone);
 //                    params.put("type", "1");
-                    RequestCode(params);//获取验证码
+                    RequestCode(params1);//获取验证码
                 }
                 break;
             case R.id.tv_shangyexian:
                 //商业险
+                if (list_sy.size() > 0) {
+                    showDialog_sy();
+                } else {
+                    HashMap<String, String> params2 = new HashMap<>();
+                    params2.put("i_cy", "1");//1为普通保险 2为交强险
+                    RequestBaoXian(params2, 1);
+                }
 
                 break;
             case R.id.tv_jiaoqiangxian:
                 //交强险
-
+                if (list_jq.size() > 0) {
+                    showDialog_jq();
+                } else {
+                    HashMap<String, String> params2 = new HashMap<>();
+                    params2.put("i_cy", "2");//1为普通保险 2为交强险
+                    RequestBaoXian(params2, 2);
+                }
                 break;
             case R.id.tv_confirm:
                 //提交
@@ -211,7 +287,9 @@ public class AddCarActivity extends BaseActivity {
                     params.put("s_cy", s_cy + "");//1为个人  2为公司
                     params.put("user_phone", user_phone);
                     params.put("v_code", v_code);
-
+                    params.put("is_f", is_f + "");//1为默认
+                    params.put("y_report_police_id", y_report_police_id);//保险公司id
+                    params.put("j_report_police_id", j_report_police_id);//交强险公司id
                     params.put("u_token", localUserInfo.getToken());
                     RequestUpData(params);
                 }
@@ -240,6 +318,11 @@ public class AddCarActivity extends BaseActivity {
         return true;
     }
 
+    /**
+     * 获取验证码
+     *
+     * @param params
+     */
     private void RequestCode(Map<String, String> params) {
         OkhttpUtil.okHttpPost(URLs.Code, params, headerMap, new CallBackUtil<CodeModel>() {
             @Override
@@ -251,9 +334,7 @@ public class AddCarActivity extends BaseActivity {
             public void onFailure(Call call, Exception e, String err) {
                 hideProgress();
                 tv_yanzhengma.setClickable(true);
-                if (!err.equals("")) {
-                    showToast(err);
-                }
+                showToast(err);
             }
 
             @Override
@@ -290,6 +371,159 @@ public class AddCarActivity extends BaseActivity {
                 hideProgress();
                 myToast("添加成功");
                 finish();
+            }
+        });
+    }
+
+    /**
+     * 获取商业险
+     *
+     * @param params
+     */
+    private void RequestBaoXian(Map<String, String> params, int type) {
+        OkhttpUtil.okHttpPost(URLs.BaoXian, params, headerMap, new CallBackUtil<BaoXianModel>() {
+            @Override
+            public BaoXianModel onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+                hideProgress();
+                myToast(err);
+            }
+
+            @Override
+            public void onResponse(BaoXianModel response) {
+                hideProgress();
+                if (type == 1) {
+                    list_sy = response.getList();
+                    showDialog_sy();
+                } else {
+                    list_jq = response.getList();
+                    showDialog_jq();
+                }
+
+            }
+        });
+    }
+
+    /**
+     * 显示商业险弹窗
+     */
+    private void showDialog_sy() {
+        BaseDialog dialog1 = new BaseDialog(AddCarActivity.this);
+        dialog1.contentView(R.layout.dialog_list)
+                .layoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT))
+                .animType(BaseDialog.AnimInType.BOTTOM)
+                .canceledOnTouchOutside(true)
+                .gravity(Gravity.BOTTOM)
+                .dimAmount(0.7f)
+                .show();
+        TextView title = dialog1.findViewById(R.id.textView1);
+        title.setText("请选择商业保险公司");
+        RecyclerView rv = dialog1.findViewById(R.id.recyclerView);
+        rv.setLayoutManager(new LinearLayoutManager(AddCarActivity.this));
+
+        CommonAdapter<BaoXianModel.ListBean> adapter = new CommonAdapter<BaoXianModel.ListBean>
+                (AddCarActivity.this, R.layout.item_dialog_list, list_sy) {
+            @Override
+            protected void convert(ViewHolder holder, BaoXianModel.ListBean model, int position) {
+                TextView tv = holder.getView(R.id.textView);
+                ImageView iv = holder.getView(R.id.imageView);
+                tv.setText(model.getVName());
+                if (position == i1) {
+                    tv.setTextColor(getResources().getColor(R.color.blue));
+                    iv.setImageResource(R.mipmap.ic_xuanzhong);
+                } else {
+                    tv.setTextColor(getResources().getColor(R.color.black1));
+                    iv.setImageResource(R.mipmap.ic_weixuan);
+                }
+            }
+        };
+        adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                i1 = i;
+                adapter.notifyDataSetChanged();
+//                        dialog1.dismiss();
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                return false;
+            }
+        });
+        rv.setAdapter(adapter);
+        dialog1.findViewById(R.id.tv_confirm).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (i1 != -1) {
+                    y_report_police_id = list_sy.get(i1).getYReportPoliceId() + "";
+                    tv_shangyexian.setText(list_sy.get(i1).getVName());
+                }
+                dialog1.dismiss();
+            }
+        });
+    }
+
+    /**
+     * 显示交强险弹窗
+     */
+    private void showDialog_jq() {
+        BaseDialog dialog1 = new BaseDialog(AddCarActivity.this);
+        dialog1.contentView(R.layout.dialog_list)
+                .layoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT))
+                .animType(BaseDialog.AnimInType.BOTTOM)
+                .canceledOnTouchOutside(true)
+                .gravity(Gravity.BOTTOM)
+                .dimAmount(0.7f)
+                .show();
+        TextView title = dialog1.findViewById(R.id.textView1);
+        title.setText("请选择机动车交通事故责任强制保险");
+        RecyclerView rv = dialog1.findViewById(R.id.recyclerView);
+        rv.setLayoutManager(new LinearLayoutManager(AddCarActivity.this));
+
+        CommonAdapter<BaoXianModel.ListBean> adapter = new CommonAdapter<BaoXianModel.ListBean>
+                (AddCarActivity.this, R.layout.item_dialog_list, list_jq) {
+            @Override
+            protected void convert(ViewHolder holder, BaoXianModel.ListBean model, int position) {
+                TextView tv = holder.getView(R.id.textView);
+                ImageView iv = holder.getView(R.id.imageView);
+                tv.setText(model.getVName());
+                if (position == i2) {
+                    tv.setTextColor(getResources().getColor(R.color.blue));
+                    iv.setImageResource(R.mipmap.ic_xuanzhong);
+                } else {
+                    tv.setTextColor(getResources().getColor(R.color.black1));
+                    iv.setImageResource(R.mipmap.ic_weixuan);
+                }
+            }
+        };
+        adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                i2 = i;
+                adapter.notifyDataSetChanged();
+//                        dialog1.dismiss();
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                return false;
+            }
+        });
+        rv.setAdapter(adapter);
+        dialog1.findViewById(R.id.tv_confirm).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (i2 != -1) {
+                    j_report_police_id = list_jq.get(i2).getYReportPoliceId() + "";
+                    tv_jiaoqiangxian.setText(list_jq.get(i2).getVName());
+                }
+                dialog1.dismiss();
             }
         });
     }

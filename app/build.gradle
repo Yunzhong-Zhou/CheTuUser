@@ -31,15 +31,15 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
-    /*//签名
+    //签名
     signingConfigs {
         release {
-            keyAlias 'lenglianpeisong'
+            keyAlias 'chetuuser'
             keyPassword '123456'
-            storeFile file('/Users/YunZhong/Desktop/鲜鲜拉/lenglianpeisong.jks')
+            storeFile file('/Users/YunZhong/Desktop/车途/chetuuser.keystore')
             storePassword '123456'
         }
-//        keytool -list -v -keystore /Users/YunZhong/Desktop/鲜鲜拉/lenglianpeisong.jks -alias lenglianpeisong -storepass 123456 -keypass 123456
+//        keytool -list -v -keystore /Users/YunZhong/Desktop/车途/chetuuser.keystore -alias chetuuser -storepass 123456 -keypass 123456
     }
     buildTypes {
         release {
@@ -55,7 +55,7 @@ android {
             minifyEnabled false
             signingConfig signingConfigs.release
         }
-    }*/
+    }
 }
 
 repositories {
@@ -104,6 +104,9 @@ dependencies {
     implementation 'com.gyf.immersionbar:immersionbar:3.0.0'
     // fragment快速实现（可选）
 //    implementation 'com.gyf.immersionbar:immersionbar-components:3.0.0-beta03'
+
+    //自定义阴影库
+    implementation 'com.lijiankun24:shadowlayout:1.1.0'
 
     //底部选项栏
     implementation 'com.hjm:BottomTabBar:1.2.2'

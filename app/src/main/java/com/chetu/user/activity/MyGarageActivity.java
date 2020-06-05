@@ -2,11 +2,14 @@ package com.chetu.user.activity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.chetu.user.R;
 import com.chetu.user.base.BaseActivity;
-import com.chetu.user.model.Fragment2Model;
+import com.chetu.user.model.MyGarageModel;
 import com.chetu.user.net.URLs;
 import com.chetu.user.okhttp.CallBackUtil;
 import com.chetu.user.okhttp.OkhttpUtil;
@@ -33,10 +36,11 @@ import okhttp3.Response;
 public class MyGarageActivity extends BaseActivity {
     int page = 0;
     private RecyclerView recyclerView;
-    List<Fragment2Model.ListBean> list = new ArrayList<>();
-    CommonAdapter<Fragment2Model.ListBean> mAdapter;
+    List<MyGarageModel.ListBean> list = new ArrayList<>();
+    CommonAdapter<MyGarageModel.ListBean> mAdapter;
 
     TextView tv_addcar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,20 +66,20 @@ public class MyGarageActivity extends BaseActivity {
         springView.setListener(new SpringView.OnFreshListener() {
             @Override
             public void onRefresh() {
-                page = 0;
+//                page = 0;
                 Map<String, String> params = new HashMap<>();
-                params.put("page", page + "");
+//                params.put("page", page + "");
                 params.put("u_token", localUserInfo.getToken());
                 Request(params);
             }
 
             @Override
             public void onLoadmore() {
-                page++;
+                /*page++;
                 Map<String, String> params = new HashMap<>();
                 params.put("u_token", localUserInfo.getToken());
                 params.put("page", page + "");
-                RequestMore(params);
+                RequestMore(params);*/
             }
         });
 
@@ -87,7 +91,9 @@ public class MyGarageActivity extends BaseActivity {
         tv_addcar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CommonUtil.gotoActivity(MyGarageActivity.this, AddCarActivity.class,false);
+                Bundle bundle = new Bundle();
+                bundle.putString("y_user_sedan_id", "");
+                CommonUtil.gotoActivityWithData(MyGarageActivity.this, AddCarActivity.class, bundle, false);
             }
         });
     }
@@ -100,17 +106,17 @@ public class MyGarageActivity extends BaseActivity {
     public void requestServer() {
         super.requestServer();
         this.showLoadingPage();
-        page = 0;
+//        page = 0;
         Map<String, String> params = new HashMap<>();
-        params.put("page", page + "");
+//        params.put("page", page + "");
         params.put("u_token", localUserInfo.getToken());
         Request(params);
     }
 
     private void Request(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.MyCar, params, headerMap, new CallBackUtil<Fragment2Model>() {
+        OkhttpUtil.okHttpPost(URLs.MyCar, params, headerMap, new CallBackUtil<MyGarageModel>() {
             @Override
-            public Fragment2Model onParseResponse(Call call, Response response) {
+            public MyGarageModel onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -122,35 +128,85 @@ public class MyGarageActivity extends BaseActivity {
             }
 
             @Override
-            public void onResponse(Fragment2Model response) {
+            public void onResponse(MyGarageModel response) {
                 hideProgress();
                 list = response.getList();
                 if (list.size() > 0) {
                     showContentPage();
-                    mAdapter = new CommonAdapter<Fragment2Model.ListBean>
+                    mAdapter = new CommonAdapter<MyGarageModel.ListBean>
                             (MyGarageActivity.this, R.layout.item_mygarage, list) {
                         @Override
-                        protected void convert(ViewHolder holder, Fragment2Model.ListBean model, int position) {
-                       /* TextView tv1 = holder.getView(R.id.tv1);
-                        TextView tv2 = holder.getView(R.id.tv2);
-                        LinearLayout ll = holder.getView(R.id.ll);
-                        tv1.setText(model.getName());
-                        tv2.setText(model.getName());
+                        protected void convert(ViewHolder holder, MyGarageModel.ListBean model, int position) {
+                            //logo
+                            ImageView imageView1 = holder.getView(R.id.imageView1);
+                            Glide.with(MyGarageActivity.this).load(URLs.IMGHOST + model.getSLogo())
+                                    .centerCrop()
+//                            .placeholder(R.mipmap.headimg)//加载站位图
+//                            .error(R.mipmap.headimg)//加载失败
+                                    .into(imageView1);//加载图片
 
-                        if (item == position) {
-                            ll.setVisibility(View.VISIBLE);
-                            tv1.setVisibility(View.GONE);
-                        } else {
-                            ll.setVisibility(View.GONE);
-                            tv1.setVisibility(View.VISIBLE);
-                        }*/
+                            holder.setText(R.id.tv_carname, model.getBrandInfo().getGroupName()
+                                    + "-" + model.getBrandInfo().getSeriesName());//车品牌
+                            holder.setText(R.id.tv_carnum, model.getSNumber());//车牌
+                            holder.setText(R.id.tv_cardetail, model.getBrandInfo().getSName());//具体型号
+                            //是否默认
+                            TextView tv_moren = holder.getView(R.id.tv_moren);
+                            if (model.getIsF() == 1)
+                                tv_moren.setVisibility(View.VISIBLE);
+                            else
+                                tv_moren.setVisibility(View.GONE);
+                            //是否填写保险
+                            LinearLayout ll_baoxian = holder.getView(R.id.ll_baoxian);
+                            if (model.getPoliceInfo() == null || model.getJpoliceInfo() == null) {
+                                ll_baoxian.setVisibility(View.GONE);
+                            } else {
+                                //商业险
+                                if (model.getPoliceInfo() != null) {
+                                    holder.setText(R.id.tv_shangyexian, "商业险：" + model.getPoliceInfo().getVName());
+                                    holder.setText(R.id.tv_syphone, "电话：" + model.getPoliceInfo().getTelephone());
+                                }
+                                //交强险
+                                if (model.getPoliceInfo() != null) {
+                                    holder.setText(R.id.tv_jiaoqiangxian, "交强险：" + model.getJpoliceInfo().getVName());
+                                    holder.setText(R.id.tv_jqphone, "电话：" + model.getJpoliceInfo().getTelephone());
+                                }
+                            }
+                            //归属
+                            if (model.getSCy() == 1)
+                                holder.setText(R.id.tv_guishu, "归属：个人");
+                            else
+                                holder.setText(R.id.tv_guishu, "归属：公司");
+
+                            //编辑
+                            holder.getView(R.id.tv_edit).setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString("y_user_sedan_id", model.getYUserSedanId());
+                                    CommonUtil.gotoActivityWithData(MyGarageActivity.this, AddCarActivity.class, bundle, false);
+                                }
+                            });
+
+                            //删除
+                            holder.getView(R.id.tv_delete).setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    showProgress(true, "正在删除...");
+                                    HashMap<String, String> params2 = new HashMap<>();
+                                    params2.put("y_user_sedan_id", model.getYUserSedanId());
+                                    params2.put("u_token", localUserInfo.getToken());
+                                    RequestDelete(params2);
+                                }
+                            });
 
                         }
                     };
                     mAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
                         @Override
                         public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
-
+                            Bundle bundle = new Bundle();
+                            bundle.putString("y_user_sedan_id", list.get(i).getYUserSedanId());
+                            CommonUtil.gotoActivityWithData(MyGarageActivity.this, AddCarActivity.class, bundle, false);
                         }
 
                         @Override
@@ -166,10 +222,42 @@ public class MyGarageActivity extends BaseActivity {
         });
     }
 
-    private void RequestMore(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.MyCar, params, headerMap, new CallBackUtil<Fragment2Model>() {
+    /**
+     * 删除车辆
+     *
+     * @param params
+     */
+    private void RequestDelete(HashMap<String, String> params) {
+        OkhttpUtil.okHttpPost(URLs.DeleteCar, params, headerMap, new CallBackUtil<Object>() {
             @Override
-            public Fragment2Model onParseResponse(Call call, Response response) {
+            public Object onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+                hideProgress();
+                myToast(err);
+            }
+
+            @Override
+            public void onResponse(Object response) {
+                hideProgress();
+                myToast("删除成功");
+                requestServer();
+            }
+        });
+    }
+
+    /**
+     * 加载更多-暂时无用
+     *
+     * @param params
+     */
+    private void RequestMore(Map<String, String> params) {
+        OkhttpUtil.okHttpPost(URLs.MyCar, params, headerMap, new CallBackUtil<MyGarageModel>() {
+            @Override
+            public MyGarageModel onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -181,9 +269,9 @@ public class MyGarageActivity extends BaseActivity {
             }
 
             @Override
-            public void onResponse(Fragment2Model response) {
+            public void onResponse(MyGarageModel response) {
                 hideProgress();
-                List<Fragment2Model.ListBean> list1 = new ArrayList<>();
+                List<MyGarageModel.ListBean> list1 = new ArrayList<>();
                 list1 = response.getList();
                 if (list1.size() == 0) {
                     page--;
@@ -207,7 +295,7 @@ public class MyGarageActivity extends BaseActivity {
             }
         });
         titleView.setBackground(R.color.blue);
-        titleView.showRightTextview("编辑",R.color.white, new View.OnClickListener() {
+        titleView.showRightTextview("编辑", R.color.white, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 

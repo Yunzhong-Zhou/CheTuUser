@@ -4,25 +4,32 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/background">
-
-    <com.chetu.user.view.LoadingLayout
-        android:id="@+id/loading_layout"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1">
-
-        <com.liaoinstan.springview.widget.SpringView
-            android:id="@+id/springView"
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@mipmap/bg_mygarage"/>
+        <com.chetu.user.view.LoadingLayout
+            android:id="@+id/loading_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
+            <com.liaoinstan.springview.widget.SpringView
+                android:id="@+id/springView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent">
 
-        </com.liaoinstan.springview.widget.SpringView>
-    </com.chetu.user.view.LoadingLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </com.liaoinstan.springview.widget.SpringView>
+        </com.chetu.user.view.LoadingLayout>
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/tv_addcar"

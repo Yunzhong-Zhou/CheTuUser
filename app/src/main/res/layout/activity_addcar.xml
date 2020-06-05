@@ -104,7 +104,7 @@
                     android:layout_weight="1"
                     android:background="@color/transparent"
                     android:hint="输入车牌号"
-                    android:lines="1"
+                    android:singleLine="true"
                     android:paddingTop="15dp"
                     android:paddingBottom="15dp"
                     android:textColor="@color/black"

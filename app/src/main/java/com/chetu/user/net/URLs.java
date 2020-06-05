@@ -45,6 +45,10 @@ public class URLs {
      */
     public static final String UpFile = HOST+"/upload/picture";
     /**
+     * 保险
+     */
+    public static final String BaoXian = HOST+"/api/v1/public/user_report_police_list";
+    /**
      * *********************************门店*****************************************
      */
     public static final String Fragment3 = HOST+"/api/v1/public/get_store_list";
@@ -65,6 +69,10 @@ public class URLs {
      */
     public static final String MyCar = HOST+"/api/v1/user/user_sedan_list";
     /**
+     * 我的车辆详情
+     */
+    public static final String MyCarDetail = HOST+"/api/v1/user/user_sedan_details";
+    /**
      * 获取汽车品牌
      */
     public static final String CarNameList = HOST+"/api/v1/public/user_sedan_brand_list";
@@ -72,6 +80,10 @@ public class URLs {
      * 添加车辆
      */
     public static final String AddCar = HOST+"/api/v1/user/user_sedan_add";
+    /**
+     * 删除车辆
+     */
+    public static final String DeleteCar = HOST+"/api/v1/user/user_sedan_del";
     /**
      * 足迹列表
      */

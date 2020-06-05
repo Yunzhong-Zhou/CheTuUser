@@ -189,14 +189,23 @@ public class Fragment4 extends BaseFragment {
             @Override
             public void onResponse(Fragment4Model response) {
                 hideProgress();
-                //头像
-                /*localUserInfo.setUserImage(response.getUser_info().);
-                if (!response.getHead().equals("") && getActivity() != null)
-                    Glide.with(getActivity()).load(IMGHOST + response.getHead())
+                //保存头像
+                localUserInfo.setUserImage(response.getUser_info().getHeadPortrait());
+                if (!response.getUser_info().getHeadPortrait().equals("") && getActivity() != null)
+                    Glide.with(getActivity()).load(IMGHOST + response.getUser_info().getHeadPortrait())
                             .centerCrop()
 //                            .placeholder(R.mipmap.headimg)//加载站位图
 //                            .error(R.mipmap.headimg)//加载失败
-                            .into(imageView1);//加载图片*/
+                            .into(imageView1);//加载图片
+                //保存昵称
+                localUserInfo.setNickname(response.getUser_info().getUserName());
+                if (!localUserInfo.getNickname().equals("")) {
+                    textView3.setText(localUserInfo.getNickname());
+                }
+                //保存电话号码
+                localUserInfo.setPhoneNumber(response.getUser_info().getUserPhone());
+                textView4.setText(localUserInfo.getPhonenumber());
+
 
             }
         });

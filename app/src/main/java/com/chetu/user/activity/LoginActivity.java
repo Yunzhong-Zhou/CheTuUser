@@ -232,11 +232,14 @@ public class LoginActivity extends BaseActivity {
                 //保存Token
                 localUserInfo.setToken(response.getUser_info().getUToken());
                 //保存电话号码
-//                localUserInfo.setPhoneNumber(response.getMobile());
+                localUserInfo.setPhoneNumber(response.getUser_info().getUserPhone());
                 //保存是否认证
 //                localUserInfo.setIsVerified(response.getIs_certification() + "");//1 认证 2 未认证
                 //保存昵称
                 localUserInfo.setNickname(response.getUser_info().getUserName());
+                //保存头像
+                localUserInfo.setUserImage(response.getUser_info().getHeadPortrait());
+
 
                 hideProgress();
                 CommonUtil.gotoActivity(LoginActivity.this, MainActivity.class, true);

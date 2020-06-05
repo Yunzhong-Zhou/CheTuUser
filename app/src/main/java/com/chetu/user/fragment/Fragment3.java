@@ -435,23 +435,45 @@ public class Fragment3 extends BaseFragment {
                 return true;
             }
         });
-        // 设置按钮的点击事件
-        ListView pop_listView = (ListView) contentView.findViewById(R.id.pop_listView1);
-        contentView.findViewById(R.id.pop_listView2).setVisibility(View.INVISIBLE);
-        final List<String> list = new ArrayList<String>();
-        list.add(getString(R.string.app_type_quanbu));
-        list.add(getString(R.string.app_type_CNY));
-        list.add(getString(R.string.app_type_USDT));
-        list.add(getString(R.string.app_type_BWIN));
+        // 左边列表
+        ListView pop_listView1 = (ListView) contentView.findViewById(R.id.pop_listView1);
+//        contentView.findViewById(R.id.pop_listView2).setVisibility(View.INVISIBLE);
+        final List<String> list1 = new ArrayList<String>();
 
-        final Pop_ListAdapter adapter = new Pop_ListAdapter(getActivity(), list);
-        adapter.setSelectItem(i1);
-        pop_listView.setAdapter(adapter);
-        pop_listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+        final Pop_ListAdapter adapter1 = new Pop_ListAdapter(getActivity(), list1);
+        adapter1.setSelectItem(i1);
+        pop_listView1.setAdapter(adapter1);
+        pop_listView1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                adapter.setSelectItem(i);
-                adapter.notifyDataSetChanged();
+                adapter1.setSelectItem(i);
+                adapter1.notifyDataSetChanged();
+                i1 = i;
+               /* if (i == 0) {
+                    money_type = "";
+                } else {
+                    money_type = i + "";
+                }
+                textView1.setText(list.get(i));*/
+                requestServer();
+                popupWindow.dismiss();
+            }
+        });
+        // 由边列表
+        ListView pop_listView2 = (ListView) contentView.findViewById(R.id.pop_listView2);
+//        contentView.findViewById(R.id.pop_listView2).setVisibility(View.INVISIBLE);
+        final List<String> list2 = new ArrayList<String>();
+
+
+        final Pop_ListAdapter adapter2 = new Pop_ListAdapter(getActivity(), list2);
+        adapter2.setSelectItem(i2);
+        pop_listView2.setAdapter(adapter2);
+        pop_listView2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                adapter2.setSelectItem(i);
+                adapter2.notifyDataSetChanged();
                 i1 = i;
                /* if (i == 0) {
                     money_type = "";
