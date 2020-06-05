@@ -2,7 +2,6 @@ package com.chetu.user.fragment;
 
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -32,12 +31,6 @@ import com.chetu.user.utils.CommonUtil;
 import com.chetu.user.utils.MyLogger;
 import com.chetu.user.view.FixedPopupWindow;
 import com.liaoinstan.springview.widget.SpringView;
-import com.zaaach.citypicker.CityPicker;
-import com.zaaach.citypicker.adapter.OnPickListener;
-import com.zaaach.citypicker.model.City;
-import com.zaaach.citypicker.model.HotCity;
-import com.zaaach.citypicker.model.LocateState;
-import com.zaaach.citypicker.model.LocatedCity;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
@@ -78,8 +71,6 @@ public class Fragment3 extends BaseFragment {
     private AMapLocationClient mLocationClient = null;
     //城市选择
     TextView tv_addr;
-    List<HotCity> hotCities = new ArrayList<>();
-    String province = "", city = "", cityCode = "";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -105,13 +96,14 @@ public class Fragment3 extends BaseFragment {
         super.onResume();
         if (MainActivity.item == 2) {
             requestServer();
+            tv_addr.setText(localUserInfo.getCityname());
         }
     }
 
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-       /* if (MainActivity.item == 2) {
+        /*if (MainActivity.item == 2) {
             requestServer();
         }*/
     }
@@ -173,12 +165,6 @@ public class Fragment3 extends BaseFragment {
     @Override
     protected void initData() {
 //        requestServer();
-        //热门城市
-        hotCities.add(new HotCity("北京", "北京", "101010100")); //code为城市代码
-        hotCities.add(new HotCity("上海", "上海", "101020100"));
-        hotCities.add(new HotCity("广州", "广东", "101280101"));
-        hotCities.add(new HotCity("深圳", "广东", "101280601"));
-        hotCities.add(new HotCity("杭州", "浙江", "101210101"));
         //初始化定位
         mLocationClient = new AMapLocationClient(getActivity());
         AMapLocationClientOption option = new AMapLocationClientOption();
@@ -211,18 +197,18 @@ public class Fragment3 extends BaseFragment {
             public void onLocationChanged(AMapLocation aMapLocation) {
                 if (aMapLocation != null) {
                     if (aMapLocation.getErrorCode() == 0) {
-                        MyLogger.i(">>>>>>>>>>定位信息：\n纬度：" + aMapLocation.getLatitude()
+                        MyLogger.i("定位信息", "纬度：" + aMapLocation.getLatitude()
                                 + "\n经度:" + aMapLocation.getLongitude()
                                 + "\n地址:" + aMapLocation.getAddress());
+
 //                        register_addr = aMapLocation.getAddress();
                         longitude = aMapLocation.getLongitude() + "";
                         latitude = aMapLocation.getLatitude() + "";
 
+                        localUserInfo.setCityname(aMapLocation.getCity());
+
                         tv_addr.setText(aMapLocation.getCity() + "");
 
-                        province = aMapLocation.getProvince();//省信息
-                        city = aMapLocation.getCity();//城市信息
-                        cityCode = aMapLocation.getCityCode();//城市编码
                     } else {
                         //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
                         MyLogger.e("定位失败：", "location Error, ErrCode:"
@@ -237,7 +223,9 @@ public class Fragment3 extends BaseFragment {
         //设置场景模式后最好调用一次stop，再调用start以保证场景模式生效
 //        mLocationClient.stopLocation();
         // 在单次定位情况下，定位无论成功与否，都无需调用stopLocation()方法移除请求，定位sdk内部会移除
-        mLocationClient.startLocation();
+//        if (localUserInfo.getCityname().equals("")) {
+            mLocationClient.startLocation();
+//        }
     }
 
     @Override
@@ -245,39 +233,7 @@ public class Fragment3 extends BaseFragment {
         switch (v.getId()) {
             case R.id.tv_addr:
                 //选择地址
-                CityPicker.from(getActivity()) //activity或者fragment
-                        .enableAnimation(true)    //启用动画效果，默认无
-//                        .setAnimationStyle(anim)	//自定义动画
-//                        .setLocatedCity(new LocatedCity("杭州", "浙江", "101210101"))  //APP自身已定位的城市，传null会自动定位（默认）
-                        .setHotCities(hotCities)    //指定热门城市
-                        .setOnPickListener(new OnPickListener() {
-                            @Override
-                            public void onPick(int position, City data) {
-                                //选择的城市
-                                tv_addr.setText(data.getName() + "");
-                                city = data.getName();
-                            }
-
-                            @Override
-                            public void onCancel() {
-                                //取消
-                                /*Toast.makeText(getApplicationContext(), "取消选择", Toast.LENGTH_SHORT).show();*/
-                            }
-
-                            @Override
-                            public void onLocate() {
-                                //定位接口，需要APP自身实现，这里模拟一下定位
-                                new Handler().postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        //定位完成之后更新数据到城市选择器
-                                        CityPicker.from(getActivity()).locateComplete(new LocatedCity(province,
-                                                city, cityCode), LocateState.SUCCESS);
-                                    }
-                                }, 3000);
-                            }
-                        })
-                        .show();
+//                CommonUtil.gotoActivity(getActivity(), SelectAddressActivity.class);
                 break;
             case R.id.rl_search:
             case R.id.et_search:

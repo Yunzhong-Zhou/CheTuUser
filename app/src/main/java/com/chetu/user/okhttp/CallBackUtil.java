@@ -72,10 +72,10 @@ public abstract class CallBackUtil<T> {
                 int result_code = mJsonObject.getInt("code");
                 switch (result_code) {
                     case 200:
+                        //数据请求成功-解析数据
                         if (string.indexOf("data") != -1) {
-                            //包含data 解析data
+                            // TODO 有data数据 -解析data
                             String result = mJsonObject.getString("data");
-                            //数据请求成功-解析数据
                             if (mType == String.class) {
                                 mMainHandler.post(new Runnable() {
                                     @Override
@@ -94,7 +94,7 @@ public abstract class CallBackUtil<T> {
                                 });
                             }
                         } else {
-                            //不包含data -解析message
+                            //TODO 无data数据 -解析message
                             String msg = mJsonObject.getString("message");
                             mMainHandler.post(new Runnable() {
                                 @Override
@@ -115,11 +115,15 @@ public abstract class CallBackUtil<T> {
                         });
                         break;
                     case 700:
-                    case 500:
+//                    case 500:
                         //会员token无效 - 跳转登录
                         LocalUserInfo.getInstance(MyApplication.getContext()).setUserId("");
                         CommonUtil.gotoActivity(MyApplication.getContext(), LoginActivity.class);
                         break;
+
+                    case 400:
+                        //TODO 没有数据、提交失败 （有冲突，走失败逻辑提示message信息，请求列表数据时，不要提示）
+
                     default:
                         //数据请求失败
                         String msg = mJsonObject.getString("message");

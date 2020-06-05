@@ -82,8 +82,7 @@
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
         <activity
             android:name=".activity.MainActivity"
-            android:label="主页"
-            android:theme="@style/DefaultCityPickerTheme">
+            android:label="主页">
             <!--点击通知默认打开-->
             <intent-filter>
                 <action android:name="${applicationId}.default.MAIN" />
@@ -99,7 +98,10 @@
         <activity
             android:name=".view.zxing.CaptureActivity"
             android:label="扫一扫" />
-
+        <activity
+            android:name=".activity.SelectAddressActivity"
+            android:label="选择地址"
+            android:theme="@style/DefaultCityPickerTheme"/>
         <activity
             android:name=".activity.SearchActivity"
             android:label="搜索" />
@@ -112,7 +114,6 @@
         <activity
             android:name=".activity.StoreDetailActivity"
             android:label="门店详情" />
-
         <!--我的-->
         <activity
             android:name=".activity.SetUpActivity"
@@ -220,7 +221,7 @@
         <!--开发者申请的key-->
         <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="3e52fd1105c917923f7d4ab4fa35a661"></meta-data>
+            android:value="b1638d34f817daa6f867a7b25cd52a60"></meta-data>
         <!--全面屏适配-->
         <meta-data
             android:name="android.max_aspect"
