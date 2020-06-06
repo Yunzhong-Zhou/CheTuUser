@@ -76,7 +76,7 @@ public abstract class CallBackUtil<T> {
                         if (string.indexOf("data") != -1) {
                             // TODO 有data数据 -解析data
                             String result = mJsonObject.getString("data");
-                            if (mType == String.class) {
+                            if (mType == String.class) {//模型为string直接返回data数据
                                 mMainHandler.post(new Runnable() {
                                     @Override
                                     public void run() {
@@ -95,14 +95,25 @@ public abstract class CallBackUtil<T> {
                             }
                         } else {
                             //TODO 无data数据 -解析message
-                            String msg = mJsonObject.getString("message");
-                            mMainHandler.post(new Runnable() {
-                                @Override
-                                public void run() {
+                            if (string.indexOf("message") != -1) {
+                                //TODO 判断有无message数据 -解析message
+                                String msg = mJsonObject.getString("message");
+                                mMainHandler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
 //                                    T obj = onParseResponse(call, response);
-                                    onResponse((T) msg);
-                                }
-                            });
+                                        onResponse((T) msg);
+                                    }
+                                });
+                            }else {
+                                mMainHandler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+//                                    T obj = onParseResponse(call, response);
+                                        onResponse((T) "请求成功");
+                                    }
+                                });
+                            }
                         }
                         break;
                     case 600:
@@ -123,7 +134,6 @@ public abstract class CallBackUtil<T> {
 
                     case 400:
                         //TODO 没有数据、提交失败 （有冲突，走失败逻辑提示message信息，请求列表数据时，不要提示）
-
                     default:
                         //数据请求失败
                         String msg = mJsonObject.getString("message");

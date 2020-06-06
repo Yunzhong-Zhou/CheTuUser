@@ -90,7 +90,7 @@ public class IntegralActivity extends BaseActivity {
     }
 
     private void Request(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.Fragment3, params, headerMap, new CallBackUtil<Fragment2Model>() {
+        OkhttpUtil.okHttpPost(URLs.Integral, params, headerMap, new CallBackUtil<Fragment2Model>() {
             @Override
             public Fragment2Model onParseResponse(Call call, Response response) {
                 return null;
@@ -113,19 +113,6 @@ public class IntegralActivity extends BaseActivity {
                             (IntegralActivity.this, R.layout.item_integral, list) {
                         @Override
                         protected void convert(ViewHolder holder, Fragment2Model.ListBean model, int position) {
-                       /* TextView tv1 = holder.getView(R.id.tv1);
-                        TextView tv2 = holder.getView(R.id.tv2);
-                        LinearLayout ll = holder.getView(R.id.ll);
-                        tv1.setText(model.getName());
-                        tv2.setText(model.getName());
-
-                        if (item == position) {
-                            ll.setVisibility(View.VISIBLE);
-                            tv1.setVisibility(View.GONE);
-                        } else {
-                            ll.setVisibility(View.GONE);
-                            tv1.setVisibility(View.VISIBLE);
-                        }*/
 
                         }
                     };
@@ -149,7 +136,7 @@ public class IntegralActivity extends BaseActivity {
     }
 
     private void RequestMore(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.Fragment3, params, headerMap, new CallBackUtil<Fragment2Model>() {
+        OkhttpUtil.okHttpPost(URLs.Integral, params, headerMap, new CallBackUtil<Fragment2Model>() {
             @Override
             public Fragment2Model onParseResponse(Call call, Response response) {
                 return null;

@@ -65,6 +65,14 @@ public class URLs {
      */
     public static final String FeedBack_List = HOST+"/api/v1/public/get_feedback_classify_list";
     /**
+     * 版本说明
+     */
+    public static final String Version = HOST+"/api/v1/h5/version";
+    /**
+     * 积分列表
+     */
+    public static final String Integral = HOST+"/api/v1/user/get_user_integral_list";
+    /**
      * 意见反馈提交
      */
     public static final String FeedBack = HOST+"/api/v1/public/increase_user_feedback";
@@ -85,6 +93,14 @@ public class URLs {
      */
     public static final String AddCar = HOST+"/api/v1/user/user_sedan_add";
     /**
+     * 添加记录
+     */
+    public static final String AddNotebook = HOST+"/api/v1/user/user_notepad_increase";
+    /**
+     * 记录列表
+     */
+    public static final String Notebook = HOST+"/api/v1/user/user_notepad_list_page";
+    /**
      * 修改车辆
      */
     public static final String ChageCar = HOST+"/api/v1/user/user_sedan_edit";
@@ -104,7 +120,26 @@ public class URLs {
      * 收藏列表
      */
     public static final String Collect = HOST+"/api/v1/user/user_collection_list_page";
-
+    /**
+     * 商家加盟
+     */
+    public static final String AddMerchant = HOST+"/api/v1/user/user_apply_store_info";
+    /**
+     * 商家加盟1
+     */
+    public static final String AddMerchant1 = HOST+"/api/v1/user/user_apply_store_one";
+    /**
+     * 商家加盟2
+     */
+    public static final String AddMerchant2 = HOST+"/api/v1/user/user_apply_store_tow";
+    /**
+     * 商家加盟3
+     */
+    public static final String AddMerchant3 = HOST+"/api/v1/user/user_apply_store_three";
+    /**
+     * 客服列表
+     */
+    public static final String ServiceCenter = HOST+"/api/v1/user/get_kf_list";
 
     /**
      * 拼接请求路径

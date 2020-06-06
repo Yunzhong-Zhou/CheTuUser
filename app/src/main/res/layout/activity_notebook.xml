@@ -2,31 +2,47 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/background">
+    android:background="@color/background"
+    android:orientation="vertical">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_tab"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-    <com.chetu.user.view.LoadingLayout
-        android:id="@+id/loading_layout"
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_width="30dp"
+            android:layout_height="match_parent">
+            <View
+                android:layout_width="0.5dp"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:background="@color/black3" />
+        </RelativeLayout>
 
-        <com.liaoinstan.springview.widget.SpringView
-            android:id="@+id/springView"
+        <com.chetu.user.view.LoadingLayout
+            android:id="@+id/loading_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
+            <com.liaoinstan.springview.widget.SpringView
+                android:id="@+id/springView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingBottom="10dp"/>
+                android:layout_height="match_parent">
 
-        </com.liaoinstan.springview.widget.SpringView>
-    </com.chetu.user.view.LoadingLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </com.liaoinstan.springview.widget.SpringView>
+        </com.chetu.user.view.LoadingLayout>
+    </RelativeLayout>
+
+
 
 
 </LinearLayout>

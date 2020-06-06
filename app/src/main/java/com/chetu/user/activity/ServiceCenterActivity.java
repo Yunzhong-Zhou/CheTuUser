@@ -2,10 +2,12 @@ package com.chetu.user.activity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.chetu.user.R;
 import com.chetu.user.base.BaseActivity;
-import com.chetu.user.model.Fragment2Model;
+import com.chetu.user.model.ServiceCenterModel;
 import com.chetu.user.net.URLs;
 import com.chetu.user.okhttp.CallBackUtil;
 import com.chetu.user.okhttp.OkhttpUtil;
@@ -31,8 +33,8 @@ import okhttp3.Response;
 public class ServiceCenterActivity extends BaseActivity {
     int page = 0;
     private RecyclerView recyclerView;
-    List<Fragment2Model.ListBean> list = new ArrayList<>();
-    CommonAdapter<Fragment2Model.ListBean> mAdapter;
+    List<ServiceCenterModel.ListBean> list = new ArrayList<>();
+    CommonAdapter<ServiceCenterModel.ListBean> mAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +50,7 @@ public class ServiceCenterActivity extends BaseActivity {
     @Override
     protected void initView() {
         //刷新
-        setSpringViewMore(true);//不需要加载更多
+        setSpringViewMore(false);//不需要加载更多
         springView.setListener(new SpringView.OnFreshListener() {
             @Override
             public void onRefresh() {
@@ -90,9 +92,9 @@ public class ServiceCenterActivity extends BaseActivity {
     }
 
     private void Request(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.Fragment3, params, headerMap, new CallBackUtil<Fragment2Model>() {
+        OkhttpUtil.okHttpPost(URLs.ServiceCenter, params, headerMap, new CallBackUtil<ServiceCenterModel>() {
             @Override
-            public Fragment2Model onParseResponse(Call call, Response response) {
+            public ServiceCenterModel onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -104,29 +106,22 @@ public class ServiceCenterActivity extends BaseActivity {
             }
 
             @Override
-            public void onResponse(Fragment2Model response) {
+            public void onResponse(ServiceCenterModel response) {
                 hideProgress();
                 list = response.getList();
                 if (list.size() > 0) {
                     showContentPage();
-                    mAdapter = new CommonAdapter<Fragment2Model.ListBean>
+                    mAdapter = new CommonAdapter<ServiceCenterModel.ListBean>
                             (ServiceCenterActivity.this, R.layout.item_servicecenter, list) {
                         @Override
-                        protected void convert(ViewHolder holder, Fragment2Model.ListBean model, int position) {
-                       /* TextView tv1 = holder.getView(R.id.tv1);
-                        TextView tv2 = holder.getView(R.id.tv2);
-                        LinearLayout ll = holder.getView(R.id.ll);
-                        tv1.setText(model.getName());
-                        tv2.setText(model.getName());
+                        protected void convert(ViewHolder holder, ServiceCenterModel.ListBean model, int position) {
+                            ImageView imageView1 = holder.getView(R.id.imageView1);
+                            Glide.with(ServiceCenterActivity.this)
+                                    .load(URLs.IMGHOST + model.getHeadPortrait())
+                                    .centerCrop()
+                                    .into(imageView1);//加载图片
 
-                        if (item == position) {
-                            ll.setVisibility(View.VISIBLE);
-                            tv1.setVisibility(View.GONE);
-                        } else {
-                            ll.setVisibility(View.GONE);
-                            tv1.setVisibility(View.VISIBLE);
-                        }*/
-
+                            holder.setText(R.id.tv_name, model.getUserName());
                         }
                     };
                     mAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
@@ -149,9 +144,9 @@ public class ServiceCenterActivity extends BaseActivity {
     }
 
     private void RequestMore(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.Fragment3, params, headerMap, new CallBackUtil<Fragment2Model>() {
+        OkhttpUtil.okHttpPost(URLs.ServiceCenter, params, headerMap, new CallBackUtil<ServiceCenterModel>() {
             @Override
-            public Fragment2Model onParseResponse(Call call, Response response) {
+            public ServiceCenterModel onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -163,9 +158,9 @@ public class ServiceCenterActivity extends BaseActivity {
             }
 
             @Override
-            public void onResponse(Fragment2Model response) {
+            public void onResponse(ServiceCenterModel response) {
                 hideProgress();
-                List<Fragment2Model.ListBean> list1 = new ArrayList<>();
+                List<ServiceCenterModel.ListBean> list1 = new ArrayList<>();
                 list1 = response.getList();
                 if (list1.size() == 0) {
                     page--;

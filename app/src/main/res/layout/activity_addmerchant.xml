@@ -120,7 +120,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -388,10 +388,10 @@
                     android:layout_marginBottom="43dp"
                     android:background="@drawable/yuanjiao_20_lanse"
                     android:gravity="center"
+                    android:onClick="onClick"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="下一步"
-                    android:onClick="onClick"
                     android:textColor="@color/white"
                     android:textSize="15sp" />
 
@@ -402,7 +402,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -470,8 +470,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
                         android:background="@color/transparent"
-                        android:text="身份证"
                         android:onClick="onClick"
+                        android:text="身份证"
                         android:textColor="@color/black"
                         android:textColorHint="@color/grey"
                         android:textSize="15sp"
@@ -603,9 +603,7 @@
                     android:layout_marginLeft="30dp"
                     android:layout_marginRight="30dp"
                     android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingTop="20dp"
-                    android:paddingBottom="20dp">
+                    android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -620,9 +618,11 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
                         android:layout_weight="1"
-                        android:onClick="onClick"
                         android:background="@color/transparent"
                         android:hint="选择生效日期"
+                        android:onClick="onClick"
+                        android:paddingTop="20dp"
+                        android:paddingBottom="20dp"
                         android:textColor="@color/black"
                         android:textColorHint="@color/grey"
                         android:textSize="15sp" />
@@ -645,9 +645,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="30dp"
                     android:layout_marginRight="30dp"
-                    android:orientation="horizontal"
-                    android:paddingTop="20dp"
-                    android:paddingBottom="20dp">
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -662,9 +661,11 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
                         android:layout_weight="1"
-                        android:onClick="onClick"
                         android:background="@color/transparent"
                         android:hint="选择失效日期"
+                        android:onClick="onClick"
+                        android:paddingTop="20dp"
+                        android:paddingBottom="20dp"
                         android:textColor="@color/black"
                         android:textColorHint="@color/grey"
                         android:textSize="15sp" />
@@ -705,8 +706,8 @@
                         android:layout_marginLeft="20dp"
                         android:background="@color/transparent"
                         android:hint="填写法人手机号"
-                        android:textColor="@color/black"
                         android:inputType="phone"
+                        android:textColor="@color/black"
                         android:textColorHint="@color/grey"
                         android:textSize="15sp" />
                 </LinearLayout>
@@ -742,8 +743,8 @@
 
                     <ImageView
                         android:id="@+id/iv2_card1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="155dp"
+                        android:layout_height="89dp"
                         android:layout_centerInParent="true"
                         android:onClick="onClick" />
 
@@ -800,8 +801,8 @@
 
                     <ImageView
                         android:id="@+id/iv2_card2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="112dp"
+                        android:layout_height="149dp"
                         android:layout_centerInParent="true"
                         android:onClick="onClick" />
 
@@ -812,6 +813,7 @@
                         android:layout_centerInParent="true"
                         android:background="#1C1C1C"
                         android:gravity="center"
+                        android:paddingBottom="20dp"
                         android:onClick="onClick"
                         android:orientation="vertical">
 
@@ -831,7 +833,7 @@
                     android:layout_width="154dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="43dp"
+                    android:layout_marginTop="23dp"
                     android:layout_marginBottom="43dp"
                     android:background="@drawable/yuanjiao_20_lanse"
                     android:gravity="center"
@@ -971,9 +973,7 @@
                     android:layout_marginLeft="30dp"
                     android:layout_marginRight="30dp"
                     android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingTop="20dp"
-                    android:paddingBottom="20dp">
+                    android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -991,6 +991,8 @@
                         android:background="@color/transparent"
                         android:hint="选择过期日期"
                         android:onClick="onClick"
+                        android:paddingTop="20dp"
+                        android:paddingBottom="20dp"
                         android:textColor="@color/black"
                         android:textColorHint="@color/grey"
                         android:textSize="15sp" />
@@ -1109,8 +1111,8 @@
 
                     <ImageView
                         android:id="@+id/iv3_photo1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="82dp"
+                        android:layout_height="119dp"
                         android:layout_centerInParent="true"
                         android:onClick="onClick" />
 
@@ -1167,8 +1169,8 @@
 
                     <ImageView
                         android:id="@+id/iv3_photo2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="160dp"
+                        android:layout_height="119dp"
                         android:layout_centerInParent="true"
                         android:onClick="onClick" />
 
@@ -1192,6 +1194,7 @@
                     </LinearLayout>
 
                 </RelativeLayout>
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
@@ -1224,8 +1227,8 @@
 
                     <ImageView
                         android:id="@+id/iv3_photo3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="168dp"
+                        android:layout_height="119dp"
                         android:layout_centerInParent="true"
                         android:onClick="onClick" />
 
@@ -1249,12 +1252,13 @@
                     </LinearLayout>
 
                 </RelativeLayout>
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
                     android:layout_marginLeft="30dp"
-                    android:layout_marginRight="30dp"
                     android:layout_marginTop="20dp"
+                    android:layout_marginRight="30dp"
                     android:background="@color/xian" />
 
                 <LinearLayout
@@ -1298,6 +1302,7 @@
                     android:layout_marginLeft="30dp"
                     android:layout_marginRight="30dp"
                     android:background="@color/xian" />
+
                 <TextView
                     android:id="@+id/tv3_save"
                     android:layout_width="154dp"
@@ -1306,23 +1311,25 @@
                     android:layout_marginTop="43dp"
                     android:background="@drawable/yuanjiao_20_huise"
                     android:gravity="center"
+                    android:onClick="onClick"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
-                    android:onClick="onClick"
                     android:text="保存"
                     android:textColor="@color/white"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    android:visibility="gone" />
+
                 <TextView
                     android:id="@+id/tv3_upload"
                     android:layout_width="154dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="43dp"
                     android:layout_marginBottom="43dp"
                     android:background="@drawable/yuanjiao_20_lanse"
                     android:gravity="center"
-                    android:paddingTop="10dp"
                     android:onClick="onClick"
+                    android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="提交"
                     android:textColor="@color/white"

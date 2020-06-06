@@ -5,7 +5,15 @@ import android.widget.TextView;
 
 import com.chetu.user.R;
 import com.chetu.user.base.BaseActivity;
+import com.chetu.user.net.URLs;
+import com.chetu.user.okhttp.CallBackUtil;
+import com.chetu.user.okhttp.OkhttpUtil;
 import com.chetu.user.utils.CommonUtil;
+
+import java.util.Map;
+
+import okhttp3.Call;
+import okhttp3.Response;
 
 /**
  * Created by zyz on 2020/5/29.
@@ -36,7 +44,29 @@ public class VersionActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+        showProgress(true, getString(R.string.app_loading));
+        Request(params);//添加
+    }
 
+    private void Request(Map<String, String> params) {
+        OkhttpUtil.okHttpPost(URLs.Version, params, headerMap, new CallBackUtil<Object>() {
+            @Override
+            public Object onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+                hideProgress();
+                myToast(err);
+            }
+
+            @Override
+            public void onResponse(Object response) {
+                hideProgress();
+
+            }
+        });
     }
 
     @Override
