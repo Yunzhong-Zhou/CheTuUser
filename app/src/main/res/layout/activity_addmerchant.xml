@@ -402,7 +402,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -758,13 +758,22 @@
                         android:onClick="onClick"
                         android:orientation="vertical">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:drawableTop="@mipmap/ic_xiangji_white"
-                            android:text="点击上传"
-                            android:textColor="@color/white"
-                            android:textSize="14sp" />
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_margin="10dp"
+                            android:gravity="center"
+                            android:background="@mipmap/bg_addmerchant1">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:drawableTop="@mipmap/ic_xiangji_white"
+                                android:text="点击上传"
+                                android:gravity="center"
+                                android:textColor="@color/white"
+                                android:textSize="14sp" />
+                        </RelativeLayout>
+
                     </LinearLayout>
 
                 </RelativeLayout>
@@ -797,7 +806,8 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp">
 
                     <ImageView
                         android:id="@+id/iv2_card2"
@@ -813,17 +823,25 @@
                         android:layout_centerInParent="true"
                         android:background="#1C1C1C"
                         android:gravity="center"
-                        android:paddingBottom="20dp"
                         android:onClick="onClick"
                         android:orientation="vertical">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:drawableTop="@mipmap/ic_xiangji_white"
-                            android:text="点击上传"
-                            android:textColor="@color/white"
-                            android:textSize="14sp" />
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_margin="10dp"
+                            android:gravity="center"
+                            android:layout_gravity="center"
+                            android:background="@mipmap/bg_addmerchant2">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:drawableTop="@mipmap/ic_xiangji_white"
+                                android:text="点击上传"
+                                android:gravity="center"
+                                android:textColor="@color/white"
+                                android:textSize="14sp" />
+                        </RelativeLayout>
                     </LinearLayout>
 
                 </RelativeLayout>
@@ -1126,13 +1144,21 @@
                         android:onClick="onClick"
                         android:orientation="vertical">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:drawableTop="@mipmap/ic_xiangji_white"
-                            android:text="点击上传"
-                            android:textColor="@color/white"
-                            android:textSize="14sp" />
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_margin="10dp"
+                            android:gravity="center"
+                            android:background="@mipmap/bg_addmerchant3">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:drawableTop="@mipmap/ic_xiangji_white"
+                                android:text="点击上传"
+                                android:gravity="center"
+                                android:textColor="@color/white"
+                                android:textSize="14sp" />
+                        </RelativeLayout>
                     </LinearLayout>
 
                 </RelativeLayout>
@@ -1184,13 +1210,21 @@
                         android:onClick="onClick"
                         android:orientation="vertical">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:drawableTop="@mipmap/ic_xiangji_white"
-                            android:text="点击上传"
-                            android:textColor="@color/white"
-                            android:textSize="14sp" />
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_margin="10dp"
+                            android:gravity="center"
+                            android:background="@mipmap/bg_addmerchant4">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:drawableTop="@mipmap/ic_xiangji_white"
+                                android:text="点击上传"
+                                android:gravity="center"
+                                android:textColor="@color/white"
+                                android:textSize="14sp" />
+                        </RelativeLayout>
                     </LinearLayout>
 
                 </RelativeLayout>
@@ -1242,13 +1276,21 @@
                         android:onClick="onClick"
                         android:orientation="vertical">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:drawableTop="@mipmap/ic_xiangji_white"
-                            android:text="点击上传"
-                            android:textColor="@color/white"
-                            android:textSize="14sp" />
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_margin="10dp"
+                            android:gravity="center"
+                            android:background="@mipmap/bg_addmerchant5">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:drawableTop="@mipmap/ic_xiangji_white"
+                                android:text="点击上传"
+                                android:gravity="center"
+                                android:textColor="@color/white"
+                                android:textSize="14sp" />
+                        </RelativeLayout>
                     </LinearLayout>
 
                 </RelativeLayout>

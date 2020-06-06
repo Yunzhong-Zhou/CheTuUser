@@ -122,6 +122,7 @@ public class ServiceCenterActivity extends BaseActivity {
                                     .into(imageView1);//加载图片
 
                             holder.setText(R.id.tv_name, model.getUserName());
+
                         }
                     };
                     mAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {

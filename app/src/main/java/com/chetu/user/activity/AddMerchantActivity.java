@@ -191,7 +191,7 @@ public class AddMerchantActivity extends BaseActivity {
                 /**
                  * 第一步
                  */
-                if (response.getInfo().getStore_step_one().getNickname() != null && !response.getInfo().getStore_step_one().getNickname().equals("")) {
+                if (response.getInfo().getStore_step_one().getNickname() != null && !response.getInfo().getStore_step_one().getNickname().trim().equals("")) {
                     et1_nick.setText(response.getInfo().getStore_step_one().getNickname());//昵称
                     et1_firmname.setText(response.getInfo().getStore_step_one().getCor_name());//公司名称
                     et1_firmaddr.setText(response.getInfo().getStore_step_one().getCor_address());//公司地址
@@ -204,7 +204,7 @@ public class AddMerchantActivity extends BaseActivity {
                 /**
                  * 第二步
                  */
-                if (response.getInfo().getStore_step_two().getLegal_person() != null && !response.getInfo().getStore_step_two().getLegal_person().equals("")) {
+                if (response.getInfo().getStore_step_two().getLegal_person() != null && !response.getInfo().getStore_step_two().getLegal_person().trim().equals("")) {
                     et2_name.setText(response.getInfo().getStore_step_two().getLegal_person());//企业法人
                     et2_num.setText(response.getInfo().getStore_step_two().getIdent_number());//法人证件号
                     tv2_date1.setText(response.getInfo().getStore_step_two().getNum_start_time());//证件生效时间
@@ -242,7 +242,7 @@ public class AddMerchantActivity extends BaseActivity {
                 /**
                  * 第三步
                  */
-                if (response.getInfo().getStore_step_three().getTcor_name() != null && !response.getInfo().getStore_step_three().getTcor_name().equals("")) {
+                if (response.getInfo().getStore_step_three().getTcor_name() != null && !response.getInfo().getStore_step_three().getTcor_name().trim().equals("")) {
                     tv3_frimname.setText(response.getInfo().getStore_step_three().getTcor_name());//公司名称
                     tv3_frimaddr.setText(response.getInfo().getStore_step_three().getCor_address());//公司地址
                     et3_creditcode.setText(response.getInfo().getStore_step_three().getCredit_ode());//信用代码
