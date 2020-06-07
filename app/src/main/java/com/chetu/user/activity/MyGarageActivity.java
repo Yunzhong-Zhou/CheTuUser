@@ -1,5 +1,6 @@
 package com.chetu.user.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -16,7 +17,6 @@ import com.chetu.user.okhttp.OkhttpUtil;
 import com.chetu.user.utils.CommonUtil;
 import com.liaoinstan.springview.widget.SpringView;
 import com.zhy.adapter.recyclerview.CommonAdapter;
-import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.util.ArrayList;
@@ -34,6 +34,7 @@ import okhttp3.Response;
  * 我的车库
  */
 public class MyGarageActivity extends BaseActivity {
+    int type = 0;
     int page = 0;
     private RecyclerView recyclerView;
     List<MyGarageModel.ListBean> list = new ArrayList<>();
@@ -100,6 +101,7 @@ public class MyGarageActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+        type = getIntent().getIntExtra("type",0);
     }
 
     @Override
@@ -209,21 +211,25 @@ public class MyGarageActivity extends BaseActivity {
                                 }
                             });
 
+                            holder.getView(R.id.linearLayout1).setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Intent resultIntent = new Intent();
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString("carname", model.getBrandInfo().getGroupName()
+                                            + "-" + model.getBrandInfo().getSeriesName());
+                                    bundle.putString("carnum", model.getSNumber());
+                                    bundle.putString("cardetail", model.getBrandInfo().getSName());
+                                    bundle.putString("car_id", model.getYUserSedanId());
+                                    bundle.putString("carlogo", model.getSLogo());
+                                    resultIntent.putExtras(bundle);
+                                    MyGarageActivity.this.setResult(RESULT_OK, resultIntent);
+                                    finish();
+                                }
+                            });
+
                         }
                     };
-                    mAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
-                            Bundle bundle = new Bundle();
-                            bundle.putString("y_user_sedan_id", list.get(i).getYUserSedanId());
-                            CommonUtil.gotoActivityWithData(MyGarageActivity.this, AddCarActivity.class, bundle, false);
-                        }
-
-                        @Override
-                        public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
-                            return false;
-                        }
-                    });
                     recyclerView.setAdapter(mAdapter);
                 } else {
                     showEmptyPage();

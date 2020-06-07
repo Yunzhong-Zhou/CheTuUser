@@ -509,6 +509,8 @@
                     </LinearLayout>
 
                     <TextView
+                        android:id="@+id/tv_upload"
+                        android:onClick="onClick"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="13dp"

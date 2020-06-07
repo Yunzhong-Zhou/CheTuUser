@@ -66,6 +66,9 @@ public class LoginActivity extends BaseActivity {
 
     private TimeCount time;
 
+    ImageView iv_gouxuan;
+    boolean isGouXuan = false;
+
     //更新
     UpgradeModel model_up;
 
@@ -134,6 +137,8 @@ public class LoginActivity extends BaseActivity {
         textView2 = findViewByID_My(R.id.textView2);
 
         image_wechat = findViewByID_My(R.id.image_wechat);
+
+        iv_gouxuan = findViewByID_My(R.id.iv_gouxuan);
     }
 
     @Override
@@ -202,6 +207,15 @@ public class LoginActivity extends BaseActivity {
                     req.state = "wechat_sdk_demo_test";
                     api.sendReq(req);
                     finish();
+                }
+                break;
+            case R.id.iv_gouxuan:
+                //勾选图片
+                isGouXuan = !isGouXuan;
+                if (isGouXuan) {
+                    iv_gouxuan.setImageResource(R.mipmap.ic_xuanzhong);
+                } else {
+                    iv_gouxuan.setImageResource(R.mipmap.ic_weixuan);
                 }
                 break;
         }
@@ -282,6 +296,10 @@ public class LoginActivity extends BaseActivity {
         password = editText2.getText().toString().trim();
         if (TextUtils.isEmpty(password)) {
             myToast("请输入验证码");
+            return false;
+        }
+        if (!isGouXuan) {
+            myToast("请阅读并同意《用户协议》");
             return false;
         }
 

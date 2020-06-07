@@ -115,7 +115,7 @@ dependencies {
     implementation 'com.github.AnJiaoDe:MultiFlowLayout:V1.1.2'
 
     //toast提示框
-    implementation 'com.hjq:toast:8.0'
+    implementation 'com.hjq:toast:8.2'
 
     //侧滑返回
     implementation 'me.imid.swipebacklayout.lib:library:1.1.0'

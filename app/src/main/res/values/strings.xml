@@ -167,5 +167,6 @@
     <string name="zxing_h40">*请务必按照生成个数付款</string>
     <string name="zxing_h41">保存海报</string>
 
-
+    <string name="u1"><u>《违章查缴服务》</u></string>
+    <string name="u2"><u>《用户协议》</u></string>
 </resources>

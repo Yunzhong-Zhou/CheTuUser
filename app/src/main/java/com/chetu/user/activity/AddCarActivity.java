@@ -230,9 +230,10 @@ public class AddCarActivity extends BaseActivity {
                 //绑定车牌
                 dialog.contentView(R.layout.dialog_chepai)
                         .layoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                                ViewGroup.LayoutParams.MATCH_PARENT))
+                                ViewGroup.LayoutParams.WRAP_CONTENT))
                         .animType(BaseDialog.AnimInType.BOTTOM)
                         .canceledOnTouchOutside(true)
+                        .gravity(Gravity.BOTTOM)
                         .dimAmount(0.8f)
                         .show();
                 //标签

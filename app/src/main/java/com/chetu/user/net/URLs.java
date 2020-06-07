@@ -49,6 +49,18 @@ public class URLs {
      */
     public static final String BaoXian = HOST+"/api/v1/public/user_report_police_list";
     /**
+     * *********************************首页*****************************************
+     */
+    public static final String Fragment1 = HOST+"/api/v1/public/get_store_list";
+    /**
+     * 车险询价（发布）
+     */
+    public static final String CarInsurance = HOST+"/api/v1/public/user_inquiry_add";
+    /**
+     * 违章查询
+     */
+    public static final String CarIllegal = HOST+"/api/v1/public/user_vio_regulat_add";
+    /**
      * *********************************门店*****************************************
      */
     public static final String Fragment3 = HOST+"/api/v1/public/get_store_list";

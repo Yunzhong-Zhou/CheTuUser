@@ -105,6 +105,16 @@
         <activity
             android:name=".activity.SearchActivity"
             android:label="搜索" />
+        <!--首页-->
+        <activity
+            android:name=".activity.CarInsuranceActivity"
+            android:label="车险查询" />
+        <activity
+            android:name=".activity.CarServiceActivity"
+            android:label="维修保养查询" />
+        <activity
+            android:name=".activity.CarIllegalActivity"
+            android:label="违章查询" />
         <!--养车-->
         <activity
             android:name=".activity.DraftActivity"
@@ -130,9 +140,6 @@
         <activity
             android:name=".activity.MyProfileActivity"
             android:label="我的资料" />
-        <activity
-            android:name=".activity.CarInsuranceActivity"
-            android:label="车险" />
         <activity
             android:name=".activity.MyOrderActivity"
             android:label="我的订单" />

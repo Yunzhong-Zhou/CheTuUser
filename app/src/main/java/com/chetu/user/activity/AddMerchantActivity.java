@@ -560,7 +560,7 @@ public class AddMerchantActivity extends BaseActivity {
                 type = 3;
                 progress = 3;
                 changeUI();
-//                myToast("添加成功");
+
 //                finish();
             }
         });
@@ -638,6 +638,7 @@ public class AddMerchantActivity extends BaseActivity {
             @Override
             public void onResponse(Object response) {
                 hideProgress();
+                myToast("提交成功");
                 finish();
 //                myToast("添加成功");
 //                finish();

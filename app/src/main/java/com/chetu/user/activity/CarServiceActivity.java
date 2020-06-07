@@ -45,9 +45,9 @@ import static com.chetu.user.utils.MyChooseImages.REQUEST_CODE_PICK_IMAGE;
 
 /**
  * Created by zyz on 2020/6/7.
- * 车险
+ * 车辆服务查询
  */
-public class CarInsuranceActivity extends BaseActivity {
+public class CarServiceActivity extends BaseActivity {
     //tab
     LinearLayout ll_tab1, ll_tab2;
     View view1, view2;
@@ -67,7 +67,7 @@ public class CarInsuranceActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_carinsurance);
+        setContentView(R.layout.activity_carservice);
         mImmersionBar.reset()
                 .statusBarColor(R.color.background)
                 .fitsSystemWindows(true)  //使用该属性,必须指定状态栏颜色
@@ -104,7 +104,7 @@ public class CarInsuranceActivity extends BaseActivity {
         recyclerView = findViewByID_My(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new CommonAdapter<BaoXianModel.ListBean>
-                (CarInsuranceActivity.this, R.layout.item_carinsurance_baoxian, list) {
+                (CarServiceActivity.this, R.layout.item_carinsurance_baoxian, list) {
             @Override
             protected void convert(ViewHolder holder, BaoXianModel.ListBean model, int position) {
                 holder.setText(R.id.textView, model.getVNameNature());
@@ -241,7 +241,7 @@ public class CarInsuranceActivity extends BaseActivity {
                 number_img2 = "";
                 imageView4.setImageResource(R.mipmap.ic_add_image1);
                 break;
-            case R.id.tv_upload:
+            case R.id.tv_upload1:
                 //提交
                 if (match()) {
                     showProgress(true, getString(R.string.app_loading1));
@@ -341,7 +341,7 @@ public class CarInsuranceActivity extends BaseActivity {
 
     @Override
     protected void updateView() {
-        titleView.setTitle("车险");
+        titleView.setTitle("发布");
         titleView.setBackground(R.color.background);
     }
 
@@ -443,28 +443,28 @@ public class CarInsuranceActivity extends BaseActivity {
                         case "license_img1":
                             license_img1 = s;
                             iv_del1.setVisibility(View.VISIBLE);
-                            Glide.with(CarInsuranceActivity.this).load(URLs.IMGHOST + s)
+                            Glide.with(CarServiceActivity.this).load(URLs.IMGHOST + s)
                                     .centerCrop()
                                     .into(imageView1);//加载图片
                             break;
                         case "license_img2":
                             license_img2 = s;
                             iv_del2.setVisibility(View.VISIBLE);
-                            Glide.with(CarInsuranceActivity.this).load(URLs.IMGHOST + s)
+                            Glide.with(CarServiceActivity.this).load(URLs.IMGHOST + s)
                                     .centerCrop()
                                     .into(imageView2);//加载图片
                             break;
                         case "number_img1":
                             number_img1 = s;
                             iv_del3.setVisibility(View.VISIBLE);
-                            Glide.with(CarInsuranceActivity.this).load(URLs.IMGHOST + s)
+                            Glide.with(CarServiceActivity.this).load(URLs.IMGHOST + s)
                                     .centerCrop()
                                     .into(imageView3);//加载图片
                             break;
                         case "number_img2":
                             number_img2 = s;
                             iv_del4.setVisibility(View.VISIBLE);
-                            Glide.with(CarInsuranceActivity.this).load(URLs.IMGHOST + s)
+                            Glide.with(CarServiceActivity.this).load(URLs.IMGHOST + s)
                                     .centerCrop()
                                     .into(imageView4);//加载图片
                             break;
