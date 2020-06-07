@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.chetu.user.R;
 import com.chetu.user.activity.AddMerchantActivity;
+import com.chetu.user.activity.CarInsuranceActivity;
 import com.chetu.user.activity.CouponActivity;
 import com.chetu.user.activity.FootprintActivity;
 import com.chetu.user.activity.IntegralActivity;
@@ -250,11 +251,11 @@ public class Fragment4 extends BaseFragment {
                 break;
             case R.id.linearLayout4:
                 //保险（交）
-//                CommonUtil.gotoActivity(getActivity(), .class);
+                CommonUtil.gotoActivity(getActivity(), CarInsuranceActivity.class);
                 break;
             case R.id.linearLayout5:
                 //保险（商）
-//                CommonUtil.gotoActivity(getActivity(), .class);
+                CommonUtil.gotoActivity(getActivity(), CarInsuranceActivity.class);
                 break;
             case R.id.linearLayout6:
                 //年检
