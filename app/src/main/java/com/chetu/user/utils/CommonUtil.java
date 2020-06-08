@@ -550,7 +550,7 @@ public class CommonUtil {
      * @return
      */
     public static String dataOne(String time) {
-        SimpleDateFormat sdr = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat sdr = new SimpleDateFormat("yyyy-MM-dd");
         Date date;
         String times = null;
         try {
@@ -585,7 +585,7 @@ public class CommonUtil {
      * @return
      */
     public static String timedate1(String time) {
-        SimpleDateFormat sdr = new SimpleDateFormat("MM/dd HH:mm");
+        SimpleDateFormat sdr = new SimpleDateFormat("yyyy-MM-dd");
         @SuppressWarnings("unused")
         long lcc = Long.valueOf(time);
         int i = Integer.parseInt(time);
