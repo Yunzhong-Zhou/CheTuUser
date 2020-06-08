@@ -7,6 +7,7 @@ import java.util.List;
  * Created by zyz on 2020/5/26.
  */
 public class FootprintModel implements Serializable {
+
     private List<ListBean> list;
 
     public List<ListBean> getList() {

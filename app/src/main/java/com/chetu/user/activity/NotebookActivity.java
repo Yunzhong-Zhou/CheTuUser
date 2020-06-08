@@ -76,6 +76,8 @@ public class NotebookActivity extends BaseActivity {
         recyclerView = findViewByID_My(R.id.recyclerView);
         LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(mLinearLayoutManager);
+
+
     }
 
     @Override
@@ -127,25 +129,27 @@ public class NotebookActivity extends BaseActivity {
                             String day = strArr2[1] + "月" + strArr2[2] + "日";//提取月日
                             String time = strArr1[1];//时间
                             holder.setText(R.id.tv_time, day + "\n" + time);
+
                             //是否显示年
                             LinearLayout ll_year = holder.getView(R.id.ll_year);
                             TextView tv_year = holder.getView(R.id.tv_year);
-                            //如果是第0个那么一定显示#号
+
+                            //第一个直接显示
                             if (position == 0) {
                                 year_temp = year;
                                 ll_year.setVisibility(View.VISIBLE);
                                 tv_year.setText(year);
                             } else {
-                                //如果和上一个item的首字母不同，则认为是新分类的开始
+                                //如果和上一个item的不同，则认为是新分类的开始
                                 if (!year.equals(year_temp)) {
                                     ll_year.setVisibility(View.VISIBLE);
                                     tv_year.setText(year);
-
                                     year_temp = year;
                                 } else {
                                     ll_year.setVisibility(View.GONE);
                                 }
                             }
+
                             holder.setText(R.id.tv_title, model.getYTitle());
                             holder.setText(R.id.tv_content, model.getIMsg());
                             holder.setText(R.id.tv_moeny, "¥"+model.getVMoney());
