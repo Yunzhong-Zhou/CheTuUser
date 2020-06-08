@@ -3,6 +3,7 @@ package com.chetu.user.activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.chetu.user.R;
@@ -122,6 +123,18 @@ public class ServiceCenterActivity extends BaseActivity {
                                     .into(imageView1);//加载图片
 
                             holder.setText(R.id.tv_name, model.getUserName());
+
+                            TextView tv_zaixian = holder.getView(R.id.tv_zaixian);
+                            View view = holder.getView(R.id.view);
+                            if (model.getIsKf() == 1){
+                                tv_zaixian.setText("在线");
+                                tv_zaixian.setTextColor(getResources().getColor(R.color.green));
+                                view.setBackgroundResource(R.drawable.yuanxing_lvse);
+                            }else {
+                                tv_zaixian.setText("离线");
+                                tv_zaixian.setTextColor(getResources().getColor(R.color.black3));
+                                view.setBackgroundResource(R.drawable.yuanxing_huise);
+                            }
 
                         }
                     };

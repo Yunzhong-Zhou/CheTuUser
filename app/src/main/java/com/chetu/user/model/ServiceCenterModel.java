@@ -24,9 +24,10 @@ public class ServiceCenterModel implements Serializable {
          * userBalance : 0.0
          * userName : 龙肆技师
          * uToken : 096DC2A3D177D683E0A124CAA17D7FB54B034F67FF7B53C8A8799B8C0DB14550
+         * isKf : 1
          * userIntegral : 0
          * yStoreId : 0
-         * headPortrait : /timg.jpg
+         * headPortrait : /upload/timg.jpg
          */
 
         private String id;
@@ -34,6 +35,7 @@ public class ServiceCenterModel implements Serializable {
         private double userBalance;
         private String userName;
         private String uToken;
+        private int isKf;
         private String userIntegral;
         private String yStoreId;
         private String headPortrait;
@@ -76,6 +78,14 @@ public class ServiceCenterModel implements Serializable {
 
         public void setUToken(String uToken) {
             this.uToken = uToken;
+        }
+
+        public int getIsKf() {
+            return isKf;
+        }
+
+        public void setIsKf(int isKf) {
+            this.isKf = isKf;
         }
 
         public String getUserIntegral() {
