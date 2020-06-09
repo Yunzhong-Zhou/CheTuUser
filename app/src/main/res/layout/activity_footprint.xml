@@ -29,10 +29,10 @@
 
         <TextView
             android:id="@+id/textView1"
-            android:onClick="onClick"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/yuanjiao_5_lanse_left"
+            android:onClick="onClick"
             android:paddingLeft="16dp"
             android:paddingTop="6dp"
             android:paddingRight="16dp"
@@ -43,11 +43,11 @@
 
         <TextView
             android:id="@+id/textView2"
-            android:onClick="onClick"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="13dp"
             android:background="@drawable/yuanjiaobiankuang_5_huise_right"
+            android:onClick="onClick"
             android:paddingLeft="16dp"
             android:paddingTop="6dp"
             android:paddingRight="16dp"
@@ -57,6 +57,7 @@
             android:textSize="13sp" />
 
     </LinearLayout>
+
     <com.chetu.user.view.LoadingLayout
         android:id="@+id/loading_layout"
         android:layout_width="match_parent"
@@ -67,11 +68,18 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
+            <!--吸顶效果-->
+            <com.donkingliang.groupedadapter.widget.StickyHeaderLayout
+                android:id="@+id/sticky_layout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingBottom="10dp"/>
+                android:layout_height="match_parent">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingBottom="10dp" />
+            </com.donkingliang.groupedadapter.widget.StickyHeaderLayout>
 
         </com.liaoinstan.springview.widget.SpringView>
     </com.chetu.user.view.LoadingLayout>

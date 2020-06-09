@@ -7,99 +7,135 @@ import java.util.List;
  * Created by zyz on 2020/6/6.
  */
 public class NotebookModel implements Serializable {
-    private List<ListBean> list;
+    private List<ListBeanX> list;
 
-    public List<ListBean> getList() {
+    public List<ListBeanX> getList() {
         return list;
     }
 
-    public void setList(List<ListBean> list) {
+    public void setList(List<ListBeanX> list) {
         this.list = list;
     }
 
-    public static class ListBean {
+    public static class ListBeanX {
         /**
-         * id : 1048
-         * yUserNotepadId : 718760938370498560
-         * userId : 714547022807433216
-         * yTitle : 阿斯顿马丁阿斯顿马丁宝
-         * yTag :
-         * vMoney : 123456.789
-         * iMsg : 发货电饭锅刚发的更丰富哈哈哈加工费
-         * createDate : 2020-06-06 09:39:21
+         * year : 2020
+         * list : [{"id":"1051","yUserNotepadId":"718797004750192640","userId":"714547022807433216","yTitle":"好尴尬好好干","yTag":"","vMoney":"5655","iMsg":"还有哈哈哈那就好","year":"2020","createDate":"2020-06-06 12:02:40"},{"id":"1050","yUserNotepadId":"718769677488095232","userId":"714547022807433216","year":"2020","createDate":"2020-06-06 10:14:05"}]
          */
 
-        private String id;
-        private String yUserNotepadId;
-        private String userId;
-        private String yTitle;
-        private String yTag;
-        private String vMoney;
-        private String iMsg;
-        private String createDate;
+        private String year;
+        private List<ListBean> list;
 
-        public String getId() {
-            return id;
+        public String getYear() {
+            return year;
         }
 
-        public void setId(String id) {
-            this.id = id;
+        public void setYear(String year) {
+            this.year = year;
         }
 
-        public String getYUserNotepadId() {
-            return yUserNotepadId;
+        public List<ListBean> getList() {
+            return list;
         }
 
-        public void setYUserNotepadId(String yUserNotepadId) {
-            this.yUserNotepadId = yUserNotepadId;
+        public void setList(List<ListBean> list) {
+            this.list = list;
         }
 
-        public String getUserId() {
-            return userId;
-        }
+        public static class ListBean {
+            /**
+             * id : 1051
+             * yUserNotepadId : 718797004750192640
+             * userId : 714547022807433216
+             * yTitle : 好尴尬好好干
+             * yTag :
+             * vMoney : 5655
+             * iMsg : 还有哈哈哈那就好
+             * year : 2020
+             * createDate : 2020-06-06 12:02:40
+             */
 
-        public void setUserId(String userId) {
-            this.userId = userId;
-        }
+            private String id;
+            private String yUserNotepadId;
+            private String userId;
+            private String yTitle;
+            private String yTag;
+            private String vMoney;
+            private String iMsg;
+            private String year;
+            private String createDate;
 
-        public String getYTitle() {
-            return yTitle;
-        }
+            public String getId() {
+                return id;
+            }
 
-        public void setYTitle(String yTitle) {
-            this.yTitle = yTitle;
-        }
+            public void setId(String id) {
+                this.id = id;
+            }
 
-        public String getYTag() {
-            return yTag;
-        }
+            public String getYUserNotepadId() {
+                return yUserNotepadId;
+            }
 
-        public void setYTag(String yTag) {
-            this.yTag = yTag;
-        }
+            public void setYUserNotepadId(String yUserNotepadId) {
+                this.yUserNotepadId = yUserNotepadId;
+            }
 
-        public String getVMoney() {
-            return vMoney;
-        }
+            public String getUserId() {
+                return userId;
+            }
 
-        public void setVMoney(String vMoney) {
-            this.vMoney = vMoney;
-        }
+            public void setUserId(String userId) {
+                this.userId = userId;
+            }
 
-        public String getIMsg() {
-            return iMsg;
-        }
+            public String getYTitle() {
+                return yTitle;
+            }
 
-        public void setIMsg(String iMsg) {
-            this.iMsg = iMsg;
-        }
+            public void setYTitle(String yTitle) {
+                this.yTitle = yTitle;
+            }
 
-        public String getCreateDate() {
-            return createDate;
-        }
+            public String getYTag() {
+                return yTag;
+            }
 
-        public void setCreateDate(String createDate) {
-            this.createDate = createDate;
+            public void setYTag(String yTag) {
+                this.yTag = yTag;
+            }
+
+            public String getVMoney() {
+                return vMoney;
+            }
+
+            public void setVMoney(String vMoney) {
+                this.vMoney = vMoney;
+            }
+
+            public String getIMsg() {
+                return iMsg;
+            }
+
+            public void setIMsg(String iMsg) {
+                this.iMsg = iMsg;
+            }
+
+            public String getYear() {
+                return year;
+            }
+
+            public void setYear(String year) {
+                this.year = year;
+            }
+
+            public String getCreateDate() {
+                return createDate;
+            }
+
+            public void setCreateDate(String createDate) {
+                this.createDate = createDate;
+            }
         }
     }
 }

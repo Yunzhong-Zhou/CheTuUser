@@ -8,20 +8,23 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_tab"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <RelativeLayout
+
+        <!--<RelativeLayout
             android:layout_width="30dp"
             android:layout_height="match_parent">
+
             <View
                 android:layout_width="0.5dp"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:background="@color/black3" />
-        </RelativeLayout>
+        </RelativeLayout>-->
 
         <com.chetu.user.view.LoadingLayout
             android:id="@+id/loading_layout"
@@ -33,16 +36,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerView"
+                <!--吸顶效果-->
+                <com.donkingliang.groupedadapter.widget.StickyHeaderLayout
+                    android:id="@+id/sticky_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                </com.donkingliang.groupedadapter.widget.StickyHeaderLayout>
 
             </com.liaoinstan.springview.widget.SpringView>
         </com.chetu.user.view.LoadingLayout>
     </RelativeLayout>
-
-
 
 
 </LinearLayout>

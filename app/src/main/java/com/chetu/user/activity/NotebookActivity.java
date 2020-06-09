@@ -2,10 +2,9 @@ package com.chetu.user.activity;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.chetu.user.R;
+import com.chetu.user.adapter.NoteBookAdapter;
 import com.chetu.user.base.BaseActivity;
 import com.chetu.user.model.NotebookModel;
 import com.chetu.user.net.URLs;
@@ -13,9 +12,6 @@ import com.chetu.user.okhttp.CallBackUtil;
 import com.chetu.user.okhttp.OkhttpUtil;
 import com.chetu.user.utils.CommonUtil;
 import com.liaoinstan.springview.widget.SpringView;
-import com.zhy.adapter.recyclerview.CommonAdapter;
-import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
-import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,8 +30,9 @@ import okhttp3.Response;
 public class NotebookActivity extends BaseActivity {
     int page = 0;
     private RecyclerView recyclerView;
-    List<NotebookModel.ListBean> list = new ArrayList<>();
-    CommonAdapter<NotebookModel.ListBean> mAdapter;
+    List<NotebookModel.ListBeanX> list = new ArrayList<>();
+//    CommonAdapter<NotebookModel.ListBeanX> mAdapter;
+    NoteBookAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,8 +93,7 @@ public class NotebookActivity extends BaseActivity {
         Request(params);
     }
 
-    String year_temp = "";
-
+//    String year_temp = "";
     private void Request(Map<String, String> params) {
         OkhttpUtil.okHttpPost(URLs.Notebook, params, headerMap, new CallBackUtil<NotebookModel>() {
             @Override
@@ -118,7 +114,10 @@ public class NotebookActivity extends BaseActivity {
                 list = response.getList();
                 if (list.size() > 0) {
                     showContentPage();
-                    mAdapter = new CommonAdapter<NotebookModel.ListBean>
+                    mAdapter = new NoteBookAdapter(NotebookActivity.this,list);
+                    recyclerView.setAdapter(mAdapter);
+
+                    /*mAdapter = new CommonAdapter<NotebookModel.ListBean>
                             (NotebookActivity.this, R.layout.item_notebook, list) {
                         @Override
                         protected void convert(ViewHolder holder, NotebookModel.ListBean model, int position) {
@@ -166,7 +165,7 @@ public class NotebookActivity extends BaseActivity {
                             return false;
                         }
                     });
-                    recyclerView.setAdapter(mAdapter);
+                    recyclerView.setAdapter(mAdapter);*/
                 } else {
                     showEmptyPage();
                 }
@@ -191,7 +190,7 @@ public class NotebookActivity extends BaseActivity {
             @Override
             public void onResponse(NotebookModel response) {
                 hideProgress();
-                List<NotebookModel.ListBean> list1 = new ArrayList<>();
+                List<NotebookModel.ListBeanX> list1 = new ArrayList<>();
                 list1 = response.getList();
                 if (list1.size() == 0) {
                     page--;
