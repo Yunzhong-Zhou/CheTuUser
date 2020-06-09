@@ -1,8 +1,6 @@
 package com.chetu.user.fragment;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +15,6 @@ import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.chetu.user.R;
-import com.chetu.user.activity.MainActivity;
 import com.chetu.user.activity.SearchActivity;
 import com.chetu.user.adapter.CircleImageAdapter;
 import com.chetu.user.base.BaseFragment;
@@ -27,8 +24,8 @@ import com.chetu.user.okhttp.CallBackUtil;
 import com.chetu.user.okhttp.OkhttpUtil;
 import com.chetu.user.utils.CommonUtil;
 import com.chetu.user.utils.MyLogger;
-import com.chetu.user.view.zxing.CaptureActivity;
-import com.chetu.user.view.zxing.Constant;
+import com.cretin.tools.scancode.CaptureActivity;
+import com.cretin.tools.scancode.config.ScanConfig;
 import com.liaoinstan.springview.widget.SpringView;
 import com.youth.banner.Banner;
 import com.youth.banner.indicator.CircleIndicator;
@@ -42,12 +39,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import okhttp3.Call;
 import okhttp3.Response;
+
+import static android.app.Activity.RESULT_OK;
 
 
 /**
@@ -101,10 +98,10 @@ public class Fragment1 extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (MainActivity.item == 0) {
+        /*if (MainActivity.item == 0) {
             requestServer();
             tv_addr.setText(localUserInfo.getCityname());
-        }
+        }*/
     }
 
     @Override
@@ -201,7 +198,7 @@ public class Fragment1 extends BaseFragment {
 
     @Override
     protected void initData() {
-//        requestServer();
+        requestServer();
         //初始化定位
         mLocationClient = new AMapLocationClient(getActivity());
         AMapLocationClientOption option = new AMapLocationClientOption();
@@ -383,7 +380,13 @@ public class Fragment1 extends BaseFragment {
                 break;
             case R.id.tv_scan:
                 //扫一扫
-                startQrCode();
+//                startQrCode();
+                ScanConfig config = new ScanConfig()
+                        .setShowFlashlight(true)//是否需要打开闪光灯
+                        .setShowGalary(true)//是否需要打开相册
+                        .setNeedRing(true);//是否需要提示音
+                //ScanConfig 也可以不配置 默认都是打开
+                CaptureActivity.launch(this, config);
                 break;
             case R.id.rl_xiaoxi:
                 //消息
@@ -393,16 +396,16 @@ public class Fragment1 extends BaseFragment {
     }
 
     // 开始扫码
-    private void startQrCode() {
+   /* private void startQrCode() {
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             // 申请权限
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA}, Constant.REQ_PERM_CAMERA);
             return;
         }
         // 二维码扫码
-        Intent intent = new Intent(getActivity(), CaptureActivity.class);
+        Intent intent = new Intent(getActivity(), MyCaptureActivity.class);
         startActivityForResult(intent, Constant.REQ_QR_CODE);
-    }
+    }*/
 
     @Override
     protected void updateView() {
@@ -415,6 +418,17 @@ public class Fragment1 extends BaseFragment {
         /**
          * 处理二维码扫描结果
          */
+        if (requestCode == CaptureActivity.REQUEST_CODE_SCAN) {
+            // 扫描二维码回传
+            if (resultCode == RESULT_OK) {
+                if (data != null) {
+                    //获取扫描结果
+                    Bundle bundle = data.getExtras();
+                    String result = bundle.getString(CaptureActivity.EXTRA_SCAN_RESULT);
+                    MyLogger.i("扫码返回", result);
+                }
+            }
+        }
         /*//扫描结果回调
         if (requestCode == Constant.REQ_QR_CODE) {
             if (data != null) {

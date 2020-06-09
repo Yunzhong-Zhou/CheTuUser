@@ -12,7 +12,6 @@ import com.chetu.user.model.FootprintModel;
 import com.chetu.user.net.URLs;
 import com.chetu.user.okhttp.CallBackUtil;
 import com.chetu.user.okhttp.OkhttpUtil;
-import com.chetu.user.utils.MyLogger;
 import com.donkingliang.groupedadapter.adapter.GroupedRecyclerViewAdapter;
 import com.donkingliang.groupedadapter.holder.BaseViewHolder;
 import com.liaoinstan.springview.widget.SpringView;
@@ -38,7 +37,7 @@ public class FootprintActivity extends BaseActivity {
     int type = 1, page1 = 0, page2 = 0, category = 1;//1为商品  2为商家
     TextView textView1, textView2;
     private RecyclerView recyclerView;
-    List<FootprintModel> list1 = new ArrayList<>();
+    List<FootprintModel.ListBeanX> list1 = new ArrayList<>();
     //    CommonAdapter<FootprintModel.ListBean> mAdapter1;
     FootpriintAdapter mAdapter1;
 
@@ -101,37 +100,11 @@ public class FootprintActivity extends BaseActivity {
         recyclerView = findViewByID_My(R.id.recyclerView);
         LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(mLinearLayoutManager);
-
-
-        //测试
-        list1.add(new FootprintModel());
-        list1.add(new FootprintModel());
-        list1.add(new FootprintModel());
-        list1.add(new FootprintModel());
-
-        mAdapter1 = new FootpriintAdapter(FootprintActivity.this, list1);
-        mAdapter1.setOnHeaderClickListener(new GroupedRecyclerViewAdapter.OnHeaderClickListener() {
-            @Override
-            public void onHeaderClick(GroupedRecyclerViewAdapter adapter, BaseViewHolder holder,
-                                      int groupPosition) {
-            }
-        });
-
-
-        mAdapter1.setOnChildClickListener(new GroupedRecyclerViewAdapter.OnChildClickListener() {
-            @Override
-            public void onChildClick(GroupedRecyclerViewAdapter adapter, BaseViewHolder holder,
-                                     int groupPosition, int childPosition) {
-            }
-        });
-        recyclerView.setAdapter(mAdapter1);
     }
 
     @Override
     protected void initData() {
-//        requestServer();
-
-
+        requestServer();
 
         /*mAdapter1 = new CommonAdapter<FootprintModel.ListBean>
                 (FootprintActivity.this, R.layout.item_footprint_title, list1) {
@@ -208,8 +181,25 @@ public class FootprintActivity extends BaseActivity {
             @Override
             public void onResponse(FootprintModel response) {
                 hideProgress();
+                list1 = response.getList();
                 if (list1.size() > 0) {
                     showContentPage();
+                    mAdapter1 = new FootpriintAdapter(FootprintActivity.this, list1);
+                    mAdapter1.setOnHeaderClickListener(new GroupedRecyclerViewAdapter.OnHeaderClickListener() {
+                        @Override
+                        public void onHeaderClick(GroupedRecyclerViewAdapter adapter, BaseViewHolder holder,
+                                                  int groupPosition) {
+
+                        }
+                    });
+
+                    mAdapter1.setOnChildClickListener(new GroupedRecyclerViewAdapter.OnChildClickListener() {
+                        @Override
+                        public void onChildClick(GroupedRecyclerViewAdapter adapter, BaseViewHolder holder,
+                                                 int groupPosition, int childPosition) {
+                        }
+                    });
+                    recyclerView.setAdapter(mAdapter1);
 
                 } else {
                     showEmptyPage();
@@ -236,7 +226,7 @@ public class FootprintActivity extends BaseActivity {
             @Override
             public void onResponse(FootprintModel response) {
                 hideProgress();
-                /*List<FootprintModel> list_1 = new ArrayList<>();
+                List<FootprintModel.ListBeanX> list_1 = new ArrayList<>();
                 list_1 = response.getList();
                 if (list_1.size() == 0) {
                     page1--;
@@ -244,7 +234,7 @@ public class FootprintActivity extends BaseActivity {
                 } else {
                     list1.addAll(list_1);
 //                    mAdapter1.notifyDataSetChanged();
-                }*/
+                }
             }
         });
     }
@@ -272,7 +262,6 @@ public class FootprintActivity extends BaseActivity {
             public void onResponse(CollectModel response) {
                 hideProgress();
                 list2 = response.getList();
-                MyLogger.i(">>>>>>>>" + list2.size());
                 if (list2.size() > 0) {
                     showContentPage();
                     mAdapter2 = new CommonAdapter<CollectModel.ListBean>
@@ -303,7 +292,7 @@ public class FootprintActivity extends BaseActivity {
     }
 
     private void RequestMore2(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.Footprint, params, headerMap, new CallBackUtil<CollectModel>() {
+        OkhttpUtil.okHttpPost(URLs.Collect, params, headerMap, new CallBackUtil<CollectModel>() {
             @Override
             public CollectModel onParseResponse(Call call, Response response) {
                 return null;

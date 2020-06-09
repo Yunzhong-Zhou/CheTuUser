@@ -1,6 +1,5 @@
 package com.chetu.user.activity;
 
-import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -28,8 +27,6 @@ import com.chetu.user.okhttp.CallBackUtil;
 import com.chetu.user.okhttp.OkhttpUtil;
 import com.chetu.user.utils.CommonUtil;
 import com.chetu.user.utils.MyLogger;
-import com.chetu.user.utils.permission.PermissionsActivity;
-import com.chetu.user.utils.permission.PermissionsChecker;
 import com.cy.dialog.BaseDialog;
 import com.maning.updatelibrary.InstallUtils;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
@@ -72,32 +69,6 @@ public class LoginActivity extends BaseActivity {
     //更新
     UpgradeModel model_up;
 
-    private int REQUEST_CODE = 0; // 请求码
-    // 所需的全部权限
-    static final String[] PERMISSIONS = new String[]{
-            Manifest.permission.CALL_PHONE,
-            Manifest.permission.CAMERA,
-            Manifest.permission.READ_PHONE_STATE,
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            //定位
-            Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.ACCESS_COARSE_LOCATION
-//            android.Manifest.permission.ACCESS_BACKGROUND_LOCATION,
-            /*//录音权限
-            Manifest.permission.RECORD_AUDIO,
-            Manifest.permission.VIBRATE*/
-            /* //网络
-             Manifest.permission.INTERNET
-             Manifest.permission.ACCESS_NETWORK_STATE,
-             Manifest.permission.WAKE_LOCK,
-             Manifest.permission.CHANGE_WIFI_STATE,
-             Manifest.permission.ACCESS_WIFI_STATE,
-             Manifest.permission.WRITE_SETTINGS,
-             Manifest.permission.VIBRATE*/
-    };
-    private PermissionsChecker mPermissionsChecker; // 权限检测器
-
     IWXAPI api;
 
     @Override
@@ -109,10 +80,7 @@ public class LoginActivity extends BaseActivity {
         //        findViewById(R.id.headView).setPadding(0, (int) CommonUtil.getStatusBarHeight(this), 0, 0);
 //        CommonUtil.setMargins(findViewByID_My(R.id.headView),0, (int) CommonUtil.getStatusBarHeight(this), 0, 0);
 
-
         setSwipeBackEnable(false); //主 activity 可以调用该方法，禁止滑动删除
-
-        mPermissionsChecker = new PermissionsChecker(this);
 
         //注册微信api
         api = WXAPIFactory.createWXAPI(this, "wx79d0350178a9ff3a", false);
@@ -329,14 +297,6 @@ public class LoginActivity extends BaseActivity {
             textView1.setText(millisUntilFinished / 1000 + getString(R.string.app_codethen));
         }
     }
-    /*//屏蔽返回键
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK)
-            return true;//不执行父类点击事件
-        return super.onKeyDown(keyCode, event);//继续执行父类其他点击事件
-    }*/
-
     private void RequestUpgrade(String string) {
         /*OkHttpClientManager.getAsyn(LoginActivity.this, URLs.Upgrade + string, new OkHttpClientManager.ResultCallback<UpgradeModel>() {
             @Override
@@ -538,10 +498,6 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        // 缺少权限时, 进入权限配置页面
-        if (mPermissionsChecker.lacksPermissions(PERMISSIONS)) {
-            startPermissionsActivity();
-        }
         code = getIntent().getStringExtra("code");
         MyLogger.i(">>>>>>>" + code);
         if (code != null && !code.equals("")) {
@@ -565,18 +521,13 @@ public class LoginActivity extends BaseActivity {
             RequestWeChatLogin(params);//微信登录*/
         }
     }
-
-    private void startPermissionsActivity() {
-        PermissionsActivity.startActivityForResult(this, REQUEST_CODE, PERMISSIONS);
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         // 拒绝时, 关闭页面, 缺少主要权限, 无法运行
-        if (requestCode == REQUEST_CODE && resultCode == PermissionsActivity.PERMISSIONS_DENIED) {
+       /* if (requestCode == REQUEST_CODE && resultCode == PermissionsActivity.PERMISSIONS_DENIED) {
             finish();
-        }
+        }*/
     }
 
     //微信登录

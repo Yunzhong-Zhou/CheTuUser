@@ -14,9 +14,9 @@ import java.util.List;
  */
 public class FootpriintAdapter extends GroupedRecyclerViewAdapter {
 
-    protected List<FootprintModel> mGroups;
+    protected List<FootprintModel.ListBeanX> mGroups;
 
-    public FootpriintAdapter(Context context, List<FootprintModel> groups) {
+    public FootpriintAdapter(Context context, List<FootprintModel.ListBeanX> groups) {
         super(context);
         mGroups = groups;
     }
@@ -31,7 +31,7 @@ public class FootpriintAdapter extends GroupedRecyclerViewAdapter {
     @Override
     public int getChildrenCount(int groupPosition) {
 //        ArrayList<ChildEntity> children = mGroups.get(groupPosition).getChildren();
-        List<FootprintModel.ListBean> children = mGroups.get(groupPosition).getList();
+        List<FootprintModel.ListBeanX.ListBean> children = mGroups.get(groupPosition).getList();
         return children == null ? 0 : children.size();
     }
 
@@ -40,7 +40,7 @@ public class FootpriintAdapter extends GroupedRecyclerViewAdapter {
         notifyDataChanged();
     }
 
-    public void setGroups(List<FootprintModel> groups) {
+    public void setGroups(List<FootprintModel.ListBeanX> groups) {
         mGroups = groups;
         notifyDataChanged();
     }

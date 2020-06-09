@@ -18,7 +18,6 @@ import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.chetu.user.R;
-import com.chetu.user.activity.MainActivity;
 import com.chetu.user.activity.SearchActivity;
 import com.chetu.user.activity.StoreDetailActivity;
 import com.chetu.user.adapter.Pop_ListAdapter;
@@ -94,10 +93,10 @@ public class Fragment3 extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (MainActivity.item == 2) {
+        /*if (MainActivity.item == 2) {
             requestServer();
             tv_addr.setText(localUserInfo.getCityname());
-        }
+        }*/
     }
 
     @Override
@@ -164,7 +163,7 @@ public class Fragment3 extends BaseFragment {
 
     @Override
     protected void initData() {
-//        requestServer();
+        requestServer();
         //初始化定位
         mLocationClient = new AMapLocationClient(getActivity());
         AMapLocationClientOption option = new AMapLocationClientOption();

@@ -7,150 +7,136 @@ import java.util.List;
  * Created by zyz on 2020/5/26.
  */
 public class FootprintModel implements Serializable {
+    private List<ListBeanX> list;
 
-    private List<ListBean> list;
-
-    public List<ListBean> getList() {
+    public List<ListBeanX> getList() {
         return list;
     }
 
-    public void setList(List<ListBean> list) {
+    public void setList(List<ListBeanX> list) {
         this.list = list;
     }
 
-    public static class ListBean {
+    public static class ListBeanX {
         /**
-         * id : 1017
-         * yStoreId : 692341585785913344
-         * vName : 修改商店测试
-         * review :
-         * keywsr :
-         * address :
-         * longitude : 116.49798
-         * latitude : 39.916485
-         * picture :
-         * distance : 12246.42
-         * phone :
-         * vLevel :  A级
-         * introduce :
+         * year : 2020
+         * list : [{"id":"1051","yUserNotepadId":"718797004750192640","userId":"714547022807433216","yTitle":"好尴尬好好干","yTag":"","vMoney":"5655","iMsg":"还有哈哈哈那就好","year":"2020","createDate":"2020-06-06 12:02:40"},{"id":"1050","yUserNotepadId":"718769677488095232","userId":"714547022807433216","year":"2020","createDate":"2020-06-06 10:14:05"}]
          */
 
-        private String id;
-        private String yStoreId;
-        private String vName;
-        private String review;
-        private String keywsr;
-        private String address;
-        private String longitude;
-        private String latitude;
-        private String picture;
-        private String distance;
-        private String phone;
-        private String vLevel;
-        private String introduce;
+        private String year;
+        private List<ListBeanX.ListBean> list;
 
-        public String getId() {
-            return id;
+        public String getYear() {
+            return year;
         }
 
-        public void setId(String id) {
-            this.id = id;
+        public void setYear(String year) {
+            this.year = year;
         }
 
-        public String getYStoreId() {
-            return yStoreId;
+        public List<ListBeanX.ListBean> getList() {
+            return list;
         }
 
-        public void setYStoreId(String yStoreId) {
-            this.yStoreId = yStoreId;
+        public void setList(List<ListBeanX.ListBean> list) {
+            this.list = list;
         }
 
-        public String getVName() {
-            return vName;
-        }
+        public static class ListBean {
+            /**
+             * id : 1051
+             * yUserNotepadId : 718797004750192640
+             * userId : 714547022807433216
+             * yTitle : 好尴尬好好干
+             * yTag :
+             * vMoney : 5655
+             * iMsg : 还有哈哈哈那就好
+             * year : 2020
+             * createDate : 2020-06-06 12:02:40
+             */
 
-        public void setVName(String vName) {
-            this.vName = vName;
-        }
+            private String id;
+            private String yUserNotepadId;
+            private String userId;
+            private String yTitle;
+            private String yTag;
+            private String vMoney;
+            private String iMsg;
+            private String year;
+            private String createDate;
 
-        public String getReview() {
-            return review;
-        }
+            public String getId() {
+                return id;
+            }
 
-        public void setReview(String review) {
-            this.review = review;
-        }
+            public void setId(String id) {
+                this.id = id;
+            }
 
-        public String getKeywsr() {
-            return keywsr;
-        }
+            public String getYUserNotepadId() {
+                return yUserNotepadId;
+            }
 
-        public void setKeywsr(String keywsr) {
-            this.keywsr = keywsr;
-        }
+            public void setYUserNotepadId(String yUserNotepadId) {
+                this.yUserNotepadId = yUserNotepadId;
+            }
 
-        public String getAddress() {
-            return address;
-        }
+            public String getUserId() {
+                return userId;
+            }
 
-        public void setAddress(String address) {
-            this.address = address;
-        }
+            public void setUserId(String userId) {
+                this.userId = userId;
+            }
 
-        public String getLongitude() {
-            return longitude;
-        }
+            public String getYTitle() {
+                return yTitle;
+            }
 
-        public void setLongitude(String longitude) {
-            this.longitude = longitude;
-        }
+            public void setYTitle(String yTitle) {
+                this.yTitle = yTitle;
+            }
 
-        public String getLatitude() {
-            return latitude;
-        }
+            public String getYTag() {
+                return yTag;
+            }
 
-        public void setLatitude(String latitude) {
-            this.latitude = latitude;
-        }
+            public void setYTag(String yTag) {
+                this.yTag = yTag;
+            }
 
-        public String getPicture() {
-            return picture;
-        }
+            public String getVMoney() {
+                return vMoney;
+            }
 
-        public void setPicture(String picture) {
-            this.picture = picture;
-        }
+            public void setVMoney(String vMoney) {
+                this.vMoney = vMoney;
+            }
 
-        public String getDistance() {
-            return distance;
-        }
+            public String getIMsg() {
+                return iMsg;
+            }
 
-        public void setDistance(String distance) {
-            this.distance = distance;
-        }
+            public void setIMsg(String iMsg) {
+                this.iMsg = iMsg;
+            }
 
-        public String getPhone() {
-            return phone;
-        }
+            public String getYear() {
+                return year;
+            }
 
-        public void setPhone(String phone) {
-            this.phone = phone;
-        }
+            public void setYear(String year) {
+                this.year = year;
+            }
 
-        public String getVLevel() {
-            return vLevel;
-        }
+            public String getCreateDate() {
+                return createDate;
+            }
 
-        public void setVLevel(String vLevel) {
-            this.vLevel = vLevel;
-        }
-
-        public String getIntroduce() {
-            return introduce;
-        }
-
-        public void setIntroduce(String introduce) {
-            this.introduce = introduce;
+            public void setCreateDate(String createDate) {
+                this.createDate = createDate;
+            }
         }
     }
+
 }
