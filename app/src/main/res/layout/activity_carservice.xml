@@ -23,6 +23,8 @@
                 android:orientation="vertical">
                 <!--车辆基本信息-->
                 <LinearLayout
+                    android:id="@+id/ll_car"
+                    android:onClick="onClick"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/yuanjiao_10_baise"
@@ -31,6 +33,7 @@
                     android:paddingTop="30dp">
 
                     <ImageView
+                        android:id="@+id/iv_carlogo"
                         android:layout_width="41dp"
                         android:layout_height="41dp"
                         android:layout_margin="13dp" />
@@ -47,6 +50,7 @@
                             android:orientation="horizontal">
 
                             <TextView
+                                android:id="@+id/tv_carname"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -55,6 +59,7 @@
                                 android:textSize="15sp" />
 
                             <TextView
+                                android:id="@+id/tv_carnum"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="车牌"
@@ -70,6 +75,7 @@
                             android:orientation="horizontal">
 
                             <TextView
+                                android:id="@+id/tv_cardetail"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -118,12 +124,24 @@
                         android:layout_marginTop="10dp"
                         android:background="@drawable/yuanjiao_10_baise"
                         android:orientation="vertical">
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/recyclerView2"
+
+                        <LinearLayout
+                            android:id="@+id/ll_add"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:background="@drawable/yuanjiao_10_baise" />
+                            android:orientation="vertical" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="13dp"
+                            android:background="#F5F5F5"
+                            android:drawableRight="@mipmap/ic_add_blue"
+                            android:paddingLeft="13dp"
+                            android:paddingTop="14dp"
+                            android:paddingRight="13dp"
+                            android:paddingBottom="14dp"
+                            android:text="添加项目" />
 
                     </LinearLayout>
 
@@ -133,17 +151,16 @@
                     android:id="@+id/ll_tab2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/yuanjiao_10_baise"
                     android:orientation="vertical"
                     android:visibility="gone">
 
+                    <!--基本信息-->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:background="@drawable/yuanjiao_10_baise"
-                        android:orientation="vertical"
-                        android:padding="13dp">
+                        android:orientation="vertical">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -151,12 +168,12 @@
                             android:orientation="horizontal">
 
                             <TextView
-                                android:layout_width="140dp"
+                                android:layout_width="110dp"
                                 android:layout_height="wrap_content"
                                 android:paddingLeft="13dp"
                                 android:paddingTop="15dp"
                                 android:paddingBottom="15dp"
-                                android:text="车牌"
+                                android:text="姓名"
                                 android:textColor="@color/black"
                                 android:textSize="15sp" />
 
@@ -165,7 +182,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:background="@color/transparent"
-                                android:hint="输入车牌（必填）"
+                                android:hint="输入姓名"
                                 android:paddingTop="15dp"
                                 android:paddingBottom="15dp"
                                 android:textColor="@color/black"
@@ -187,12 +204,12 @@
                             android:orientation="horizontal">
 
                             <TextView
-                                android:layout_width="140dp"
+                                android:layout_width="110dp"
                                 android:layout_height="wrap_content"
                                 android:paddingLeft="13dp"
                                 android:paddingTop="15dp"
                                 android:paddingBottom="15dp"
-                                android:text="车架号"
+                                android:text="手机"
                                 android:textColor="@color/black"
                                 android:textSize="15sp" />
 
@@ -201,7 +218,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:background="@color/transparent"
-                                android:hint="输入车架号"
+                                android:hint="输入手机号"
                                 android:paddingTop="15dp"
                                 android:paddingBottom="15dp"
                                 android:textColor="@color/black"
@@ -223,12 +240,12 @@
                             android:orientation="horizontal">
 
                             <TextView
-                                android:layout_width="140dp"
+                                android:layout_width="110dp"
                                 android:layout_height="wrap_content"
                                 android:paddingLeft="13dp"
                                 android:paddingTop="15dp"
                                 android:paddingBottom="15dp"
-                                android:text="车主姓名"
+                                android:text="地址"
                                 android:textColor="@color/black"
                                 android:textSize="15sp" />
 
@@ -237,44 +254,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:background="@color/transparent"
-                                android:hint="输入姓名（必填）"
-                                android:paddingTop="15dp"
-                                android:paddingBottom="15dp"
-                                android:textColor="@color/black"
-                                android:textColorHint="@color/grey"
-                                android:textSize="15sp" />
-
-                        </LinearLayout>
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="0.5dp"
-                            android:layout_marginLeft="13dp"
-                            android:layout_marginRight="13dp"
-                            android:background="@color/xian" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="140dp"
-                                android:layout_height="wrap_content"
-                                android:paddingLeft="13dp"
-                                android:paddingTop="15dp"
-                                android:paddingBottom="15dp"
-                                android:text="车主电话"
-                                android:textColor="@color/black"
-                                android:textSize="15sp" />
-
-                            <EditText
-                                android:id="@+id/editText4"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:background="@color/transparent"
-                                android:hint="输入电话（必填）"
-                                android:inputType="phone"
+                                android:hint="输入地址"
                                 android:paddingTop="15dp"
                                 android:paddingBottom="15dp"
                                 android:textColor="@color/black"
@@ -284,12 +264,120 @@
                         </LinearLayout>
 
                     </LinearLayout>
+                    <!--类型-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/yuanjiao_10_baise"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="110dp"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="13dp"
+                            android:paddingTop="15dp"
+                            android:paddingBottom="15dp"
+                            android:text="类型"
+                            android:textColor="@color/black"
+                            android:textSize="15sp" />
+
+                        <TextView
+
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/transparent"
+                            android:drawableRight="@mipmap/ic_next_black"
+                            android:hint="选择救援类型"
+                            android:paddingTop="15dp"
+                            android:paddingRight="10dp"
+                            android:paddingBottom="15dp"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/grey"
+                            android:textSize="15sp" />
+
+                    </LinearLayout>
+                    <!--车况描述-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/yuanjiao_10_baise"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="13dp"
+                            android:text="车况描述"
+                            android:textColor="@color/black"
+                            android:textSize="14sp" />
+
+                        <EditText
+                            android:id="@+id/editText4"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/transparent"
+                            android:gravity="top"
+                            android:hint="请描述您当前的情况"
+                            android:lineSpacingExtra="5dp"
+                            android:minLines="8"
+                            android:paddingLeft="13dp"
+                            android:paddingRight="13dp"
+                            android:paddingBottom="15dp"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/grey"
+                            android:textSize="15sp" />
+
+                    </LinearLayout>
+                    <!--上传图片-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/yuanjiao_10_baise"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="13dp"
+                            android:text="上传图片（最多6张）"
+                            android:textColor="@color/black"
+                            android:textSize="14sp" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_addimg"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="13dp"
+                            android:layout_marginRight="13dp"
+                            android:layout_marginBottom="13dp"
+                            android:overScrollMode="never" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+                <!--选择店铺-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/yuanjiao_10_baise"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="13dp"
+                        android:text="选择店铺"
+                        android:textColor="@color/black"
+                        android:textSize="14sp" />
 
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recyclerView"
+                        android:id="@+id/recyclerView2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
-
                 </LinearLayout>
 
                 <View
@@ -339,7 +427,7 @@
                         android:gravity="center"
                         android:onClick="onClick"
                         android:padding="12dp"
-                        android:text="发布"
+                        android:text="保存"
                         android:textColor="@color/white"
                         android:textSize="15sp"
                         android:textStyle="bold" />

@@ -77,7 +77,7 @@ public class FeedBackActivity extends BaseActivity {
         /**
          * 选择图片
          */
-        mRecyclerView = findViewByID_My(R.id.recycler);
+        mRecyclerView = findViewByID_My(R.id.rv_addimg);
         FullyGridLayoutManager manager = new FullyGridLayoutManager(this,
                 spanCount, GridLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(manager);
