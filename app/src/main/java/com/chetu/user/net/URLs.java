@@ -65,6 +65,14 @@ public class URLs {
      */
     public static final String Fragment3 = HOST+"/api/v1/public/get_store_list";
     /**
+     * 门店详情
+     */
+    public static final String StoreDetail = HOST+"/api/v1/public/get_store_details";
+    /**
+     * 服务分类列表
+     */
+    public static final String ServiceList = HOST+"/api/v1/public/get_service_index_list";
+    /**
      * *********************************我的*****************************************
      */
     public static final String Fragment4 = HOST+"/api/v1/user/get_user_info";
@@ -88,6 +96,10 @@ public class URLs {
      * 意见反馈提交
      */
     public static final String FeedBack = HOST+"/api/v1/public/increase_user_feedback";
+    /**
+     * 优惠券
+     */
+    public static final String Coupon = HOST+"/api/v1/user/user_coupon_list";
     /**
      * 我的车辆
      */

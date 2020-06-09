@@ -1,6 +1,7 @@
 package com.chetu.user.fragment;
 
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -17,12 +19,14 @@ import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
+import com.bumptech.glide.Glide;
 import com.chetu.user.R;
 import com.chetu.user.activity.SearchActivity;
 import com.chetu.user.activity.StoreDetailActivity;
 import com.chetu.user.adapter.Pop_ListAdapter;
 import com.chetu.user.base.BaseFragment;
 import com.chetu.user.model.Fragment3Model;
+import com.chetu.user.model.ServiceListModel;
 import com.chetu.user.net.URLs;
 import com.chetu.user.okhttp.CallBackUtil;
 import com.chetu.user.okhttp.OkhttpUtil;
@@ -57,10 +61,18 @@ public class Fragment3 extends BaseFragment {
     //筛选
     TextView tv_pingfen, tv_juli, tv_shaixuan;
     int i1 = -1, i2 = -1;
+
     private LinearLayout pop_view;
+    //第一级
+    List<ServiceListModel.ListBean> list_sv1 = new ArrayList<>();
+    List<String> stringList1 = new ArrayList<>();
+    //第二级
+    List<ServiceListModel.ListBean> list_sv2 = new ArrayList<>();
+    List<String> stringList2 = new ArrayList<>();
+
     //数据
     int page = 0;
-    String longitude = "", latitude = "", y_parent_id = "0", y_service_id = "0";
+    String longitude = "", latitude = "", y_parent_id = "0", y_service_id = "0", is_review = "0";
     private RecyclerView recyclerView;
     List<Fragment3Model.ListBean> list = new ArrayList<>();
     CommonAdapter<Fragment3Model.ListBean> mAdapter;
@@ -123,6 +135,7 @@ public class Fragment3 extends BaseFragment {
                 params.put("page", page + "");
                 params.put("longitude", longitude);
                 params.put("latitude", latitude);
+                params.put("is_review", is_review);
                 Request(params);
             }
 
@@ -135,6 +148,7 @@ public class Fragment3 extends BaseFragment {
                 params.put("page", page + "");
                 params.put("longitude", longitude);
                 params.put("latitude", latitude);
+                params.put("is_review", is_review);
                 RequestMore(params);
             }
         });
@@ -223,7 +237,7 @@ public class Fragment3 extends BaseFragment {
 //        mLocationClient.stopLocation();
         // 在单次定位情况下，定位无论成功与否，都无需调用stopLocation()方法移除请求，定位sdk内部会移除
 //        if (localUserInfo.getCityname().equals("")) {
-            mLocationClient.startLocation();
+        mLocationClient.startLocation();
 //        }
     }
 
@@ -242,17 +256,47 @@ public class Fragment3 extends BaseFragment {
 
             case R.id.tv_pingfen:
                 //评分
+                if (is_review.equals("0")) {
+                    is_review = "1";
+                    Drawable drawable = getResources().getDrawable(R.mipmap.ic_xia);
+                    drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+                    tv_pingfen.setCompoundDrawables(null, null, drawable, null);
+                } else {
+                    is_review = "0";
+                    Drawable drawable = getResources().getDrawable(R.mipmap.ic_shangxia);
+                    drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+                    tv_pingfen.setCompoundDrawables(null, null, drawable, null);
+                }
                 break;
             case R.id.tv_juli:
-                //记录
+                //距离
+                if (is_review.equals("0")) {
+                    is_review = "1";
+                    Drawable drawable = getResources().getDrawable(R.mipmap.ic_xia);
+                    drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+                    tv_juli.setCompoundDrawables(null, null, drawable, null);
+                } else {
+                    is_review = "0";
+                    Drawable drawable = getResources().getDrawable(R.mipmap.ic_shangxia);
+                    drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+                    tv_juli.setCompoundDrawables(null, null, drawable, null);
+                }
                 break;
             case R.id.tv_shaixuan:
                 //筛选
-                showPopupWindow1(pop_view);
+                if (stringList1.size() > 0) {
+                    showPopupWindow1(pop_view);
+                } else {
+                    HashMap<String, String> params2 = new HashMap<>();
+                    params2.put("y_parent_id", "0");
+                    RequestService(params2, 0);
+                }
+
                 break;
 
         }
     }
+
 
     @Override
     protected void updateView() {
@@ -271,6 +315,7 @@ public class Fragment3 extends BaseFragment {
         params.put("page", page + "");
         params.put("longitude", longitude);
         params.put("latitude", latitude);
+        params.put("is_review", is_review);
         Request(params);
     }
 
@@ -298,27 +343,27 @@ public class Fragment3 extends BaseFragment {
                             (getActivity(), R.layout.item_fragment3, list) {
                         @Override
                         protected void convert(ViewHolder holder, Fragment3Model.ListBean model, int position) {
-                       /* TextView tv1 = holder.getView(R.id.tv1);
-                        TextView tv2 = holder.getView(R.id.tv2);
-                        LinearLayout ll = holder.getView(R.id.ll);
-                        tv1.setText(model.getName());
-                        tv2.setText(model.getName());
-
-                        if (item == position) {
-                            ll.setVisibility(View.VISIBLE);
-                            tv1.setVisibility(View.GONE);
-                        } else {
-                            ll.setVisibility(View.GONE);
-                            tv1.setVisibility(View.VISIBLE);
-                        }*/
-
+                            ImageView imageView1 = holder.getView(R.id.imageView1);
+                            Glide.with(getActivity())
+                                    .load(URLs.IMGHOST + model.getPictureStr())
+                                    .centerCrop()
+//                    .placeholder(R.mipmap.headimg)//加载站位图
+//                    .error(R.mipmap.headimg)//加载失败
+                                    .into(imageView1);//加载图片
+                            holder.setText(R.id.tv_name, model.getVName());//店名
+                            holder.setText(R.id.tv_pingfen, model.getReview());//评分
+//                            holder.setText(R.id.tv_dingdan,model.get);//订单
+                            holder.setText(R.id.tv_addr, model.getAddress());//地址
+                            holder.setText(R.id.tv_juli, model.getDistance()+"m");//距离
                         }
                     };
                     mAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
                         @Override
                         public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
                             Bundle bundle = new Bundle();
-                            bundle.putString("id", list.get(i).getId());
+                            bundle.putString("id", list.get(i).getYStoreId());
+                            bundle.putString("longitude", longitude);
+                            bundle.putString("latitude", latitude);
                             CommonUtil.gotoActivityWithData(getActivity(), StoreDetailActivity.class, bundle, false);
                         }
 
@@ -366,95 +411,160 @@ public class Fragment3 extends BaseFragment {
         });
     }
 
+    /**
+     * 获取筛选列表
+     *
+     * @param params
+     * @param type
+     */
+    private void RequestService(HashMap<String, String> params, int type) {
+        OkhttpUtil.okHttpPost(URLs.ServiceList, params, headerMap, new CallBackUtil<ServiceListModel>() {
+            @Override
+            public ServiceListModel onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+                hideProgress();
+                myToast(err);
+            }
+
+            @Override
+            public void onResponse(ServiceListModel response) {
+                hideProgress();
+                if (type == 0) {
+                    //第一级
+                    list_sv1 = response.getList();
+                    for (ServiceListModel.ListBean bean : list_sv1) {
+                        stringList1.add(bean.getVName());
+                    }
+                    //请求第二级
+                    if (list_sv1.size() > 0) {
+                        i1 = 0;
+                        y_parent_id = list_sv1.get(0).getYServiceId();
+                        HashMap<String, String> params2 = new HashMap<>();
+                        params2.put("y_parent_id", y_parent_id);
+                        RequestService(params2, 1);
+                    }
+                } else {
+                    //第二级
+                    list_sv2 = response.getList();
+                    stringList2.clear();
+                    for (ServiceListModel.ListBean bean : list_sv2) {
+                        stringList2.add(bean.getVName());
+                    }
+                    i2 = -1;
+                    y_service_id = "";
+                    showPopupWindow1(pop_view);
+                }
+
+            }
+        });
+    }
+
+    /**
+     * 筛选弹窗
+     */
+    FixedPopupWindow popupWindow = null;
+    Pop_ListAdapter adapter2;
 
     private void showPopupWindow1(View v) {
         // 一个自定义的布局，作为显示的内容
         final View contentView = LayoutInflater.from(getActivity()).inflate(
                 R.layout.pop_fragment3, null);
-        final FixedPopupWindow popupWindow = new FixedPopupWindow(contentView,
-                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, true);
-        // mMenuView添加OnTouchListener监听判断获取触屏位置如果在选择框外面则销毁弹出框
-        contentView.setOnTouchListener(new View.OnTouchListener() {
-            public boolean onTouch(View v, MotionEvent event) {
-                int height = contentView.findViewById(R.id.pop_listView).getTop();
-                int height1 = contentView.findViewById(R.id.pop_listView).getBottom();
-                int y = (int) event.getY();
-                if (event.getAction() == MotionEvent.ACTION_UP) {
-                    if (y < height) {
-                        popupWindow.dismiss();
+        if (popupWindow == null) {
+            popupWindow = new FixedPopupWindow(contentView,
+                    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, true);
+            // mMenuView添加OnTouchListener监听判断获取触屏位置如果在选择框外面则销毁弹出框
+            contentView.setOnTouchListener(new View.OnTouchListener() {
+                public boolean onTouch(View v, MotionEvent event) {
+                    int height = contentView.findViewById(R.id.pop_listView).getTop();
+                    int height1 = contentView.findViewById(R.id.pop_listView).getBottom();
+                    int y = (int) event.getY();
+                    if (event.getAction() == MotionEvent.ACTION_UP) {
+                        if (y < height) {
+                            popupWindow.dismiss();
+                        }
+                        if (y > height1) {
+                            popupWindow.dismiss();
+                        }
                     }
-                    if (y > height1) {
+                    return true;
+                }
+            });
+            // 左边列表
+            ListView pop_listView1 = (ListView) contentView.findViewById(R.id.pop_listView1);
+            final Pop_ListAdapter adapter1 = new Pop_ListAdapter(getActivity(), stringList1);
+            adapter1.setSelectItem(i1);
+            pop_listView1.setAdapter(adapter1);
+            pop_listView1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    adapter1.setSelectItem(i);
+                    adapter1.notifyDataSetChanged();
+                    i1 = i;
+                    y_parent_id = list_sv1.get(i).getYServiceId();
+
+                    HashMap<String, String> params2 = new HashMap<>();
+                    params2.put("y_parent_id", y_parent_id);
+                    RequestService(params2, 1);
+
+//                popupWindow.dismiss();
+                }
+            });
+
+            // 由边列表
+            ListView pop_listView2 = (ListView) contentView.findViewById(R.id.pop_listView2);
+            adapter2 = new Pop_ListAdapter(getActivity(), stringList2);
+            adapter2.setSelectItem(i2);
+            pop_listView2.setAdapter(adapter2);
+            pop_listView2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    adapter2.setSelectItem(i);
+                    adapter2.notifyDataSetChanged();
+                    i2 = i;
+                    y_service_id = list_sv2.get(i).getYServiceId();
+
+//                popupWindow.dismiss();
+                }
+            });
+
+            TextView pop_confirm = contentView.findViewById(R.id.pop_confirm);
+            pop_confirm.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (!y_service_id.equals("")) {
                         popupWindow.dismiss();
+                        requestServer();
+                    } else {
+                        myToast("请选择具体的服务项目");
                     }
                 }
-                return true;
-            }
-        });
-        // 左边列表
-        ListView pop_listView1 = (ListView) contentView.findViewById(R.id.pop_listView1);
-//        contentView.findViewById(R.id.pop_listView2).setVisibility(View.INVISIBLE);
-        final List<String> list1 = new ArrayList<String>();
+            });
 
-
-        final Pop_ListAdapter adapter1 = new Pop_ListAdapter(getActivity(), list1);
-        adapter1.setSelectItem(i1);
-        pop_listView1.setAdapter(adapter1);
-        pop_listView1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                adapter1.setSelectItem(i);
-                adapter1.notifyDataSetChanged();
-                i1 = i;
-               /* if (i == 0) {
-                    money_type = "";
-                } else {
-                    money_type = i + "";
+            popupWindow.setTouchable(true);
+            popupWindow.setTouchInterceptor(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    return false;
+                    // 这里如果返回true的话，touch事件将被拦截
+                    // 拦截后 PopupWindow的onTouchEvent不被调用，这样点击外部区域无法dismiss
                 }
-                textView1.setText(list.get(i));*/
-                requestServer();
-                popupWindow.dismiss();
-            }
-        });
-        // 由边列表
-        ListView pop_listView2 = (ListView) contentView.findViewById(R.id.pop_listView2);
-//        contentView.findViewById(R.id.pop_listView2).setVisibility(View.INVISIBLE);
-        final List<String> list2 = new ArrayList<String>();
+            });
+        }
 
+        if (!popupWindow.isShowing()) {
+            ColorDrawable dw = new ColorDrawable(this.getResources().getColor(R.color.transparentblack2));
+            // 设置弹出窗体的背景
+            popupWindow.setBackgroundDrawable(dw);
+            // 设置好参数之后再show
+            popupWindow.showAsDropDown(v);
+        } else {
+            adapter2.setSelectItem(i2);
+            adapter2.notifyDataSetChanged();
+        }
 
-        final Pop_ListAdapter adapter2 = new Pop_ListAdapter(getActivity(), list2);
-        adapter2.setSelectItem(i2);
-        pop_listView2.setAdapter(adapter2);
-        pop_listView2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                adapter2.setSelectItem(i);
-                adapter2.notifyDataSetChanged();
-                i1 = i;
-               /* if (i == 0) {
-                    money_type = "";
-                } else {
-                    money_type = i + "";
-                }
-                textView1.setText(list.get(i));*/
-                requestServer();
-                popupWindow.dismiss();
-            }
-        });
-
-        popupWindow.setTouchable(true);
-        popupWindow.setTouchInterceptor(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return false;
-                // 这里如果返回true的话，touch事件将被拦截
-                // 拦截后 PopupWindow的onTouchEvent不被调用，这样点击外部区域无法dismiss
-            }
-        });
-
-        ColorDrawable dw = new ColorDrawable(this.getResources().getColor(R.color.transparentblack2));
-        // 设置弹出窗体的背景
-        popupWindow.setBackgroundDrawable(dw);
-        // 设置好参数之后再show
-        popupWindow.showAsDropDown(v);
     }
 }

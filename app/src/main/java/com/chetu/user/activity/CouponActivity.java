@@ -48,7 +48,7 @@ public class CouponActivity extends BaseActivity {
     @Override
     protected void initView() {
         //刷新
-        setSpringViewMore(true);//不需要加载更多
+        setSpringViewMore(false);//不需要加载更多
         springView.setListener(new SpringView.OnFreshListener() {
             @Override
             public void onRefresh() {
@@ -89,7 +89,7 @@ public class CouponActivity extends BaseActivity {
         Request(params);
     }
     private void Request(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.Fragment3, params, headerMap, new CallBackUtil<Fragment2Model>() {
+        OkhttpUtil.okHttpPost(URLs.Coupon, params, headerMap, new CallBackUtil<Fragment2Model>() {
             @Override
             public Fragment2Model onParseResponse(Call call, Response response) {
                 return null;
@@ -98,7 +98,7 @@ public class CouponActivity extends BaseActivity {
             @Override
             public void onFailure(Call call, Exception e, String err) {
                 hideProgress();
-                showEmptyPage();
+//                showEmptyPage();
                 myToast(err);
             }
 
@@ -112,19 +112,7 @@ public class CouponActivity extends BaseActivity {
                             (CouponActivity.this, R.layout.item_coupon, list) {
                         @Override
                         protected void convert(ViewHolder holder, Fragment2Model.ListBean model, int position) {
-                       /* TextView tv1 = holder.getView(R.id.tv1);
-                        TextView tv2 = holder.getView(R.id.tv2);
-                        LinearLayout ll = holder.getView(R.id.ll);
-                        tv1.setText(model.getName());
-                        tv2.setText(model.getName());
 
-                        if (item == position) {
-                            ll.setVisibility(View.VISIBLE);
-                            tv1.setVisibility(View.GONE);
-                        } else {
-                            ll.setVisibility(View.GONE);
-                            tv1.setVisibility(View.VISIBLE);
-                        }*/
 
                         }
                     };
