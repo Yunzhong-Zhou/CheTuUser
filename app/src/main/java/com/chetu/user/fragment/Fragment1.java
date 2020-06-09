@@ -56,7 +56,7 @@ public class Fragment1 extends BaseFragment {
     RelativeLayout rl_search;
     EditText et_search;
 
-    String longitude = "", latitude = "", y_parent_id = "0", y_service_id = "0";
+    String longitude = "", latitude = "";
 
     Banner banner;
     List<String> images = new ArrayList<>();
@@ -137,8 +137,7 @@ public class Fragment1 extends BaseFragment {
                 page2 = 0;
                 Map<String, String> params = new HashMap<>();
                 params.put("page", page1 + "");
-                params.put("y_parent_id", y_parent_id);
-                params.put("y_service_id", y_service_id);
+                params.put("service_name","");
                 params.put("longitude", longitude);
                 params.put("latitude", latitude);
                 Request(params);
@@ -272,8 +271,7 @@ public class Fragment1 extends BaseFragment {
         page2 = 0;
         Map<String, String> params = new HashMap<>();
 //        params.put("u_token", localUserInfo.getToken());
-        params.put("y_parent_id", y_parent_id);
-        params.put("y_service_id", y_service_id);
+        params.put("service_name","");
         params.put("longitude", longitude);
         params.put("latitude", latitude);
         Request(params);

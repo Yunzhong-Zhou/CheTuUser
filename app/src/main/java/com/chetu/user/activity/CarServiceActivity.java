@@ -65,7 +65,6 @@ public class CarServiceActivity extends BaseActivity {
             v_insure_city = "", license_img1 = "", license_img2 = "", number_img1 = "", number_img2 = "";
 
 
-
     //发布救援
     EditText editText1, editText2, editText3, editText4;
 

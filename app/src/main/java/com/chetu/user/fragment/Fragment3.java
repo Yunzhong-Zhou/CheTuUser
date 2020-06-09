@@ -72,7 +72,7 @@ public class Fragment3 extends BaseFragment {
 
     //数据
     int page = 0;
-    String longitude = "", latitude = "", y_parent_id = "0", y_service_id = "0", is_review = "0";
+    String longitude = "", latitude = "", y_parent_id = "0", y_service_id = "0", is_review = "0", service_name = "";
     private RecyclerView recyclerView;
     List<Fragment3Model.ListBean> list = new ArrayList<>();
     CommonAdapter<Fragment3Model.ListBean> mAdapter;
@@ -130,8 +130,9 @@ public class Fragment3 extends BaseFragment {
             public void onRefresh() {
                 page = 0;
                 Map<String, String> params = new HashMap<>();
-                params.put("y_parent_id", y_parent_id);
-                params.put("y_service_id", y_service_id);
+//                params.put("y_parent_id", y_parent_id);
+//                params.put("y_service_id", y_service_id);
+                params.put("service_name",service_name);
                 params.put("page", page + "");
                 params.put("longitude", longitude);
                 params.put("latitude", latitude);
@@ -143,8 +144,9 @@ public class Fragment3 extends BaseFragment {
             public void onLoadmore() {
                 page++;
                 Map<String, String> params = new HashMap<>();
-                params.put("y_parent_id", y_parent_id);
-                params.put("y_service_id", y_service_id);
+//                params.put("y_parent_id", y_parent_id);
+//                params.put("y_service_id", y_service_id);
+                params.put("service_name",service_name);
                 params.put("page", page + "");
                 params.put("longitude", longitude);
                 params.put("latitude", latitude);
@@ -310,8 +312,9 @@ public class Fragment3 extends BaseFragment {
         page = 0;
         Map<String, String> params = new HashMap<>();
 //        params.put("u_token", localUserInfo.getToken());
-        params.put("y_parent_id", y_parent_id);
-        params.put("y_service_id", y_service_id);
+//        params.put("y_parent_id", y_parent_id);
+//        params.put("y_service_id", y_service_id);
+        params.put("service_name",service_name);
         params.put("page", page + "");
         params.put("longitude", longitude);
         params.put("latitude", latitude);
@@ -354,7 +357,7 @@ public class Fragment3 extends BaseFragment {
                             holder.setText(R.id.tv_pingfen, model.getReview());//评分
 //                            holder.setText(R.id.tv_dingdan,model.get);//订单
                             holder.setText(R.id.tv_addr, model.getAddress());//地址
-                            holder.setText(R.id.tv_juli, model.getDistance()+"m");//距离
+                            holder.setText(R.id.tv_juli, model.getDistance() + "m");//距离
                         }
                     };
                     mAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {

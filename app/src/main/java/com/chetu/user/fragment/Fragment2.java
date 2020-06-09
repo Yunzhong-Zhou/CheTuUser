@@ -47,7 +47,7 @@ public class Fragment2 extends BaseFragment {
     EditText et_search;
 
     int page = 0;
-    String longitude = "", latitude = "", y_parent_id = "0", y_service_id = "0";
+    String longitude = "", latitude = "";
     private RecyclerView recyclerView;
     List<Fragment2Model.ListBean> list = new ArrayList<>();
     CommonAdapter<Fragment2Model.ListBean> mAdapter;
@@ -115,8 +115,7 @@ public class Fragment2 extends BaseFragment {
             public void onRefresh() {
                 page = 0;
                 Map<String, String> params = new HashMap<>();
-                params.put("y_parent_id", y_parent_id);
-                params.put("y_service_id", y_service_id);
+                params.put("service_name","");
                 params.put("page", page + "");
                 params.put("longitude", longitude);
                 params.put("latitude", latitude);
@@ -127,8 +126,7 @@ public class Fragment2 extends BaseFragment {
             public void onLoadmore() {
                 page++;
                 Map<String, String> params = new HashMap<>();
-                params.put("y_parent_id", y_parent_id);
-                params.put("y_service_id", y_service_id);
+                params.put("service_name","");
                 params.put("page", page + "");
                 params.put("longitude", longitude);
                 params.put("latitude", latitude);
@@ -283,8 +281,7 @@ public class Fragment2 extends BaseFragment {
         page = 0;
         Map<String, String> params = new HashMap<>();
 //        params.put("u_token", localUserInfo.getToken());
-        params.put("y_parent_id", y_parent_id);
-        params.put("y_service_id", y_service_id);
+        params.put("service_name","");
         params.put("page", page + "");
         params.put("longitude", longitude);
         params.put("latitude", latitude);
