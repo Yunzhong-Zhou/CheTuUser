@@ -61,6 +61,14 @@ public class URLs {
      */
     public static final String CarIllegal = HOST+"/api/v1/public/user_vio_regulat_add";
     /**
+     * 商品列表
+     */
+    public static final String ProductList = HOST+"/api/v1/public/get_goods_list";
+    /**
+     * 商品详情
+     */
+    public static final String ProductDetail= HOST+"/api/v1/public/get_goods_details";
+    /**
      * *********************************门店*****************************************
      */
     public static final String Fragment3 = HOST+"/api/v1/public/get_store_list";

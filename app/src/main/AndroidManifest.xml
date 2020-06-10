@@ -107,6 +107,12 @@
         <activity
             android:name=".activity.CarIllegalActivity"
             android:label="违章查询" />
+        <activity
+            android:name=".activity.ProductListActivity"
+            android:label="商品列表" />
+        <activity
+            android:name=".activity.ProductDetailActivity"
+            android:label="商品详情" />
         <!--养车-->
         <activity
             android:name=".activity.DraftActivity"
