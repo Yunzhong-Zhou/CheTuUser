@@ -43,7 +43,7 @@ public class ZoomIMGPopupWindow extends PopupWindow {
     RelativeLayout relativeLayout;
 
     public ZoomIMGPopupWindow(Context mContext, String url) {
-        this.view = LayoutInflater.from(mContext).inflate(R.layout.pop_zoomimg, null);
+        this.view = LayoutInflater.from(mContext).inflate(R.layout.dialog_zoomimg, null);
         this.mContext = mContext;
         this.url = url;
         initView(view);

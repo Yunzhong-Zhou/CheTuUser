@@ -100,7 +100,7 @@ public class PhotoShowDialog extends Dialog {
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            View view = View.inflate(context, R.layout.pop_zoomimg, null);
+            View view = View.inflate(context, R.layout.dialog_zoomimg, null);
             PhotoView photoView = view.findViewById(R.id.img);
             photoView.enable();
             RequestOptions options = new RequestOptions()

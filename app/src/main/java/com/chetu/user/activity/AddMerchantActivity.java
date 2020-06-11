@@ -30,7 +30,7 @@ import com.chetu.user.model.UpFileModel;
 import com.chetu.user.net.URLs;
 import com.chetu.user.okhttp.CallBackUtil;
 import com.chetu.user.okhttp.OkhttpUtil;
-import com.chetu.user.popupwindow.ZoomIMGPopupWindow;
+import com.chetu.user.popupwindow.PhotoShowDialog_1;
 import com.chetu.user.utils.CommonUtil;
 import com.chetu.user.utils.MyChooseImages;
 import com.chetu.user.utils.MyLogger;
@@ -358,25 +358,27 @@ public class AddMerchantActivity extends BaseActivity {
                 break;
             case R.id.tv2_date1:
                 //生效日期
-                if (!is_long.equals("1")){
-                    setDate1("请选择生效日期", tv2_date1);
+                if (!is_long.equals("1")) {
+                    setDate1("请选择生效日期", tv2_date1,tv2_date1.getText().toString().trim());
                 }
                 break;
             case R.id.tv2_date2:
                 //生效日期
-                if (!is_long.equals("1")){
-                    setDate1("请选择失效日期", tv2_date2);
+                if (!is_long.equals("1")) {
+                    setDate1("请选择失效日期", tv2_date2,tv2_date2.getText().toString().trim());
                 }
                 break;
             case R.id.ll2_up1load1:
             case R.id.iv2_card1:
                 //法人手持身份证照片
                 if (progress == 3) {
-                    ZoomIMGPopupWindow popupwindow = new ZoomIMGPopupWindow(AddMerchantActivity.this,
+                    /*ZoomIMGPopupWindow popupwindow = new ZoomIMGPopupWindow(AddMerchantActivity.this,
                             URLs.IMGHOST + model.getInfo().getStore_step_two().getImg_positive());
-                    popupwindow.showAtLocation(iv2_card1, Gravity.CENTER, 0, 0);
+                    popupwindow.showAtLocation(iv2_card1, Gravity.CENTER, 0, 0);*/
+                    PhotoShowDialog_1 photoShowDialog = new PhotoShowDialog_1(AddMerchantActivity.this, URLs.IMGHOST + model.getInfo().getStore_step_two().getImg_positive());
+                    photoShowDialog.show();
 
-                }else {
+                } else {
                     imgType = "img_positive";
                     MyChooseImages.showPhotoDialog(this);
                 }
@@ -385,11 +387,14 @@ public class AddMerchantActivity extends BaseActivity {
             case R.id.iv2_card2:
                 //法定代表人身份证复印件
                 if (progress == 3) {
-                    ZoomIMGPopupWindow popupwindow = new ZoomIMGPopupWindow(AddMerchantActivity.this,
+                    /*ZoomIMGPopupWindow popupwindow = new ZoomIMGPopupWindow(AddMerchantActivity.this,
                             URLs.IMGHOST + model.getInfo().getStore_step_two().getImg_side());
-                    popupwindow.showAtLocation(iv2_card1, Gravity.CENTER, 0, 0);
+                    popupwindow.showAtLocation(iv2_card1, Gravity.CENTER, 0, 0);*/
+                    PhotoShowDialog_1 photoShowDialog = new PhotoShowDialog_1(AddMerchantActivity.this,
+                            URLs.IMGHOST + model.getInfo().getStore_step_two().getImg_side());
+                    photoShowDialog.show();
 
-                }else {
+                } else {
                     imgType = "img_side";
                     MyChooseImages.showPhotoDialog(this);
                 }
@@ -425,17 +430,20 @@ public class AddMerchantActivity extends BaseActivity {
              */
             case R.id.tv3_date:
                 //执照过期日
-                setDate1("请选择执照过期日", tv3_date);
+                setDate1("请选择执照过期日", tv3_date,tv3_date.getText().toString().trim());
                 break;
             case R.id.ll3_up1load1:
             case R.id.iv3_photo1:
                 //上传营业执照照片
                 if (progress == 3) {
-                    ZoomIMGPopupWindow popupwindow = new ZoomIMGPopupWindow(AddMerchantActivity.this,
+                    /*ZoomIMGPopupWindow popupwindow = new ZoomIMGPopupWindow(AddMerchantActivity.this,
                             URLs.IMGHOST + model.getInfo().getStore_step_three().getBusiness_license());
-                    popupwindow.showAtLocation(iv2_card1, Gravity.CENTER, 0, 0);
+                    popupwindow.showAtLocation(iv2_card1, Gravity.CENTER, 0, 0);*/
+                    PhotoShowDialog_1 photoShowDialog = new PhotoShowDialog_1(AddMerchantActivity.this,
+                            URLs.IMGHOST + model.getInfo().getStore_step_three().getBusiness_license());
+                    photoShowDialog.show();
 
-                }else {
+                } else {
                     imgType = "business_license";
                     MyChooseImages.showPhotoDialog(this);
                 }
@@ -445,11 +453,14 @@ public class AddMerchantActivity extends BaseActivity {
             case R.id.iv3_photo2:
                 //上传组织机构代码证照片
                 if (progress == 3) {
-                    ZoomIMGPopupWindow popupwindow = new ZoomIMGPopupWindow(AddMerchantActivity.this,
+                    /*ZoomIMGPopupWindow popupwindow = new ZoomIMGPopupWindow(AddMerchantActivity.this,
                             URLs.IMGHOST + model.getInfo().getStore_step_three().getOrganization_img());
-                    popupwindow.showAtLocation(iv2_card1, Gravity.CENTER, 0, 0);
+                    popupwindow.showAtLocation(iv2_card1, Gravity.CENTER, 0, 0);*/
+                    PhotoShowDialog_1 photoShowDialog = new PhotoShowDialog_1(AddMerchantActivity.this,
+                            URLs.IMGHOST + model.getInfo().getStore_step_three().getOrganization_img());
+                    photoShowDialog.show();
 
-                }else {
+                } else {
                     imgType = "organization_img";
                     MyChooseImages.showPhotoDialog(this);
                 }
@@ -459,11 +470,14 @@ public class AddMerchantActivity extends BaseActivity {
             case R.id.iv3_photo3:
                 //上传税务登记证照片
                 if (progress == 3) {
-                    ZoomIMGPopupWindow popupwindow = new ZoomIMGPopupWindow(AddMerchantActivity.this,
+                    /*ZoomIMGPopupWindow popupwindow = new ZoomIMGPopupWindow(AddMerchantActivity.this,
                             URLs.IMGHOST + model.getInfo().getStore_step_three().getTax_registration());
-                    popupwindow.showAtLocation(iv2_card1, Gravity.CENTER, 0, 0);
+                    popupwindow.showAtLocation(iv2_card1, Gravity.CENTER, 0, 0);*/
+                    PhotoShowDialog_1 photoShowDialog = new PhotoShowDialog_1(AddMerchantActivity.this,
+                            URLs.IMGHOST + model.getInfo().getStore_step_three().getTax_registration());
+                    photoShowDialog.show();
 
-                }else {
+                } else {
                     imgType = "tax_registration";
                     MyChooseImages.showPhotoDialog(this);
                 }
@@ -590,7 +604,7 @@ public class AddMerchantActivity extends BaseActivity {
             return false;
         }
 
-        if (!is_long.equals("1")){
+        if (!is_long.equals("1")) {
             num_start_time = tv2_date1.getText().toString().trim();
             if (TextUtils.isEmpty(num_start_time)) {
                 myToast("请选择证件生效日期");
@@ -794,7 +808,7 @@ public class AddMerchantActivity extends BaseActivity {
 
     }
 
-    private void setDate1(String string, TextView textView) {
+    private void setDate1(String string, TextView textView, String date) {
         //获取当前时间
         Calendar calendar = Calendar.getInstance();
         //年
@@ -813,6 +827,11 @@ public class AddMerchantActivity extends BaseActivity {
         Calendar selectedDate = Calendar.getInstance();
         Calendar startDate = Calendar.getInstance();
         Calendar endDate = Calendar.getInstance();
+
+        if (!date.equals("")){
+            String[] strArr = date.split("-");//拆分日期 得到年月日
+            selectedDate.set(Integer.valueOf(strArr[0]),Integer.valueOf(strArr[1])-1,Integer.valueOf(strArr[2]));
+        }
 
         //正确设置方式 原因：注意事项有说明
 //        startDate.set(year, month, day);

@@ -29,7 +29,6 @@ import com.chetu.user.R;
 import com.chetu.user.base.BaseActivity;
 import com.chetu.user.model.CodeModel;
 import com.chetu.user.model.Fragment4Model;
-import com.chetu.user.model.MyProfileModel;
 import com.chetu.user.model.UpFileModel;
 import com.chetu.user.net.URLs;
 import com.chetu.user.okhttp.CallBackUtil;
@@ -74,7 +73,7 @@ public class MyProfileActivity extends BaseActivity {
 
     String user_phone = "", vcode = "", user_name = "", head_portrait = "", u_gender = "男", birthday = "";
 
-    MyProfileModel model;
+    //    Fragment4Model model;
     int i1 = -1;
 
     @Override
@@ -153,6 +152,7 @@ public class MyProfileActivity extends BaseActivity {
             @Override
             public void onResponse(Fragment4Model response) {
                 hideProgress();
+
                 //头像
                 head_portrait = response.getUser_info().getHeadPortrait();
                 Glide.with(MyProfileActivity.this).load(URLs.IMGHOST + response.getUser_info().getHeadPortrait())
@@ -232,7 +232,7 @@ public class MyProfileActivity extends BaseActivity {
                 break;
             case R.id.textView2:
                 //年龄
-                setDate("请选择出生日期", textView2);
+                setDate("请选择出生日期", textView2, textView2.getText().toString().trim());
                 break;
         }
     }
@@ -383,7 +383,7 @@ public class MyProfileActivity extends BaseActivity {
     }
 
     //预约时间
-    private void setDate(String string, TextView textView) {
+    private void setDate(String string, TextView textView, String date) {
         //获取当前时间
         Calendar calendar = Calendar.getInstance();
         //年
@@ -402,6 +402,11 @@ public class MyProfileActivity extends BaseActivity {
         Calendar selectedDate = Calendar.getInstance();
         Calendar startDate = Calendar.getInstance();
         Calendar endDate = Calendar.getInstance();
+
+        if (!date.equals("")) {
+            String[] strArr = date.split("-");//拆分日期 得到年月日
+            selectedDate.set(Integer.valueOf(strArr[0]), Integer.valueOf(strArr[1]) - 1, Integer.valueOf(strArr[2]));
+        }
 
         //正确设置方式 原因：注意事项有说明
 //        startDate.set(year, month, day);

@@ -53,8 +53,8 @@
         <item name="android:windowAnimationStyle">@style/ShowImageDialogAnimation</item>
     </style>
     <style name="ShowImageDialogAnimation" parent="@android:style/Animation.Dialog">
-        <item name="android:windowEnterAnimation">@anim/pop_enter_anim</item>
-        <item name="android:windowExitAnimation">@anim/pop_exit_anim</item>
+        <item name="android:windowEnterAnimation">@anim/scale_in</item>
+        <item name="android:windowExitAnimation">@anim/scale_out</item>
     </style>
 
     <style name="myRatingBar" parent="@android:style/Widget.RatingBar">

@@ -81,6 +81,7 @@
             android:drawablePadding="5dp"
             android:padding="14dp"
             android:text="距离"
+            android:visibility="gone"
             android:textColor="@color/black"
             android:textSize="13sp" />
 
