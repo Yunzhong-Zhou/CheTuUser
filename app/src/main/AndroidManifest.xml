@@ -97,6 +97,9 @@
         <activity
             android:name=".activity.SearchActivity"
             android:label="搜索" />
+        <activity
+            android:name=".activity.ViewPagerPhotoViewActivity"
+            android:label="查看多张图片" />
         <!--首页-->
         <activity
             android:name=".activity.CarInsuranceActivity"

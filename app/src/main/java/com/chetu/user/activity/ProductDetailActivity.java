@@ -17,6 +17,7 @@ import com.chetu.user.model.ProductDetailModel;
 import com.chetu.user.net.URLs;
 import com.chetu.user.okhttp.CallBackUtil;
 import com.chetu.user.okhttp.OkhttpUtil;
+import com.chetu.user.popupwindow.PhotoShowDialog;
 import com.chetu.user.utils.CommonUtil;
 import com.chetu.user.view.TopSmoothScroller;
 import com.liaoinstan.springview.widget.SpringView;
@@ -61,7 +62,7 @@ public class ProductDetailActivity extends BaseActivity {
     View headerView1;
     Banner banner;
     TextView banner_indicator;
-    List<String> images = new ArrayList<>();
+    ArrayList<String> images = new ArrayList<>();
     TextView head1_tv1, head1_tv2, head1_tv3, head1_tv4, head1_tv5;
 
     View headerView2;
@@ -131,7 +132,6 @@ public class ProductDetailActivity extends BaseActivity {
                     pinglun.setVisibility(View.VISIBLE);
                 else
                     pinglun.setVisibility(View.GONE);
-
 
                 //横向图片
                 RecyclerView rv = holder.getView(R.id.rv);
@@ -263,7 +263,11 @@ public class ProductDetailActivity extends BaseActivity {
                 banner.setOnBannerListener(new OnBannerListener() {
                     @Override
                     public void OnBannerClick(Object data, int position) {
-
+                        /*ZoomIMGPopupWindow popupwindow = new ZoomIMGPopupWindow(ProductDetailActivity.this,
+                                URLs.IMGHOST + response.getInfo().getStore_step_two().getImg_positive());*/
+//                        ViewPagerPhotoViewActivity.startThisActivity(images, position, ProductDetailActivity.this);
+                        PhotoShowDialog photoShowDialog = new PhotoShowDialog(ProductDetailActivity.this, images, position);
+                        photoShowDialog.show();
                     }
                 });
                 head1_tv1.setText("¥" + response.getInfo().getGPrice());
@@ -323,6 +327,9 @@ public class ProductDetailActivity extends BaseActivity {
     public void onClick(View v) {
         super.onClick(v);
         switch (v.getId()) {
+            case R.id.left_btn:
+                finish();
+                break;
             case R.id.textView1:
                 //商品
                 LinearSmoothScroller s1 = new TopSmoothScroller(ProductDetailActivity.this);
@@ -371,7 +378,6 @@ public class ProductDetailActivity extends BaseActivity {
                 textView1.setTextColor(getResources().getColor(R.color.black2));
                 textView2.setTextColor(getResources().getColor(R.color.black2));
                 textView3.setTextColor(getResources().getColor(R.color.blue));
-
                 tv_pinglun.setVisibility(View.VISIBLE);
                 break;
         }
