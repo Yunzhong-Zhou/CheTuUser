@@ -55,6 +55,7 @@ public class MyOrderActivity extends BaseActivity {
                 page = 0;
                 Map<String, String> params = new HashMap<>();
                 params.put("page", page + "");
+                params.put("g_state", type + "");
                 params.put("u_token", localUserInfo.getToken());
                 Request(params);
             }
@@ -65,6 +66,7 @@ public class MyOrderActivity extends BaseActivity {
                 Map<String, String> params = new HashMap<>();
                 params.put("u_token", localUserInfo.getToken());
                 params.put("page", page + "");
+                params.put("g_state", type + "");
                 RequestMore(params);
             }
         });
@@ -101,7 +103,7 @@ public class MyOrderActivity extends BaseActivity {
     }
 
     private void Request(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.Fragment3, params, headerMap, new CallBackUtil<Fragment2Model>() {
+        OkhttpUtil.okHttpPost(URLs.MyOrder, params, headerMap, new CallBackUtil<Fragment2Model>() {
             @Override
             public Fragment2Model onParseResponse(Call call, Response response) {
                 return null;
@@ -111,7 +113,7 @@ public class MyOrderActivity extends BaseActivity {
             public void onFailure(Call call, Exception e, String err) {
                 hideProgress();
                 showEmptyPage();
-                myToast(err);
+//                myToast(err);
             }
 
             @Override
@@ -233,39 +235,131 @@ public class MyOrderActivity extends BaseActivity {
             case R.id.tv_type1:
                 //待接车
                 type = 1;
-
+                tv_type1.setBackgroundResource(R.mipmap.bg_myorder_tab1_1);
+                tv_type1.setTextColor(getResources().getColor(R.color.white));
+                tv_type2.setBackgroundResource(R.mipmap.bg_myorder_tab2_0);
+                tv_type2.setTextColor(getResources().getColor(R.color.black3));
+                tv_type3.setBackgroundResource(R.mipmap.bg_myorder_tab2_0);
+                tv_type3.setTextColor(getResources().getColor(R.color.black3));
+                tv_type4.setBackgroundResource(R.mipmap.bg_myorder_tab2_0);
+                tv_type4.setTextColor(getResources().getColor(R.color.black3));
+                tv_type5.setBackgroundResource(R.mipmap.bg_myorder_tab2_0);
+                tv_type5.setTextColor(getResources().getColor(R.color.black3));
+                tv_type6.setBackgroundResource(R.mipmap.bg_myorder_tab2_0);
+                tv_type6.setTextColor(getResources().getColor(R.color.black3));
+                tv_type7.setBackgroundResource(R.mipmap.bg_myorder_tab3_0);
+                tv_type7.setTextColor(getResources().getColor(R.color.black3));
                 break;
             case R.id.tv_type2:
                 //待分配
                 type = 2;
-
+                tv_type1.setBackgroundResource(R.mipmap.bg_myorder_tab1_0);
+                tv_type1.setTextColor(getResources().getColor(R.color.black3));
+                tv_type2.setBackgroundResource(R.mipmap.bg_myorder_tab2_1);
+                tv_type2.setTextColor(getResources().getColor(R.color.white));
+                tv_type3.setBackgroundResource(R.mipmap.bg_myorder_tab2_0);
+                tv_type3.setTextColor(getResources().getColor(R.color.black3));
+                tv_type4.setBackgroundResource(R.mipmap.bg_myorder_tab2_0);
+                tv_type4.setTextColor(getResources().getColor(R.color.black3));
+                tv_type5.setBackgroundResource(R.mipmap.bg_myorder_tab2_0);
+                tv_type5.setTextColor(getResources().getColor(R.color.black3));
+                tv_type6.setBackgroundResource(R.mipmap.bg_myorder_tab2_0);
+                tv_type6.setTextColor(getResources().getColor(R.color.black3));
+                tv_type7.setBackgroundResource(R.mipmap.bg_myorder_tab3_0);
+                tv_type7.setTextColor(getResources().getColor(R.color.black3));
                 break;
             case R.id.tv_type3:
                 //待施工
                 type = 3;
-
+                tv_type1.setBackgroundResource(R.mipmap.bg_myorder_tab1_0);
+                tv_type1.setTextColor(getResources().getColor(R.color.black3));
+                tv_type2.setBackgroundResource(R.mipmap.bg_myorder_tab2_0);
+                tv_type2.setTextColor(getResources().getColor(R.color.black3));
+                tv_type3.setBackgroundResource(R.mipmap.bg_myorder_tab2_1);
+                tv_type3.setTextColor(getResources().getColor(R.color.white));
+                tv_type4.setBackgroundResource(R.mipmap.bg_myorder_tab2_0);
+                tv_type4.setTextColor(getResources().getColor(R.color.black3));
+                tv_type5.setBackgroundResource(R.mipmap.bg_myorder_tab2_0);
+                tv_type5.setTextColor(getResources().getColor(R.color.black3));
+                tv_type6.setBackgroundResource(R.mipmap.bg_myorder_tab2_0);
+                tv_type6.setTextColor(getResources().getColor(R.color.black3));
+                tv_type7.setBackgroundResource(R.mipmap.bg_myorder_tab3_0);
+                tv_type7.setTextColor(getResources().getColor(R.color.black3));
                 break;
             case R.id.tv_type4:
                 //进行中
                 type = 4;
-
+                tv_type1.setBackgroundResource(R.mipmap.bg_myorder_tab1_0);
+                tv_type1.setTextColor(getResources().getColor(R.color.black3));
+                tv_type2.setBackgroundResource(R.mipmap.bg_myorder_tab2_0);
+                tv_type2.setTextColor(getResources().getColor(R.color.black3));
+                tv_type3.setBackgroundResource(R.mipmap.bg_myorder_tab2_0);
+                tv_type3.setTextColor(getResources().getColor(R.color.black3));
+                tv_type4.setBackgroundResource(R.mipmap.bg_myorder_tab2_1);
+                tv_type4.setTextColor(getResources().getColor(R.color.white));
+                tv_type5.setBackgroundResource(R.mipmap.bg_myorder_tab2_0);
+                tv_type5.setTextColor(getResources().getColor(R.color.black3));
+                tv_type6.setBackgroundResource(R.mipmap.bg_myorder_tab2_0);
+                tv_type6.setTextColor(getResources().getColor(R.color.black3));
+                tv_type7.setBackgroundResource(R.mipmap.bg_myorder_tab3_0);
+                tv_type7.setTextColor(getResources().getColor(R.color.black3));
                 break;
             case R.id.tv_type5:
                 //待复检
                 type = 5;
-
+                tv_type1.setBackgroundResource(R.mipmap.bg_myorder_tab1_0);
+                tv_type1.setTextColor(getResources().getColor(R.color.black3));
+                tv_type2.setBackgroundResource(R.mipmap.bg_myorder_tab2_0);
+                tv_type2.setTextColor(getResources().getColor(R.color.black3));
+                tv_type3.setBackgroundResource(R.mipmap.bg_myorder_tab2_0);
+                tv_type3.setTextColor(getResources().getColor(R.color.black3));
+                tv_type4.setBackgroundResource(R.mipmap.bg_myorder_tab2_0);
+                tv_type4.setTextColor(getResources().getColor(R.color.black3));
+                tv_type5.setBackgroundResource(R.mipmap.bg_myorder_tab2_1);
+                tv_type5.setTextColor(getResources().getColor(R.color.white));
+                tv_type6.setBackgroundResource(R.mipmap.bg_myorder_tab2_0);
+                tv_type6.setTextColor(getResources().getColor(R.color.black3));
+                tv_type7.setBackgroundResource(R.mipmap.bg_myorder_tab3_0);
+                tv_type7.setTextColor(getResources().getColor(R.color.black3));
                 break;
             case R.id.tv_type6:
                 //已完工
                 type = 6;
-
+                tv_type1.setBackgroundResource(R.mipmap.bg_myorder_tab1_0);
+                tv_type1.setTextColor(getResources().getColor(R.color.black3));
+                tv_type2.setBackgroundResource(R.mipmap.bg_myorder_tab2_0);
+                tv_type2.setTextColor(getResources().getColor(R.color.black3));
+                tv_type3.setBackgroundResource(R.mipmap.bg_myorder_tab2_0);
+                tv_type3.setTextColor(getResources().getColor(R.color.black3));
+                tv_type4.setBackgroundResource(R.mipmap.bg_myorder_tab2_0);
+                tv_type4.setTextColor(getResources().getColor(R.color.black3));
+                tv_type5.setBackgroundResource(R.mipmap.bg_myorder_tab2_0);
+                tv_type5.setTextColor(getResources().getColor(R.color.black3));
+                tv_type6.setBackgroundResource(R.mipmap.bg_myorder_tab2_1);
+                tv_type6.setTextColor(getResources().getColor(R.color.white));
+                tv_type7.setBackgroundResource(R.mipmap.bg_myorder_tab3_0);
+                tv_type7.setTextColor(getResources().getColor(R.color.black3));
                 break;
             case R.id.tv_type7:
                 //已提车
                 type = 7;
-
+                tv_type1.setBackgroundResource(R.mipmap.bg_myorder_tab1_0);
+                tv_type1.setTextColor(getResources().getColor(R.color.black3));
+                tv_type2.setBackgroundResource(R.mipmap.bg_myorder_tab2_0);
+                tv_type2.setTextColor(getResources().getColor(R.color.black3));
+                tv_type3.setBackgroundResource(R.mipmap.bg_myorder_tab2_0);
+                tv_type3.setTextColor(getResources().getColor(R.color.black3));
+                tv_type4.setBackgroundResource(R.mipmap.bg_myorder_tab2_0);
+                tv_type4.setTextColor(getResources().getColor(R.color.black3));
+                tv_type5.setBackgroundResource(R.mipmap.bg_myorder_tab2_0);
+                tv_type5.setTextColor(getResources().getColor(R.color.black3));
+                tv_type6.setBackgroundResource(R.mipmap.bg_myorder_tab2_0);
+                tv_type6.setTextColor(getResources().getColor(R.color.black3));
+                tv_type7.setBackgroundResource(R.mipmap.bg_myorder_tab3_1);
+                tv_type7.setTextColor(getResources().getColor(R.color.white));
                 break;
         }
+        requestServer();
     }
 
     @Override

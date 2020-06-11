@@ -24,8 +24,10 @@ import com.chetu.user.R;
 import com.chetu.user.activity.SearchActivity;
 import com.chetu.user.activity.StoreDetailActivity;
 import com.chetu.user.adapter.Pop_ListAdapter;
+import com.chetu.user.adapter.Pop_ListAdapter1;
 import com.chetu.user.base.BaseFragment;
 import com.chetu.user.model.Fragment3Model;
+import com.chetu.user.model.GouXuanModel;
 import com.chetu.user.model.ServiceListModel;
 import com.chetu.user.net.URLs;
 import com.chetu.user.okhttp.CallBackUtil;
@@ -68,11 +70,11 @@ public class Fragment3 extends BaseFragment {
     List<String> stringList1 = new ArrayList<>();
     //第二级
     List<ServiceListModel.ListBean> list_sv2 = new ArrayList<>();
-    List<String> stringList2 = new ArrayList<>();
+    List<GouXuanModel> stringList2 = new ArrayList<>();
 
     //数据
     int page = 0;
-    String longitude = "", latitude = "", y_parent_id = "0", y_service_id = "0", is_review = "0", service_name = "";
+    String longitude = "", latitude = "", is_review = "0", service_name = "";
     private RecyclerView recyclerView;
     List<Fragment3Model.ListBean> list = new ArrayList<>();
     CommonAdapter<Fragment3Model.ListBean> mAdapter;
@@ -132,7 +134,7 @@ public class Fragment3 extends BaseFragment {
                 Map<String, String> params = new HashMap<>();
 //                params.put("y_parent_id", y_parent_id);
 //                params.put("y_service_id", y_service_id);
-                params.put("service_name",service_name);
+                params.put("service_name", service_name);
                 params.put("page", page + "");
                 params.put("longitude", longitude);
                 params.put("latitude", latitude);
@@ -146,7 +148,7 @@ public class Fragment3 extends BaseFragment {
                 Map<String, String> params = new HashMap<>();
 //                params.put("y_parent_id", y_parent_id);
 //                params.put("y_service_id", y_service_id);
-                params.put("service_name",service_name);
+                params.put("service_name", service_name);
                 params.put("page", page + "");
                 params.put("longitude", longitude);
                 params.put("latitude", latitude);
@@ -179,7 +181,6 @@ public class Fragment3 extends BaseFragment {
 
     @Override
     protected void initData() {
-        requestServer();
         //初始化定位
         mLocationClient = new AMapLocationClient(getActivity());
         AMapLocationClientOption option = new AMapLocationClientOption();
@@ -224,6 +225,16 @@ public class Fragment3 extends BaseFragment {
 
                         tv_addr.setText(aMapLocation.getCity() + "");
 
+                        //第一次请求数据
+                        page = 0;
+                        Map<String, String> params = new HashMap<>();
+                        params.put("service_name", service_name);
+                        params.put("page", page + "");
+                        params.put("longitude", longitude);
+                        params.put("latitude", latitude);
+                        params.put("is_review", is_review);
+                        Request(params);
+
                     } else {
                         //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
                         MyLogger.e("定位失败：", "location Error, ErrCode:"
@@ -235,11 +246,12 @@ public class Fragment3 extends BaseFragment {
             }
         });
 
+        requestServer();
         //设置场景模式后最好调用一次stop，再调用start以保证场景模式生效
 //        mLocationClient.stopLocation();
         // 在单次定位情况下，定位无论成功与否，都无需调用stopLocation()方法移除请求，定位sdk内部会移除
 //        if (localUserInfo.getCityname().equals("")) {
-        mLocationClient.startLocation();
+//        mLocationClient.startLocation();
 //        }
     }
 
@@ -309,17 +321,19 @@ public class Fragment3 extends BaseFragment {
     public void requestServer() {
         super.requestServer();
         this.showLoadingPage();
-        page = 0;
-        Map<String, String> params = new HashMap<>();
-//        params.put("u_token", localUserInfo.getToken());
-//        params.put("y_parent_id", y_parent_id);
-//        params.put("y_service_id", y_service_id);
-        params.put("service_name",service_name);
-        params.put("page", page + "");
-        params.put("longitude", longitude);
-        params.put("latitude", latitude);
-        params.put("is_review", is_review);
-        Request(params);
+        if (!longitude.equals("")) {
+            page = 0;
+            Map<String, String> params = new HashMap<>();
+            params.put("service_name", service_name);
+            params.put("page", page + "");
+            params.put("longitude", longitude);
+            params.put("latitude", latitude);
+            params.put("is_review", is_review);
+            Request(params);
+        } else {
+            mLocationClient.startLocation();
+        }
+
     }
 
     private void Request(Map<String, String> params) {
@@ -333,7 +347,7 @@ public class Fragment3 extends BaseFragment {
             public void onFailure(Call call, Exception e, String err) {
                 hideProgress();
                 showEmptyPage();
-                myToast(err);
+//                myToast(err);
             }
 
             @Override
@@ -394,7 +408,7 @@ public class Fragment3 extends BaseFragment {
             @Override
             public void onFailure(Call call, Exception e, String err) {
                 hideProgress();
-                myToast(err);
+//                myToast(err);
                 page--;
             }
 
@@ -445,9 +459,8 @@ public class Fragment3 extends BaseFragment {
                     //请求第二级
                     if (list_sv1.size() > 0) {
                         i1 = 0;
-                        y_parent_id = list_sv1.get(0).getYServiceId();
                         HashMap<String, String> params2 = new HashMap<>();
-                        params2.put("y_parent_id", y_parent_id);
+                        params2.put("y_parent_id", list_sv1.get(0).getYServiceId());
                         RequestService(params2, 1);
                     }
                 } else {
@@ -455,10 +468,9 @@ public class Fragment3 extends BaseFragment {
                     list_sv2 = response.getList();
                     stringList2.clear();
                     for (ServiceListModel.ListBean bean : list_sv2) {
-                        stringList2.add(bean.getVName());
+                        stringList2.add(new GouXuanModel(bean.getVName(), false));
                     }
                     i2 = -1;
-                    y_service_id = "";
                     showPopupWindow1(pop_view);
                 }
 
@@ -470,7 +482,7 @@ public class Fragment3 extends BaseFragment {
      * 筛选弹窗
      */
     FixedPopupWindow popupWindow = null;
-    Pop_ListAdapter adapter2;
+    Pop_ListAdapter1 adapter2;
 
     private void showPopupWindow1(View v) {
         // 一个自定义的布局，作为显示的内容
@@ -507,10 +519,8 @@ public class Fragment3 extends BaseFragment {
                     adapter1.setSelectItem(i);
                     adapter1.notifyDataSetChanged();
                     i1 = i;
-                    y_parent_id = list_sv1.get(i).getYServiceId();
-
                     HashMap<String, String> params2 = new HashMap<>();
-                    params2.put("y_parent_id", y_parent_id);
+                    params2.put("y_parent_id", list_sv1.get(i).getYServiceId());
                     RequestService(params2, 1);
 
 //                popupWindow.dismiss();
@@ -519,17 +529,17 @@ public class Fragment3 extends BaseFragment {
 
             // 由边列表
             ListView pop_listView2 = (ListView) contentView.findViewById(R.id.pop_listView2);
-            adapter2 = new Pop_ListAdapter(getActivity(), stringList2);
-            adapter2.setSelectItem(i2);
+            adapter2 = new Pop_ListAdapter1(getActivity(), stringList2);
+//            adapter2.setSelectItem(i2);
             pop_listView2.setAdapter(adapter2);
             pop_listView2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    adapter2.setSelectItem(i);
+                    if (!stringList2.get(i).isIsgouxuan())
+                        stringList2.get(i).setIsgouxuan(true);
+                    else stringList2.get(i).setIsgouxuan(false);
+//                    adapter2.setSelectItem(i);
                     adapter2.notifyDataSetChanged();
-                    i2 = i;
-                    y_service_id = list_sv2.get(i).getYServiceId();
-
 //                popupWindow.dismiss();
                 }
             });
@@ -538,7 +548,15 @@ public class Fragment3 extends BaseFragment {
             pop_confirm.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (!y_service_id.equals("")) {
+                    service_name = "";
+                    for (GouXuanModel bean : stringList2) {
+                        if (bean.isIsgouxuan()) {
+                            service_name += bean.getTitle() + "||";
+                        }
+                    }
+                    if (!service_name.equals("")) {
+                        service_name = service_name.substring(0,service_name.length()-2);
+                        MyLogger.i(">>>>>>>>" + service_name);
                         popupWindow.dismiss();
                         requestServer();
                     } else {

@@ -300,7 +300,7 @@ public class Fragment1 extends BaseFragment {
             public void onFailure(Call call, Exception e, String err) {
                 hideProgress();
                 showEmptyPage();
-                myToast(err);
+//                myToast(err);
             }
 
             @Override
@@ -372,7 +372,7 @@ public class Fragment1 extends BaseFragment {
 
             @Override
             public void onFailure(Call call, Exception e, String err) {
-                myToast(err);
+//                myToast(err);
             }
 
             @Override

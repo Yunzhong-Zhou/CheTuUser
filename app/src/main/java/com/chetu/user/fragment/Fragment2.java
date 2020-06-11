@@ -40,7 +40,7 @@ import okhttp3.Response;
 
 /**
  * Created by fafukeji01 on 2016/1/6.
- * 订单
+ * 养车
  */
 public class Fragment2 extends BaseFragment {
     RelativeLayout rl_search;
@@ -299,7 +299,7 @@ public class Fragment2 extends BaseFragment {
             public void onFailure(Call call, Exception e, String err) {
                 hideProgress();
                 showEmptyPage();
-                myToast(err);
+//                myToast(err);
             }
 
             @Override
@@ -357,7 +357,7 @@ public class Fragment2 extends BaseFragment {
             @Override
             public void onFailure(Call call, Exception e, String err) {
                 hideProgress();
-                myToast(err);
+//                myToast(err);
                 page--;
             }
 

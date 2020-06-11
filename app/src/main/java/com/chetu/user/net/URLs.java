@@ -105,6 +105,10 @@ public class URLs {
      */
     public static final String FeedBack = HOST+"/api/v1/public/increase_user_feedback";
     /**
+     * 我的订单
+     */
+    public static final String MyOrder = HOST+"/api/v1/user/user_order_list";
+    /**
      * 优惠券
      */
     public static final String Coupon = HOST+"/api/v1/user/user_coupon_list";
