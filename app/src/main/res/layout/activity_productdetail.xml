@@ -80,7 +80,8 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_weight="1">
 
         <com.chetu.user.view.LoadingLayout
             android:id="@+id/loading_layout"
@@ -100,6 +101,7 @@
 
             </com.liaoinstan.springview.widget.SpringView>
         </com.chetu.user.view.LoadingLayout>
+
         <TextView
             android:id="@+id/tv_pinglun"
             android:layout_width="match_parent"
@@ -112,4 +114,64 @@
             android:textSize="14sp"
             android:visibility="gone" />
     </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/yuanjiao_10_baise_top"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="13dp"
+            android:text="数量:"
+            android:textColor="#1B1B1D"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/textView_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="50dp"
+            android:text="0"
+            android:textColor="#1B1B1D"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="13dp"
+            android:text="合计:"
+            android:textColor="#1B1B1D"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/textView_moeny"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="¥0"
+            android:textColor="@color/red"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textView_goumai"
+            android:onClick="onClick"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:background="@drawable/yuanjiao_5_lanse"
+            android:gravity="center"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="立即购买"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+
+
+    </LinearLayout>
 </LinearLayout>

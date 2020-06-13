@@ -101,7 +101,7 @@ dependencies {
     //侧滑删除
     implementation 'com.github.mcxtzhang:SwipeDelMenuLayout:V1.3.0'
     //banner
-    implementation 'com.youth.banner:banner:2.0.10'
+    implementation 'com.youth.banner:banner:2.0.11'
 
     //沉浸式
     // 基础依赖包，必须要依赖

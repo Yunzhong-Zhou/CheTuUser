@@ -49,6 +49,18 @@ public class URLs {
      */
     public static final String BaoXian = HOST+"/api/v1/public/user_report_police_list";
     /**
+     * 收藏
+     */
+    public static final String ShouChang = HOST+"/api/v1/user/user_collection_increase";
+    /**
+     * 取消收藏
+     */
+    public static final String QuXiaoShouChang = HOST+"/api/v1/user/user_collection_del";
+    /**
+     * 加入购物车
+     */
+    public static final String ADDShop = HOST+"/api/v1/public/user_cart_add";
+    /**
      * *********************************首页*****************************************
      */
     public static final String Fragment1 = HOST+"/api/v1/public/get_store_list";
@@ -151,7 +163,7 @@ public class URLs {
     /**
      * 足迹列表
      */
-    public static final String Footprint = HOST+"/api/v1/user/user_notepad_list_page";
+    public static final String Footprint = HOST+"/api/v1/user/user_footprint_list_page";
     /**
      * 收藏列表
      */

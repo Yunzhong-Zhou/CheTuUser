@@ -2,6 +2,7 @@ package com.chetu.user.activity;
 
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +20,11 @@ import com.chetu.user.okhttp.CallBackUtil;
 import com.chetu.user.okhttp.OkhttpUtil;
 import com.chetu.user.popupwindow.PhotoShowDialog;
 import com.chetu.user.utils.CommonUtil;
+import com.chetu.user.utils.MyLogger;
 import com.chetu.user.view.TopSmoothScroller;
+import com.cy.cyflowlayoutlibrary.FlowLayout;
+import com.cy.cyflowlayoutlibrary.FlowLayoutAdapter;
+import com.cy.dialog.BaseDialog;
 import com.liaoinstan.springview.widget.SpringView;
 import com.youth.banner.Banner;
 import com.youth.banner.config.IndicatorConfig;
@@ -46,6 +51,7 @@ import okhttp3.Response;
  * 商品详情
  */
 public class ProductDetailActivity extends BaseActivity {
+    ProductDetailModel model;
     String y_goods_id = "";
 
     RecyclerView recyclerView;
@@ -54,19 +60,33 @@ public class ProductDetailActivity extends BaseActivity {
     LinearLayoutManager mLinearLayoutManager;
     HeaderAndFooterWrapper mHeaderAndFooterWrapper;
 
-    TextView tv_pinglun;
+    TextView tv_pinglun, textView_num, textView_moeny;
 
     int type = 1;
     TextView textView1, textView2, textView3;
 
+    //头部一
     View headerView1;
     Banner banner;
     TextView banner_indicator;
     ArrayList<String> images = new ArrayList<>();
     TextView head1_tv1, head1_tv2, head1_tv3, head1_tv4, head1_tv5;
+    ImageView iv_xihuan;
+    boolean isShouChange = false;
+    String y_user_collection_id = "";
 
+    //头部二
     View headerView2;
     LinearLayout head2_ll_add;
+
+
+    //规格
+    CommonAdapter<ProductDetailModel.SpecificListBean> adapter;
+    FlowLayoutAdapter<String> flowLayoutAdapter;
+    List<Integer> selects = new ArrayList<>();
+    int g_num = 1;
+    long allmoney = 0;
+    String y_goods_specific_id = "", s_value = "",y_store_id="",y_store_service_id="0";
 
 
     @Override
@@ -84,7 +104,7 @@ public class ProductDetailActivity extends BaseActivity {
             public void onRefresh() {
                 Map<String, String> params = new HashMap<>();
                 params.put("y_goods_id", y_goods_id);
-//                params.put("u_token", localUserInfo.getToken());
+                params.put("u_token", localUserInfo.getToken());
                 Request(params);
             }
 
@@ -97,6 +117,8 @@ public class ProductDetailActivity extends BaseActivity {
         textView2 = findViewByID_My(R.id.textView2);
         textView3 = findViewByID_My(R.id.textView3);
         tv_pinglun = findViewByID_My(R.id.tv_pinglun);
+        textView_num = findViewByID_My(R.id.textView_num);
+        textView_moeny = findViewByID_My(R.id.textView_moeny);
 
         //头部布局1
         headerView1 = View.inflate(ProductDetailActivity.this, R.layout.head_productdetail1, null);
@@ -107,6 +129,8 @@ public class ProductDetailActivity extends BaseActivity {
         head1_tv3 = headerView1.findViewById(R.id.head1_tv3);
         head1_tv4 = headerView1.findViewById(R.id.head1_tv4);
         head1_tv5 = headerView1.findViewById(R.id.head1_tv5);
+
+        iv_xihuan = headerView1.findViewById(R.id.iv_xihuan);
 
         head1_tv2 = headerView1.findViewById(R.id.head1_tv2);
         head1_tv2.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);//中划线
@@ -194,7 +218,7 @@ public class ProductDetailActivity extends BaseActivity {
         showProgress(true, getString(R.string.app_loading));
         Map<String, String> params = new HashMap<>();
         params.put("y_goods_id", y_goods_id);
-//                params.put("u_token", localUserInfo.getToken());
+        params.put("u_token", localUserInfo.getToken());
         Request(params);
     }
 
@@ -214,29 +238,56 @@ public class ProductDetailActivity extends BaseActivity {
 
             @Override
             public void onResponse(ProductDetailModel response) {
+                model = response;
                 hideProgress();
                 showContentPage();
+
+                y_store_id = response.getInfo().getYStoreId();
+                y_store_service_id = "0";//商品不用填,下单服务需要填
+                y_goods_id = response.getInfo().getYGoodsId();
+
+                allmoney = (long) response.getInfo().getGPrice();
+                textView_moeny.setText("¥" + allmoney);
+                g_num = 1;
+                textView_num.setText(g_num + "");
+
+                /*for (int i = 0; i < model.getSpecific_list().size(); i++) {
+                    y_goods_specific_id += model.getSpecific_list().get(i).getYGoodsSpecificId() + ",";
+                    String[] strArr = model.getSpecific_list().get(i).getSValue().split("\\|\\|");
+                    for (int j = 0; j < strArr.length; j++) {
+                        if (j == 0) {
+                            s_value += strArr[j] + ",";
+                        }
+                    }
+                }
+                y_goods_specific_id = y_goods_specific_id.substring(0, y_goods_specific_id.length() - 1);
+                s_value = s_value.substring(0, s_value.length() - 1);
+                MyLogger.i(">>>>>>" + y_goods_specific_id +">>>>>>"+ s_value);*/
+
                 /**
-                 * 第一页
+                 * 第一页-商品信息
                  */
                 //banner
                 images.clear();
+                /*images.add("http://file02.16sucai.com/d/file/2014/0825/dcb017b51479798f6c60b7b9bd340728.jpg");
                 images.add("http://file02.16sucai.com/d/file/2014/0825/dcb017b51479798f6c60b7b9bd340728.jpg");
                 images.add("http://file02.16sucai.com/d/file/2014/0825/dcb017b51479798f6c60b7b9bd340728.jpg");
                 images.add("http://file02.16sucai.com/d/file/2014/0825/dcb017b51479798f6c60b7b9bd340728.jpg");
                 images.add("http://file02.16sucai.com/d/file/2014/0825/dcb017b51479798f6c60b7b9bd340728.jpg");
                 images.add("http://file02.16sucai.com/d/file/2014/0825/dcb017b51479798f6c60b7b9bd340728.jpg");
                 images.add("http://file02.16sucai.com/d/file/2014/0825/dcb017b51479798f6c60b7b9bd340728.jpg");
-                images.add("http://file02.16sucai.com/d/file/2014/0825/dcb017b51479798f6c60b7b9bd340728.jpg");
-                images.add("http://file02.16sucai.com/d/file/2014/0825/dcb017b51479798f6c60b7b9bd340728.jpg");
-                /*for (String s : response.getInfo().getImgArr()) {
+                images.add("http://file02.16sucai.com/d/file/2014/0825/dcb017b51479798f6c60b7b9bd340728.jpg");*/
+                for (String s : response.getInfo().getImgArr()) {
                     images.add(URLs.IMGHOST + s);
-                }*/
+                }
                 if (images.size() > 0) {
                     banner_indicator.setText("1/" + images.size());
                 } else {
                     banner_indicator.setText("0/" + images.size());
                 }
+                //TODO 父控件滑动时，banner切换会获取焦点，然后自动全部显示。不想让banner获取焦点可以给父控件加上：
+                // android:focusable="true"
+                // android:focusableInTouchMode="true"
                 banner.addBannerLifecycleObserver(ProductDetailActivity.this)//添加生命周期观察者
                         .setDelayTime(3000)//设置轮播时间
 //                .setBannerGalleryEffect(10, 10)//为banner添加画廊效果
@@ -274,9 +325,18 @@ public class ProductDetailActivity extends BaseActivity {
                 head1_tv2.setText("¥" + response.getInfo().getOrPrice());
                 head1_tv3.setText(response.getInfo().getGName());
                 head1_tv4.setText(response.getInfo().getGDetails());
-
+                //是否评论
+                if (response.getCollection_info() != null && !response.getCollection_info().getYUserCollectionId().equals("")) {
+                    y_user_collection_id = response.getCollection_info().getYUserCollectionId();
+                    isShouChange = true;
+                    iv_xihuan.setImageResource(R.mipmap.ic_xin_yixuan);
+                } else {
+                    y_user_collection_id = "";
+                    isShouChange = false;
+                    iv_xihuan.setImageResource(R.mipmap.ic_xin_weixuan);
+                }
                 /**
-                 * 第二页
+                 * 第二页-详情图片
                  */
                 head2_ll_add.removeAllViews();
                 for (String s : images) {
@@ -294,29 +354,21 @@ public class ProductDetailActivity extends BaseActivity {
                     imageView.setLayoutParams(lp);
                     imageView.setMaxWidth(lp.width);
                     imageView.setMaxHeight(lp.height);
-                    /*Glide.with(ProductDetailActivity.this).load(URLs.IMGHOST + s)
+                    Glide.with(ProductDetailActivity.this).load(URLs.IMGHOST + s)
                             .centerCrop()
 //                            .apply(RequestOptions.bitmapTransform(new RoundedCorners(10)))
 //                            .placeholder(R.mipmap.headimg)//加载站位图
 //                            .error(R.mipmap.headimg)//加载失败
-                            .into(imageView);//加载图片*/
-                    Glide.with(ProductDetailActivity.this).load(s)
-//                            .centerCrop()
-//                            .apply(RequestOptions.bitmapTransform(new RoundedCorners(10)))
-//                            .placeholder(R.mipmap.headimg)//加载站位图
-//                            .error(R.mipmap.headimg)//加载失败
                             .into(imageView);//加载图片
-
                     head2_ll_add.addView(view);
                 }
 
                 /**
-                 * 第三页
+                 * 第三页-评论
                  */
                 for (String s : images) {
                     list.add(new ProductDetailModel.SpecificListBean());
                 }
-//                list = response.getSpecific_list();
                 tv_pinglun.setText("用户评论（" + list.size() + "）");
                 mAdapter.notifyDataSetChanged();
             }
@@ -329,6 +381,28 @@ public class ProductDetailActivity extends BaseActivity {
         switch (v.getId()) {
             case R.id.left_btn:
                 finish();
+                break;
+            case R.id.iv_xihuan:
+                //收藏
+                isShouChange = !isShouChange;
+                if (isShouChange) {
+                    iv_xihuan.setImageResource(R.mipmap.ic_xin_yixuan);
+                    Map<String, String> params = new HashMap<>();
+                    params.put("u_token", localUserInfo.getToken());
+                    params.put("y_id", y_goods_id);
+                    params.put("category", "1");//1为商品收藏 2为商家收藏 3为论坛收藏
+                    RequestShouChang(params);
+                } else {
+                    iv_xihuan.setImageResource(R.mipmap.ic_xin_weixuan);
+                    Map<String, String> params = new HashMap<>();
+                    params.put("u_token", localUserInfo.getToken());
+                    params.put("y_user_collection_id", y_user_collection_id);
+                    RequestQuXiaoShouChang(params);
+                }
+                break;
+            case R.id.head1_tv5:
+                //选择规格
+                showDialog();
                 break;
             case R.id.textView1:
                 //商品
@@ -357,7 +431,215 @@ public class ProductDetailActivity extends BaseActivity {
                 type = 3;
                 changeUI();
                 break;
+
+            case R.id.textView_goumai:
+                if (match()) {
+                    HashMap<String, String> params = new HashMap<>();
+                    params.put("u_token",localUserInfo.getToken());
+                    params.put("y_store_id",y_store_id);
+                    params.put("y_store_service_id",y_store_service_id);
+                    params.put("y_goods_id",y_goods_id);
+                    params.put("is_service","3");//1为服务  2为服务下边的商品 3为独立商品
+                    params.put("g_num",g_num+"");
+                    params.put("y_goods_specific_id",y_goods_specific_id);
+                    params.put("s_value",s_value);
+                    RequestAdd(params);
+                }
+                break;
+            default:
+
+                break;
         }
+    }
+    /**
+     * 下单
+     *
+     * @param params
+     */
+    private void RequestAdd(HashMap<String, String> params) {
+        OkhttpUtil.okHttpPost(URLs.ADDShop, params, headerMap, new CallBackUtil<Object>() {
+            @Override
+            public Object onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+                hideProgress();
+                myToast(err);
+            }
+
+            @Override
+            public void onResponse(Object response) {
+                hideProgress();
+                showToast("加入购物车成功", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                        finish();
+                    }
+                });
+
+            }
+        });
+    }
+    /**
+     * 显示规格弹窗
+     */
+    private void showDialog() {
+        BaseDialog dialog1 = new BaseDialog(ProductDetailActivity.this);
+        dialog1.contentView(R.layout.dialog_productdetail)
+                .layoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT))
+                .animType(BaseDialog.AnimInType.BOTTOM)
+                .canceledOnTouchOutside(false)
+                .gravity(Gravity.BOTTOM)
+                .dimAmount(0.7f)
+                .show();
+
+        TextView tv_title = dialog1.findViewById(R.id.tv_title);
+        tv_title.setText(model.getInfo().getGName());
+        TextView tv_money = dialog1.findViewById(R.id.tv_money);
+        tv_money.setText("¥" + model.getInfo().getGPrice());
+        ImageView iv = dialog1.findViewById(R.id.iv);
+        Glide.with(ProductDetailActivity.this).load(URLs.IMGHOST + model.getInfo().getGImg())
+                .centerCrop()
+//                            .apply(RequestOptions.bitmapTransform(new RoundedCorners(10)))
+                .placeholder(R.mipmap.loading)//加载站位图
+                .error(R.mipmap.zanwutupian)//加载失败
+                .into(iv);//加载图片
+
+        TextView tv_tab = dialog1.findViewById(R.id.tv_tab);
+        TextView tv_mendian = dialog1.findViewById(R.id.tv_mendian);
+        TextView tv_num = dialog1.findViewById(R.id.tv_num);
+        tv_num.setText(g_num + "");
+
+        RecyclerView rv = dialog1.findViewById(R.id.rv);
+        selects.clear();
+        for (ProductDetailModel.SpecificListBean bean : model.getSpecific_list()) {
+            selects.add(0);
+            rv.setLayoutManager(new LinearLayoutManager(ProductDetailActivity.this));
+            adapter = new CommonAdapter<ProductDetailModel.SpecificListBean>
+                    (ProductDetailActivity.this, R.layout.item_dialog_guige, model.getSpecific_list()) {
+                @Override
+                protected void convert(ViewHolder holder, ProductDetailModel.SpecificListBean model, int position) {
+                    holder.setText(R.id.tv, model.getSName());
+                    String[] strArr = model.getSValue().split("\\|\\|");
+                    List<String> tabs = new ArrayList<>();
+                    for (String s : strArr) {
+                        tabs.add(s);
+                    }
+                    flowLayoutAdapter = new FlowLayoutAdapter<String>(tabs) {
+                        @Override
+                        public void bindDataToView(ViewHolder holder, int i, String bean) {
+                            TextView tv = holder.getView(R.id.tv);
+                            tv.setText(bean);
+                            if (selects.get(position) == i) {
+                                tv.setTextColor(getResources().getColor(R.color.blue));
+                                tv.setBackgroundResource(R.drawable.yuanjiaobiankuang_15_lanse);
+                            } else {
+                                tv.setTextColor(getResources().getColor(R.color.black));
+                                tv.setBackgroundResource(R.drawable.yuanjiao_15_huise1);
+                            }
+                        }
+
+                        @Override
+                        public void onItemClick(int i, String bean) {
+                            selects.set(position, i);
+                            adapter.notifyDataSetChanged();
+                            //计算及显示
+                            addView(tv_tab, tv_money, g_num);
+                        }
+
+                        @Override
+                        public int getItemLayoutID(int position, String bean) {
+                            return R.layout.item_guige_flowlayout;
+                        }
+                    };
+                    ((FlowLayout) holder.getView(R.id.flowLayout)).setAdapter(flowLayoutAdapter);
+
+                }
+            };
+            rv.setAdapter(adapter);
+        }
+        dialog1.findViewById(R.id.tv_jian).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //减号
+                if (g_num > 1) {
+                    g_num--;
+                    tv_num.setText(g_num + "");
+                    addView(tv_tab, tv_money, g_num);
+                }
+            }
+        });
+        dialog1.findViewById(R.id.tv_jia).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //加号
+//                        if (num < 100) {
+                g_num++;
+                tv_num.setText(g_num + "");
+
+                addView(tv_tab, tv_money, g_num);
+//                        }
+            }
+        });
+        tv_mendian.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //门店
+
+            }
+        });
+        dialog1.findViewById(R.id.tv_confirm).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog1.dismiss();
+            }
+        });
+        addView(tv_tab, tv_money, g_num);
+    }
+
+    /**
+     * 计算
+     *
+     * @param tv_tab
+     * @param tv_money
+     * @param num
+     */
+    private void addView(TextView tv_tab, TextView tv_money, int num) {
+        y_goods_specific_id = "";
+        s_value = "";
+        for (int i = 0; i < model.getSpecific_list().size(); i++) {
+            y_goods_specific_id += model.getSpecific_list().get(i).getYGoodsSpecificId() + ",";
+            String[] strArr = model.getSpecific_list().get(i).getSValue().split("\\|\\|");
+            for (int j = 0; j < strArr.length; j++) {
+                if (selects.get(i) == j) {
+                    s_value += strArr[j] + ",";
+                }
+            }
+        }
+        y_goods_specific_id = y_goods_specific_id.substring(0, y_goods_specific_id.length() - 1);
+        MyLogger.i(">>>>>>" + y_goods_specific_id);
+        s_value = s_value.substring(0, s_value.length() - 1);
+        tv_tab.setText(s_value);
+
+        allmoney = (long) (model.getInfo().getGPrice() * num);
+        tv_money.setText("" + allmoney);
+
+        textView_moeny.setText("¥" + allmoney);
+        textView_num.setText(g_num + "");
+        head1_tv5.setText(s_value);
+    }
+
+    private boolean match() {
+        if (y_goods_specific_id.equals("")) {
+            myToast("请先选择规格");
+            return false;
+        }
+
+        return true;
     }
 
     private void changeUI() {
@@ -381,6 +663,52 @@ public class ProductDetailActivity extends BaseActivity {
                 tv_pinglun.setVisibility(View.VISIBLE);
                 break;
         }
+    }
+
+    /**
+     * 收藏
+     *
+     * @param params
+     */
+    private void RequestShouChang(Map<String, String> params) {
+        OkhttpUtil.okHttpPost(URLs.ShouChang, params, headerMap, new CallBackUtil<Object>() {
+            @Override
+            public Object onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+            }
+
+            @Override
+            public void onResponse(Object response) {
+                requestServer();
+            }
+        });
+    }
+
+    /**
+     * 取消收藏
+     *
+     * @param params
+     */
+    private void RequestQuXiaoShouChang(Map<String, String> params) {
+        OkhttpUtil.okHttpPost(URLs.QuXiaoShouChang, params, headerMap, new CallBackUtil<Object>() {
+            @Override
+            public Object onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+
+            }
+
+            @Override
+            public void onResponse(Object response) {
+            }
+        });
     }
 
     @Override

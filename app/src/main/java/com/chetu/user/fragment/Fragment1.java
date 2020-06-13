@@ -139,6 +139,11 @@ public class Fragment1 extends BaseFragment {
         springView.setListener(new SpringView.OnFreshListener() {
             @Override
             public void onRefresh() {
+                //获取服务项目和banner
+                HashMap<String, String> params2 = new HashMap<>();
+                params2.put("y_parent_id", "0");
+                RequestService(params2, 0);
+
                 page1 = 0;
                 page2 = 0;
                 Map<String, String> params = new HashMap<>();

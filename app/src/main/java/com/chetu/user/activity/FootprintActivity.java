@@ -34,7 +34,7 @@ import okhttp3.Response;
  * 足迹
  */
 public class FootprintActivity extends BaseActivity {
-    int type = 1, page1 = 0, page2 = 0, category = 1;//1为商品  2为商家
+    int type = 1, page1 = 0, page2 = 0, category = 2;//1为商品  2为商家
     TextView textView1, textView2;
     private RecyclerView recyclerView;
     List<FootprintModel.ListBeanX> list1 = new ArrayList<>();
@@ -105,7 +105,6 @@ public class FootprintActivity extends BaseActivity {
     @Override
     protected void initData() {
         requestServer();
-
         /*mAdapter1 = new CommonAdapter<FootprintModel.ListBean>
                 (FootprintActivity.this, R.layout.item_footprint_title, list1) {
             @Override

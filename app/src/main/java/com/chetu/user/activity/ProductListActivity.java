@@ -137,7 +137,7 @@ public class ProductListActivity extends BaseActivity {
                             textView3.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-
+                                    //购买
                                 }
                             });
                         }

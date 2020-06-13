@@ -13,7 +13,6 @@ import com.chetu.user.model.StoreDetailModel;
 import com.chetu.user.net.URLs;
 import com.chetu.user.okhttp.CallBackUtil;
 import com.chetu.user.okhttp.OkhttpUtil;
-import com.chetu.user.utils.MyLogger;
 import com.liaoinstan.springview.widget.SpringView;
 import com.youth.banner.Banner;
 import com.youth.banner.config.IndicatorConfig;
@@ -47,6 +46,9 @@ public class StoreDetailActivity extends BaseActivity {
 
     //门店信息
     TextView tv_time, tv_name, tv_dengji, tv_phone, tv_addr, tv_juli, tv_content, tv_pingfen, tv_dingdan, tv_jieshao;
+    ImageView iv_xihuan;
+    boolean isShouChange = false;
+    String y_user_collection_id = "";
 
     //门店服务
     RecyclerView rv_tab;
@@ -94,6 +96,7 @@ public class StoreDetailActivity extends BaseActivity {
         tv_pingfen = findViewByID_My(R.id.tv_pingfen);
         tv_dingdan = findViewByID_My(R.id.tv_dingdan);
         tv_jieshao = findViewByID_My(R.id.tv_jieshao);
+        iv_xihuan = findViewByID_My(R.id.iv_xihuan);
 
         //门店服务
         rv_tab = findViewByID_My(R.id.rv_tab);
@@ -172,7 +175,6 @@ public class StoreDetailActivity extends BaseActivity {
 
                     @Override
                     public void onPageSelected(int position) {
-                        MyLogger.i(">>>>" + (position + 1));
                         banner_indicator.setText((position + 1) + "/" + images.size());
                     }
 
@@ -216,7 +218,7 @@ public class StoreDetailActivity extends BaseActivity {
 //                    .error(R.mipmap.headimg)//加载失败
                                 .into(imageView);//加载图片
                         holder.setText(R.id.tv_name, model.getYStateValue());
-                        holder.setText(R.id.tv_paidui,"排队:"+model.getLineupSum());
+                        holder.setText(R.id.tv_paidui, "排队:" + model.getLineupSum());
                         View view = holder.getView(R.id.view);
                         if (model.getYState() == 0) {
                             //空闲
@@ -303,6 +305,80 @@ public class StoreDetailActivity extends BaseActivity {
         });
 
     }
+
+    @Override
+    public void onClick(View v) {
+        super.onClick(v);
+        switch (v.getId()) {
+            case R.id.iv_xihuan:
+                //收藏
+                isShouChange = !isShouChange;
+                if (isShouChange) {
+                    iv_xihuan.setImageResource(R.mipmap.ic_xin_yixuan);
+                    Map<String, String> params = new HashMap<>();
+                    params.put("u_token", localUserInfo.getToken());
+                    params.put("y_id", y_store_id);
+                    params.put("category", "2");//1为商品收藏 2为商家收藏 3为论坛收藏
+                    RequestShouChang(params);
+                } else {
+                    iv_xihuan.setImageResource(R.mipmap.ic_xin_weixuan);
+                    Map<String, String> params = new HashMap<>();
+                    params.put("u_token", localUserInfo.getToken());
+                    params.put("y_user_collection_id", y_user_collection_id);
+                    RequestQuXiaoShouChang(params);
+                }
+                break;
+        }
+    }
+
+    /**
+     * 收藏
+     *
+     * @param params
+     */
+    private void RequestShouChang(Map<String, String> params) {
+        OkhttpUtil.okHttpPost(URLs.ShouChang, params, headerMap, new CallBackUtil<Object>() {
+            @Override
+            public Object onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+
+            }
+
+            @Override
+            public void onResponse(Object response) {
+
+            }
+        });
+    }
+
+    /**
+     * 取消收藏
+     *
+     * @param params
+     */
+    private void RequestQuXiaoShouChang(Map<String, String> params) {
+        OkhttpUtil.okHttpPost(URLs.QuXiaoShouChang, params, headerMap, new CallBackUtil<Object>() {
+            @Override
+            public Object onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+
+            }
+
+            @Override
+            public void onResponse(Object response) {
+
+            }
+        });
+    }
+
 
     @Override
     protected void updateView() {

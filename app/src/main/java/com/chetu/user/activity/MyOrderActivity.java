@@ -55,7 +55,7 @@ public class MyOrderActivity extends BaseActivity {
                 page = 0;
                 Map<String, String> params = new HashMap<>();
                 params.put("page", page + "");
-                params.put("g_state", type + "");
+                params.put("g_state", (type-1) + "");
                 params.put("u_token", localUserInfo.getToken());
                 Request(params);
             }
@@ -66,7 +66,7 @@ public class MyOrderActivity extends BaseActivity {
                 Map<String, String> params = new HashMap<>();
                 params.put("u_token", localUserInfo.getToken());
                 params.put("page", page + "");
-                params.put("g_state", type + "");
+                params.put("g_state", (type-1) + "");
                 RequestMore(params);
             }
         });
@@ -99,6 +99,7 @@ public class MyOrderActivity extends BaseActivity {
         Map<String, String> params = new HashMap<>();
         params.put("page", page + "");
         params.put("u_token", localUserInfo.getToken());
+        params.put("g_state", (type-1) + "");
         Request(params);
     }
 

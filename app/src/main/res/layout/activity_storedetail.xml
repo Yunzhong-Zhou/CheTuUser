@@ -116,6 +116,7 @@
 
                         <ImageView
                             android:id="@+id/iv_xihuan"
+                            android:onClick="onClick"
                             android:layout_width="17dp"
                             android:layout_height="15dp"
                             android:src="@mipmap/ic_xin_weixuan" />
