@@ -81,6 +81,7 @@ public class ProductListActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+        y_classify_id = getIntent().getStringExtra("id");
         requestServer();
     }
 

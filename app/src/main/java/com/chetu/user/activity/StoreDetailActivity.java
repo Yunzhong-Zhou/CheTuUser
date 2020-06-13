@@ -2,8 +2,10 @@ package com.chetu.user.activity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.chetu.user.R;
 import com.chetu.user.adapter.ImageAdapter;
 import com.chetu.user.base.BaseActivity;
@@ -17,12 +19,17 @@ import com.youth.banner.Banner;
 import com.youth.banner.config.IndicatorConfig;
 import com.youth.banner.listener.OnBannerListener;
 import com.youth.banner.listener.OnPageChangeListener;
+import com.zhy.adapter.recyclerview.CommonAdapter;
+import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
+import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -31,11 +38,20 @@ import okhttp3.Response;
  * 门店详情
  */
 public class StoreDetailActivity extends BaseActivity {
-    String id = "", longitude = "", latitude = "";
+    String y_store_id = "", longitude = "", latitude = "";
 
+    //banner
     Banner banner;
     TextView banner_indicator;
     List<String> images = new ArrayList<>();
+
+    //门店信息
+    TextView tv_time, tv_name, tv_dengji, tv_phone, tv_addr, tv_juli, tv_content, tv_pingfen, tv_dingdan, tv_jieshao;
+
+    //门店服务
+    RecyclerView rv_tab;
+    List<StoreDetailModel.StoreServiceListBean> list_tab = new ArrayList<>();
+    CommonAdapter<StoreDetailModel.StoreServiceListBean> mAdapter_tab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,15 +66,12 @@ public class StoreDetailActivity extends BaseActivity {
         springView.setListener(new SpringView.OnFreshListener() {
             @Override
             public void onRefresh() {
-                /*page1 = 0;
-                page2 = 0;
                 Map<String, String> params = new HashMap<>();
-                params.put("page", page1 + "");
-                params.put("y_parent_id", y_parent_id);
-                params.put("y_service_id", y_service_id);
+//        params.put("u_token", localUserInfo.getToken());
                 params.put("longitude", longitude);
                 params.put("latitude", latitude);
-                Request(params);*/
+                params.put("y_store_id", y_store_id);
+                Request(params);
             }
 
             @Override
@@ -66,78 +79,52 @@ public class StoreDetailActivity extends BaseActivity {
             }
         });
 
-
+        //banner
         banner = findViewByID_My(R.id.banner);
         banner_indicator = findViewByID_My(R.id.banner_indicator);
-        //banner
-        images.add("http://file02.16sucai.com/d/file/2014/0825/dcb017b51479798f6c60b7b9bd340728.jpg");
-        images.add("http://file02.16sucai.com/d/file/2014/0825/dcb017b51479798f6c60b7b9bd340728.jpg");
-        images.add("http://file02.16sucai.com/d/file/2014/0825/dcb017b51479798f6c60b7b9bd340728.jpg");
-        images.add("http://file02.16sucai.com/d/file/2014/0825/dcb017b51479798f6c60b7b9bd340728.jpg");
-        if (images.size() > 0) {
-            banner_indicator.setText("1/" + images.size());
-        } else {
-            banner_indicator.setText("0/" + images.size());
-        }
-        /*images.clear();
-        for (int i = 0; i < response.getBanner().size(); i++) {
-            images.add(OkHttpClientManager.IMGHOST+response.getBanner().get(i).getUrl());
-        }*/
-        banner.addBannerLifecycleObserver(this)//添加生命周期观察者
-                .setDelayTime(3000)//设置轮播时间
-//                .setBannerGalleryEffect(10, 10)//为banner添加画廊效果
-                .setAdapter(new ImageAdapter(images))
-//                .setIndicator(new RectangleIndicator(StoreDetailActivity.this))
-//                .setIndicator(new BaseIndicator(StoreDetailActivity.this))
-                .setIndicatorGravity(IndicatorConfig.Direction.RIGHT)
-                .start();
-        banner.addOnPageChangeListener(new OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            }
 
-            @Override
-            public void onPageSelected(int position) {
-                MyLogger.i(">>>>" + (position + 1));
-                banner_indicator.setText((position + 1) + "/" + images.size());
-            }
+        //门店信息
+        tv_time = findViewByID_My(R.id.tv_time);
+        tv_name = findViewByID_My(R.id.tv_name);
+        tv_dengji = findViewByID_My(R.id.tv_dengji);
+        tv_phone = findViewByID_My(R.id.tv_phone);
+        tv_addr = findViewByID_My(R.id.tv_addr);
+        tv_juli = findViewByID_My(R.id.tv_juli);
+        tv_content = findViewByID_My(R.id.tv_content);
+        tv_pingfen = findViewByID_My(R.id.tv_pingfen);
+        tv_dingdan = findViewByID_My(R.id.tv_dingdan);
+        tv_jieshao = findViewByID_My(R.id.tv_jieshao);
 
-            @Override
-            public void onPageScrollStateChanged(int state) {
+        //门店服务
+        rv_tab = findViewByID_My(R.id.rv_tab);
+        rv_tab.setLayoutManager(new GridLayoutManager(this, 3));
 
-            }
-        });
-        banner.setOnBannerListener(new OnBannerListener() {
-            @Override
-            public void OnBannerClick(Object data, int position) {
-                /*Bundle bundle = new Bundle();
-                bundle.putInt("type", response.getBanner().get(position).getType());
-                CommonUtil.gotoActivityWithData(JiFenShangChengActivity.this, JiFenLieBiaoActivity.class, bundle, false);*/
-            }
-        });
+
     }
 
     @Override
     protected void initData() {
-        id = getIntent().getStringExtra("id");
+        y_store_id = getIntent().getStringExtra("id");
         longitude = getIntent().getStringExtra("longitude");
         latitude = getIntent().getStringExtra("latitude");
 
         requestServer();
     }
+
     @Override
     public void requestServer() {
         super.requestServer();
 //        this.showLoadingPage();
 //        page = 0;
-        showProgress(true,getString(R.string.app_loading));
+        showProgress(true, getString(R.string.app_loading));
         Map<String, String> params = new HashMap<>();
-        params.put("u_token", localUserInfo.getToken());
+//        params.put("u_token", localUserInfo.getToken());
         params.put("longitude", longitude);
         params.put("latitude", latitude);
-        params.put("id", id);
+        params.put("y_store_id", y_store_id);
         Request(params);
     }
+
     private void Request(Map<String, String> params) {
         OkhttpUtil.okHttpPost(URLs.StoreDetail, params, headerMap, new CallBackUtil<StoreDetailModel>() {
             @Override
@@ -155,6 +142,124 @@ public class StoreDetailActivity extends BaseActivity {
             @Override
             public void onResponse(StoreDetailModel response) {
                 hideProgress();
+                //banner
+                /*images.add("http://file02.16sucai.com/d/file/2014/0825/dcb017b51479798f6c60b7b9bd340728.jpg");
+                images.add("http://file02.16sucai.com/d/file/2014/0825/dcb017b51479798f6c60b7b9bd340728.jpg");
+                images.add("http://file02.16sucai.com/d/file/2014/0825/dcb017b51479798f6c60b7b9bd340728.jpg");
+                images.add("http://file02.16sucai.com/d/file/2014/0825/dcb017b51479798f6c60b7b9bd340728.jpg");*/
+                images.clear();
+                for (int i = 0; i < response.getInfo().getPictureArr().size(); i++) {
+                    images.add(URLs.IMGHOST + response.getInfo().getPictureArr().get(i));
+                }
+                if (images.size() > 0) {
+                    banner_indicator.setText("1/" + images.size());
+                } else {
+                    banner_indicator.setText("0/" + images.size());
+                }
+
+                banner.addBannerLifecycleObserver(StoreDetailActivity.this)//添加生命周期观察者
+                        .setDelayTime(3000)//设置轮播时间
+//                .setBannerGalleryEffect(10, 10)//为banner添加画廊效果
+                        .setAdapter(new ImageAdapter(images))
+//                .setIndicator(new RectangleIndicator(StoreDetailActivity.this))
+//                .setIndicator(new BaseIndicator(StoreDetailActivity.this))
+                        .setIndicatorGravity(IndicatorConfig.Direction.RIGHT)
+                        .start();
+                banner.addOnPageChangeListener(new OnPageChangeListener() {
+                    @Override
+                    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                    }
+
+                    @Override
+                    public void onPageSelected(int position) {
+                        MyLogger.i(">>>>" + (position + 1));
+                        banner_indicator.setText((position + 1) + "/" + images.size());
+                    }
+
+                    @Override
+                    public void onPageScrollStateChanged(int state) {
+
+                    }
+                });
+                banner.setOnBannerListener(new OnBannerListener() {
+                    @Override
+                    public void OnBannerClick(Object data, int position) {
+                /*Bundle bundle = new Bundle();
+                bundle.putInt("type", response.getBanner().get(position).getType());
+                CommonUtil.gotoActivityWithData(JiFenShangChengActivity.this, JiFenLieBiaoActivity.class, bundle, false);*/
+                    }
+                });
+
+                //店铺信息
+//                tv_time.setText("营业时间：" + );
+                tv_name.setText(response.getInfo().getVName());//店铺名字
+                tv_dengji.setText(response.getInfo().getVLevel());//店铺等级
+                tv_phone.setText(response.getInfo().getPhone());//店铺电话
+                tv_addr.setText(response.getInfo().getAddress());//店铺地址
+                tv_juli.setText("距离" + response.getInfo().getDistance() + "m");//距离
+                tv_content.setText(response.getInfo().getIntroduce());//
+                tv_pingfen.setText(response.getInfo().getReview());//店铺评分
+                tv_dingdan.setText(response.getInfo().getOrderSum() + "");//店铺订单
+                tv_jieshao.setText(response.getInfo().getIntroduce());//店铺介绍
+
+                //门店服务
+                list_tab = response.getStore_service_list();
+                mAdapter_tab = new CommonAdapter<StoreDetailModel.StoreServiceListBean>
+                        (StoreDetailActivity.this, R.layout.item_storedetail_service, list_tab) {
+                    @Override
+                    protected void convert(ViewHolder holder, StoreDetailModel.StoreServiceListBean model, int position) {
+                        ImageView imageView = holder.getView(R.id.imageView);
+                        Glide.with(StoreDetailActivity.this)
+                                .load(URLs.IMGHOST + model.getPictureStr())
+                                .centerCrop()
+//                    .placeholder(R.mipmap.headimg)//加载站位图
+//                    .error(R.mipmap.headimg)//加载失败
+                                .into(imageView);//加载图片
+                        holder.setText(R.id.tv_name, model.getYStateValue());
+                        holder.setText(R.id.tv_paidui,"排队:"+model.getLineupSum());
+                        View view = holder.getView(R.id.view);
+                        if (model.getYState() == 0) {
+                            //空闲
+                            view.setBackgroundResource(R.drawable.yuanxing_lvse);
+                        } else {
+                            //忙碌
+                            view.setBackgroundResource(R.drawable.yuanxing_hongse);
+                        }
+                    }
+                };
+                mAdapter_tab.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                        Bundle bundle = new Bundle();
+                        /*switch (list_tab.get(i).getCategory()){
+                            case 2:
+                                //跳转商品列表
+                                bundle.putString("id",list_tab.get(i).getId());
+                                CommonUtil.gotoActivityWithData(getActivity(), ProductListActivity.class,bundle);
+                                break;
+                            case 3:
+                                //跳转违章查询
+                                CommonUtil.gotoActivity(getActivity(), CarIllegalActivity.class);
+                                break;
+                            case 4:
+                                //跳转保险查询
+                                CommonUtil.gotoActivity(getActivity(), CarInsuranceActivity.class);
+                                break;
+                            default:
+                                //跳转门店搜索
+                                bundle.putString("keys",list_tab.get(i).getTitle());
+                                CommonUtil.gotoActivityWithData(getActivity(), SearchActivity.class,bundle);
+                                break;
+                        }*/
+                    }
+
+                    @Override
+                    public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                        return false;
+                    }
+                });
+                rv_tab.setAdapter(mAdapter_tab);
+
                 /*list = response.getList();
                 if (list.size() > 0) {
                     showContentPage();
@@ -198,6 +303,7 @@ public class StoreDetailActivity extends BaseActivity {
         });
 
     }
+
     @Override
     protected void updateView() {
         titleView.setTitle("门店详情");

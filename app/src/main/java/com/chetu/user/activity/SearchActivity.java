@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
  * 搜索
  */
 public class SearchActivity extends BaseActivity {
+    String keys = "";
     EditText et_search;
     FlowLayout flowLayout;
     RecyclerView recyclerView;
@@ -113,7 +114,7 @@ public class SearchActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-
+        keys = getIntent().getStringExtra("keys");
     }
 
     @Override

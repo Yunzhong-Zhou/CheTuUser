@@ -165,19 +165,21 @@ public class MyProfileActivity extends BaseActivity {
                 //手机
                 editText2.setText(response.getUser_info().getUserPhone());
                 //性别
-                if (response.getUser_info().getSetup_info().getU_gender().equals("男")) {
-                    u_gender = "男";
-                    iv_nan.setImageResource(R.mipmap.ic_xuanzhong);
-                    iv_nv.setImageResource(R.mipmap.ic_weixuan);
-                } else {
-                    u_gender = "女";
-                    iv_nan.setImageResource(R.mipmap.ic_weixuan);
-                    iv_nv.setImageResource(R.mipmap.ic_xuanzhong);
-                }
-                //生日
-                birthday = response.getUser_info().getSetup_info().getBirthday();
-                textView2.setText(response.getUser_info().getSetup_info().getBirthday());
 
+                if (response.getUser_info().getSetup_info().getU_gender() != null) {
+                    if (response.getUser_info().getSetup_info().getU_gender().equals("男")) {
+                        u_gender = "男";
+                        iv_nan.setImageResource(R.mipmap.ic_xuanzhong);
+                        iv_nv.setImageResource(R.mipmap.ic_weixuan);
+                    } else {
+                        u_gender = "女";
+                        iv_nan.setImageResource(R.mipmap.ic_weixuan);
+                        iv_nv.setImageResource(R.mipmap.ic_xuanzhong);
+                    }
+                    //生日
+                    birthday = response.getUser_info().getSetup_info().getBirthday();
+                    textView2.setText(response.getUser_info().getSetup_info().getBirthday());
+                }
             }
         });
     }

@@ -35,6 +35,8 @@ import com.chetu.user.okhttp.OkhttpUtil;
 import com.chetu.user.utils.CommonUtil;
 import com.chetu.user.utils.MyLogger;
 import com.chetu.user.view.FixedPopupWindow;
+import com.cy.cyflowlayoutlibrary.FlowLayout;
+import com.cy.cyflowlayoutlibrary.FlowLayoutAdapter;
 import com.liaoinstan.springview.widget.SpringView;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
@@ -74,10 +76,11 @@ public class Fragment3 extends BaseFragment {
 
     //数据
     int page = 0;
-    String longitude = "", latitude = "", is_review = "0", service_name = "";
+    String longitude = "", latitude = "", is_review = "1", service_name = "", is_index = "0";
     private RecyclerView recyclerView;
     List<Fragment3Model.ListBean> list = new ArrayList<>();
     CommonAdapter<Fragment3Model.ListBean> mAdapter;
+
 
     //定位
     //声明AMapLocationClient类对象
@@ -139,6 +142,7 @@ public class Fragment3 extends BaseFragment {
                 params.put("longitude", longitude);
                 params.put("latitude", latitude);
                 params.put("is_review", is_review);
+                params.put("is_index", is_index);
                 Request(params);
             }
 
@@ -153,6 +157,7 @@ public class Fragment3 extends BaseFragment {
                 params.put("longitude", longitude);
                 params.put("latitude", latitude);
                 params.put("is_review", is_review);
+                params.put("is_index", is_index);
                 RequestMore(params);
             }
         });
@@ -281,6 +286,7 @@ public class Fragment3 extends BaseFragment {
                     drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
                     tv_pingfen.setCompoundDrawables(null, null, drawable, null);
                 }
+                requestServer();
                 break;
             case R.id.tv_juli:
                 //距离
@@ -295,6 +301,7 @@ public class Fragment3 extends BaseFragment {
                     drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
                     tv_juli.setCompoundDrawables(null, null, drawable, null);
                 }
+                requestServer();
                 break;
             case R.id.tv_shaixuan:
                 //筛选
@@ -305,7 +312,6 @@ public class Fragment3 extends BaseFragment {
                     params2.put("y_parent_id", "0");
                     RequestService(params2, 0);
                 }
-
                 break;
 
         }
@@ -321,18 +327,19 @@ public class Fragment3 extends BaseFragment {
     public void requestServer() {
         super.requestServer();
         this.showLoadingPage();
-        if (!longitude.equals("")) {
-            page = 0;
-            Map<String, String> params = new HashMap<>();
-            params.put("service_name", service_name);
-            params.put("page", page + "");
-            params.put("longitude", longitude);
-            params.put("latitude", latitude);
-            params.put("is_review", is_review);
-            Request(params);
-        } else {
-            mLocationClient.startLocation();
-        }
+//        if (!longitude.equals("")) {
+        page = 0;
+        Map<String, String> params = new HashMap<>();
+        params.put("service_name", service_name);
+        params.put("page", page + "");
+        params.put("longitude", longitude);
+        params.put("latitude", latitude);
+        params.put("is_review", is_review);
+        params.put("is_index", is_index);
+        Request(params);
+//        } else {
+//            mLocationClient.startLocation();
+//        }
 
     }
 
@@ -362,18 +369,87 @@ public class Fragment3 extends BaseFragment {
                         protected void convert(ViewHolder holder, Fragment3Model.ListBean model, int position) {
                             ImageView imageView1 = holder.getView(R.id.imageView1);
                             Glide.with(getActivity())
-                                    .load(URLs.IMGHOST + model.getPictureStr())
+                                    .load(URLs.IMGHOST + model.getPicture())
                                     .centerCrop()
-//                    .placeholder(R.mipmap.headimg)//加载站位图
-//                    .error(R.mipmap.headimg)//加载失败
+                                    .placeholder(R.mipmap.loading)//加载站位图
+                                    .error(R.mipmap.zanwutupian)//加载失败
                                     .into(imageView1);//加载图片
                             holder.setText(R.id.tv_name, model.getVName());//店名
                             holder.setText(R.id.tv_pingfen, model.getReview());//评分
-//                            holder.setText(R.id.tv_dingdan,model.get);//订单
+                            holder.setText(R.id.tv_dingdan, model.getOrderSum() + "");//订单
                             holder.setText(R.id.tv_addr, model.getAddress());//地址
                             holder.setText(R.id.tv_juli, model.getDistance() + "m");//距离
+
+                            MyLogger.i(">>>>>>"+ model.getStore_service_list().size());
+                            if (model.getStore_service_list().size() > 0) {
+                                //标签
+                                FlowLayoutAdapter<Fragment3Model.ListBean.StoreServiceListBean> flowLayoutAdapter1 =
+                                        new FlowLayoutAdapter<Fragment3Model.ListBean.StoreServiceListBean>
+                                                (model.getStore_service_list()) {
+                                            @Override
+                                            public void bindDataToView(FlowLayoutAdapter.ViewHolder holder, int position,
+                                                                       Fragment3Model.ListBean.StoreServiceListBean bean) {
+//                                holder.setText(R.id.tv,bean);
+                                                TextView tv = holder.getView(R.id.tv);
+                                                tv.setText(bean.getYStateValue());
+                                    /*tv.setTextColor(getResources().getColor(R.color.black1));
+                                    tv.setBackgroundResource(R.drawable.yuanjiao_3_huise);*/
+                                            }
+
+                                            @Override
+                                            public void onItemClick(int position, Fragment3Model.ListBean.StoreServiceListBean bean) {
+//                        showToast("点击" + position);
+                                            }
+
+                                            @Override
+                                            public int getItemLayoutID(int position, Fragment3Model.ListBean.StoreServiceListBean bean) {
+                                                return R.layout.item_fragment3_flowlayout1;
+                                            }
+                                        };
+                                //服务
+                                FlowLayoutAdapter<Fragment3Model.ListBean.StoreServiceListBean> flowLayoutAdapter2 =
+                                        new FlowLayoutAdapter<Fragment3Model.ListBean.StoreServiceListBean>
+                                                (model.getStore_service_list()) {
+                                            @Override
+                                            public void bindDataToView(FlowLayoutAdapter.ViewHolder holder, int position,
+                                                                       Fragment3Model.ListBean.StoreServiceListBean bean) {
+                                                TextView tv1 = holder.getView(R.id.tv1);
+                                                tv1.setText(bean.getYStateValue() + "：");
+                                                TextView tv2 = holder.getView(R.id.tv2);
+                                                View view = holder.getView(R.id.view);
+                                                if (bean.getYState() == 0) {
+                                                    //空闲
+                                                    tv2.setText("空闲");
+                                                    tv2.setTextColor(getResources().getColor(R.color.green));
+                                                    view.setBackgroundResource(R.drawable.yuanxing_lvse);
+                                                } else {
+                                                    //忙碌
+                                                    tv2.setText("忙碌");
+                                                    tv2.setTextColor(getResources().getColor(R.color.red));
+                                                    view.setBackgroundResource(R.drawable.yuanxing_hongse);
+                                                }
+                                    /*
+                                    tv.setBackgroundResource(R.drawable.yuanjiao_3_huise);*/
+                                            }
+
+                                            @Override
+                                            public void onItemClick(int position, Fragment3Model.ListBean.StoreServiceListBean bean) {
+//                        showToast("点击" + position);
+                                            }
+
+                                            @Override
+                                            public int getItemLayoutID(int position, Fragment3Model.ListBean.StoreServiceListBean bean) {
+                                                return R.layout.item_fragment3_flowlayout2;
+                                            }
+                                        };
+                                ((FlowLayout) holder.getView(R.id.flowLayout1)).setAdapter(flowLayoutAdapter1);
+                                ((FlowLayout) holder.getView(R.id.flowLayout2)).setAdapter(flowLayoutAdapter2);
+                            }
+
                         }
                     };
+
+
                     mAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
                         @Override
                         public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
@@ -444,7 +520,15 @@ public class Fragment3 extends BaseFragment {
             @Override
             public void onFailure(Call call, Exception e, String err) {
                 hideProgress();
-                myToast(err);
+
+                if (type != 0){
+                    i2 = -1;
+                    stringList2.clear();
+                    showPopupWindow1(pop_view);
+                }else {
+                    myToast(err);
+                }
+
             }
 
             @Override
@@ -555,12 +639,14 @@ public class Fragment3 extends BaseFragment {
                         }
                     }
                     if (!service_name.equals("")) {
-                        service_name = service_name.substring(0,service_name.length()-2);
+                        service_name = service_name.substring(0, service_name.length() - 2);
                         MyLogger.i(">>>>>>>>" + service_name);
                         popupWindow.dismiss();
                         requestServer();
                     } else {
-                        myToast("请选择具体的服务项目");
+//                        myToast("请选择具体的服务项目");
+                        popupWindow.dismiss();
+                        requestServer();
                     }
                 }
             });

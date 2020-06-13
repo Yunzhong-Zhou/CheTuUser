@@ -16,12 +16,15 @@ import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.bumptech.glide.Glide;
 import com.chetu.user.R;
+import com.chetu.user.activity.CarIllegalActivity;
+import com.chetu.user.activity.CarInsuranceActivity;
 import com.chetu.user.activity.ProductListActivity;
 import com.chetu.user.activity.SearchActivity;
 import com.chetu.user.adapter.CircleImageAdapter;
 import com.chetu.user.base.BaseFragment;
 import com.chetu.user.model.Fragment1Model;
-import com.chetu.user.model.ServiceListModel;
+import com.chetu.user.model.Fragment1ServiceListModel;
+import com.chetu.user.model.Fragment1TabModel;
 import com.chetu.user.net.URLs;
 import com.chetu.user.okhttp.CallBackUtil;
 import com.chetu.user.okhttp.OkhttpUtil;
@@ -77,8 +80,8 @@ public class Fragment1 extends BaseFragment {
     CommonAdapter<Fragment1Model.ListBean> mAdapter2;
 
     RecyclerView rv_tab;
-    List<ServiceListModel.ListBean> list_tab = new ArrayList<>();
-    CommonAdapter<ServiceListModel.ListBean> mAdapter_tab;
+    List<Fragment1TabModel> list_tab = new ArrayList<>();
+    CommonAdapter<Fragment1TabModel> mAdapter_tab;
 
     //定位
     //声明AMapLocationClient类对象
@@ -171,31 +174,6 @@ public class Fragment1 extends BaseFragment {
 
 
         banner = findViewByID_My(R.id.banner);
-        //banner
-        images.add("http://file02.16sucai.com/d/file/2014/0825/dcb017b51479798f6c60b7b9bd340728.jpg");
-        images.add("http://file02.16sucai.com/d/file/2014/0825/dcb017b51479798f6c60b7b9bd340728.jpg");
-        images.add("http://file02.16sucai.com/d/file/2014/0825/dcb017b51479798f6c60b7b9bd340728.jpg");
-        images.add("http://file02.16sucai.com/d/file/2014/0825/dcb017b51479798f6c60b7b9bd340728.jpg");
-        /*images.clear();
-        for (int i = 0; i < response.getBanner().size(); i++) {
-            images.add(OkHttpClientManager.IMGHOST+response.getBanner().get(i).getUrl());
-        }*/
-        banner.addBannerLifecycleObserver(this)//添加生命周期观察者
-                .setDelayTime(3000)//设置轮播时间
-                .setBannerGalleryEffect(10, 10)//为banner添加画廊效果
-                .setAdapter(new CircleImageAdapter(images))
-                .setIndicator(new CircleIndicator(getActivity()))
-                .start();
-        banner.setOnBannerListener(new OnBannerListener() {
-            @Override
-            public void OnBannerClick(Object data, int position) {
-                /*Bundle bundle = new Bundle();
-                bundle.putInt("type", response.getBanner().get(position).getType());
-                CommonUtil.gotoActivityWithData(JiFenShangChengActivity.this, JiFenLieBiaoActivity.class, bundle, false);*/
-            }
-        });
-
-
     }
 
     @Override
@@ -271,12 +249,13 @@ public class Fragment1 extends BaseFragment {
     public void requestServer() {
         super.requestServer();
         this.showLoadingPage();
-
-        //获取服务项目
+        //获取服务项目和banner
         HashMap<String, String> params2 = new HashMap<>();
         params2.put("y_parent_id", "0");
         RequestService(params2, 0);
 
+
+       /* //获取列表数据
         page1 = 0;
         page2 = 0;
         Map<String, String> params = new HashMap<>();
@@ -284,13 +263,13 @@ public class Fragment1 extends BaseFragment {
         params.put("service_name", "");
         params.put("longitude", longitude);
         params.put("latitude", latitude);
-        Request(params);
+        Request(params);*/
 
 
     }
 
     private void Request(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.Fragment3, params, headerMap, new CallBackUtil<Fragment1Model>() {
+        OkhttpUtil.okHttpPost(URLs.Fragment1, params, headerMap, new CallBackUtil<Fragment1Model>() {
             @Override
             public Fragment1Model onParseResponse(Call call, Response response) {
                 return null;
@@ -358,15 +337,15 @@ public class Fragment1 extends BaseFragment {
     }
 
     /**
-     * 获取筛选列表
+     * 获取服务和banner
      *
      * @param params
      * @param type
      */
     private void RequestService(HashMap<String, String> params, int type) {
-        OkhttpUtil.okHttpPost(URLs.ServiceList, params, headerMap, new CallBackUtil<ServiceListModel>() {
+        OkhttpUtil.okHttpPost(URLs.Fragment1_Service, params, headerMap, new CallBackUtil<Fragment1ServiceListModel>() {
             @Override
-            public ServiceListModel onParseResponse(Call call, Response response) {
+            public Fragment1ServiceListModel onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -376,42 +355,74 @@ public class Fragment1 extends BaseFragment {
             }
 
             @Override
-            public void onResponse(ServiceListModel response) {
+            public void onResponse(Fragment1ServiceListModel response) {
+                //banner
+                /*images.add("http://file02.16sucai.com/d/file/2014/0825/dcb017b51479798f6c60b7b9bd340728.jpg");
+                images.add("http://file02.16sucai.com/d/file/2014/0825/dcb017b51479798f6c60b7b9bd340728.jpg");
+                images.add("http://file02.16sucai.com/d/file/2014/0825/dcb017b51479798f6c60b7b9bd340728.jpg");
+                images.add("http://file02.16sucai.com/d/file/2014/0825/dcb017b51479798f6c60b7b9bd340728.jpg");*/
+                images.clear();
+                for (int i = 0; i < response.getBanner_list().size(); i++) {
+                    images.add(URLs.IMGHOST + response.getBanner_list().get(i).getImgurl());
+                }
+                banner.addBannerLifecycleObserver(getActivity())//添加生命周期观察者
+                        .setDelayTime(3000)//设置轮播时间
+                        .setBannerGalleryEffect(10, 10)//为banner添加画廊效果
+                        .setAdapter(new CircleImageAdapter(images))
+                        .setIndicator(new CircleIndicator(getActivity()))
+                        .start();
+                banner.setOnBannerListener(new OnBannerListener() {
+                    @Override
+                    public void OnBannerClick(Object data, int position) {
+                /*Bundle bundle = new Bundle();
+                bundle.putInt("type", response.getBanner().get(position).getType());
+                CommonUtil.gotoActivityWithData(JiFenShangChengActivity.this, JiFenLieBiaoActivity.class, bundle, false);*/
+                    }
+                });
 
-                list_tab = response.getList();
-                mAdapter_tab = new CommonAdapter<ServiceListModel.ListBean>
+                //tab
+                for (Fragment1ServiceListModel.IndexCustomListBean bean : response.getIndex_custom_list()){
+                    list_tab.add(new Fragment1TabModel(bean.getYServiceId(),bean.getCategory(),bean.getMsg(),bean.getImgurl()));
+                }
+                for (Fragment1ServiceListModel.IndexServiceListBean bean : response.getIndex_service_list()){
+                    list_tab.add(new Fragment1TabModel(bean.getYServiceId(),-1,bean.getVName(),bean.getVImg()));
+                }
+                mAdapter_tab = new CommonAdapter<Fragment1TabModel>
                         (getActivity(), R.layout.item_fragment1_tab, list_tab) {
                     @Override
-                    protected void convert(ViewHolder holder, ServiceListModel.ListBean model, int position) {
+                    protected void convert(ViewHolder holder, Fragment1TabModel model, int position) {
                         ImageView imageView = holder.getView(R.id.imageView);
                         Glide.with(getActivity())
-                                .load(URLs.IMGHOST + model.getVImg())
+                                .load(URLs.IMGHOST + model.getImg())
                                 .centerCrop()
 //                    .placeholder(R.mipmap.headimg)//加载站位图
 //                    .error(R.mipmap.headimg)//加载失败
                                 .into(imageView);//加载图片
-                        holder.setText(R.id.tv_name,model.getVName());
+                        holder.setText(R.id.tv_name,model.getTitle());
                     }
                 };
                 mAdapter_tab.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
-                        switch (list_tab.get(i).getId()){
-                            case "1017":
-                                //汽车美容
-
+                        Bundle bundle = new Bundle();
+                        switch (list_tab.get(i).getCategory()){
+                            case 2:
+                                //跳转商品列表
+                                bundle.putString("id",list_tab.get(i).getId());
+                                CommonUtil.gotoActivityWithData(getActivity(), ProductListActivity.class,bundle);
                                 break;
-                            case "1018":
-                                //保养
-
+                            case 3:
+                                //跳转违章查询
+                                CommonUtil.gotoActivity(getActivity(), CarIllegalActivity.class);
                                 break;
-                            case "1019":
-                                //汽车用品
-                                CommonUtil.gotoActivity(getActivity(), ProductListActivity.class);
+                            case 4:
+                                //跳转保险查询
+                                CommonUtil.gotoActivity(getActivity(), CarInsuranceActivity.class);
                                 break;
-                            case "1021":
-                                //喷漆喷漆
-
+                            default:
+                                //跳转门店搜索
+                                bundle.putString("keys",list_tab.get(i).getTitle());
+                                CommonUtil.gotoActivityWithData(getActivity(), SearchActivity.class,bundle);
                                 break;
                         }
                     }
@@ -422,32 +433,6 @@ public class Fragment1 extends BaseFragment {
                     }
                 });
                 rv_tab.setAdapter(mAdapter_tab);
-                /*if (type == 0) {
-                    //第一级
-                    list_sv1 = response.getList();
-                    for (ServiceListModel.ListBean bean : list_sv1) {
-                        stringList1.add(bean.getVName());
-                    }
-                    //请求第二级
-                    if (list_sv1.size() > 0) {
-                        i1 = 0;
-                        y_parent_id = list_sv1.get(0).getYServiceId();
-                        HashMap<String, String> params2 = new HashMap<>();
-                        params2.put("y_parent_id", y_parent_id);
-                        RequestService(params2, 1);
-                    }
-                } else {
-                    //第二级
-                    list_sv2 = response.getList();
-                    stringList2.clear();
-                    for (ServiceListModel.ListBean bean : list_sv2) {
-                        stringList2.add(bean.getVName());
-                    }
-                    i2 = -1;
-                    y_service_id = "";
-                    showPopupWindow1(pop_view);
-                }*/
-
             }
         });
     }

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+    <TextView
+        android:id="@+id/tv1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="美容："
+        android:textColor="@color/black"
+        android:textSize="11sp" />
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="9dp"
+        android:layout_height="9dp"
+        android:background="@drawable/yuanxing_hongse" />
+
+    <TextView
+        android:id="@+id/tv2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="3dp"
+        android:text="忙碌"
+        android:textColor="@color/red"
+        android:textSize="11sp" />
+</LinearLayout>

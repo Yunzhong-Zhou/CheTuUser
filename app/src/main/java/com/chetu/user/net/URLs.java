@@ -53,6 +53,10 @@ public class URLs {
      */
     public static final String Fragment1 = HOST+"/api/v1/public/get_store_list";
     /**
+     * 服务和banner数据
+     */
+    public static final String Fragment1_Service = HOST+"/api/v1/public/get_inddex_data";
+    /**
      * 车险询价（发布）
      */
     public static final String CarInsurance = HOST+"/api/v1/public/user_inquiry_add";
@@ -79,7 +83,7 @@ public class URLs {
     /**
      * 服务分类列表
      */
-    public static final String ServiceList = HOST+"/api/v1/public/get_service_index_list";
+    public static final String ServiceList = HOST+"/api/v1/public/get_service_list";
     /**
      * *********************************我的*****************************************
      */

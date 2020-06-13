@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginTop="10dp"
     android:background="@drawable/yuanjiao_10_baise"
     android:orientation="horizontal"
@@ -34,7 +35,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
@@ -74,34 +75,26 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
+            <com.cy.cyflowlayoutlibrary.FlowLayout
+                android:id="@+id/flowLayout1"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/yuanjiaobiankuang_3_lanse"
-                android:paddingLeft="3dp"
-                android:paddingTop="2dp"
-                android:paddingRight="3dp"
-                android:paddingBottom="2dp"
-                android:text="汽车美容"
-                android:textColor="@color/blue"
-                android:textSize="10sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
+                android:paddingTop="5dp"
+                android:layout_marginTop="-5dp"
+                android:paddingBottom="5dp"
+                app:height_space="10dp"
+                app:width_space="10dp" />
+            <com.cy.cyflowlayoutlibrary.FlowLayout
+                android:id="@+id/flowLayout2"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:background="@drawable/yuanjiaobiankuang_3_juse"
-                android:paddingLeft="3dp"
-                android:paddingTop="2dp"
-                android:paddingRight="3dp"
-                android:paddingBottom="2dp"
-                android:text="保养维修"
-                android:textColor="@color/orange"
-                android:textSize="10sp" />
+                android:layout_marginTop="-5dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                app:height_space="10dp"
+                app:width_space="10dp" />
 
         </LinearLayout>
 
@@ -109,84 +102,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="美容："
-                android:textColor="@color/black"
-                android:textSize="11sp" />
-
-            <View
-                android:id="@+id/view_meirong"
-                android:layout_width="9dp"
-                android:layout_height="9dp"
-                android:background="@drawable/yuanxing_hongse" />
-
-            <TextView
-                android:id="@+id/tv_meirong"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="3dp"
-                android:text="忙碌"
-                android:textColor="@color/red"
-                android:textSize="11sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:text="洗车："
-                android:textColor="@color/black"
-                android:textSize="11sp" />
-
-            <View
-                android:id="@+id/view_xiche"
-                android:layout_width="9dp"
-                android:layout_height="9dp"
-                android:background="@drawable/yuanxing_hongse" />
-
-            <TextView
-                android:id="@+id/tv_xiche"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="3dp"
-                android:text="忙碌"
-                android:textColor="@color/red"
-                android:textSize="11sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:text="保养："
-                android:textColor="@color/black"
-                android:textSize="11sp" />
-
-            <View
-                android:id="@+id/view_baoyang"
-                android:layout_width="9dp"
-                android:layout_height="9dp"
-                android:background="@drawable/yuanxing_hongse" />
-
-            <TextView
-                android:id="@+id/tv_baoyang"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="3dp"
-                android:text="忙碌"
-                android:textColor="@color/red"
-                android:textSize="11sp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 

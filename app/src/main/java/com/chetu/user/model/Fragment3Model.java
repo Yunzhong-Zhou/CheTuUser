@@ -20,20 +20,22 @@ public class Fragment3Model implements Serializable {
     public static class ListBean {
         /**
          * id : 1017
-         * yStoreId : 692341585785913344
+         * yStoreId : 692341585785913333
          * vName : 龙肆商店测试
          * review : 4.5分
          * keywsr :
          * address : 深圳市南山区
          * longitude : 116.49798
          * latitude : 39.916485
+         * picture : /static/img/20200528151327.png
          * distance : 12246.42
          * phone :  400-2333-1123
          * vLevel :  A级
          * introduce :  门店介绍
          * charactStr : /static/img/20200528151327.png||/static/img/20200528151327.png
          * pictureStr : /static/img/20200528151327.png||/static/img/20200528151327.png
-         * store_service_list : [{"id":"1023","yStoreServiceId":"692341585785913344","yStoreId":"692341585785913344","yServiceId":"692341585785913344","yState":1,"lineupSum":10,"isSheet":0,"yStateValue":"维修","sPrice":100,"pictureStr":"/static/img/20200528151327.png||/static/img/20200528151327.png"},{"id":"1024","yStoreServiceId":"692341585785913345","yStoreId":"692341585785913344","yServiceId":"692341585785913344","yState":1,"lineupSum":10,"isSheet":0,"yStateValue":"洗车","sPrice":100,"pictureStr":"/static/img/20200528151327.png||/static/img/20200528151327.png"},{"id":"1025","yStoreServiceId":"692341585785913346","yStoreId":"692341585785913344","yServiceId":"692341585785913344","yState":1,"lineupSum":10,"isSheet":0,"yStateValue":"保养","sPrice":100,"pictureStr":"/static/img/20200528151327.png||/static/img/20200528151327.png"},{"id":"1026","yStoreServiceId":"692341585785913347","yStoreId":"692341585785913344","yServiceId":"692341585785913344","yState":1,"lineupSum":10,"isSheet":0,"yStateValue":"美容","sPrice":100,"pictureStr":"/static/img/20200528151327.png||/static/img/20200528151327.png"},{"id":"1027","yStoreServiceId":"692341585785913348","yStoreId":"692341585785913344","yServiceId":"692341585785913344","yState":1,"lineupSum":10,"isSheet":1,"yStateValue":"钣喷","sPrice":100,"pictureStr":"/static/img/20200528151327.png||/static/img/20200528151327.png"},{"id":"1028","yStoreServiceId":"692341585785913349","yStoreId":"692341585785913344","yServiceId":"692341585785913344","yState":1,"lineupSum":10,"isSheet":0,"yStateValue":"左叶板子","sPrice":100,"pictureStr":"/upload/2020-06-02/20200602102222_621580.png"},{"id":"1029","yStoreServiceId":"692341585785913350","yStoreId":"692341585785913344","yServiceId":"692341585785913344","yState":1,"lineupSum":10,"isSheet":0,"yStateValue":"机盖","sPrice":100,"pictureStr":"/upload/2020-06-02/20200602102222_621580.png"},{"id":"1030","yStoreServiceId":"692341585785913351","yStoreId":"692341585785913344","yServiceId":"692341585785913344","yState":1,"lineupSum":10,"isSheet":0,"yStateValue":"右叶板子","sPrice":100,"pictureStr":"/upload/2020-06-02/20200602102222_621580.png"},{"id":"1031","yStoreServiceId":"692341585785913352","yStoreId":"692341585785913344","yServiceId":"692341585785913344","yState":1,"lineupSum":10,"isSheet":0,"yStateValue":"在前门","sPrice":100,"pictureStr":"/upload/2020-06-02/20200602102222_621580.png"},{"id":"1032","yStoreServiceId":"692341585785913353","yStoreId":"692341585785913344","yServiceId":"692341585785913344","yState":1,"lineupSum":10,"isSheet":0,"yStateValue":"右前门","sPrice":100,"pictureStr":"/upload/2020-06-02/20200602102222_621580.png"}]
+         * orderSum : 0
+         * store_service_list : [{"id":"1024","yStoreServiceId":"692341585785913345","yStoreId":"692341585785913333","yState":1,"lineupSum":10,"isSheet":0,"yStateValue":"洗车","sPrice":100,"pictureStr":"/static/img/20200528151327.png||/static/img/20200528151327.png"}]
          */
 
         private String id;
@@ -44,12 +46,14 @@ public class Fragment3Model implements Serializable {
         private String address;
         private String longitude;
         private String latitude;
+        private String picture;
         private String distance;
         private String phone;
         private String vLevel;
         private String introduce;
         private String charactStr;
         private String pictureStr;
+        private int orderSum;
         private List<StoreServiceListBean> store_service_list;
 
         public String getId() {
@@ -116,6 +120,14 @@ public class Fragment3Model implements Serializable {
             this.latitude = latitude;
         }
 
+        public String getPicture() {
+            return picture;
+        }
+
+        public void setPicture(String picture) {
+            this.picture = picture;
+        }
+
         public String getDistance() {
             return distance;
         }
@@ -164,6 +176,14 @@ public class Fragment3Model implements Serializable {
             this.pictureStr = pictureStr;
         }
 
+        public int getOrderSum() {
+            return orderSum;
+        }
+
+        public void setOrderSum(int orderSum) {
+            this.orderSum = orderSum;
+        }
+
         public List<StoreServiceListBean> getStore_service_list() {
             return store_service_list;
         }
@@ -174,14 +194,13 @@ public class Fragment3Model implements Serializable {
 
         public static class StoreServiceListBean {
             /**
-             * id : 1023
-             * yStoreServiceId : 692341585785913344
-             * yStoreId : 692341585785913344
-             * yServiceId : 692341585785913344
+             * id : 1024
+             * yStoreServiceId : 692341585785913345
+             * yStoreId : 692341585785913333
              * yState : 1
              * lineupSum : 10
              * isSheet : 0
-             * yStateValue : 维修
+             * yStateValue : 洗车
              * sPrice : 100.0
              * pictureStr : /static/img/20200528151327.png||/static/img/20200528151327.png
              */
@@ -189,7 +208,6 @@ public class Fragment3Model implements Serializable {
             private String id;
             private String yStoreServiceId;
             private String yStoreId;
-            private String yServiceId;
             private int yState;
             private int lineupSum;
             private int isSheet;
@@ -219,14 +237,6 @@ public class Fragment3Model implements Serializable {
 
             public void setYStoreId(String yStoreId) {
                 this.yStoreId = yStoreId;
-            }
-
-            public String getYServiceId() {
-                return yServiceId;
-            }
-
-            public void setYServiceId(String yServiceId) {
-                this.yServiceId = yServiceId;
             }
 
             public int getYState() {

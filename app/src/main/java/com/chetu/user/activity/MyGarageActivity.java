@@ -214,17 +214,20 @@ public class MyGarageActivity extends BaseActivity {
                             holder.getView(R.id.linearLayout1).setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    Intent resultIntent = new Intent();
-                                    Bundle bundle = new Bundle();
-                                    bundle.putString("carname", model.getBrandInfo().getGroupName()
-                                            + "-" + model.getBrandInfo().getSeriesName());
-                                    bundle.putString("carnum", model.getSNumber());
-                                    bundle.putString("cardetail", model.getBrandInfo().getSName());
-                                    bundle.putString("car_id", model.getYUserSedanId());
-                                    bundle.putString("carlogo", model.getSLogo());
-                                    resultIntent.putExtras(bundle);
-                                    MyGarageActivity.this.setResult(RESULT_OK, resultIntent);
-                                    finish();
+                                    if (type == 10010){
+                                        Intent resultIntent = new Intent();
+                                        Bundle bundle = new Bundle();
+                                        bundle.putString("carname", model.getBrandInfo().getGroupName()
+                                                + "-" + model.getBrandInfo().getSeriesName());
+                                        bundle.putString("carnum", model.getSNumber());
+                                        bundle.putString("cardetail", model.getBrandInfo().getSName());
+                                        bundle.putString("car_id", model.getYUserSedanId());
+                                        bundle.putString("carlogo", model.getSLogo());
+                                        resultIntent.putExtras(bundle);
+                                        MyGarageActivity.this.setResult(RESULT_OK, resultIntent);
+                                        finish();
+                                    }
+
                                 }
                             });
 

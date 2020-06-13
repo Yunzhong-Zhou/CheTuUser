@@ -209,6 +209,17 @@ public class Fragment4 extends BaseFragment {
                 localUserInfo.setPhoneNumber(response.getUser_info().getUserPhone());
                 textView4.setText(localUserInfo.getPhonenumber());
 
+                //车辆信息
+                if (response.getUser_info().getUser_sedan_info().getId() != null){
+                    textView2.setText(response.getUser_info().getUser_sedan_info().getBrandInfo().getGroupName() + "-" +
+                            response.getUser_info().getUser_sedan_info().getBrandInfo().getSeriesName());
+                    textView6.setText(response.getUser_info().getUser_sedan_info().getCompTime()+"天");//保养
+                    textView7.setText(response.getUser_info().getUser_sedan_info().getCompTime()+"天");//交强险
+                    textView8.setText(response.getUser_info().getUser_sedan_info().getMaintIime()+"天");//商业险
+                    textView9.setText(response.getUser_info().getUser_sedan_info().getAnnualTime()+"天");//保养
+                }
+
+
 
             }
         });
