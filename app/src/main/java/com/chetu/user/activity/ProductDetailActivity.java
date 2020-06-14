@@ -8,12 +8,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.chetu.user.R;
 import com.chetu.user.adapter.ImageAdapter;
 import com.chetu.user.base.BaseActivity;
+import com.chetu.user.model.PingJiaModel;
 import com.chetu.user.model.ProductDetailModel;
 import com.chetu.user.net.URLs;
 import com.chetu.user.okhttp.CallBackUtil;
@@ -54,9 +56,10 @@ public class ProductDetailActivity extends BaseActivity {
     ProductDetailModel model;
     String y_goods_id = "";
 
+    int page = 0;
     RecyclerView recyclerView;
-    List<ProductDetailModel.SpecificListBean> list = new ArrayList<>();
-    CommonAdapter<ProductDetailModel.SpecificListBean> mAdapter;
+    List<PingJiaModel.ListBean> list = new ArrayList<>();
+    CommonAdapter<PingJiaModel.ListBean> mAdapter;
     LinearLayoutManager mLinearLayoutManager;
     HeaderAndFooterWrapper mHeaderAndFooterWrapper;
 
@@ -86,7 +89,7 @@ public class ProductDetailActivity extends BaseActivity {
     List<Integer> selects = new ArrayList<>();
     int g_num = 1;
     long allmoney = 0;
-    String y_goods_specific_id = "", s_value = "",y_store_id="",y_store_service_id="0";
+    String y_goods_specific_id = "", s_value = "", y_store_id = "", y_store_service_id = "0";
 
 
     @Override
@@ -98,7 +101,7 @@ public class ProductDetailActivity extends BaseActivity {
     @Override
     protected void initView() {
         //刷新
-        setSpringViewMore(false);//不需要加载更多
+        setSpringViewMore(true);//不需要加载更多
         springView.setListener(new SpringView.OnFreshListener() {
             @Override
             public void onRefresh() {
@@ -106,10 +109,18 @@ public class ProductDetailActivity extends BaseActivity {
                 params.put("y_goods_id", y_goods_id);
                 params.put("u_token", localUserInfo.getToken());
                 Request(params);
+
             }
 
             @Override
             public void onLoadmore() {
+                page++;
+                Map<String, String> params = new HashMap<>();
+                params.put("y_goods_id", y_goods_id);
+                params.put("y_store_id", y_store_id);
+                params.put("page", page + "");
+//                params.put("u_token", localUserInfo.getToken());
+                RequestPingJiaMore(params);
             }
         });
 
@@ -140,44 +151,18 @@ public class ProductDetailActivity extends BaseActivity {
         headerView2 = View.inflate(ProductDetailActivity.this, R.layout.head_productdetail2, null);
         head2_ll_add = headerView2.findViewById(R.id.head2_ll_add);
 
-        //列表
+        //评论列表
         recyclerView = findViewByID_My(R.id.recyclerView);
         mLinearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(mLinearLayoutManager);
         //添加头部必须先设置Adapter
-        mAdapter = new CommonAdapter<ProductDetailModel.SpecificListBean>
+        mAdapter = new CommonAdapter<PingJiaModel.ListBean>
                 (ProductDetailActivity.this, R.layout.item_productdetail, list) {
             @Override
-            protected void convert(ViewHolder holder, ProductDetailModel.SpecificListBean model, int position) {
-                //用户评论
-                TextView pinglun = holder.getView(R.id.pinglun);
-                pinglun.setText("用户评论（" + list.size() + "）");
-                if (position == 2)
-                    pinglun.setVisibility(View.VISIBLE);
-                else
-                    pinglun.setVisibility(View.GONE);
-
-                //横向图片
-                RecyclerView rv = holder.getView(R.id.rv);
-                LinearLayoutManager llm1 = new LinearLayoutManager(ProductDetailActivity.this);
-                llm1.setOrientation(LinearLayoutManager.HORIZONTAL);// 设置 recyclerview 布局方式为横向布局
-                rv.setLayoutManager(llm1);
-                CommonAdapter<String> ca = new CommonAdapter<String>
-                        (ProductDetailActivity.this, R.layout.item_img_80_60, images) {
-                    @Override
-                    protected void convert(ViewHolder holder, String model, int position) {
-                        ImageView iv = holder.getView(R.id.iv);
-                        Glide.with(ProductDetailActivity.this).load(model)
-//                            .centerCrop()
-//                            .apply(RequestOptions.bitmapTransform(new RoundedCorners(10)))
-//                            .placeholder(R.mipmap.headimg)//加载站位图
-//                            .error(R.mipmap.headimg)//加载失败
-                                .into(iv);//加载图片
-                    }
-                };
-                rv.setAdapter(ca);
+            protected void convert(ViewHolder holder, PingJiaModel.ListBean model, int position) {
             }
         };
+
         mHeaderAndFooterWrapper = new HeaderAndFooterWrapper(mAdapter);
         mHeaderAndFooterWrapper.addHeaderView(headerView1);
         mHeaderAndFooterWrapper.addHeaderView(headerView2);
@@ -188,6 +173,7 @@ public class ProductDetailActivity extends BaseActivity {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
+                MyLogger.i("》》》》》》" + mLinearLayoutManager.findFirstVisibleItemPosition());
                 if (mLinearLayoutManager.findFirstVisibleItemPosition() == 0) {
                     //头部一
                     type = 1;
@@ -220,8 +206,15 @@ public class ProductDetailActivity extends BaseActivity {
         params.put("y_goods_id", y_goods_id);
         params.put("u_token", localUserInfo.getToken());
         Request(params);
+
+
     }
 
+    /**
+     * 获取详情数据
+     *
+     * @param params
+     */
     private void Request(Map<String, String> params) {
         OkhttpUtil.okHttpPost(URLs.ProductDetail, params, headerMap, new CallBackUtil<ProductDetailModel>() {
             @Override
@@ -239,7 +232,7 @@ public class ProductDetailActivity extends BaseActivity {
             @Override
             public void onResponse(ProductDetailModel response) {
                 model = response;
-                hideProgress();
+//                hideProgress();
                 showContentPage();
 
                 y_store_id = response.getInfo().getYStoreId();
@@ -366,11 +359,129 @@ public class ProductDetailActivity extends BaseActivity {
                 /**
                  * 第三页-评论
                  */
-                for (String s : images) {
-                    list.add(new ProductDetailModel.SpecificListBean());
-                }
+                Map<String, String> params = new HashMap<>();
+                params.put("y_goods_id", y_goods_id);
+                params.put("y_store_id", y_store_id);
+                params.put("page", page + "");
+//                params.put("u_token", localUserInfo.getToken());
+                RequestPingJia(params);
+            }
+        });
+    }
+
+    /**
+     * 获取评价
+     *
+     * @param params
+     */
+    private void RequestPingJia(Map<String, String> params) {
+        OkhttpUtil.okHttpPost(URLs.PingJiaList, params, headerMap, new CallBackUtil<PingJiaModel>() {
+            @Override
+            public PingJiaModel onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+                hideProgress();
+//                myToast(err);
+            }
+
+            @Override
+            public void onResponse(PingJiaModel response) {
+                hideProgress();
+                list = response.getList();
+
                 tv_pinglun.setText("用户评论（" + list.size() + "）");
-                mAdapter.notifyDataSetChanged();
+
+
+                mAdapter = new CommonAdapter<PingJiaModel.ListBean>
+                        (ProductDetailActivity.this, R.layout.item_productdetail, list) {
+                    @Override
+                    protected void convert(ViewHolder holder, PingJiaModel.ListBean model, int position) {
+                        //用户评论
+                        TextView pinglun = holder.getView(R.id.pinglun);
+                        pinglun.setText("用户评论（" + list.size() + "）");
+                        if (position == 2)
+                            pinglun.setVisibility(View.VISIBLE);
+                        else
+                            pinglun.setVisibility(View.GONE);
+
+                        //信息
+                        holder.setText(R.id.tv_name, model.getY_user().getUserName());
+                        holder.setText(R.id.tv_time, model.getCreateDate());
+                        holder.setText(R.id.tv_content, model.getYMsg());
+                        RatingBar ratingbar = holder.getView(R.id.ratingbar);
+                        ratingbar.setRating(Float.valueOf(model.getStarC()));
+                        ImageView iv = holder.getView(R.id.iv);
+                        Glide.with(ProductDetailActivity.this).load(model)
+                                .centerCrop()
+                                .placeholder(R.mipmap.loading)//加载站位图
+                                .error(R.mipmap.zanwutupian)//加载失败
+                                .into(iv);
+
+                        //横向图片
+                        RecyclerView rv = holder.getView(R.id.rv);
+                        LinearLayoutManager llm1 = new LinearLayoutManager(ProductDetailActivity.this);
+                        llm1.setOrientation(LinearLayoutManager.HORIZONTAL);// 设置 recyclerview 布局方式为横向布局
+                        rv.setLayoutManager(llm1);
+                        CommonAdapter<String> ca = new CommonAdapter<String>
+                                (ProductDetailActivity.this, R.layout.item_img_80_60, images) {
+                            @Override
+                            protected void convert(ViewHolder holder, String model, int position) {
+                                ImageView iv = holder.getView(R.id.iv);
+                                Glide.with(ProductDetailActivity.this).load(model)
+//                            .centerCrop()
+//                            .apply(RequestOptions.bitmapTransform(new RoundedCorners(10)))
+                                        .placeholder(R.mipmap.loading)//加载站位图
+                                        .error(R.mipmap.zanwutupian)//加载失败
+                                        .into(iv);//加载图片
+                            }
+                        };
+                        rv.setAdapter(ca);
+                    }
+                };
+                mHeaderAndFooterWrapper = new HeaderAndFooterWrapper(mAdapter);
+                mHeaderAndFooterWrapper.addHeaderView(headerView1);
+                mHeaderAndFooterWrapper.addHeaderView(headerView2);
+                recyclerView.setAdapter(mHeaderAndFooterWrapper);
+//                mAdapter.notifyDataSetChanged();
+            }
+        });
+    }
+
+
+    /**
+     * 获取评价=更多
+     *
+     * @param params
+     */
+    private void RequestPingJiaMore(Map<String, String> params) {
+        OkhttpUtil.okHttpPost(URLs.PingJiaList, params, headerMap, new CallBackUtil<PingJiaModel>() {
+            @Override
+            public PingJiaModel onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+                hideProgress();
+                myToast(err);
+                page--;
+            }
+
+            @Override
+            public void onResponse(PingJiaModel response) {
+                hideProgress();
+                List<PingJiaModel.ListBean> list1 = new ArrayList<>();
+                list1 = response.getList();
+                if (list1.size() == 0) {
+                    page--;
+                    myToast(getString(R.string.app_nomore));
+                } else {
+                    list.addAll(list1);
+                    mAdapter.notifyDataSetChanged();
+                }
             }
         });
     }
@@ -435,14 +546,14 @@ public class ProductDetailActivity extends BaseActivity {
             case R.id.textView_goumai:
                 if (match()) {
                     HashMap<String, String> params = new HashMap<>();
-                    params.put("u_token",localUserInfo.getToken());
-                    params.put("y_store_id",y_store_id);
-                    params.put("y_store_service_id",y_store_service_id);
-                    params.put("y_goods_id",y_goods_id);
-                    params.put("is_service","3");//1为服务  2为服务下边的商品 3为独立商品
-                    params.put("g_num",g_num+"");
-                    params.put("y_goods_specific_id",y_goods_specific_id);
-                    params.put("s_value",s_value);
+                    params.put("u_token", localUserInfo.getToken());
+                    params.put("y_store_id", y_store_id);
+                    params.put("y_store_service_id", y_store_service_id);
+                    params.put("y_goods_id", y_goods_id);
+                    params.put("is_service", "3");//1为服务  2为服务下边的商品 3为独立商品
+                    params.put("g_num", g_num + "");
+                    params.put("y_goods_specific_id", y_goods_specific_id);
+                    params.put("s_value", s_value);
                     RequestAdd(params);
                 }
                 break;
@@ -451,6 +562,7 @@ public class ProductDetailActivity extends BaseActivity {
                 break;
         }
     }
+
     /**
      * 下单
      *
@@ -483,6 +595,7 @@ public class ProductDetailActivity extends BaseActivity {
             }
         });
     }
+
     /**
      * 显示规格弹窗
      */

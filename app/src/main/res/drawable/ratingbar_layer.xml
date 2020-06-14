@@ -6,4 +6,5 @@
     <item
         android:id="@android:id/progress"
         android:drawable="@mipmap/rating_on" />
+
 </layer-list>

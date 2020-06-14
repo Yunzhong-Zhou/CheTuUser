@@ -61,6 +61,10 @@ public class URLs {
      */
     public static final String ADDShop = HOST+"/api/v1/public/user_cart_add";
     /**
+     * 评价列表
+     */
+    public static final String PingJiaList = HOST+"/api/v1/public/get_goods_eval_list";
+    /**
      * *********************************首页*****************************************
      */
     public static final String Fragment1 = HOST+"/api/v1/public/get_store_list";
