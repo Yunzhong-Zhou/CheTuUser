@@ -77,11 +77,44 @@
             android:layout_weight="1" />
 
     </LinearLayout>
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/viewPager"
+
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"/>
+        android:layout_weight="1">
+
+        <com.chetu.user.view.LoadingLayout
+            android:id="@+id/loading_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.liaoinstan.springview.widget.SpringView
+                android:id="@+id/springView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/yuanjiao_10_baise_bottom" />
+
+            </com.liaoinstan.springview.widget.SpringView>
+        </com.chetu.user.view.LoadingLayout>
+
+        <TextView
+            android:id="@+id/tv_pinglun"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/yuanjiao_10_baise_top"
+            android:drawableRight="@mipmap/ic_next_black"
+            android:padding="13dp"
+            android:text="用户评论（0）"
+            android:textColor="@color/black3"
+            android:textSize="14sp"
+            android:visibility="gone" />
+    </FrameLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -127,12 +160,12 @@
 
         <TextView
             android:id="@+id/textView_goumai"
+            android:onClick="onClick"
             android:layout_width="110dp"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:background="@drawable/yuanjiao_5_lanse"
             android:gravity="center"
-            android:onClick="onClick"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:text="立即购买"

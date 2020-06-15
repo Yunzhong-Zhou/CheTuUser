@@ -3,10 +3,9 @@ package com.chetu.user.activity;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
@@ -22,10 +21,9 @@ import com.chetu.user.net.URLs;
 import com.chetu.user.okhttp.CallBackUtil;
 import com.chetu.user.okhttp.OkhttpUtil;
 import com.chetu.user.popupwindow.PhotoShowDialog;
+import com.chetu.user.utils.CommonUtil;
 import com.chetu.user.utils.MyLogger;
-import com.chetu.user.view.LoadingLayout;
-import com.chetu.user.view.MyDefaultFooter;
-import com.chetu.user.view.MyDefaultHeader;
+import com.chetu.user.view.TopSmoothScroller;
 import com.cy.cyflowlayoutlibrary.FlowLayout;
 import com.cy.cyflowlayoutlibrary.FlowLayoutAdapter;
 import com.cy.dialog.BaseDialog;
@@ -36,16 +34,17 @@ import com.youth.banner.listener.OnBannerListener;
 import com.youth.banner.listener.OnPageChangeListener;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
+import com.zhy.adapter.recyclerview.wrapper.HeaderAndFooterWrapper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.PagerAdapter;
-import androidx.viewpager.widget.ViewPager;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -53,48 +52,37 @@ import okhttp3.Response;
  * Created by zyz on 2020/6/10.
  * 商品详情
  */
-public class ProductDetailActivity extends BaseActivity {
+public class ProductDetailActivity_1 extends BaseActivity {
     ProductDetailModel model;
     String y_goods_id = "";
 
-    TextView textView_num, textView_moeny;
+    int page = 0;
+    RecyclerView recyclerView;
+    List<PingJiaModel.ListBean> list = new ArrayList<>();
+    CommonAdapter<PingJiaModel.ListBean> mAdapter;
+    LinearLayoutManager mLinearLayoutManager;
+    HeaderAndFooterWrapper mHeaderAndFooterWrapper;
+
+    TextView tv_pinglun, textView_num, textView_moeny;
+
     int type = 1;
     TextView textView1, textView2, textView3;
 
-    ViewPager viewPager;
-    ArrayList<View> pageViews;
-    //页面一
-    int page = 0;
-    View View1;
+    //头部一
+    View headerView1;
     Banner banner;
     TextView banner_indicator;
     ArrayList<String> images = new ArrayList<>();
-    TextView head1_tv1, head1_tv2, head1_tv3, head1_tv4, head1_tv5, head1_pinglun;
-
-    LoadingLayout loading_layout1;
-    SpringView springView1;
-
-    RecyclerView view1_rv;
-    List<PingJiaModel.ListBean> list_view1 = new ArrayList<>();//保留前2条数据 list1 = list.subList(0, 2);
-    CommonAdapter<PingJiaModel.ListBean> mAdapter_view1;
-
+    TextView head1_tv1, head1_tv2, head1_tv3, head1_tv4, head1_tv5;
     ImageView iv_xihuan;
     boolean isShouChange = false;
     String y_user_collection_id = "";
 
-    //页面二
-    View View2;
+    //头部二
+    View headerView2;
     LinearLayout head2_ll_add;
-    WebView webView;
 
-    //页面三
-    View View3;
-    TextView head3_pinglun;
-    RecyclerView view3_rv;
-    List<PingJiaModel.ListBean> list_view3 = new ArrayList<>();
-    CommonAdapter<PingJiaModel.ListBean> mAdapter_view3;
-    LoadingLayout loading_layout3;
-    SpringView springView3;
+
     //规格
     CommonAdapter<ProductDetailModel.SpecificListBeanX> adapter;
     FlowLayoutAdapter<String> flowLayoutAdapter;
@@ -107,88 +95,16 @@ public class ProductDetailActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_productdetail);
+        setContentView(R.layout.activity_productdetail_1);
     }
 
     @Override
     protected void initView() {
-        textView1 = findViewByID_My(R.id.textView1);
-        textView2 = findViewByID_My(R.id.textView2);
-        textView3 = findViewByID_My(R.id.textView3);
-        textView_num = findViewByID_My(R.id.textView_num);
-        textView_moeny = findViewByID_My(R.id.textView_moeny);
-
-        /**
-         * 布局1
-         */
-        View1 = View.inflate(ProductDetailActivity.this, R.layout.view_productdetail1, null);
-        banner = View1.findViewById(R.id.banner);
-        banner_indicator = View1.findViewById(R.id.banner_indicator);
-
-        head1_tv1 = View1.findViewById(R.id.head1_tv1);
-        head1_tv3 = View1.findViewById(R.id.head1_tv3);
-        head1_tv4 = View1.findViewById(R.id.head1_tv4);
-        head1_tv5 = View1.findViewById(R.id.head1_tv5);
-
-        iv_xihuan = View1.findViewById(R.id.iv_xihuan);
-
-        head1_tv2 = View1.findViewById(R.id.head1_tv2);
-        head1_tv2.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);//中划线
-        head1_tv2.getPaint().setAntiAlias(true); //去掉锯齿
-
-        //评论列表
-        head1_pinglun = View1.findViewById(R.id.head1_pinglun);
-        view1_rv = View1.findViewById(R.id.view1_rv);
-        view1_rv.setLayoutManager(new LinearLayoutManager(this));
-
         //刷新
-        loading_layout1 = View1.findViewById(R.id.loading_layout1);
-        springView1 = View1.findViewById(R.id.springView1);
-        springView1.setHeader(new MyDefaultHeader(this));
-        springView1.setFooter(new MyDefaultFooter(this));
-
-        springView1.setEnableFooter(false);//不需要加载更多
-        springView1.setListener(new SpringView.OnFreshListener() {
+        setSpringViewMore(true);//不需要加载更多
+        springView.setListener(new SpringView.OnFreshListener() {
             @Override
             public void onRefresh() {
-                page = 1;
-                Map<String, String> params = new HashMap<>();
-                params.put("y_goods_id", y_goods_id);
-                params.put("u_token", localUserInfo.getToken());
-                Request(params);
-
-            }
-
-            @Override
-            public void onLoadmore() {
-            }
-        });
-
-        /**
-         * 布局2
-         */
-        View2 = View.inflate(ProductDetailActivity.this, R.layout.view_productdetail2, null);
-//        head2_ll_add = View2.findViewById(R.id.head2_ll_add);
-        webView = View2.findViewById(R.id.webView);
-
-        /**
-         * 布局3
-         */
-        View3 = View.inflate(ProductDetailActivity.this, R.layout.view_productdetail3, null);
-        head3_pinglun = View3.findViewById(R.id.head3_pinglun);
-        view3_rv = View3.findViewById(R.id.view3_rv);
-        view3_rv.setLayoutManager(new LinearLayoutManager(this));
-
-        loading_layout3 = View3.findViewById(R.id.loading_layout3);
-        springView3 = View3.findViewById(R.id.springView3);
-        springView3.setHeader(new MyDefaultHeader(this));
-        springView3.setFooter(new MyDefaultFooter(this));
-
-        springView3.setEnableFooter(true);//不需要加载更多
-        springView3.setListener(new SpringView.OnFreshListener() {
-            @Override
-            public void onRefresh() {
-                page = 1;
                 Map<String, String> params = new HashMap<>();
                 params.put("y_goods_id", y_goods_id);
                 params.put("u_token", localUserInfo.getToken());
@@ -207,63 +123,72 @@ public class ProductDetailActivity extends BaseActivity {
                 RequestPingJiaMore(params);
             }
         });
-        /**
-         * viewPager
-         */
-        pageViews = new ArrayList<View>();
-        pageViews.add(View1);
-        pageViews.add(View2);
-        pageViews.add(View3);
-        viewPager = findViewByID_My(R.id.viewPager);
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
+        textView1 = findViewByID_My(R.id.textView1);
+        textView2 = findViewByID_My(R.id.textView2);
+        textView3 = findViewByID_My(R.id.textView3);
+        tv_pinglun = findViewByID_My(R.id.tv_pinglun);
+        textView_num = findViewByID_My(R.id.textView_num);
+        textView_moeny = findViewByID_My(R.id.textView_moeny);
+
+        //头部布局1
+        headerView1 = View.inflate(ProductDetailActivity_1.this, R.layout.view_productdetail1, null);
+        banner = headerView1.findViewById(R.id.banner);
+        banner_indicator = headerView1.findViewById(R.id.banner_indicator);
+
+        head1_tv1 = headerView1.findViewById(R.id.head1_tv1);
+        head1_tv3 = headerView1.findViewById(R.id.head1_tv3);
+        head1_tv4 = headerView1.findViewById(R.id.head1_tv4);
+        head1_tv5 = headerView1.findViewById(R.id.head1_tv5);
+
+        iv_xihuan = headerView1.findViewById(R.id.iv_xihuan);
+
+        head1_tv2 = headerView1.findViewById(R.id.head1_tv2);
+        head1_tv2.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);//中划线
+        head1_tv2.getPaint().setAntiAlias(true); //去掉锯齿
+
+        //头部布局2
+        headerView2 = View.inflate(ProductDetailActivity_1.this, R.layout.view_productdetail2, null);
+        head2_ll_add = headerView2.findViewById(R.id.head2_ll_add);
+
+        //评论列表
+        recyclerView = findViewByID_My(R.id.recyclerView);
+        mLinearLayoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(mLinearLayoutManager);
+        //添加头部必须先设置Adapter
+        mAdapter = new CommonAdapter<PingJiaModel.ListBean>
+                (ProductDetailActivity_1.this, R.layout.item_productdetail, list) {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-//                tv_currentPosition.setText(position + 1 + "/" + imgList.size());
-                type = position + 1;
-                changeUI();
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
-        //数据适配器
-        PagerAdapter mPagerAdapter = new PagerAdapter() {
-
-            @Override
-            //获取当前窗体界面数
-            public int getCount() {
-                // TODO Auto-generated method stub
-                return pageViews.size();
-            }
-
-            @Override
-            //判断是否由对象生成界面
-            public boolean isViewFromObject(View view, Object object) {
-                return view == object;
-            }
-
-            //使从ViewGroup中移出当前View
-            public void destroyItem(ViewGroup container, int position, Object object) {
-                container.removeView(pageViews.get(position));
-            }
-
-            //返回一个对象，这个对象表明了PagerAdapter适配器选择哪个对象放在当前的ViewPager中
-            public View instantiateItem(ViewGroup container, int position) {
-                container.addView(pageViews.get(position));
-                return pageViews.get(position);
+            protected void convert(ViewHolder holder, PingJiaModel.ListBean model, int position) {
             }
         };
-        //绑定适配器
-        viewPager.setAdapter(mPagerAdapter);
-        //设置viewPager的初始界面为第一个界面
-        viewPager.setCurrentItem(0);
+
+        mHeaderAndFooterWrapper = new HeaderAndFooterWrapper(mAdapter);
+        mHeaderAndFooterWrapper.addHeaderView(headerView1);
+        mHeaderAndFooterWrapper.addHeaderView(headerView2);
+        recyclerView.setAdapter(mHeaderAndFooterWrapper);
+
+        //滑动监听
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                MyLogger.i("》》》》》》" + mLinearLayoutManager.findFirstVisibleItemPosition());
+                if (mLinearLayoutManager.findFirstVisibleItemPosition() == 0) {
+                    //头部一
+                    type = 1;
+                    changeUI();
+                } else if (mLinearLayoutManager.findFirstVisibleItemPosition() == 1) {
+                    //头部二
+                    type = 2;
+                    changeUI();
+                } else if (mLinearLayoutManager.findFirstVisibleItemPosition() >= 2) {
+                    //列表
+                    type = 3;
+                    changeUI();
+                }
+            }
+        });
     }
 
     @Override
@@ -277,7 +202,6 @@ public class ProductDetailActivity extends BaseActivity {
         super.requestServer();
 //        this.showLoadingPage();
         showProgress(true, getString(R.string.app_loading));
-        page = 1;
         Map<String, String> params = new HashMap<>();
         params.put("y_goods_id", y_goods_id);
         params.put("u_token", localUserInfo.getToken());
@@ -301,12 +225,6 @@ public class ProductDetailActivity extends BaseActivity {
             @Override
             public void onFailure(Call call, Exception e, String err) {
                 hideProgress();
-                if (springView1 != null) {
-                    springView1.onFinishFreshAndLoad();
-                }
-                if (springView3 != null) {
-                    springView3.onFinishFreshAndLoad();
-                }
                 showEmptyPage();
 //                myToast(err);
             }
@@ -315,7 +233,7 @@ public class ProductDetailActivity extends BaseActivity {
             public void onResponse(ProductDetailModel response) {
                 model = response;
 //                hideProgress();
-//                showContentPage();
+                showContentPage();
 
                 y_store_id = response.getInfo().getYStoreId();
                 y_store_service_id = "0";//商品不用填,下单服务需要填
@@ -326,12 +244,32 @@ public class ProductDetailActivity extends BaseActivity {
                 g_num = 1;
                 textView_num.setText(g_num + "");
 
+                /*for (int i = 0; i < model.getSpecific_list().size(); i++) {
+                    y_goods_specific_id += model.getSpecific_list().get(i).getYGoodsSpecificId() + ",";
+                    String[] strArr = model.getSpecific_list().get(i).getSValue().split("\\|\\|");
+                    for (int j = 0; j < strArr.length; j++) {
+                        if (j == 0) {
+                            s_value += strArr[j] + ",";
+                        }
+                    }
+                }
+                y_goods_specific_id = y_goods_specific_id.substring(0, y_goods_specific_id.length() - 1);
+                s_value = s_value.substring(0, s_value.length() - 1);
+                MyLogger.i(">>>>>>" + y_goods_specific_id +">>>>>>"+ s_value);*/
 
                 /**
                  * 第一页-商品信息
                  */
                 //banner
                 images.clear();
+                /*images.add("http://file02.16sucai.com/d/file/2014/0825/dcb017b51479798f6c60b7b9bd340728.jpg");
+                images.add("http://file02.16sucai.com/d/file/2014/0825/dcb017b51479798f6c60b7b9bd340728.jpg");
+                images.add("http://file02.16sucai.com/d/file/2014/0825/dcb017b51479798f6c60b7b9bd340728.jpg");
+                images.add("http://file02.16sucai.com/d/file/2014/0825/dcb017b51479798f6c60b7b9bd340728.jpg");
+                images.add("http://file02.16sucai.com/d/file/2014/0825/dcb017b51479798f6c60b7b9bd340728.jpg");
+                images.add("http://file02.16sucai.com/d/file/2014/0825/dcb017b51479798f6c60b7b9bd340728.jpg");
+                images.add("http://file02.16sucai.com/d/file/2014/0825/dcb017b51479798f6c60b7b9bd340728.jpg");
+                images.add("http://file02.16sucai.com/d/file/2014/0825/dcb017b51479798f6c60b7b9bd340728.jpg");*/
                 for (String s : response.getInfo().getImgArr()) {
                     images.add(URLs.IMGHOST + s);
                 }
@@ -343,7 +281,7 @@ public class ProductDetailActivity extends BaseActivity {
                 //TODO 父控件滑动时，banner切换会获取焦点，然后自动全部显示。不想让banner获取焦点可以给父控件加上：
                 // android:focusable="true"
                 // android:focusableInTouchMode="true"
-                banner.addBannerLifecycleObserver(ProductDetailActivity.this)//添加生命周期观察者
+                banner.addBannerLifecycleObserver(ProductDetailActivity_1.this)//添加生命周期观察者
                         .setDelayTime(3000)//设置轮播时间
 //                .setBannerGalleryEffect(10, 10)//为banner添加画廊效果
                         .setAdapter(new ImageAdapter(images))
@@ -372,14 +310,14 @@ public class ProductDetailActivity extends BaseActivity {
                         /*ZoomIMGPopupWindow popupwindow = new ZoomIMGPopupWindow(ProductDetailActivity.this,
                                 URLs.IMGHOST + response.getInfo().getStore_step_two().getImg_positive());*/
 //                        ViewPagerPhotoViewActivity.startThisActivity(images, position, ProductDetailActivity.this);
-                        PhotoShowDialog photoShowDialog = new PhotoShowDialog(ProductDetailActivity.this, images, position);
+                        PhotoShowDialog photoShowDialog = new PhotoShowDialog(ProductDetailActivity_1.this, images, position);
                         photoShowDialog.show();
                     }
                 });
                 head1_tv1.setText("¥" + response.getInfo().getGPrice());
                 head1_tv2.setText("¥" + response.getInfo().getOrPrice());
                 head1_tv3.setText(response.getInfo().getGName());
-                head1_tv4.setText(response.getInfo().getGName());
+                head1_tv4.setText(response.getInfo().getGDetails());
                 //是否评论
                 if (response.getCollection_info() != null && !response.getCollection_info().getYUserCollectionId().equals("")) {
                     y_user_collection_id = response.getCollection_info().getYUserCollectionId();
@@ -391,15 +329,32 @@ public class ProductDetailActivity extends BaseActivity {
                     iv_xihuan.setImageResource(R.mipmap.ic_xin_weixuan);
                 }
                 /**
-                 * 第二页-详情
+                 * 第二页-详情图片
                  */
-                WebSettings wSet = webView.getSettings();
-                wSet.setJavaScriptEnabled(true);
-                //适配屏幕
-                StringBuilder sb = new StringBuilder();
-                sb.append(getHtmlData(response.getInfo().getGDetails()));
-                //加载HTML代码
-                webView.loadDataWithBaseURL(null, sb.toString(), "text/html", "UTF-8", null);
+                head2_ll_add.removeAllViews();
+                for (String s : images) {
+                    //添加数据
+                    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                            ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    LayoutInflater inflater = LayoutInflater.from(ProductDetailActivity_1.this);
+                    View view = inflater.inflate(R.layout.item_img_add, null, false);
+                    view.setLayoutParams(lp);
+
+                    ImageView imageView = view.findViewById(R.id.imageView);
+                    ViewGroup.LayoutParams layoutParams = imageView.getLayoutParams();
+                    lp.width = CommonUtil.getScreenWidth(ProductDetailActivity_1.this);//屏幕宽度
+                    lp.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+                    imageView.setLayoutParams(lp);
+                    imageView.setMaxWidth(lp.width);
+                    imageView.setMaxHeight(lp.height);
+                    Glide.with(ProductDetailActivity_1.this).load(URLs.IMGHOST + s)
+                            .centerCrop()
+//                            .apply(RequestOptions.bitmapTransform(new RoundedCorners(10)))
+//                            .placeholder(R.mipmap.headimg)//加载站位图
+//                            .error(R.mipmap.headimg)//加载失败
+                            .into(imageView);//加载图片
+                    head2_ll_add.addView(view);
+                }
 
                 /**
                  * 第三页-评论
@@ -429,138 +384,68 @@ public class ProductDetailActivity extends BaseActivity {
             @Override
             public void onFailure(Call call, Exception e, String err) {
                 hideProgress();
-                if (springView1 != null) {
-                    springView1.onFinishFreshAndLoad();
-                }
-                if (springView3 != null) {
-                    springView3.onFinishFreshAndLoad();
-                }
 //                myToast(err);
             }
 
             @Override
             public void onResponse(PingJiaModel response) {
                 hideProgress();
-                if (springView1 != null) {
-                    springView1.onFinishFreshAndLoad();
-                }
-                if (springView3 != null) {
-                    springView3.onFinishFreshAndLoad();
-                }
+                list = response.getList();
 
-                if (response.getList().size() != 0) {
-                    loading_layout1.showContent();
-                    loading_layout3.showContent();
+                tv_pinglun.setText("用户评论（" + list.size() + "）");
 
-                    if (response.getList().size() >= 2) {
-                        list_view1 = response.getList().subList(0, 1);//保留前2条数据
-                    } else {
-                        list_view1 = response.getList();
+
+                mAdapter = new CommonAdapter<PingJiaModel.ListBean>
+                        (ProductDetailActivity_1.this, R.layout.item_productdetail, list) {
+                    @Override
+                    protected void convert(ViewHolder holder, PingJiaModel.ListBean model, int position) {
+                        //用户评论
+                        TextView pinglun = holder.getView(R.id.pinglun);
+                        pinglun.setText("用户评论（" + list.size() + "）");
+                        if (position == 2)
+                            pinglun.setVisibility(View.VISIBLE);
+                        else
+                            pinglun.setVisibility(View.GONE);
+
+                        //信息
+                        holder.setText(R.id.tv_name, model.getY_user().getUserName());
+                        holder.setText(R.id.tv_time, model.getCreateDate());
+                        holder.setText(R.id.tv_content, model.getYMsg());
+                        RatingBar ratingbar = holder.getView(R.id.ratingbar);
+                        ratingbar.setRating(Float.valueOf(model.getStarC()));
+                        ImageView iv = holder.getView(R.id.iv);
+                        Glide.with(ProductDetailActivity_1.this).load(model)
+                                .centerCrop()
+                                .placeholder(R.mipmap.loading)//加载站位图
+                                .error(R.mipmap.zanwutupian)//加载失败
+                                .into(iv);
+
+                        //横向图片
+                        RecyclerView rv = holder.getView(R.id.rv);
+                        LinearLayoutManager llm1 = new LinearLayoutManager(ProductDetailActivity_1.this);
+                        llm1.setOrientation(LinearLayoutManager.HORIZONTAL);// 设置 recyclerview 布局方式为横向布局
+                        rv.setLayoutManager(llm1);
+                        CommonAdapter<String> ca = new CommonAdapter<String>
+                                (ProductDetailActivity_1.this, R.layout.item_img_80_60, images) {
+                            @Override
+                            protected void convert(ViewHolder holder, String model, int position) {
+                                ImageView iv = holder.getView(R.id.iv);
+                                Glide.with(ProductDetailActivity_1.this).load(model)
+//                            .centerCrop()
+//                            .apply(RequestOptions.bitmapTransform(new RoundedCorners(10)))
+                                        .placeholder(R.mipmap.loading)//加载站位图
+                                        .error(R.mipmap.zanwutupian)//加载失败
+                                        .into(iv);//加载图片
+                            }
+                        };
+                        rv.setAdapter(ca);
                     }
-
-                    list_view3 = response.getList();
-                    head1_pinglun.setText("用户评论（" + list_view3.size() + "）");
-                    head3_pinglun.setText("用户评论（" + list_view3.size() + "）");
-
-                    mAdapter_view1 = new CommonAdapter<PingJiaModel.ListBean>
-                            (ProductDetailActivity.this, R.layout.item_productdetail, list_view1) {
-                        @Override
-                        protected void convert(ViewHolder holder, PingJiaModel.ListBean model, int position) {
-                        /*//用户评论
-                        TextView pinglun = holder.getView(R.id.pinglun);
-                        pinglun.setText("用户评论（" + list.size() + "）");
-                        if (position == 2)
-                            pinglun.setVisibility(View.VISIBLE);
-                        else
-                            pinglun.setVisibility(View.GONE);*/
-
-                            //信息
-                            holder.setText(R.id.tv_name, model.getY_user().getUserName());
-                            holder.setText(R.id.tv_time, model.getCreateDate());
-                            holder.setText(R.id.tv_content, model.getYMsg());
-                            RatingBar ratingbar = holder.getView(R.id.ratingbar);
-                            ratingbar.setRating(Float.valueOf(model.getStarC()));
-                            ImageView iv = holder.getView(R.id.iv);
-                            Glide.with(ProductDetailActivity.this).load(model)
-                                    .centerCrop()
-                                    .placeholder(R.mipmap.loading)//加载站位图
-                                    .error(R.mipmap.zanwutupian)//加载失败
-                                    .into(iv);
-
-                            //横向图片
-                            RecyclerView rv = holder.getView(R.id.rv);
-                            LinearLayoutManager llm1 = new LinearLayoutManager(ProductDetailActivity.this);
-                            llm1.setOrientation(LinearLayoutManager.HORIZONTAL);// 设置 recyclerview 布局方式为横向布局
-                            rv.setLayoutManager(llm1);
-                            CommonAdapter<String> ca = new CommonAdapter<String>
-                                    (ProductDetailActivity.this, R.layout.item_img_80_60, images) {
-                                @Override
-                                protected void convert(ViewHolder holder, String model, int position) {
-                                    ImageView iv = holder.getView(R.id.iv);
-                                    Glide.with(ProductDetailActivity.this).load(model)
-//                            .centerCrop()
-//                            .apply(RequestOptions.bitmapTransform(new RoundedCorners(10)))
-                                            .placeholder(R.mipmap.loading)//加载站位图
-                                            .error(R.mipmap.zanwutupian)//加载失败
-                                            .into(iv);//加载图片
-                                }
-                            };
-                            rv.setAdapter(ca);
-                        }
-                    };
-                    view1_rv.setAdapter(mAdapter_view1);
-
-                    mAdapter_view3 = new CommonAdapter<PingJiaModel.ListBean>
-                            (ProductDetailActivity.this, R.layout.item_productdetail, list_view3) {
-                        @Override
-                        protected void convert(ViewHolder holder, PingJiaModel.ListBean model, int position) {
-                        /*//用户评论
-                        TextView pinglun = holder.getView(R.id.pinglun);
-                        pinglun.setText("用户评论（" + list.size() + "）");
-                        if (position == 2)
-                            pinglun.setVisibility(View.VISIBLE);
-                        else
-                            pinglun.setVisibility(View.GONE);*/
-
-                            //信息
-                            holder.setText(R.id.tv_name, model.getY_user().getUserName());
-                            holder.setText(R.id.tv_time, model.getCreateDate());
-                            holder.setText(R.id.tv_content, model.getYMsg());
-                            RatingBar ratingbar = holder.getView(R.id.ratingbar);
-                            ratingbar.setRating(Float.valueOf(model.getStarC()));
-                            ImageView iv = holder.getView(R.id.iv);
-                            Glide.with(ProductDetailActivity.this).load(model)
-                                    .centerCrop()
-                                    .placeholder(R.mipmap.loading)//加载站位图
-                                    .error(R.mipmap.zanwutupian)//加载失败
-                                    .into(iv);
-
-                            //横向图片
-                            RecyclerView rv = holder.getView(R.id.rv);
-                            LinearLayoutManager llm1 = new LinearLayoutManager(ProductDetailActivity.this);
-                            llm1.setOrientation(LinearLayoutManager.HORIZONTAL);// 设置 recyclerview 布局方式为横向布局
-                            rv.setLayoutManager(llm1);
-                            CommonAdapter<String> ca = new CommonAdapter<String>
-                                    (ProductDetailActivity.this, R.layout.item_img_80_60, images) {
-                                @Override
-                                protected void convert(ViewHolder holder, String model, int position) {
-                                    ImageView iv = holder.getView(R.id.iv);
-                                    Glide.with(ProductDetailActivity.this).load(model)
-//                            .centerCrop()
-//                            .apply(RequestOptions.bitmapTransform(new RoundedCorners(10)))
-                                            .placeholder(R.mipmap.loading)//加载站位图
-                                            .error(R.mipmap.zanwutupian)//加载失败
-                                            .into(iv);//加载图片
-                                }
-                            };
-                            rv.setAdapter(ca);
-                        }
-                    };
-                    view3_rv.setAdapter(mAdapter_view3);
-                } else {
-                    loading_layout1.showEmpty();
-                    loading_layout3.showEmpty();
-                }
+                };
+                mHeaderAndFooterWrapper = new HeaderAndFooterWrapper(mAdapter);
+                mHeaderAndFooterWrapper.addHeaderView(headerView1);
+                mHeaderAndFooterWrapper.addHeaderView(headerView2);
+                recyclerView.setAdapter(mHeaderAndFooterWrapper);
+//                mAdapter.notifyDataSetChanged();
             }
         });
     }
@@ -580,35 +465,22 @@ public class ProductDetailActivity extends BaseActivity {
 
             @Override
             public void onFailure(Call call, Exception e, String err) {
-//                hideProgress();
-                if (springView1 != null) {
-                    springView1.onFinishFreshAndLoad();
-                }
-                if (springView3 != null) {
-                    springView3.onFinishFreshAndLoad();
-                }
+                hideProgress();
                 myToast(err);
                 page--;
             }
 
             @Override
             public void onResponse(PingJiaModel response) {
-//                hideProgress();
-                if (springView1 != null) {
-                    springView1.onFinishFreshAndLoad();
-                }
-                if (springView3 != null) {
-                    springView3.onFinishFreshAndLoad();
-                }
-
+                hideProgress();
                 List<PingJiaModel.ListBean> list1 = new ArrayList<>();
                 list1 = response.getList();
                 if (list1.size() == 0) {
                     page--;
                     myToast(getString(R.string.app_nomore));
                 } else {
-                    list_view3.addAll(list1);
-                    mAdapter_view3.notifyDataSetChanged();
+                    list.addAll(list1);
+                    mAdapter.notifyDataSetChanged();
                 }
             }
         });
@@ -645,22 +517,27 @@ public class ProductDetailActivity extends BaseActivity {
                 break;
             case R.id.textView1:
                 //商品
-                viewPager.setCurrentItem(0);
+                LinearSmoothScroller s1 = new TopSmoothScroller(ProductDetailActivity_1.this);
+                s1.setTargetPosition(0);
+                mLinearLayoutManager.startSmoothScroll(s1);
 
                 type = 1;
                 changeUI();
                 break;
             case R.id.textView2:
                 //详情
-                viewPager.setCurrentItem(1);
+                LinearSmoothScroller s2 = new TopSmoothScroller(ProductDetailActivity_1.this);
+                s2.setTargetPosition(1);
+                mLinearLayoutManager.startSmoothScroll(s2);
 
                 type = 2;
                 changeUI();
                 break;
             case R.id.textView3:
-            case R.id.head1_pinglun:
                 //评价
-                viewPager.setCurrentItem(2);
+                LinearSmoothScroller s3 = new TopSmoothScroller(ProductDetailActivity_1.this);
+                s3.setTargetPosition(2);
+                mLinearLayoutManager.startSmoothScroll(s3);
 
                 type = 3;
                 changeUI();
@@ -723,7 +600,7 @@ public class ProductDetailActivity extends BaseActivity {
      * 显示规格弹窗
      */
     private void showDialog() {
-        BaseDialog dialog1 = new BaseDialog(ProductDetailActivity.this);
+        BaseDialog dialog1 = new BaseDialog(ProductDetailActivity_1.this);
         dialog1.contentView(R.layout.dialog_productdetail)
                 .layoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.WRAP_CONTENT))
@@ -738,7 +615,7 @@ public class ProductDetailActivity extends BaseActivity {
         TextView tv_money = dialog1.findViewById(R.id.tv_money);
         tv_money.setText("¥" + model.getInfo().getGPrice());
         ImageView iv = dialog1.findViewById(R.id.iv);
-        Glide.with(ProductDetailActivity.this).load(URLs.IMGHOST + model.getInfo().getGImg())
+        Glide.with(ProductDetailActivity_1.this).load(URLs.IMGHOST + model.getInfo().getGImg())
                 .centerCrop()
 //                            .apply(RequestOptions.bitmapTransform(new RoundedCorners(10)))
                 .placeholder(R.mipmap.loading)//加载站位图
@@ -754,9 +631,9 @@ public class ProductDetailActivity extends BaseActivity {
         selects.clear();
         for (ProductDetailModel.SpecificListBeanX bean : model.getSpecific_list()) {
             selects.add(0);
-            rv.setLayoutManager(new LinearLayoutManager(ProductDetailActivity.this));
+            rv.setLayoutManager(new LinearLayoutManager(ProductDetailActivity_1.this));
             adapter = new CommonAdapter<ProductDetailModel.SpecificListBeanX>
-                    (ProductDetailActivity.this, R.layout.item_dialog_guige, model.getSpecific_list()) {
+                    (ProductDetailActivity_1.this, R.layout.item_dialog_guige, model.getSpecific_list()) {
                 @Override
                 protected void convert(ViewHolder holder, ProductDetailModel.SpecificListBeanX model, int position) {
                     holder.setText(R.id.tv, model.getSName());
@@ -847,25 +724,21 @@ public class ProductDetailActivity extends BaseActivity {
     private void addView(TextView tv_tab, TextView tv_money, int num) {
         y_goods_specific_id = "";
         s_value = "";
-        double tabMoney = 0;
         for (int i = 0; i < model.getSpecific_list().size(); i++) {
 //            String[] strArr = model.getSpecific_list().get(i).getSValue().split("\\|\\|");
-            for (int j = 0; j < model.getSpecific_list().get(i).getSpecific_List().size(); j++) {
+            for (int j = 0; j <  model.getSpecific_list().get(i).getSpecific_List().size(); j++) {
                 if (selects.get(i) == j) {
                     s_value += model.getSpecific_list().get(i).getSpecific_List().get(j).getPName() + "||";
                     y_goods_specific_id += model.getSpecific_list().get(i).getSpecific_List().get(j).getYGoodsSpecificId() + "||";
-                    tabMoney += model.getSpecific_list().get(i).getSpecific_List().get(j).getSPrice();
                 }
             }
         }
-
-
-        y_goods_specific_id = y_goods_specific_id.substring(0, y_goods_specific_id.length() - 2);
+        y_goods_specific_id = y_goods_specific_id.substring(0, y_goods_specific_id.length() - 1);
         MyLogger.i(">>>>>>" + y_goods_specific_id);
-        s_value = s_value.substring(0, s_value.length() - 2);
+        s_value = s_value.substring(0, s_value.length() - 1);
         tv_tab.setText(s_value);
 
-        allmoney = (long) ((model.getInfo().getGPrice() +tabMoney) * num);
+        allmoney = (long) (model.getInfo().getGPrice() * num);
         tv_money.setText("" + allmoney);
 
         textView_moeny.setText("¥" + allmoney);
@@ -888,16 +761,19 @@ public class ProductDetailActivity extends BaseActivity {
                 textView1.setTextColor(getResources().getColor(R.color.blue));
                 textView2.setTextColor(getResources().getColor(R.color.black2));
                 textView3.setTextColor(getResources().getColor(R.color.black2));
+                tv_pinglun.setVisibility(View.GONE);
                 break;
             case 2:
                 textView1.setTextColor(getResources().getColor(R.color.black2));
                 textView2.setTextColor(getResources().getColor(R.color.blue));
                 textView3.setTextColor(getResources().getColor(R.color.black2));
+                tv_pinglun.setVisibility(View.GONE);
                 break;
             case 3:
                 textView1.setTextColor(getResources().getColor(R.color.black2));
                 textView2.setTextColor(getResources().getColor(R.color.black2));
                 textView3.setTextColor(getResources().getColor(R.color.blue));
+                tv_pinglun.setVisibility(View.VISIBLE);
                 break;
         }
     }
@@ -953,14 +829,4 @@ public class ProductDetailActivity extends BaseActivity {
         titleView.setVisibility(View.GONE);
     }
 
-    /**
-     * 富文本适配
-     */
-    private String getHtmlData(String bodyHTML) {
-        String head = "<head>"
-                + "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, user-scalable=no\"> "
-                + "<style>img{max-width: 100%; width:auto; height:auto;}</style>"
-                + "</head>";
-        return "<html>" + head + "<body>" + bodyHTML + "</body></html>";
-    }
 }
