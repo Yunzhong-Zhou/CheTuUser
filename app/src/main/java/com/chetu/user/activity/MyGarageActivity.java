@@ -214,7 +214,7 @@ public class MyGarageActivity extends BaseActivity {
                             holder.getView(R.id.linearLayout1).setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    if (type == 10010){
+                                    if (type == 10001){
                                         Intent resultIntent = new Intent();
                                         Bundle bundle = new Bundle();
                                         bundle.putString("carname", model.getBrandInfo().getGroupName()

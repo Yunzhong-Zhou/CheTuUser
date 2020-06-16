@@ -116,6 +116,9 @@
         <activity
             android:name=".activity.ProductDetailActivity"
             android:label="商品详情" />
+        <activity
+            android:name=".activity.SelectStoreActivity"
+            android:label="选择门店" />
         <!--养车-->
         <activity
             android:name=".activity.DraftActivity"

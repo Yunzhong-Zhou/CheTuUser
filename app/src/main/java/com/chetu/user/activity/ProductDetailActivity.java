@@ -1,5 +1,6 @@
 package com.chetu.user.activity;
 
+import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -55,7 +56,7 @@ import okhttp3.Response;
  */
 public class ProductDetailActivity extends BaseActivity {
     ProductDetailModel model;
-    String y_goods_id = "";
+    String y_goods_id = "", y_store_id = "", store_name = "";
 
     TextView textView_num, textView_moeny;
     int type = 1;
@@ -101,9 +102,8 @@ public class ProductDetailActivity extends BaseActivity {
     List<Integer> selects = new ArrayList<>();
     int g_num = 1;
     long allmoney = 0;
-    String y_goods_specific_id = "", s_value = "", y_store_id = "", y_store_service_id = "0";
-
-
+    String goods_specific_idstr = "", s_value = "", y_store_id1 = "", y_store_service_id = "0", is_install = "1";
+    TextView tv_mendian;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -193,7 +193,6 @@ public class ProductDetailActivity extends BaseActivity {
                 params.put("y_goods_id", y_goods_id);
                 params.put("u_token", localUserInfo.getToken());
                 Request(params);
-
             }
 
             @Override
@@ -670,13 +669,14 @@ public class ProductDetailActivity extends BaseActivity {
                 if (match()) {
                     HashMap<String, String> params = new HashMap<>();
                     params.put("u_token", localUserInfo.getToken());
-                    params.put("y_store_id", y_store_id);
+                    params.put("y_store_id", y_store_id1);
                     params.put("y_store_service_id", y_store_service_id);
                     params.put("y_goods_id", y_goods_id);
                     params.put("is_service", "3");//1为服务  2为服务下边的商品 3为独立商品
                     params.put("g_num", g_num + "");
-                    params.put("y_goods_specific_id", y_goods_specific_id);
+                    params.put("goods_specific_idstr", goods_specific_idstr);
                     params.put("s_value", s_value);
+                    params.put("is_install", is_install);
                     RequestAdd(params);
                 }
                 break;
@@ -746,9 +746,39 @@ public class ProductDetailActivity extends BaseActivity {
                 .into(iv);//加载图片
 
         TextView tv_tab = dialog1.findViewById(R.id.tv_tab);
-        TextView tv_mendian = dialog1.findViewById(R.id.tv_mendian);
+
+        tv_mendian = dialog1.findViewById(R.id.tv_mendian);
+        tv_mendian.setText(store_name);
+
         TextView tv_num = dialog1.findViewById(R.id.tv_num);
         tv_num.setText(g_num + "");
+
+        TextView tv_anzhuang = dialog1.findViewById(R.id.tv_anzhuang);
+        TextView tv_buanzhuang = dialog1.findViewById(R.id.tv_buanzhuang);
+        tv_anzhuang.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //安装
+                is_install = "1";
+                tv_anzhuang.setTextColor(getResources().getColor(R.color.blue));
+                tv_anzhuang.setBackgroundResource(R.drawable.yuanjiaobiankuang_15_lanse);
+                tv_buanzhuang.setTextColor(getResources().getColor(R.color.black));
+                tv_buanzhuang.setBackgroundResource(R.drawable.yuanjiao_15_huise1);
+
+            }
+        });
+        tv_buanzhuang.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //不安装
+                is_install = "2";
+                tv_anzhuang.setTextColor(getResources().getColor(R.color.black));
+                tv_anzhuang.setBackgroundResource(R.drawable.yuanjiao_15_huise1);
+                tv_buanzhuang.setTextColor(getResources().getColor(R.color.blue));
+                tv_buanzhuang.setBackgroundResource(R.drawable.yuanjiaobiankuang_15_lanse);
+
+            }
+        });
 
         RecyclerView rv = dialog1.findViewById(R.id.rv);
         selects.clear();
@@ -825,7 +855,11 @@ public class ProductDetailActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 //门店
-
+                Intent intent1 = new Intent(ProductDetailActivity.this, SelectStoreActivity.class);
+                Bundle bundle1 = new Bundle();
+                bundle1.putInt("type", 10001);
+                intent1.putExtras(bundle1);
+                startActivityForResult(intent1, 10001, bundle1);
             }
         });
         dialog1.findViewById(R.id.tv_confirm).setOnClickListener(new View.OnClickListener() {
@@ -845,7 +879,7 @@ public class ProductDetailActivity extends BaseActivity {
      * @param num
      */
     private void addView(TextView tv_tab, TextView tv_money, int num) {
-        y_goods_specific_id = "";
+        goods_specific_idstr = "";
         s_value = "";
         double tabMoney = 0;
         for (int i = 0; i < model.getSpecific_list().size(); i++) {
@@ -853,19 +887,18 @@ public class ProductDetailActivity extends BaseActivity {
             for (int j = 0; j < model.getSpecific_list().get(i).getSpecific_List().size(); j++) {
                 if (selects.get(i) == j) {
                     s_value += model.getSpecific_list().get(i).getSpecific_List().get(j).getPName() + "||";
-                    y_goods_specific_id += model.getSpecific_list().get(i).getSpecific_List().get(j).getYGoodsSpecificId() + "||";
+                    goods_specific_idstr += model.getSpecific_list().get(i).getSpecific_List().get(j).getYGoodsSpecificId() + "||";
                     tabMoney += model.getSpecific_list().get(i).getSpecific_List().get(j).getSPrice();
                 }
             }
         }
 
-
-        y_goods_specific_id = y_goods_specific_id.substring(0, y_goods_specific_id.length() - 2);
-        MyLogger.i(">>>>>>" + y_goods_specific_id);
+        goods_specific_idstr = goods_specific_idstr.substring(0, goods_specific_idstr.length() - 2);
+        MyLogger.i(">>>>>>" + goods_specific_idstr);
         s_value = s_value.substring(0, s_value.length() - 2);
         tv_tab.setText(s_value);
 
-        allmoney = (long) ((model.getInfo().getGPrice() +tabMoney) * num);
+        allmoney = (long) ((model.getInfo().getGPrice() + tabMoney) * num);
         tv_money.setText("" + allmoney);
 
         textView_moeny.setText("¥" + allmoney);
@@ -874,9 +907,16 @@ public class ProductDetailActivity extends BaseActivity {
     }
 
     private boolean match() {
-        if (y_goods_specific_id.equals("")) {
+        if (goods_specific_idstr.equals("")) {
             myToast("请先选择规格");
             return false;
+        }
+
+        if (is_install.equals("1")) {
+            if (y_store_id1.equals("")) {
+                myToast("请选择门店");
+                return false;
+            }
         }
 
         return true;
@@ -951,6 +991,24 @@ public class ProductDetailActivity extends BaseActivity {
     @Override
     protected void updateView() {
         titleView.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case 10001:
+                //选择门店
+                if (data != null) {
+                    Bundle bundle1 = data.getExtras();
+                    y_store_id1 = bundle1.getString("y_store_id1");
+//                    tv_carname.setText(bundle1.getString("store_name"));
+                    store_name = bundle1.getString("store_name");
+                    tv_mendian.setText(store_name);
+                }
+                break;
+        }
+
     }
 
     /**
