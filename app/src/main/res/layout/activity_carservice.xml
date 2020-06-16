@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ScrollView
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="26dp"
@@ -24,11 +24,11 @@
                 <!--车辆基本信息-->
                 <LinearLayout
                     android:id="@+id/ll_car"
-                    android:onClick="onClick"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/yuanjiao_10_baise"
                     android:gravity="center_vertical"
+                    android:onClick="onClick"
                     android:orientation="horizontal"
                     android:paddingTop="30dp">
 
@@ -93,13 +93,11 @@
                         </LinearLayout>
                     </LinearLayout>
 
-
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="10dp"
                         android:src="@mipmap/ic_next_black" />
-
 
                 </LinearLayout>
                 <!--发布询价-->
@@ -374,10 +372,15 @@
                         android:textColor="@color/black"
                         android:textSize="14sp" />
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recyclerView2"
+                    <com.chetu.user.view.LoadingLayout
+                        android:id="@+id/loading_layout"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content">
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recyclerView2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+                    </com.chetu.user.view.LoadingLayout>
                 </LinearLayout>
 
                 <View
@@ -441,7 +444,7 @@
 
             </LinearLayout>
 
-        </ScrollView>
+        </androidx.core.widget.NestedScrollView>
 
         <!--tab-->
         <com.lijiankun24.shadowlayout.ShadowLayout

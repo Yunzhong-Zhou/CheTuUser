@@ -37,7 +37,7 @@
             android:paddingTop="6dp"
             android:paddingRight="16dp"
             android:paddingBottom="6dp"
-            android:text="足迹"
+            android:text="商品"
             android:textColor="@color/white"
             android:textSize="13sp" />
 
@@ -52,7 +52,7 @@
             android:paddingTop="6dp"
             android:paddingRight="16dp"
             android:paddingBottom="6dp"
-            android:text="收藏"
+            android:text="门店"
             android:textColor="@color/black"
             android:textSize="13sp" />
 
@@ -69,7 +69,7 @@
             android:layout_height="match_parent">
 
             <!--吸顶效果-->
-            <com.donkingliang.groupedadapter.widget.StickyHeaderLayout
+            <!--<com.donkingliang.groupedadapter.widget.StickyHeaderLayout
                 android:id="@+id/sticky_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -79,8 +79,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:paddingBottom="10dp" />
-            </com.donkingliang.groupedadapter.widget.StickyHeaderLayout>
 
+            </com.donkingliang.groupedadapter.widget.StickyHeaderLayout>-->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="10dp" />
         </com.liaoinstan.springview.widget.SpringView>
     </com.chetu.user.view.LoadingLayout>
 

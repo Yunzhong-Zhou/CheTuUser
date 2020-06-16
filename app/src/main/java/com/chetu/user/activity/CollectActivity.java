@@ -32,9 +32,9 @@ import okhttp3.Response;
 
 /**
  * Created by zyz on 2020/5/26.
- * 足迹
+ * 收藏
  */
-public class FootprintActivity extends BaseActivity {
+public class CollectActivity extends BaseActivity {
     int type = 1, page1 = 0, page2 = 0, category = 1;//1为商品  2为商家
     TextView textView1, textView2;
     private RecyclerView recyclerView;
@@ -165,7 +165,7 @@ public class FootprintActivity extends BaseActivity {
      * @param params
      */
     private void Request1(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.Footprint, params, headerMap, new CallBackUtil<FootprintModel>() {
+        OkhttpUtil.okHttpPost(URLs.Collect, params, headerMap, new CallBackUtil<FootprintModel>() {
             @Override
             public FootprintModel onParseResponse(Call call, Response response) {
                 return null;
@@ -185,11 +185,11 @@ public class FootprintActivity extends BaseActivity {
                 if (list1.size() > 0) {
                     showContentPage();
                     mAdapter1 = new CommonAdapter<FootprintModel.ListBean>
-                            (FootprintActivity.this, R.layout.item_footprint, list1) {
+                            (CollectActivity.this, R.layout.item_footprint, list1) {
                         @Override
                         protected void convert(ViewHolder holder, FootprintModel.ListBean model, int position) {
                             ImageView imageView1 = holder.getView(R.id.imageView1);
-                            Glide.with(FootprintActivity.this)
+                            Glide.with(CollectActivity.this)
                                     .load(URLs.IMGHOST + model.getGoods_info().getGImg())
                                     .centerCrop()
                                     .apply(RequestOptions.bitmapTransform(new RoundedCorners(10)))
@@ -205,6 +205,7 @@ public class FootprintActivity extends BaseActivity {
                             String day = strArr2[1] + "月" + strArr2[2] + "日";//提取月日
 //                            String time = strArr1[1];//时间
 //                            holder.setText(R.id.tv_time, day + "\n" + time);
+
                             holder.setText(R.id.tv_time, day);
                             holder.setText(R.id.tv_content, model.getGoods_info().getGName());
                             holder.setText(R.id.tv_moeny, "¥" + model.getGoods_info().getGPrice());
@@ -251,7 +252,7 @@ public class FootprintActivity extends BaseActivity {
     }
 
     private void RequestMore1(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.Footprint, params, headerMap, new CallBackUtil<FootprintModel>() {
+        OkhttpUtil.okHttpPost(URLs.Collect, params, headerMap, new CallBackUtil<FootprintModel>() {
             @Override
             public FootprintModel onParseResponse(Call call, Response response) {
                 return null;
@@ -286,7 +287,7 @@ public class FootprintActivity extends BaseActivity {
      * @param params
      */
     private void Request2(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.Footprint, params, headerMap, new CallBackUtil<CollectModel>() {
+        OkhttpUtil.okHttpPost(URLs.Collect, params, headerMap, new CallBackUtil<CollectModel>() {
             @Override
             public CollectModel onParseResponse(Call call, Response response) {
                 return null;
@@ -306,11 +307,11 @@ public class FootprintActivity extends BaseActivity {
                 if (list2.size() > 0) {
                     showContentPage();
                     mAdapter2 = new CommonAdapter<CollectModel.ListBean>
-                            (FootprintActivity.this, R.layout.item_collect, list2) {
+                            (CollectActivity.this, R.layout.item_collect, list2) {
                         @Override
                         protected void convert(ViewHolder holder, CollectModel.ListBean model, int position) {
                             ImageView imageView1 = holder.getView(R.id.imageView1);
-                            Glide.with(FootprintActivity.this)
+                            Glide.with(CollectActivity.this)
                                     .load(URLs.IMGHOST + model.getStore_info().getPicture())
                                     .centerCrop()
                                     .apply(RequestOptions.bitmapTransform(new RoundedCorners(10)))
@@ -344,7 +345,7 @@ public class FootprintActivity extends BaseActivity {
     }
 
     private void RequestMore2(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.Footprint, params, headerMap, new CallBackUtil<CollectModel>() {
+        OkhttpUtil.okHttpPost(URLs.Collect, params, headerMap, new CallBackUtil<CollectModel>() {
             @Override
             public CollectModel onParseResponse(Call call, Response response) {
                 return null;

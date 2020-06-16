@@ -171,7 +171,7 @@ public class URLs {
     /**
      * 收藏列表
      */
-    public static final String Collect = HOST+"/api/v1/user/user_notepad_list_page";
+    public static final String Collect = HOST+"/api/v1/user/user_collection_list_page";
     /**
      * 待接车
      */

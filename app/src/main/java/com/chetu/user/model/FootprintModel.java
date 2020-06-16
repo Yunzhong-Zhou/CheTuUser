@@ -7,136 +7,165 @@ import java.util.List;
  * Created by zyz on 2020/5/26.
  */
 public class FootprintModel implements Serializable {
-    private List<ListBeanX> list;
+    private List<ListBean> list;
 
-    public List<ListBeanX> getList() {
+    public List<ListBean> getList() {
         return list;
     }
 
-    public void setList(List<ListBeanX> list) {
+    public void setList(List<ListBean> list) {
         this.list = list;
     }
 
-    public static class ListBeanX {
+    public static class ListBean {
         /**
-         * year : 2020
-         * list : [{"id":"1051","yUserNotepadId":"718797004750192640","userId":"714547022807433216","yTitle":"好尴尬好好干","yTag":"","vMoney":"5655","iMsg":"还有哈哈哈那就好","year":"2020","createDate":"2020-06-06 12:02:40"},{"id":"1050","yUserNotepadId":"718769677488095232","userId":"714547022807433216","year":"2020","createDate":"2020-06-06 10:14:05"}]
+         * yUserFootprintId : 722569085925195776
+         * userId : 714547022807433216
+         * yId : 692341585785913346
+         * category : 1
+         * createDate : 2020-06-16 21:51:34
+         * goods_info : {"yGoodsId":"692341585785913346","gName":"汽车行车记录仪降压线通用小米70迈360专用停车监控车载usb电源线","gPrice":1000,"orPrice":0,"gDetails":"","imgStr":"/upload/pro.png||/upload/pro.png","imgArr":["/upload/pro.png","/upload/pro.png"],"gImg":"/upload/pro.png"}
          */
 
-        private String year;
-        private List<ListBeanX.ListBean> list;
+        private String yUserFootprintId;
+        private String userId;
+        private String yId;
+        private int category;
+        private String createDate;
+        private GoodsInfoBean goods_info;
 
-        public String getYear() {
-            return year;
+        public String getYUserFootprintId() {
+            return yUserFootprintId;
         }
 
-        public void setYear(String year) {
-            this.year = year;
+        public void setYUserFootprintId(String yUserFootprintId) {
+            this.yUserFootprintId = yUserFootprintId;
         }
 
-        public List<ListBeanX.ListBean> getList() {
-            return list;
+        public String getUserId() {
+            return userId;
         }
 
-        public void setList(List<ListBeanX.ListBean> list) {
-            this.list = list;
+        public void setUserId(String userId) {
+            this.userId = userId;
         }
 
-        public static class ListBean {
+        public String getYId() {
+            return yId;
+        }
+
+        public void setYId(String yId) {
+            this.yId = yId;
+        }
+
+        public int getCategory() {
+            return category;
+        }
+
+        public void setCategory(int category) {
+            this.category = category;
+        }
+
+        public String getCreateDate() {
+            return createDate;
+        }
+
+        public void setCreateDate(String createDate) {
+            this.createDate = createDate;
+        }
+
+        public GoodsInfoBean getGoods_info() {
+            return goods_info;
+        }
+
+        public void setGoods_info(GoodsInfoBean goods_info) {
+            this.goods_info = goods_info;
+        }
+
+        public static class GoodsInfoBean {
             /**
-             * id : 1051
-             * yUserNotepadId : 718797004750192640
-             * userId : 714547022807433216
-             * yTitle : 好尴尬好好干
-             * yTag :
-             * vMoney : 5655
-             * iMsg : 还有哈哈哈那就好
-             * year : 2020
-             * createDate : 2020-06-06 12:02:40
+             * yGoodsId : 692341585785913346
+             * gName : 汽车行车记录仪降压线通用小米70迈360专用停车监控车载usb电源线
+             * gPrice : 1000.0
+             * orPrice : 0.0
+             * gDetails :
+             * imgStr : /upload/pro.png||/upload/pro.png
+             * imgArr : ["/upload/pro.png","/upload/pro.png"]
+             * gImg : /upload/pro.png
              */
 
-            private String id;
-            private String yUserNotepadId;
-            private String userId;
-            private String yTitle;
-            private String yTag;
-            private String vMoney;
-            private String iMsg;
-            private String year;
-            private String createDate;
+            private String yGoodsId;
+            private String gName;
+            private double gPrice;
+            private double orPrice;
+            private String gDetails;
+            private String imgStr;
+            private String gImg;
+            private List<String> imgArr;
 
-            public String getId() {
-                return id;
+            public String getYGoodsId() {
+                return yGoodsId;
             }
 
-            public void setId(String id) {
-                this.id = id;
+            public void setYGoodsId(String yGoodsId) {
+                this.yGoodsId = yGoodsId;
             }
 
-            public String getYUserNotepadId() {
-                return yUserNotepadId;
+            public String getGName() {
+                return gName;
             }
 
-            public void setYUserNotepadId(String yUserNotepadId) {
-                this.yUserNotepadId = yUserNotepadId;
+            public void setGName(String gName) {
+                this.gName = gName;
             }
 
-            public String getUserId() {
-                return userId;
+            public double getGPrice() {
+                return gPrice;
             }
 
-            public void setUserId(String userId) {
-                this.userId = userId;
+            public void setGPrice(double gPrice) {
+                this.gPrice = gPrice;
             }
 
-            public String getYTitle() {
-                return yTitle;
+            public double getOrPrice() {
+                return orPrice;
             }
 
-            public void setYTitle(String yTitle) {
-                this.yTitle = yTitle;
+            public void setOrPrice(double orPrice) {
+                this.orPrice = orPrice;
             }
 
-            public String getYTag() {
-                return yTag;
+            public String getGDetails() {
+                return gDetails;
             }
 
-            public void setYTag(String yTag) {
-                this.yTag = yTag;
+            public void setGDetails(String gDetails) {
+                this.gDetails = gDetails;
             }
 
-            public String getVMoney() {
-                return vMoney;
+            public String getImgStr() {
+                return imgStr;
             }
 
-            public void setVMoney(String vMoney) {
-                this.vMoney = vMoney;
+            public void setImgStr(String imgStr) {
+                this.imgStr = imgStr;
             }
 
-            public String getIMsg() {
-                return iMsg;
+            public String getGImg() {
+                return gImg;
             }
 
-            public void setIMsg(String iMsg) {
-                this.iMsg = iMsg;
+            public void setGImg(String gImg) {
+                this.gImg = gImg;
             }
 
-            public String getYear() {
-                return year;
+            public List<String> getImgArr() {
+                return imgArr;
             }
 
-            public void setYear(String year) {
-                this.year = year;
-            }
-
-            public String getCreateDate() {
-                return createDate;
-            }
-
-            public void setCreateDate(String createDate) {
-                this.createDate = createDate;
+            public void setImgArr(List<String> imgArr) {
+                this.imgArr = imgArr;
             }
         }
     }
-
 }

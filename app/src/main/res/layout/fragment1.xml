@@ -127,6 +127,7 @@
                     android:paddingTop="8dp">
                     <!--发布需求-->
                     <RelativeLayout
+                        android:id="@+id/rl_add"
                         android:layout_width="match_parent"
                         android:layout_height="80dp"
                         android:layout_marginLeft="10dp"

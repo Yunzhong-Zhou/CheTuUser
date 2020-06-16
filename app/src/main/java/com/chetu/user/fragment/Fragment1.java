@@ -20,6 +20,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.chetu.user.R;
 import com.chetu.user.activity.CarIllegalActivity;
 import com.chetu.user.activity.CarInsuranceActivity;
+import com.chetu.user.activity.CarServiceActivity;
 import com.chetu.user.activity.ProductListActivity;
 import com.chetu.user.activity.SearchActivity;
 import com.chetu.user.activity.StoreDetailActivity;
@@ -72,7 +73,7 @@ public class Fragment1 extends BaseFragment {
     int page1 = 0, page2 = 0;
 
     ImageView tv_scan;
-    RelativeLayout rl_xiaoxi;
+    RelativeLayout rl_xiaoxi,rl_add;
     TextView tv_xiaoxinum, tv_more1, tv_more2;
 
     RecyclerView recyclerView1;
@@ -185,6 +186,9 @@ public class Fragment1 extends BaseFragment {
         rl_search.setOnClickListener(this);
         et_search = findViewByID_My(R.id.et_search);
         et_search.setOnClickListener(this);
+
+        rl_add = findViewByID_My(R.id.rl_add);
+        rl_add.setOnClickListener(this);
 
         tv_more1 = findViewByID_My(R.id.tv_more1);
         tv_more1.setOnClickListener(this);
@@ -642,6 +646,10 @@ public class Fragment1 extends BaseFragment {
 
                 break;
 
+            case R.id.rl_add:
+                //发布需求
+                CommonUtil.gotoActivity(getActivity(), CarServiceActivity.class);
+                break;
             case R.id.tv_more1:
                 //更多1
                 showProgress(true, getString(R.string.app_loading4));

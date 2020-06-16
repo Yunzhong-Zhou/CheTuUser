@@ -16,6 +16,7 @@ import com.chetu.user.activity.AddMerchantActivity;
 import com.chetu.user.activity.CarIllegalActivity;
 import com.chetu.user.activity.CarInsuranceActivity;
 import com.chetu.user.activity.CarServiceActivity;
+import com.chetu.user.activity.CollectActivity;
 import com.chetu.user.activity.CouponActivity;
 import com.chetu.user.activity.FootprintActivity;
 import com.chetu.user.activity.IntegralActivity;
@@ -54,7 +55,7 @@ public class Fragment4 extends BaseFragment {
             tv_xiaoxinum;
     LinearLayout linearLayout1, linearLayout2, linearLayout3, linearLayout4, linearLayout5, linearLayout6,
             linearLayout7, linearLayout8, linearLayout9, linearLayout10, linearLayout11, linearLayout12,
-            linearLayout13, linearLayout14, linearLayout15;
+            linearLayout13, linearLayout14, linearLayout15,linearLayout16;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -153,6 +154,7 @@ public class Fragment4 extends BaseFragment {
         linearLayout13 = findViewByID_My(R.id.linearLayout13);
         linearLayout14 = findViewByID_My(R.id.linearLayout14);
         linearLayout15 = findViewByID_My(R.id.linearLayout15);
+        linearLayout16 = findViewByID_My(R.id.linearLayout16);
 
         linearLayout1.setOnClickListener(this);
         linearLayout2.setOnClickListener(this);
@@ -169,6 +171,8 @@ public class Fragment4 extends BaseFragment {
         linearLayout13.setOnClickListener(this);
         linearLayout14.setOnClickListener(this);
         linearLayout15.setOnClickListener(this);
+        linearLayout16.setOnClickListener(this);
+
     }
 
     @Override
@@ -295,6 +299,10 @@ public class Fragment4 extends BaseFragment {
             case R.id.linearLayout11:
                 //足迹
                 CommonUtil.gotoActivity(getActivity(), FootprintActivity.class);
+                break;
+            case R.id.linearLayout16:
+                //我的收藏
+                CommonUtil.gotoActivity(getActivity(), CollectActivity.class);
                 break;
             case R.id.linearLayout12:
                 //我的车库

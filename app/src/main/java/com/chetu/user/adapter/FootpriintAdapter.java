@@ -3,7 +3,7 @@ package com.chetu.user.adapter;
 import android.content.Context;
 
 import com.chetu.user.R;
-import com.chetu.user.model.FootprintModel;
+import com.chetu.user.model.NotebookModel;
 import com.donkingliang.groupedadapter.adapter.GroupedRecyclerViewAdapter;
 import com.donkingliang.groupedadapter.holder.BaseViewHolder;
 
@@ -14,9 +14,9 @@ import java.util.List;
  */
 public class FootpriintAdapter extends GroupedRecyclerViewAdapter {
 
-    protected List<FootprintModel.ListBeanX> mGroups;
+    protected List<NotebookModel.ListBeanX> mGroups;
 
-    public FootpriintAdapter(Context context, List<FootprintModel.ListBeanX> groups) {
+    public FootpriintAdapter(Context context, List<NotebookModel.ListBeanX> groups) {
         super(context);
         mGroups = groups;
     }
@@ -31,7 +31,7 @@ public class FootpriintAdapter extends GroupedRecyclerViewAdapter {
     @Override
     public int getChildrenCount(int groupPosition) {
 //        ArrayList<ChildEntity> children = mGroups.get(groupPosition).getChildren();
-        List<FootprintModel.ListBeanX.ListBean> children = mGroups.get(groupPosition).getList();
+        List<NotebookModel.ListBeanX.ListBean> children = mGroups.get(groupPosition).getList();
         return children == null ? 0 : children.size();
     }
 
@@ -40,7 +40,7 @@ public class FootpriintAdapter extends GroupedRecyclerViewAdapter {
         notifyDataChanged();
     }
 
-    public void setGroups(List<FootprintModel.ListBeanX> groups) {
+    public void setGroups(List<NotebookModel.ListBeanX> groups) {
         mGroups = groups;
         notifyDataChanged();
     }

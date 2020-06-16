@@ -19,137 +19,203 @@ public class CollectModel implements Serializable {
 
     public static class ListBean {
         /**
-         * id : 1017
-         * yStoreId : 692341585785913344
-         * vName : 修改商店测试
-         * review :
-         * keywsr :
-         * address :
-         * longitude : 116.49798
-         * latitude : 39.916485
-         * picture :
-         * distance : 12246.42
-         * phone :
-         * vLevel :  A级
-         * introduce :
+         * yUserCollectionId : 722440283152711680
+         * userId : 714547022807433216
+         * yId : 692341585785913333
+         * category : 2
+         * createDate : 2020-06-16 13:19:45
+         * store_info : {"yStoreId":"692341585785913333","vName":"龙肆商店测试","review":"4.5分","keywsr":"","address":"深圳市南山区","longitude":"116.49798","latitude":"39.916485","picture":"/static/img/20200528151327.png","phone":" 400-2333-1123","vLevel":" A级","introduce":" 门店介绍","charactStr":"/static/img/20200528151327.png||/static/img/20200528151327.png","pictureStr":"/static/img/20200528151327.png||/static/img/20200528151327.png"}
          */
 
-        private String id;
-        private String yStoreId;
-        private String vName;
-        private String review;
-        private String keywsr;
-        private String address;
-        private String longitude;
-        private String latitude;
-        private String picture;
-        private String distance;
-        private String phone;
-        private String vLevel;
-        private String introduce;
+        private String yUserCollectionId;
+        private String userId;
+        private String yId;
+        private int category;
+        private String createDate;
+        private StoreInfoBean store_info;
 
-        public String getId() {
-            return id;
+        public String getYUserCollectionId() {
+            return yUserCollectionId;
         }
 
-        public void setId(String id) {
-            this.id = id;
+        public void setYUserCollectionId(String yUserCollectionId) {
+            this.yUserCollectionId = yUserCollectionId;
         }
 
-        public String getYStoreId() {
-            return yStoreId;
+        public String getUserId() {
+            return userId;
         }
 
-        public void setYStoreId(String yStoreId) {
-            this.yStoreId = yStoreId;
+        public void setUserId(String userId) {
+            this.userId = userId;
         }
 
-        public String getVName() {
-            return vName;
+        public String getYId() {
+            return yId;
         }
 
-        public void setVName(String vName) {
-            this.vName = vName;
+        public void setYId(String yId) {
+            this.yId = yId;
         }
 
-        public String getReview() {
-            return review;
+        public int getCategory() {
+            return category;
         }
 
-        public void setReview(String review) {
-            this.review = review;
+        public void setCategory(int category) {
+            this.category = category;
         }
 
-        public String getKeywsr() {
-            return keywsr;
+        public String getCreateDate() {
+            return createDate;
         }
 
-        public void setKeywsr(String keywsr) {
-            this.keywsr = keywsr;
+        public void setCreateDate(String createDate) {
+            this.createDate = createDate;
         }
 
-        public String getAddress() {
-            return address;
+        public StoreInfoBean getStore_info() {
+            return store_info;
         }
 
-        public void setAddress(String address) {
-            this.address = address;
+        public void setStore_info(StoreInfoBean store_info) {
+            this.store_info = store_info;
         }
 
-        public String getLongitude() {
-            return longitude;
-        }
+        public static class StoreInfoBean {
+            /**
+             * yStoreId : 692341585785913333
+             * vName : 龙肆商店测试
+             * review : 4.5分
+             * keywsr :
+             * address : 深圳市南山区
+             * longitude : 116.49798
+             * latitude : 39.916485
+             * picture : /static/img/20200528151327.png
+             * phone :  400-2333-1123
+             * vLevel :  A级
+             * introduce :  门店介绍
+             * charactStr : /static/img/20200528151327.png||/static/img/20200528151327.png
+             * pictureStr : /static/img/20200528151327.png||/static/img/20200528151327.png
+             */
 
-        public void setLongitude(String longitude) {
-            this.longitude = longitude;
-        }
+            private String yStoreId;
+            private String vName;
+            private String review;
+            private String keywsr;
+            private String address;
+            private String longitude;
+            private String latitude;
+            private String picture;
+            private String phone;
+            private String vLevel;
+            private String introduce;
+            private String charactStr;
+            private String pictureStr;
 
-        public String getLatitude() {
-            return latitude;
-        }
+            public String getYStoreId() {
+                return yStoreId;
+            }
 
-        public void setLatitude(String latitude) {
-            this.latitude = latitude;
-        }
+            public void setYStoreId(String yStoreId) {
+                this.yStoreId = yStoreId;
+            }
 
-        public String getPicture() {
-            return picture;
-        }
+            public String getVName() {
+                return vName;
+            }
 
-        public void setPicture(String picture) {
-            this.picture = picture;
-        }
+            public void setVName(String vName) {
+                this.vName = vName;
+            }
 
-        public String getDistance() {
-            return distance;
-        }
+            public String getReview() {
+                return review;
+            }
 
-        public void setDistance(String distance) {
-            this.distance = distance;
-        }
+            public void setReview(String review) {
+                this.review = review;
+            }
 
-        public String getPhone() {
-            return phone;
-        }
+            public String getKeywsr() {
+                return keywsr;
+            }
 
-        public void setPhone(String phone) {
-            this.phone = phone;
-        }
+            public void setKeywsr(String keywsr) {
+                this.keywsr = keywsr;
+            }
 
-        public String getVLevel() {
-            return vLevel;
-        }
+            public String getAddress() {
+                return address;
+            }
 
-        public void setVLevel(String vLevel) {
-            this.vLevel = vLevel;
-        }
+            public void setAddress(String address) {
+                this.address = address;
+            }
 
-        public String getIntroduce() {
-            return introduce;
-        }
+            public String getLongitude() {
+                return longitude;
+            }
 
-        public void setIntroduce(String introduce) {
-            this.introduce = introduce;
+            public void setLongitude(String longitude) {
+                this.longitude = longitude;
+            }
+
+            public String getLatitude() {
+                return latitude;
+            }
+
+            public void setLatitude(String latitude) {
+                this.latitude = latitude;
+            }
+
+            public String getPicture() {
+                return picture;
+            }
+
+            public void setPicture(String picture) {
+                this.picture = picture;
+            }
+
+            public String getPhone() {
+                return phone;
+            }
+
+            public void setPhone(String phone) {
+                this.phone = phone;
+            }
+
+            public String getVLevel() {
+                return vLevel;
+            }
+
+            public void setVLevel(String vLevel) {
+                this.vLevel = vLevel;
+            }
+
+            public String getIntroduce() {
+                return introduce;
+            }
+
+            public void setIntroduce(String introduce) {
+                this.introduce = introduce;
+            }
+
+            public String getCharactStr() {
+                return charactStr;
+            }
+
+            public void setCharactStr(String charactStr) {
+                this.charactStr = charactStr;
+            }
+
+            public String getPictureStr() {
+                return pictureStr;
+            }
+
+            public void setPictureStr(String pictureStr) {
+                this.pictureStr = pictureStr;
+            }
         }
     }
 }
