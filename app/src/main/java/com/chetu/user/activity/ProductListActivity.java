@@ -127,8 +127,8 @@ public class ProductListActivity extends BaseActivity {
                             Glide.with(ProductListActivity.this).load(URLs.IMGHOST + model.getGImg())
                                     .centerCrop()
                                     .apply(RequestOptions.bitmapTransform(new RoundedCorners(10)))
-//                            .placeholder(R.mipmap.headimg)//加载站位图
-//                            .error(R.mipmap.headimg)//加载失败
+                                    .placeholder(R.mipmap.loading)//加载站位图
+                                    .error(R.mipmap.zanwutupian)//加载失败
                                     .into(imageView);//加载图片
 
                             holder.setText(R.id.textView1, model.getGName());

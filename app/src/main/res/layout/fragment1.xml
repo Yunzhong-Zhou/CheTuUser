@@ -205,12 +205,12 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:layout_centerInParent="true"
                                     android:layout_marginLeft="7dp"
                                     android:background="@drawable/yuanjiaobiankuang_3_huise"
                                     android:paddingLeft="8dp"
                                     android:paddingTop="2dp"
                                     android:paddingRight="8dp"
-                                    android:layout_centerInParent="true"
                                     android:paddingBottom="2dp"
                                     android:text="CarNumber"
                                     android:textColor="@color/black3"
@@ -315,9 +315,12 @@
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/recyclerView1"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="5dp"
+                            android:paddingRight="5dp" />
 
                         <TextView
+                            android:id="@+id/tv_more1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
@@ -356,9 +359,12 @@
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/recyclerView2"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="5dp"
+                            android:paddingRight="5dp" />
 
                         <TextView
+                            android:id="@+id/tv_more2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"

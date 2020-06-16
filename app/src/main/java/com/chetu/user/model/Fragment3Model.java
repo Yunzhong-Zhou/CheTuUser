@@ -53,8 +53,17 @@ public class Fragment3Model implements Serializable {
         private String introduce;
         private String charactStr;
         private String pictureStr;
+        private String slogan;
         private int orderSum;
         private List<StoreServiceListBean> store_service_list;
+
+        public String getSlogan() {
+            return slogan;
+        }
+
+        public void setSlogan(String slogan) {
+            this.slogan = slogan;
+        }
 
         public String getId() {
             return id;

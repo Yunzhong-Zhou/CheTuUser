@@ -15,16 +15,19 @@ import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.chetu.user.R;
 import com.chetu.user.activity.CarIllegalActivity;
 import com.chetu.user.activity.CarInsuranceActivity;
 import com.chetu.user.activity.ProductListActivity;
 import com.chetu.user.activity.SearchActivity;
+import com.chetu.user.activity.StoreDetailActivity;
 import com.chetu.user.adapter.CircleImageAdapter;
 import com.chetu.user.base.BaseFragment;
-import com.chetu.user.model.Fragment1Model;
 import com.chetu.user.model.Fragment1ServiceListModel;
 import com.chetu.user.model.Fragment1TabModel;
+import com.chetu.user.model.Fragment3Model;
 import com.chetu.user.net.URLs;
 import com.chetu.user.okhttp.CallBackUtil;
 import com.chetu.user.okhttp.OkhttpUtil;
@@ -70,14 +73,14 @@ public class Fragment1 extends BaseFragment {
 
     ImageView tv_scan;
     RelativeLayout rl_xiaoxi;
-    TextView tv_xiaoxinum;
+    TextView tv_xiaoxinum, tv_more1, tv_more2;
 
     RecyclerView recyclerView1;
-    List<Fragment1Model.ListBean> list1 = new ArrayList<>();
-    CommonAdapter<Fragment1Model.ListBean> mAdapter1;
+    List<Fragment3Model.ListBean> list1 = new ArrayList<>();
+    CommonAdapter<Fragment3Model.ListBean> mAdapter1;
     RecyclerView recyclerView2;
-    List<Fragment1Model.ListBean> list2 = new ArrayList<>();
-    CommonAdapter<Fragment1Model.ListBean> mAdapter2;
+    List<Fragment3Model.ListBean> list2 = new ArrayList<>();
+    CommonAdapter<Fragment3Model.ListBean> mAdapter2;
 
     RecyclerView rv_tab;
     List<Fragment1TabModel> list_tab = new ArrayList<>();
@@ -144,14 +147,27 @@ public class Fragment1 extends BaseFragment {
                 params2.put("y_parent_id", "0");
                 RequestService(params2, 0);
 
+                //获取附近活动列表数据
                 page1 = 0;
+                Map<String, String> params1 = new HashMap<>();
+                params1.put("service_name", "");
+                params1.put("page", page1 + "");
+                params1.put("longitude", longitude);
+                params1.put("latitude", latitude);
+                params1.put("is_review", "1");
+                params1.put("is_index", "1");
+                RequestList1(params1);
+
+                //获取口碑商家列表
                 page2 = 0;
                 Map<String, String> params = new HashMap<>();
-                params.put("page", page1 + "");
                 params.put("service_name", "");
-                params.put("longitude", longitude);
-                params.put("latitude", latitude);
-                Request(params);
+                params.put("page", page2 + "");
+                params.put("longitude", "");
+                params.put("latitude", "");
+                params.put("is_review", "1");
+                params.put("is_index", "1");
+                RequestList2(params);
             }
 
             @Override
@@ -170,6 +186,11 @@ public class Fragment1 extends BaseFragment {
         et_search = findViewByID_My(R.id.et_search);
         et_search.setOnClickListener(this);
 
+        tv_more1 = findViewByID_My(R.id.tv_more1);
+        tv_more1.setOnClickListener(this);
+        tv_more2 = findViewByID_My(R.id.tv_more2);
+        tv_more2.setOnClickListener(this);
+
         rv_tab = findViewByID_My(R.id.rv_tab);
         rv_tab.setLayoutManager(new GridLayoutManager(getActivity(), 3));
         recyclerView1 = findViewByID_My(R.id.recyclerView1);
@@ -183,8 +204,6 @@ public class Fragment1 extends BaseFragment {
 
     @Override
     protected void initData() {
-
-        requestServer();
         //初始化定位
         mLocationClient = new AMapLocationClient(getActivity());
         AMapLocationClientOption option = new AMapLocationClientOption();
@@ -229,6 +248,17 @@ public class Fragment1 extends BaseFragment {
                         localUserInfo.setCityname(aMapLocation.getCity());
                         tv_addr.setText(aMapLocation.getCity() + "");
 
+
+                        page1 = 0;
+                        Map<String, String> params1 = new HashMap<>();
+                        params1.put("service_name", "");
+                        params1.put("page", page1 + "");
+                        params1.put("longitude", longitude);
+                        params1.put("latitude", latitude);
+                        params1.put("is_review", "1");
+                        params1.put("is_index", "1");
+                        RequestList1(params1);
+
                     } else {
                         //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
                         MyLogger.e("定位失败：", "location Error, ErrCode:"
@@ -245,65 +275,100 @@ public class Fragment1 extends BaseFragment {
         // 在单次定位情况下，定位无论成功与否，都无需调用stopLocation()方法移除请求，定位sdk内部会移除
 
 //        if (localUserInfo.getCityname().equals("")) {
-        mLocationClient.startLocation();
+//        mLocationClient.startLocation();
 //        }
 
+        requestServer();
     }
 
     @Override
     public void requestServer() {
         super.requestServer();
-        this.showLoadingPage();
+//        this.showLoadingPage();
+        showProgress(true, getString(R.string.app_loading));
+
         //获取服务项目和banner
         HashMap<String, String> params2 = new HashMap<>();
         params2.put("y_parent_id", "0");
         RequestService(params2, 0);
 
-
-       /* //获取列表数据
+        //获取附近活动列表数据
+//        if (!longitude.equals("")) {
         page1 = 0;
+        Map<String, String> params1 = new HashMap<>();
+        params1.put("service_name", "");
+        params1.put("page", page1 + "");
+        params1.put("longitude", longitude);
+        params1.put("latitude", latitude);
+        params1.put("is_review", "1");
+        params1.put("is_index", "1");
+        RequestList1(params1);
+//        } else {
+//            mLocationClient.startLocation();
+//        }
+
+        //获取口碑商家列表
         page2 = 0;
         Map<String, String> params = new HashMap<>();
-//        params.put("u_token", localUserInfo.getToken());
         params.put("service_name", "");
-        params.put("longitude", longitude);
-        params.put("latitude", latitude);
-        Request(params);*/
-
+        params.put("page", page2 + "");
+        params.put("longitude", "");
+        params.put("latitude", "");
+        params.put("is_review", "1");
+        params.put("is_index", "1");
+        RequestList2(params);
 
     }
 
-    private void Request(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.Fragment1, params, headerMap, new CallBackUtil<Fragment1Model>() {
+    /**
+     * 获取附近活动列表数据
+     *
+     * @param params
+     */
+    private void RequestList1(Map<String, String> params) {
+        OkhttpUtil.okHttpPost(URLs.Fragment3, params, headerMap, new CallBackUtil<Fragment3Model>() {
             @Override
-            public Fragment1Model onParseResponse(Call call, Response response) {
+            public Fragment3Model onParseResponse(Call call, Response response) {
                 return null;
             }
 
             @Override
             public void onFailure(Call call, Exception e, String err) {
                 hideProgress();
-                showEmptyPage();
+//                showEmptyPage();
 //                myToast(err);
             }
 
             @Override
-            public void onResponse(Fragment1Model response) {
+            public void onResponse(Fragment3Model response) {
                 hideProgress();
                 list1 = response.getList();
-                list2 = response.getList();
-
-                mAdapter1 = new CommonAdapter<Fragment1Model.ListBean>
+                mAdapter1 = new CommonAdapter<Fragment3Model.ListBean>
                         (getActivity(), R.layout.item_fragment1_gridview1, list1) {
                     @Override
-                    protected void convert(ViewHolder holder, Fragment1Model.ListBean model, int position) {
-
+                    protected void convert(ViewHolder holder, Fragment3Model.ListBean model, int position) {
+                        ImageView imageView1 = holder.getView(R.id.imageView1);
+                        Glide.with(getActivity())
+                                .load(URLs.IMGHOST + model.getPicture())
+                                .centerCrop()
+                                .apply(RequestOptions.bitmapTransform(new RoundedCorners(10)))
+                                .placeholder(R.mipmap.loading)//加载站位图
+                                .error(R.mipmap.zanwutupian)//加载失败
+                                .into(imageView1);//加载图片
+                        holder.setText(R.id.textView1, model.getVLevel());//等级
+                        holder.setText(R.id.textView2, model.getVName());//店名
+                        holder.setText(R.id.textView3, model.getSlogan());//活动
+                        holder.setText(R.id.textView4, model.getAddress());//地址
                     }
                 };
                 mAdapter1.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
-
+                        Bundle bundle = new Bundle();
+                        bundle.putString("id", list1.get(i).getYStoreId());
+                        bundle.putString("longitude", longitude);
+                        bundle.putString("latitude", latitude);
+                        CommonUtil.gotoActivityWithData(getActivity(), StoreDetailActivity.class, bundle, false);
                     }
 
                     @Override
@@ -312,17 +377,95 @@ public class Fragment1 extends BaseFragment {
                     }
                 });
                 recyclerView1.setAdapter(mAdapter1);
-                mAdapter2 = new CommonAdapter<Fragment1Model.ListBean>
+
+                /*if (list1.size() > 0) {
+                    showContentPage();
+                } else {
+                    showEmptyPage();
+                }*/
+            }
+        });
+    }
+
+    private void RequestListMore1(Map<String, String> params) {
+        OkhttpUtil.okHttpPost(URLs.Fragment3, params, headerMap, new CallBackUtil<Fragment3Model>() {
+            @Override
+            public Fragment3Model onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+                hideProgress();
+//                myToast(err);
+                page1--;
+            }
+
+            @Override
+            public void onResponse(Fragment3Model response) {
+                hideProgress();
+                List<Fragment3Model.ListBean> list_1 = new ArrayList<>();
+                list_1 = response.getList();
+                if (list_1.size() == 0) {
+                    page1--;
+                    myToast(getString(R.string.app_nomore));
+                } else {
+                    list1.addAll(list_1);
+                    mAdapter1.notifyDataSetChanged();
+                }
+            }
+        });
+    }
+
+    /**
+     * 获取口碑商家列表数据
+     *
+     * @param params
+     */
+    private void RequestList2(Map<String, String> params) {
+        OkhttpUtil.okHttpPost(URLs.Fragment3, params, headerMap, new CallBackUtil<Fragment3Model>() {
+            @Override
+            public Fragment3Model onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+//                hideProgress();
+//                showEmptyPage();
+//                myToast(err);
+            }
+
+            @Override
+            public void onResponse(Fragment3Model response) {
+//                hideProgress();
+                list2 = response.getList();
+                mAdapter2 = new CommonAdapter<Fragment3Model.ListBean>
                         (getActivity(), R.layout.item_fragment1_gridview2, list2) {
                     @Override
-                    protected void convert(ViewHolder holder, Fragment1Model.ListBean model, int position) {
-
+                    protected void convert(ViewHolder holder, Fragment3Model.ListBean model, int position) {
+                        ImageView imageView1 = holder.getView(R.id.imageView1);
+                        Glide.with(getActivity())
+                                .load(URLs.IMGHOST + model.getPicture())
+                                .centerCrop()
+                                .apply(RequestOptions.bitmapTransform(new RoundedCorners(10)))
+                                .placeholder(R.mipmap.loading)//加载站位图
+                                .error(R.mipmap.zanwutupian)//加载失败
+                                .into(imageView1);//加载图片
+                        holder.setText(R.id.textView1, model.getVLevel());//等级
+                        holder.setText(R.id.textView2, model.getVName());//店名
+                        holder.setText(R.id.textView3, model.getReview());//评分
+                        holder.setText(R.id.textView4, model.getAddress());//地址
                     }
                 };
                 mAdapter2.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
-
+                        Bundle bundle = new Bundle();
+                        bundle.putString("id", list2.get(i).getYStoreId());
+                        bundle.putString("longitude", longitude);
+                        bundle.putString("latitude", latitude);
+                        CommonUtil.gotoActivityWithData(getActivity(), StoreDetailActivity.class, bundle, false);
                     }
 
                     @Override
@@ -337,6 +480,36 @@ public class Fragment1 extends BaseFragment {
                 } else {
                     showEmptyPage();
                 }*/
+            }
+        });
+    }
+
+    private void RequestListMore2(Map<String, String> params) {
+        OkhttpUtil.okHttpPost(URLs.Fragment3, params, headerMap, new CallBackUtil<Fragment3Model>() {
+            @Override
+            public Fragment3Model onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+                hideProgress();
+//                myToast(err);
+                page2--;
+            }
+
+            @Override
+            public void onResponse(Fragment3Model response) {
+                hideProgress();
+                List<Fragment3Model.ListBean> list_1 = new ArrayList<>();
+                list_1 = response.getList();
+                if (list_1.size() == 0) {
+                    page2--;
+                    myToast(getString(R.string.app_nomore));
+                } else {
+                    list2.addAll(list_1);
+                    mAdapter2.notifyDataSetChanged();
+                }
             }
         });
     }
@@ -386,11 +559,11 @@ public class Fragment1 extends BaseFragment {
                 });
 
                 //tab
-                for (Fragment1ServiceListModel.IndexCustomListBean bean : response.getIndex_custom_list()){
-                    list_tab.add(new Fragment1TabModel(bean.getYServiceId(),bean.getCategory(),bean.getMsg(),bean.getImgurl()));
+                for (Fragment1ServiceListModel.IndexCustomListBean bean : response.getIndex_custom_list()) {
+                    list_tab.add(new Fragment1TabModel(bean.getYServiceId(), bean.getCategory(), bean.getMsg(), bean.getImgurl()));
                 }
-                for (Fragment1ServiceListModel.IndexServiceListBean bean : response.getIndex_service_list()){
-                    list_tab.add(new Fragment1TabModel(bean.getYServiceId(),-1,bean.getVName(),bean.getVImg()));
+                for (Fragment1ServiceListModel.IndexServiceListBean bean : response.getIndex_service_list()) {
+                    list_tab.add(new Fragment1TabModel(bean.getYServiceId(), -1, bean.getVName(), bean.getVImg()));
                 }
                 mAdapter_tab = new CommonAdapter<Fragment1TabModel>
                         (getActivity(), R.layout.item_fragment1_tab, list_tab) {
@@ -403,18 +576,18 @@ public class Fragment1 extends BaseFragment {
 //                    .placeholder(R.mipmap.headimg)//加载站位图
 //                    .error(R.mipmap.headimg)//加载失败
                                 .into(imageView);//加载图片
-                        holder.setText(R.id.tv_name,model.getTitle());
+                        holder.setText(R.id.tv_name, model.getTitle());
                     }
                 };
                 mAdapter_tab.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
                         Bundle bundle = new Bundle();
-                        switch (list_tab.get(i).getCategory()){
+                        switch (list_tab.get(i).getCategory()) {
                             case 2:
                                 //跳转商品列表
-                                bundle.putString("id",list_tab.get(i).getId());
-                                CommonUtil.gotoActivityWithData(getActivity(), ProductListActivity.class,bundle);
+                                bundle.putString("id", list_tab.get(i).getId());
+                                CommonUtil.gotoActivityWithData(getActivity(), ProductListActivity.class, bundle);
                                 break;
                             case 3:
                                 //跳转违章查询
@@ -426,8 +599,8 @@ public class Fragment1 extends BaseFragment {
                                 break;
                             default:
                                 //跳转门店搜索
-                                bundle.putString("keys",list_tab.get(i).getTitle());
-                                CommonUtil.gotoActivityWithData(getActivity(), SearchActivity.class,bundle);
+                                bundle.putString("keys", list_tab.get(i).getTitle());
+                                CommonUtil.gotoActivityWithData(getActivity(), SearchActivity.class, bundle);
                                 break;
                         }
                     }
@@ -467,6 +640,33 @@ public class Fragment1 extends BaseFragment {
             case R.id.rl_xiaoxi:
                 //消息
 
+                break;
+
+            case R.id.tv_more1:
+                //更多1
+                showProgress(true, getString(R.string.app_loading4));
+                page1++;
+                Map<String, String> params1 = new HashMap<>();
+                params1.put("service_name", "");
+                params1.put("page", page1 + "");
+                params1.put("longitude", longitude);
+                params1.put("latitude", latitude);
+                params1.put("is_review", "1");
+                params1.put("is_index", "1");
+                RequestListMore1(params1);
+                break;
+            case R.id.tv_more2:
+                //更多2
+                showProgress(true, getString(R.string.app_loading4));
+                page2 ++;
+                Map<String, String> params = new HashMap<>();
+                params.put("service_name", "");
+                params.put("page", page2 + "");
+                params.put("longitude", "");
+                params.put("latitude", "");
+                params.put("is_review", "1");
+                params.put("is_index", "1");
+                RequestListMore2(params);
                 break;
         }
     }
