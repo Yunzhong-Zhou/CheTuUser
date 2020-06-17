@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide;
 import com.chetu.user.R;
 import com.chetu.user.base.BaseActivity;
 import com.chetu.user.model.Fragment3Model;
+import com.chetu.user.model.GouXuanModel;
 import com.chetu.user.model.ServiceListModel;
 import com.chetu.user.model.UpFileModel;
 import com.chetu.user.net.URLs;
@@ -69,13 +70,29 @@ public class CarServiceActivity extends BaseActivity {
     String license_plate = "", frame_no = "", full_name = "", telephone = "", t_number = "", i_company = "",
             v_insure_city = "", license_img1 = "", license_img2 = "", number_img1 = "", number_img2 = "";
 
-    //选择店铺
+    /**
+     * 服务内容
+     */
+    RecyclerView recyclerView_sv;
+    CommonAdapter<ServiceListModel.ListBean> mAdapter_sv;
+    //第一级
+    List<ServiceListModel.ListBean> list_sv1 = new ArrayList<>();
+    //    List<String> stringList1 = new ArrayList<>();
+    //第二级
+    List<ServiceListModel.ListBean> list_sv2 = new ArrayList<>();
+    List<GouXuanModel> stringList2 = new ArrayList<>();
+
+    int i1 = -1, i2 = -1;
+
+    /**
+     * //选择店铺
+     **/
     RecyclerView recyclerView2;
     List<Fragment3Model.ListBean> list2 = new ArrayList<>();
     CommonAdapter<Fragment3Model.ListBean> mAdapter2;
 
     //发布救援
-    EditText editText1, editText2, editText3, editText4;
+    EditText editText1, editText2, editText3, editText4, editText5;
 
     /**
      * 选择图片
@@ -120,6 +137,9 @@ public class CarServiceActivity extends BaseActivity {
         ll_tab2 = findViewByID_My(R.id.ll_tab2);
         view1 = findViewByID_My(R.id.view1);
         view2 = findViewByID_My(R.id.view2);
+        //服务列表
+        recyclerView_sv = findViewByID_My(R.id.recyclerView_sv);
+        recyclerView_sv.setLayoutManager(new LinearLayoutManager(this));
 
         //车辆信息
         iv_carlogo = findViewByID_My(R.id.iv_carlogo);
@@ -135,7 +155,7 @@ public class CarServiceActivity extends BaseActivity {
         editText2 = findViewByID_My(R.id.editText2);
         editText3 = findViewByID_My(R.id.editText3);
         editText4 = findViewByID_My(R.id.editText4);
-
+        editText5 = findViewByID_My(R.id.editText5);
     }
 
     @Override
@@ -171,6 +191,7 @@ public class CarServiceActivity extends BaseActivity {
         RequestList(params);
 
     }
+
     /**
      * 获取筛选列表
      *
@@ -187,25 +208,24 @@ public class CarServiceActivity extends BaseActivity {
             @Override
             public void onFailure(Call call, Exception e, String err) {
                 hideProgress();
-                /*if (type != 0){
+                if (type != 0) {
                     i2 = -1;
-                    stringList2.clear();
-                    showPopupWindow1(pop_view);
-                }else {
+                    list_sv2.clear();
+                    mAdapter_sv.notifyDataSetChanged();
+                } else {
                     myToast(err);
-                }*/
-
+                }
             }
 
             @Override
             public void onResponse(ServiceListModel response) {
                 hideProgress();
-                /*if (type == 0) {
+                if (type == 0) {
                     //第一级
                     list_sv1 = response.getList();
-                    for (ServiceListModel.ListBean bean : list_sv1) {
+                    /*for (ServiceListModel.ListBean bean : list_sv1) {
                         stringList1.add(bean.getVName());
-                    }
+                    }*/
                     //请求第二级
                     if (list_sv1.size() > 0) {
                         i1 = 0;
@@ -216,17 +236,83 @@ public class CarServiceActivity extends BaseActivity {
                 } else {
                     //第二级
                     list_sv2 = response.getList();
-                    stringList2.clear();
+                    /*stringList2.clear();
                     for (ServiceListModel.ListBean bean : list_sv2) {
-                        stringList2.add(new GouXuanModel(bean.getVName(), false));
-                    }
+                        stringList2.add(bean.getVName());
+                    }*/
                     i2 = -1;
-                    showPopupWindow1(pop_view);
-                }*/
+                    mAdapter_sv = new CommonAdapter<ServiceListModel.ListBean>(CarServiceActivity.this, R.layout.item_carservice_sv, list_sv1) {
+                        @Override
+                        protected void convert(ViewHolder holder, ServiceListModel.ListBean model, int position) {
+                            holder.setText(R.id.title, model.getVName());
+
+                            RecyclerView rv = holder.getView(R.id.rv);
+                            rv.setLayoutManager(new LinearLayoutManager(CarServiceActivity.this));
+                            ImageView iv = holder.getView(R.id.iv);
+
+                            if (i1 == position) {
+                                iv.setImageResource(R.mipmap.ic_down_black);
+
+                                if (list_sv2.size() > 0) {
+                                    rv.setVisibility(View.VISIBLE);
+                                }
+                                CommonAdapter<ServiceListModel.ListBean> ca = new CommonAdapter<ServiceListModel.ListBean>
+                                        (CarServiceActivity.this, R.layout.item_carservice_sv_child, list_sv2) {
+                                    @Override
+                                    protected void convert(ViewHolder holder, ServiceListModel.ListBean listBean, int item) {
+                                        holder.setText(R.id.textView, listBean.getVName());
+                                        ImageView imageView = holder.getView(R.id.imageView);
+                                        if (i2 == item) {
+                                            imageView.setImageResource(R.mipmap.ic_xuanzhong);
+                                        } else {
+                                            imageView.setImageResource(R.mipmap.ic_weixuan);
+                                        }
+                                    }
+                                };
+                                ca.setOnItemClickListener(new OnItemClickListener() {
+                                    @Override
+                                    public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                                        i2 = i;
+                                        ca.notifyDataSetChanged();
+                                    }
+
+                                    @Override
+                                    public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                                        return false;
+                                    }
+                                });
+                                rv.setAdapter(ca);
+                            } else {
+                                iv.setImageResource(R.mipmap.ic_next_black);
+                                rv.setVisibility(View.GONE);
+                            }
+                        }
+                    };
+                    mAdapter_sv.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                            if (i != i1){
+                                i1 = i;
+                                HashMap<String, String> params2 = new HashMap<>();
+                                params2.put("y_parent_id", list_sv1.get(i).getYServiceId());
+                                RequestService(params2, 1);
+                            }
+
+                        }
+
+                        @Override
+                        public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                            return false;
+                        }
+                    });
+                    recyclerView_sv.setAdapter(mAdapter_sv);
+
+                }
 
             }
         });
     }
+
     /**
      * 获取商家列表
      *

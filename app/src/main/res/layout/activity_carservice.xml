@@ -110,7 +110,7 @@
 
                     <!--服务项目-->
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recyclerView1"
+                        android:id="@+id/recyclerView_sv"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
@@ -280,8 +280,20 @@
                             android:textColor="@color/black"
                             android:textSize="15sp" />
 
-                        <TextView
-
+                        <!--<TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/transparent"
+                            android:drawableRight="@mipmap/ic_next_black"
+                            android:hint="选择救援类型"
+                            android:paddingTop="15dp"
+                            android:paddingRight="10dp"
+                            android:paddingBottom="15dp"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/grey"
+                            android:textSize="15sp" />-->
+                        <EditText
+                            android:id="@+id/editText5"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@color/transparent"
