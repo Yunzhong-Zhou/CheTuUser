@@ -202,4 +202,4 @@ MobSDK {
     }
 }
 
-apply plugin: 'com.google.gms.google-services'//谷歌服务
+//apply plugin: 'com.google.gms.google-services'//谷歌服务

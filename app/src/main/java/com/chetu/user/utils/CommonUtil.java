@@ -556,8 +556,11 @@ public class CommonUtil {
         try {
             date = sdr.parse(time);
             long l = date.getTime();
+            times = String.valueOf(l);
+            /*
+            //返回10位数的时间戳
             String stf = String.valueOf(l);
-            times = stf.substring(0, 10);
+            times = stf.substring(0, 10);*/
         } catch (Exception e) {
             e.printStackTrace();
         }

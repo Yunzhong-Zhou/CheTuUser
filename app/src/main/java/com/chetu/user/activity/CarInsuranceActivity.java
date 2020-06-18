@@ -4,7 +4,6 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
@@ -367,12 +366,21 @@ public class CarInsuranceActivity extends BaseActivity {
                     //处理得到的url
                     ContentResolver cr = this.getContentResolver();
                     Cursor cursor = null;
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
                         cursor = cr.query(uri, null, null, null, null, null);
-                    }
-                    if (cursor != null) {
-                        cursor.moveToFirst();
-                        imagePath = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+                        if (cursor != null) {
+                            cursor.moveToFirst();
+                            try {
+                                imagePath = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                myToast(getString(R.string.app_error));
+                            } finally {
+                                if (cursor != null)
+                                    cursor.close();
+                            }
+                        }
+
                     } else {
                         imagePath = uri.getPath();
                     }

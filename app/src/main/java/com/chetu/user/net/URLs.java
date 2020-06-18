@@ -43,7 +43,7 @@ public class URLs {
     /**
      * 图片上传
      */
-    public static final String UpFile = HOST+"/upload/picture";
+    public static final String UpFile = HOST+"/apiupload/picture";
     /**
      * 保险
      */
