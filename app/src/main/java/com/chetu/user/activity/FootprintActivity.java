@@ -10,8 +10,8 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.chetu.user.R;
 import com.chetu.user.base.BaseActivity;
-import com.chetu.user.model.CollectModel;
-import com.chetu.user.model.FootprintModel;
+import com.chetu.user.model.MenDianModel;
+import com.chetu.user.model.ShangPingModel;
 import com.chetu.user.net.URLs;
 import com.chetu.user.okhttp.CallBackUtil;
 import com.chetu.user.okhttp.OkhttpUtil;
@@ -38,12 +38,12 @@ public class FootprintActivity extends BaseActivity {
     int type = 1, page1 = 0, page2 = 0, category = 1;//1为商品  2为商家
     TextView textView1, textView2;
     private RecyclerView recyclerView;
-    List<FootprintModel.ListBean> list1 = new ArrayList<>();
-    CommonAdapter<FootprintModel.ListBean> mAdapter1;
+    List<ShangPingModel.ListBean> list1 = new ArrayList<>();
+    CommonAdapter<ShangPingModel.ListBean> mAdapter1;
 //    FootpriintAdapter mAdapter1;//吸顶效果
 
-    List<CollectModel.ListBean> list2 = new ArrayList<>();
-    CommonAdapter<CollectModel.ListBean> mAdapter2;
+    List<MenDianModel.ListBean> list2 = new ArrayList<>();
+    CommonAdapter<MenDianModel.ListBean> mAdapter2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -165,9 +165,9 @@ public class FootprintActivity extends BaseActivity {
      * @param params
      */
     private void Request1(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.Footprint, params, headerMap, new CallBackUtil<FootprintModel>() {
+        OkhttpUtil.okHttpPost(URLs.Footprint, params, headerMap, new CallBackUtil<ShangPingModel>() {
             @Override
-            public FootprintModel onParseResponse(Call call, Response response) {
+            public ShangPingModel onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -175,19 +175,19 @@ public class FootprintActivity extends BaseActivity {
             public void onFailure(Call call, Exception e, String err) {
                 hideProgress();
                 showEmptyPage();
-                myToast(err);
+//                myToast(err);
             }
 
             @Override
-            public void onResponse(FootprintModel response) {
+            public void onResponse(ShangPingModel response) {
                 hideProgress();
                 list1 = response.getList();
                 if (list1.size() > 0) {
                     showContentPage();
-                    mAdapter1 = new CommonAdapter<FootprintModel.ListBean>
-                            (FootprintActivity.this, R.layout.item_footprint, list1) {
+                    mAdapter1 = new CommonAdapter<ShangPingModel.ListBean>
+                            (FootprintActivity.this, R.layout.item_shangping, list1) {
                         @Override
-                        protected void convert(ViewHolder holder, FootprintModel.ListBean model, int position) {
+                        protected void convert(ViewHolder holder, ShangPingModel.ListBean model, int position) {
                             ImageView imageView1 = holder.getView(R.id.imageView1);
                             Glide.with(FootprintActivity.this)
                                     .load(URLs.IMGHOST + model.getGoods_info().getGImg())
@@ -208,6 +208,29 @@ public class FootprintActivity extends BaseActivity {
                             holder.setText(R.id.tv_time, day);
                             holder.setText(R.id.tv_content, model.getGoods_info().getGName());
                             holder.setText(R.id.tv_moeny, "¥" + model.getGoods_info().getGPrice());
+
+                            //删除
+                            holder.getView(R.id.tv_delete).setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    showToast("确认删除该足迹吗？", "确认", "取消", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            dialog.dismiss();
+                                            showProgress(true, "正在删除...");
+                                            HashMap<String, String> params2 = new HashMap<>();
+                                            params2.put("y_user_footprint_id", model.getYUserFootprintId());
+                                            params2.put("u_token", localUserInfo.getToken());
+                                            RequestDelete(params2);
+                                        }
+                                    }, new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            dialog.dismiss();
+                                        }
+                                    });
+                                }
+                            });
                         }
                     };
                     mAdapter1.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
@@ -251,9 +274,9 @@ public class FootprintActivity extends BaseActivity {
     }
 
     private void RequestMore1(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.Footprint, params, headerMap, new CallBackUtil<FootprintModel>() {
+        OkhttpUtil.okHttpPost(URLs.Footprint, params, headerMap, new CallBackUtil<ShangPingModel>() {
             @Override
-            public FootprintModel onParseResponse(Call call, Response response) {
+            public ShangPingModel onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -265,9 +288,9 @@ public class FootprintActivity extends BaseActivity {
             }
 
             @Override
-            public void onResponse(FootprintModel response) {
+            public void onResponse(ShangPingModel response) {
                 hideProgress();
-                List<FootprintModel.ListBean> list_1 = new ArrayList<>();
+                List<ShangPingModel.ListBean> list_1 = new ArrayList<>();
                 list_1 = response.getList();
                 if (list_1.size() == 0) {
                     page1--;
@@ -286,9 +309,9 @@ public class FootprintActivity extends BaseActivity {
      * @param params
      */
     private void Request2(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.Footprint, params, headerMap, new CallBackUtil<CollectModel>() {
+        OkhttpUtil.okHttpPost(URLs.Footprint, params, headerMap, new CallBackUtil<MenDianModel>() {
             @Override
-            public CollectModel onParseResponse(Call call, Response response) {
+            public MenDianModel onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -296,19 +319,19 @@ public class FootprintActivity extends BaseActivity {
             public void onFailure(Call call, Exception e, String err) {
                 hideProgress();
                 showEmptyPage();
-                myToast(err);
+//                myToast(err);
             }
 
             @Override
-            public void onResponse(CollectModel response) {
+            public void onResponse(MenDianModel response) {
                 hideProgress();
                 list2 = response.getList();
                 if (list2.size() > 0) {
                     showContentPage();
-                    mAdapter2 = new CommonAdapter<CollectModel.ListBean>
-                            (FootprintActivity.this, R.layout.item_collect, list2) {
+                    mAdapter2 = new CommonAdapter<MenDianModel.ListBean>
+                            (FootprintActivity.this, R.layout.item_mendian, list2) {
                         @Override
-                        protected void convert(ViewHolder holder, CollectModel.ListBean model, int position) {
+                        protected void convert(ViewHolder holder, MenDianModel.ListBean model, int position) {
                             ImageView imageView1 = holder.getView(R.id.imageView1);
                             Glide.with(FootprintActivity.this)
                                     .load(URLs.IMGHOST + model.getStore_info().getPicture())
@@ -321,6 +344,28 @@ public class FootprintActivity extends BaseActivity {
                             holder.setText(R.id.tv_fen, model.getStore_info().getReview());
                             holder.setText(R.id.tv_content, model.getStore_info().getIntroduce());
                             holder.setText(R.id.tv_addr, model.getStore_info().getAddress());
+                            //删除
+                            holder.getView(R.id.tv_delete).setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    showToast("确认删除该足迹吗？", "确认", "取消", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            dialog.dismiss();
+                                            showProgress(true, "正在删除...");
+                                            HashMap<String, String> params2 = new HashMap<>();
+                                            params2.put("y_user_footprint_id", model.getYUserFootprintId());
+                                            params2.put("u_token", localUserInfo.getToken());
+                                            RequestDelete(params2);
+                                        }
+                                    }, new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            dialog.dismiss();
+                                        }
+                                    });
+                                }
+                            });
                         }
                     };
                     mAdapter2.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
@@ -344,9 +389,9 @@ public class FootprintActivity extends BaseActivity {
     }
 
     private void RequestMore2(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.Footprint, params, headerMap, new CallBackUtil<CollectModel>() {
+        OkhttpUtil.okHttpPost(URLs.Footprint, params, headerMap, new CallBackUtil<MenDianModel>() {
             @Override
-            public CollectModel onParseResponse(Call call, Response response) {
+            public MenDianModel onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -354,16 +399,16 @@ public class FootprintActivity extends BaseActivity {
             public void onFailure(Call call, Exception e, String err) {
                 hideProgress();
                 myToast(err);
-                page1--;
+                page2--;
             }
 
             @Override
-            public void onResponse(CollectModel response) {
+            public void onResponse(MenDianModel response) {
                 hideProgress();
-                List<CollectModel.ListBean> list_1 = new ArrayList<>();
+                List<MenDianModel.ListBean> list_1 = new ArrayList<>();
                 list_1 = response.getList();
                 if (list_1.size() == 0) {
-                    page1--;
+                    page2--;
                     myToast(getString(R.string.app_nomore));
                 } else {
                     list2.addAll(list_1);
@@ -373,6 +418,32 @@ public class FootprintActivity extends BaseActivity {
         });
     }
 
+    /**
+     * 删除
+     *
+     * @param params
+     */
+    private void RequestDelete(HashMap<String, String> params) {
+        OkhttpUtil.okHttpPost(URLs.DeleteFootprint, params, headerMap, new CallBackUtil<Object>() {
+            @Override
+            public Object onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+                hideProgress();
+                myToast(err);
+            }
+
+            @Override
+            public void onResponse(Object response) {
+                hideProgress();
+                myToast("删除成功");
+                requestServer();
+            }
+        });
+    }
     @Override
     public void onClick(View v) {
         super.onClick(v);

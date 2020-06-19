@@ -10,8 +10,8 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.chetu.user.R;
 import com.chetu.user.base.BaseActivity;
-import com.chetu.user.model.CollectModel;
-import com.chetu.user.model.FootprintModel;
+import com.chetu.user.model.MenDianModel_Collect;
+import com.chetu.user.model.ShangPingModel_Collect;
 import com.chetu.user.net.URLs;
 import com.chetu.user.okhttp.CallBackUtil;
 import com.chetu.user.okhttp.OkhttpUtil;
@@ -38,12 +38,12 @@ public class CollectActivity extends BaseActivity {
     int type = 1, page1 = 0, page2 = 0, category = 1;//1为商品  2为商家
     TextView textView1, textView2;
     private RecyclerView recyclerView;
-    List<FootprintModel.ListBean> list1 = new ArrayList<>();
-    CommonAdapter<FootprintModel.ListBean> mAdapter1;
+    List<ShangPingModel_Collect.ListBean> list1 = new ArrayList<>();
+    CommonAdapter<ShangPingModel_Collect.ListBean> mAdapter1;
 //    FootpriintAdapter mAdapter1;//吸顶效果
 
-    List<CollectModel.ListBean> list2 = new ArrayList<>();
-    CommonAdapter<CollectModel.ListBean> mAdapter2;
+    List<MenDianModel_Collect.ListBean> list2 = new ArrayList<>();
+    CommonAdapter<MenDianModel_Collect.ListBean> mAdapter2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,39 +106,6 @@ public class CollectActivity extends BaseActivity {
     @Override
     protected void initData() {
         requestServer();
-        /*mAdapter1 = new CommonAdapter<FootprintModel.ListBean>
-                (FootprintActivity.this, R.layout.item_footprint_title, list1) {
-            @Override
-            protected void convert(ViewHolder holder, FootprintModel.ListBean model, int position) {
-                RecyclerView rv = holder.getView(R.id.rv);
-                rv.setLayoutManager(new LinearLayoutManager(FootprintActivity.this));
-                List<String> list = new ArrayList<>();
-                list.add("");
-                list.add("");
-                list.add("");
-                list.add("");
-                CommonAdapter<String> mAdapter = new CommonAdapter<String>(FootprintActivity.this, R.layout.item_footprint, list) {
-                    @Override
-                    protected void convert(ViewHolder holder, String s, int position) {
-
-                    }
-                };
-                rv.setAdapter(mAdapter);
-            }
-        };
-        mAdapter1.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
-
-            }
-
-            @Override
-            public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
-                return false;
-            }
-        });
-        recyclerView.setAdapter(mAdapter1);*/
-
     }
 
     @Override
@@ -165,9 +132,9 @@ public class CollectActivity extends BaseActivity {
      * @param params
      */
     private void Request1(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.Collect, params, headerMap, new CallBackUtil<FootprintModel>() {
+        OkhttpUtil.okHttpPost(URLs.Collect, params, headerMap, new CallBackUtil<ShangPingModel_Collect>() {
             @Override
-            public FootprintModel onParseResponse(Call call, Response response) {
+            public ShangPingModel_Collect onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -175,19 +142,19 @@ public class CollectActivity extends BaseActivity {
             public void onFailure(Call call, Exception e, String err) {
                 hideProgress();
                 showEmptyPage();
-                myToast(err);
+//                myToast(err);
             }
 
             @Override
-            public void onResponse(FootprintModel response) {
+            public void onResponse(ShangPingModel_Collect response) {
                 hideProgress();
                 list1 = response.getList();
                 if (list1.size() > 0) {
                     showContentPage();
-                    mAdapter1 = new CommonAdapter<FootprintModel.ListBean>
-                            (CollectActivity.this, R.layout.item_footprint, list1) {
+                    mAdapter1 = new CommonAdapter<ShangPingModel_Collect.ListBean>
+                            (CollectActivity.this, R.layout.item_shangping, list1) {
                         @Override
-                        protected void convert(ViewHolder holder, FootprintModel.ListBean model, int position) {
+                        protected void convert(ViewHolder holder, ShangPingModel_Collect.ListBean model, int position) {
                             ImageView imageView1 = holder.getView(R.id.imageView1);
                             Glide.with(CollectActivity.this)
                                     .load(URLs.IMGHOST + model.getGoods_info().getGImg())
@@ -209,6 +176,28 @@ public class CollectActivity extends BaseActivity {
                             holder.setText(R.id.tv_time, day);
                             holder.setText(R.id.tv_content, model.getGoods_info().getGName());
                             holder.setText(R.id.tv_moeny, "¥" + model.getGoods_info().getGPrice());
+                            //删除
+                            holder.getView(R.id.tv_delete).setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    showToast("确认删除该收藏吗？", "确认", "取消", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            dialog.dismiss();
+                                            showProgress(true, "正在删除...");
+                                            HashMap<String, String> params2 = new HashMap<>();
+                                            params2.put("y_user_collection_id", model.getYUserCollectionId());
+                                            params2.put("u_token", localUserInfo.getToken());
+                                            RequestDelete(params2);
+                                        }
+                                    }, new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            dialog.dismiss();
+                                        }
+                                    });
+                                }
+                            });
                         }
                     };
                     mAdapter1.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
@@ -252,9 +241,9 @@ public class CollectActivity extends BaseActivity {
     }
 
     private void RequestMore1(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.Collect, params, headerMap, new CallBackUtil<FootprintModel>() {
+        OkhttpUtil.okHttpPost(URLs.Collect, params, headerMap, new CallBackUtil<ShangPingModel_Collect>() {
             @Override
-            public FootprintModel onParseResponse(Call call, Response response) {
+            public ShangPingModel_Collect onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -266,9 +255,9 @@ public class CollectActivity extends BaseActivity {
             }
 
             @Override
-            public void onResponse(FootprintModel response) {
+            public void onResponse(ShangPingModel_Collect response) {
                 hideProgress();
-                List<FootprintModel.ListBean> list_1 = new ArrayList<>();
+                List<ShangPingModel_Collect.ListBean> list_1 = new ArrayList<>();
                 list_1 = response.getList();
                 if (list_1.size() == 0) {
                     page1--;
@@ -282,14 +271,14 @@ public class CollectActivity extends BaseActivity {
     }
 
     /**
-     * 商家
+     * 门店
      *
      * @param params
      */
     private void Request2(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.Collect, params, headerMap, new CallBackUtil<CollectModel>() {
+        OkhttpUtil.okHttpPost(URLs.Collect, params, headerMap, new CallBackUtil<MenDianModel_Collect>() {
             @Override
-            public CollectModel onParseResponse(Call call, Response response) {
+            public MenDianModel_Collect onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -297,19 +286,19 @@ public class CollectActivity extends BaseActivity {
             public void onFailure(Call call, Exception e, String err) {
                 hideProgress();
                 showEmptyPage();
-                myToast(err);
+//                myToast(err);
             }
 
             @Override
-            public void onResponse(CollectModel response) {
+            public void onResponse(MenDianModel_Collect response) {
                 hideProgress();
                 list2 = response.getList();
                 if (list2.size() > 0) {
                     showContentPage();
-                    mAdapter2 = new CommonAdapter<CollectModel.ListBean>
-                            (CollectActivity.this, R.layout.item_collect, list2) {
+                    mAdapter2 = new CommonAdapter<MenDianModel_Collect.ListBean>
+                            (CollectActivity.this, R.layout.item_mendian, list2) {
                         @Override
-                        protected void convert(ViewHolder holder, CollectModel.ListBean model, int position) {
+                        protected void convert(ViewHolder holder, MenDianModel_Collect.ListBean model, int position) {
                             ImageView imageView1 = holder.getView(R.id.imageView1);
                             Glide.with(CollectActivity.this)
                                     .load(URLs.IMGHOST + model.getStore_info().getPicture())
@@ -322,6 +311,28 @@ public class CollectActivity extends BaseActivity {
                             holder.setText(R.id.tv_fen, model.getStore_info().getReview());
                             holder.setText(R.id.tv_content, model.getStore_info().getIntroduce());
                             holder.setText(R.id.tv_addr, model.getStore_info().getAddress());
+                            //删除
+                            holder.getView(R.id.tv_delete).setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    showToast("确认删除该收藏吗？", "确认", "取消", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            dialog.dismiss();
+                                            showProgress(true, "正在删除...");
+                                            HashMap<String, String> params2 = new HashMap<>();
+                                            params2.put("y_user_collection_id", model.getYUserCollectionId());
+                                            params2.put("u_token", localUserInfo.getToken());
+                                            RequestDelete(params2);
+                                        }
+                                    }, new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            dialog.dismiss();
+                                        }
+                                    });
+                                }
+                            });
                         }
                     };
                     mAdapter2.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
@@ -345,9 +356,9 @@ public class CollectActivity extends BaseActivity {
     }
 
     private void RequestMore2(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.Collect, params, headerMap, new CallBackUtil<CollectModel>() {
+        OkhttpUtil.okHttpPost(URLs.Collect, params, headerMap, new CallBackUtil<MenDianModel_Collect>() {
             @Override
-            public CollectModel onParseResponse(Call call, Response response) {
+            public MenDianModel_Collect onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -355,21 +366,48 @@ public class CollectActivity extends BaseActivity {
             public void onFailure(Call call, Exception e, String err) {
                 hideProgress();
                 myToast(err);
-                page1--;
+                page2--;
             }
 
             @Override
-            public void onResponse(CollectModel response) {
+            public void onResponse(MenDianModel_Collect response) {
                 hideProgress();
-                List<CollectModel.ListBean> list_1 = new ArrayList<>();
+                List<MenDianModel_Collect.ListBean> list_1 = new ArrayList<>();
                 list_1 = response.getList();
                 if (list_1.size() == 0) {
-                    page1--;
+                    page2--;
                     myToast(getString(R.string.app_nomore));
                 } else {
                     list2.addAll(list_1);
                     mAdapter2.notifyDataSetChanged();
                 }
+            }
+        });
+    }
+
+    /**
+     * 删除
+     *
+     * @param params
+     */
+    private void RequestDelete(HashMap<String, String> params) {
+        OkhttpUtil.okHttpPost(URLs.DeleteCollect, params, headerMap, new CallBackUtil<Object>() {
+            @Override
+            public Object onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+                hideProgress();
+                myToast(err);
+            }
+
+            @Override
+            public void onResponse(Object response) {
+                hideProgress();
+                myToast("删除成功");
+                requestServer();
             }
         });
     }

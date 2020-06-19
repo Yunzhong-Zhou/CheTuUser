@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Created by zyz on 2020/5/26.
  */
-public class CollectModel implements Serializable {
+public class MenDianModel implements Serializable {
     private List<ListBean> list;
 
     public List<ListBean> getList() {
@@ -19,27 +19,27 @@ public class CollectModel implements Serializable {
 
     public static class ListBean {
         /**
-         * yUserCollectionId : 722440283152711680
+         * yUserFootprintId : 721478144267124742
          * userId : 714547022807433216
-         * yId : 692341585785913333
+         * yId : 692341585785913346
          * category : 2
-         * createDate : 2020-06-16 13:19:45
-         * store_info : {"yStoreId":"692341585785913333","vName":"龙肆商店测试","review":"4.5分","keywsr":"","address":"深圳市南山区","longitude":"116.49798","latitude":"39.916485","picture":"/static/img/20200528151327.png","phone":" 400-2333-1123","vLevel":" A级","introduce":" 门店介绍","charactStr":"/static/img/20200528151327.png||/static/img/20200528151327.png","pictureStr":"/static/img/20200528151327.png||/static/img/20200528151327.png"}
+         * createDate : 2020-06-13 21:36:34
+         * store_info : {"yStoreId":"692341585785913346","vName":"洗车商店测试","review":"5分","keywsr":"技术 修车 实","address":"观澜观光路与新丹路交叉口附近","longitude":"116.49798","latitude":"39.916485","picture":"/upload/store/222.png","phone":"  400-2333-1123","vLevel":"A级","introduce":"听广告几年了，终于体验了特色服务。轮胎是其专长。听说11年开始，线上业务。16年开始线下。现在全国1500多家店。","charactStr":"/upload/store/222.png||/upload/store/222.png","pictureStr":"/upload/store/222.png||/upload/store/222.png","pictureArr":["/upload/store/222.png","/upload/store/222.png"]}
          */
 
-        private String yUserCollectionId;
+        private String yUserFootprintId;
         private String userId;
         private String yId;
         private int category;
         private String createDate;
         private StoreInfoBean store_info;
 
-        public String getYUserCollectionId() {
-            return yUserCollectionId;
+        public String getYUserFootprintId() {
+            return yUserFootprintId;
         }
 
-        public void setYUserCollectionId(String yUserCollectionId) {
-            this.yUserCollectionId = yUserCollectionId;
+        public void setYUserFootprintId(String yUserFootprintId) {
+            this.yUserFootprintId = yUserFootprintId;
         }
 
         public String getUserId() {
@@ -84,19 +84,20 @@ public class CollectModel implements Serializable {
 
         public static class StoreInfoBean {
             /**
-             * yStoreId : 692341585785913333
-             * vName : 龙肆商店测试
-             * review : 4.5分
-             * keywsr :
-             * address : 深圳市南山区
+             * yStoreId : 692341585785913346
+             * vName : 洗车商店测试
+             * review : 5分
+             * keywsr : 技术 修车 实
+             * address : 观澜观光路与新丹路交叉口附近
              * longitude : 116.49798
              * latitude : 39.916485
-             * picture : /static/img/20200528151327.png
-             * phone :  400-2333-1123
-             * vLevel :  A级
-             * introduce :  门店介绍
-             * charactStr : /static/img/20200528151327.png||/static/img/20200528151327.png
-             * pictureStr : /static/img/20200528151327.png||/static/img/20200528151327.png
+             * picture : /upload/store/222.png
+             * phone :   400-2333-1123
+             * vLevel : A级
+             * introduce : 听广告几年了，终于体验了特色服务。轮胎是其专长。听说11年开始，线上业务。16年开始线下。现在全国1500多家店。
+             * charactStr : /upload/store/222.png||/upload/store/222.png
+             * pictureStr : /upload/store/222.png||/upload/store/222.png
+             * pictureArr : ["/upload/store/222.png","/upload/store/222.png"]
              */
 
             private String yStoreId;
@@ -112,6 +113,7 @@ public class CollectModel implements Serializable {
             private String introduce;
             private String charactStr;
             private String pictureStr;
+            private List<String> pictureArr;
 
             public String getYStoreId() {
                 return yStoreId;
@@ -215,6 +217,14 @@ public class CollectModel implements Serializable {
 
             public void setPictureStr(String pictureStr) {
                 this.pictureStr = pictureStr;
+            }
+
+            public List<String> getPictureArr() {
+                return pictureArr;
+            }
+
+            public void setPictureArr(List<String> pictureArr) {
+                this.pictureArr = pictureArr;
             }
         }
     }

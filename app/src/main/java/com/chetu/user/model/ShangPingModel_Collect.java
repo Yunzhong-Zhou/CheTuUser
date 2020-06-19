@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Created by zyz on 2020/5/26.
  */
-public class FootprintModel implements Serializable {
+public class ShangPingModel_Collect implements Serializable {
     private List<ListBean> list;
 
     public List<ListBean> getList() {
@@ -19,27 +19,27 @@ public class FootprintModel implements Serializable {
 
     public static class ListBean {
         /**
-         * yUserFootprintId : 722569085925195776
+         * yUserCollectionId : 721422164145733632
          * userId : 714547022807433216
          * yId : 692341585785913346
          * category : 1
-         * createDate : 2020-06-16 21:51:34
-         * goods_info : {"yGoodsId":"692341585785913346","gName":"汽车行车记录仪降压线通用小米70迈360专用停车监控车载usb电源线","gPrice":1000,"orPrice":0,"gDetails":"","imgStr":"/upload/pro.png||/upload/pro.png","imgArr":["/upload/pro.png","/upload/pro.png"],"gImg":"/upload/pro.png"}
+         * createDate : 2020-06-13 17:54:07
+         * goods_info : {"yGoodsId":"692341585785913346","gName":"汽车行车记录仪降压线通用小米70迈360专用停车监控车载usb电源线","gPrice":1000,"orPrice":0,"gDetails":"","imgStr":"/upload/pro.png||/upload/pro.png","gImg":"/upload/pro.png"}
          */
 
-        private String yUserFootprintId;
+        private String yUserCollectionId;
         private String userId;
         private String yId;
         private int category;
         private String createDate;
         private GoodsInfoBean goods_info;
 
-        public String getYUserFootprintId() {
-            return yUserFootprintId;
+        public String getYUserCollectionId() {
+            return yUserCollectionId;
         }
 
-        public void setYUserFootprintId(String yUserFootprintId) {
-            this.yUserFootprintId = yUserFootprintId;
+        public void setYUserCollectionId(String yUserCollectionId) {
+            this.yUserCollectionId = yUserCollectionId;
         }
 
         public String getUserId() {
@@ -90,7 +90,6 @@ public class FootprintModel implements Serializable {
              * orPrice : 0.0
              * gDetails :
              * imgStr : /upload/pro.png||/upload/pro.png
-             * imgArr : ["/upload/pro.png","/upload/pro.png"]
              * gImg : /upload/pro.png
              */
 
@@ -101,7 +100,6 @@ public class FootprintModel implements Serializable {
             private String gDetails;
             private String imgStr;
             private String gImg;
-            private List<String> imgArr;
 
             public String getYGoodsId() {
                 return yGoodsId;
@@ -157,14 +155,6 @@ public class FootprintModel implements Serializable {
 
             public void setGImg(String gImg) {
                 this.gImg = gImg;
-            }
-
-            public List<String> getImgArr() {
-                return imgArr;
-            }
-
-            public void setImgArr(List<String> imgArr) {
-                this.imgArr = imgArr;
             }
         }
     }

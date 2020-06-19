@@ -49,6 +49,7 @@
                         android:paddingRight="10dp"
                         android:paddingBottom="5dp"
                         android:text="营业时间"
+                        android:visibility="gone"
                         android:textColor="@color/white"
                         android:textSize="12sp" />
 

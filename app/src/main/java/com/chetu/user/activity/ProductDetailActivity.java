@@ -379,7 +379,7 @@ public class ProductDetailActivity extends BaseActivity {
                 head1_tv2.setText("¥" + response.getInfo().getOrPrice());
                 head1_tv3.setText(response.getInfo().getGName());
                 head1_tv4.setText(response.getInfo().getGName());
-                //是否评论
+                //是否喜欢
                 if (response.getCollection_info() != null && !response.getCollection_info().getYUserCollectionId().equals("")) {
                     y_user_collection_id = response.getCollection_info().getYUserCollectionId();
                     isShouChange = true;

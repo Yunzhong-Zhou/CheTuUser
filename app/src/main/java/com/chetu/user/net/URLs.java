@@ -169,9 +169,17 @@ public class URLs {
      */
     public static final String Footprint = HOST+"/api/v1/user/user_footprint_list_page";
     /**
+     * 删除足迹
+     */
+    public static final String DeleteFootprint = HOST+"/api/v1/user/user_footprint_del";
+    /**
      * 收藏列表
      */
     public static final String Collect = HOST+"/api/v1/user/user_collection_list_page";
+    /**
+     * 删除收藏
+     */
+    public static final String DeleteCollect = HOST+"/api/v1/user/user_collection_del";
     /**
      * 待接车
      */

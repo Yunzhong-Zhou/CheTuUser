@@ -73,7 +73,7 @@ public class FootpriintAdapter extends GroupedRecyclerViewAdapter {
     //返回子项的布局id。
     @Override
     public int getChildLayout(int viewType) {
-        return R.layout.item_footprint;
+        return R.layout.item_shangping;
     }
 
     //绑定头部布局数据。(如果hasHeader返回false，这个方法不会执行)

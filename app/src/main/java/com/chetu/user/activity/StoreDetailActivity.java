@@ -69,7 +69,7 @@ public class StoreDetailActivity extends BaseActivity {
             @Override
             public void onRefresh() {
                 Map<String, String> params = new HashMap<>();
-//        params.put("u_token", localUserInfo.getToken());
+                params.put("u_token", localUserInfo.getToken());
                 params.put("longitude", longitude);
                 params.put("latitude", latitude);
                 params.put("y_store_id", y_store_id);
@@ -121,7 +121,7 @@ public class StoreDetailActivity extends BaseActivity {
 //        page = 0;
         showProgress(true, getString(R.string.app_loading));
         Map<String, String> params = new HashMap<>();
-//        params.put("u_token", localUserInfo.getToken());
+        params.put("u_token", localUserInfo.getToken());
         params.put("longitude", longitude);
         params.put("latitude", latitude);
         params.put("y_store_id", y_store_id);
@@ -203,7 +203,15 @@ public class StoreDetailActivity extends BaseActivity {
                 tv_pingfen.setText(response.getInfo().getReview());//店铺评分
                 tv_dingdan.setText(response.getInfo().getOrderSum() + "");//店铺订单
                 tv_jieshao.setText(response.getInfo().getIntroduce());//店铺介绍
-
+                if (response.getInfo().getColle_info() != null && !response.getInfo().getColle_info().getYUserCollectionId().equals("")) {
+                    y_user_collection_id = response.getInfo().getColle_info() .getYUserCollectionId();
+                    isShouChange = true;
+                    iv_xihuan.setImageResource(R.mipmap.ic_xin_yixuan);
+                } else {
+                    y_user_collection_id = "";
+                    isShouChange = false;
+                    iv_xihuan.setImageResource(R.mipmap.ic_xin_weixuan);
+                }
                 //门店服务
                 list_tab = response.getStore_service_list();
                 mAdapter_tab = new CommonAdapter<StoreDetailModel.StoreServiceListBean>
