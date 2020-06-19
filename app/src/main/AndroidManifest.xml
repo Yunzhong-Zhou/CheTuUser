@@ -108,6 +108,9 @@
             android:name=".activity.CarServiceActivity"
             android:label="维修保养查询" />
         <activity
+            android:name=".activity.AddXunJiaActivity"
+            android:label="添加询价项目" />
+        <activity
             android:name=".activity.CarIllegalActivity"
             android:label="违章查询" />
         <activity
