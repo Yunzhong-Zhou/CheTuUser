@@ -37,6 +37,16 @@ public class Fragment3Model implements Serializable {
          * orderSum : 0
          * store_service_list : [{"id":"1024","yStoreServiceId":"692341585785913345","yStoreId":"692341585785913333","yState":1,"lineupSum":10,"isSheet":0,"yStateValue":"洗车","sPrice":100,"pictureStr":"/static/img/20200528151327.png||/static/img/20200528151327.png"}]
          */
+        private boolean isgouxuan = false;
+
+        public boolean isIsgouxuan() {
+            return isgouxuan;
+        }
+
+        public void setIsgouxuan(boolean isgouxuan) {
+            this.isgouxuan = isgouxuan;
+        }
+
 
         private String id;
         private String yStoreId;

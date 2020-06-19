@@ -81,6 +81,14 @@ public class URLs {
      */
     public static final String CarIllegal = HOST+"/api/v1/public/user_vio_regulat_add";
     /**
+     * 发布询价（发布）
+     */
+    public static final String XunJia_Add = HOST+"/api/v1/user/user_inquiry_demand_increase";
+    /**
+     * 车辆救援（发布）
+     */
+    public static final String CarJiuYuan = HOST+"/api/v1/public/user_rescue_add";
+    /**
      * 商品列表
      */
     public static final String ProductList = HOST+"/api/v1/public/get_goods_list";
@@ -100,6 +108,10 @@ public class URLs {
      * 服务分类列表
      */
     public static final String ServiceList = HOST+"/api/v1/public/get_service_list";
+    /**
+     * 服务分类列表
+     */
+    public static final String ServiceList_all = HOST+"/api/v1/public/service_list_all";
     /**
      * *********************************我的*****************************************
      */

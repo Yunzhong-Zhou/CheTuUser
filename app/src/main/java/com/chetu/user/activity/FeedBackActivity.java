@@ -231,7 +231,9 @@ public class FeedBackActivity extends BaseActivity {
                 for (String s : response.getList()) {
                     imgstr += s + "||";
                 }
-                MyLogger.i(">>>>>" + imgstr.substring(0, imgstr.length() - 2));
+                if (!imgstr.equals("")){
+                    imgstr = imgstr.substring(0, imgstr.length() - 2);
+                }
                 Map<String, String> params = new HashMap<>();
                 params.put("u_token", localUserInfo.getToken());
                 params.put("v_classify", textView.getText().toString().trim());
