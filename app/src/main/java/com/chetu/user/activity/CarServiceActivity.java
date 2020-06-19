@@ -78,7 +78,7 @@ public class CarServiceActivity extends BaseActivity {
     List<AddXunJiaModel> list1 = new ArrayList<>();
 
     //发布询价
-    String service_name = "", y_service_id_str = "", y_store_id_str = "", v_list_str = "", is_ok = "1";
+    String service_name = "", y_service_id_str = "", y_store_id_str = "", v_list_str = "";
 
     /**
      * 服务内容
@@ -226,99 +226,11 @@ public class CarServiceActivity extends BaseActivity {
             @Override
             public void onFailure(Call call, Exception e, String err) {
                 hideProgress();
-                /*if (type != 0) {
-                    i2 = -1;
-                    list_sv2.clear();
-                    mAdapter_sv.notifyDataSetChanged();
-                } else {
-                    myToast(err);
-                }*/
             }
 
             @Override
             public void onResponse(ServiceListModel_All response) {
                 hideProgress();
-                /*if (type == 0) {
-                    //第一级
-                    list_sv1 = response.getList();
-                    //请求第二级
-                    if (list_sv1.size() > 0) {
-                        i1 = 0;
-                        HashMap<String, String> params2 = new HashMap<>();
-                        params2.put("y_parent_id", list_sv1.get(0).getYServiceId());
-                        RequestService(params2, 1);
-                    }
-                } else {
-                    //第二级
-                    list_sv2 = response.getList();
-                    i2 = -1;
-                    mAdapter_sv = new CommonAdapter<ServiceListModel.ListBean>(CarServiceActivity.this, R.layout.item_carservice_sv, list_sv1) {
-                        @Override
-                        protected void convert(ViewHolder holder, ServiceListModel.ListBean model, int position) {
-                            holder.setText(R.id.title, model.getVName());
-
-                            RecyclerView rv = holder.getView(R.id.rv);
-                            rv.setLayoutManager(new LinearLayoutManager(CarServiceActivity.this));
-                            ImageView iv = holder.getView(R.id.iv);
-
-                            if (i1 == position) {
-                                iv.setImageResource(R.mipmap.ic_down_black);
-
-                                if (list_sv2.size() > 0) {
-                                    rv.setVisibility(View.VISIBLE);
-                                }
-                                CommonAdapter<ServiceListModel.ListBean> ca = new CommonAdapter<ServiceListModel.ListBean>
-                                        (CarServiceActivity.this, R.layout.item_carservice_sv_child, list_sv2) {
-                                    @Override
-                                    protected void convert(ViewHolder holder, ServiceListModel.ListBean listBean, int item) {
-                                        holder.setText(R.id.textView, listBean.getVName());
-                                        ImageView imageView = holder.getView(R.id.imageView);
-                                        if (i2 == item) {
-                                            imageView.setImageResource(R.mipmap.ic_xuanzhong);
-                                        } else {
-                                            imageView.setImageResource(R.mipmap.ic_weixuan);
-                                        }
-                                    }
-                                };
-                                ca.setOnItemClickListener(new OnItemClickListener() {
-                                    @Override
-                                    public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
-                                        i2 = i;
-                                        ca.notifyDataSetChanged();
-                                    }
-
-                                    @Override
-                                    public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
-                                        return false;
-                                    }
-                                });
-                                rv.setAdapter(ca);
-                            } else {
-                                iv.setImageResource(R.mipmap.ic_next_black);
-                                rv.setVisibility(View.GONE);
-                            }
-                        }
-                    };
-                    mAdapter_sv.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
-                            if (i != i1){
-                                i1 = i;
-                                HashMap<String, String> params2 = new HashMap<>();
-                                params2.put("y_parent_id", list_sv1.get(i).getYServiceId());
-                                RequestService(params2, 1);
-                            }
-
-                        }
-
-                        @Override
-                        public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
-                            return false;
-                        }
-                    });
-                    recyclerView_sv.setAdapter(mAdapter_sv);
-
-                }*/
                 list_sv = response.getList();
                 mAdapter_sv = new CommonAdapter<ServiceListModel_All.ListBean>
                         (CarServiceActivity.this, R.layout.item_carservice_sv, list_sv) {
@@ -577,8 +489,8 @@ public class CarServiceActivity extends BaseActivity {
                 params.put("y_service_id_str", y_service_id_str);
                 params.put("y_store_id_str", y_store_id_str);
                 params.put("v_list_str", v_list_str);
-                params.put("is_ok", is_ok);//1是发布 2保存
-                RequestUpData1(params);
+                params.put("is_ok", "1");//1是发布 2保存
+                RequestUpData1(params,1);
             }
         } else {
             //发布救援
@@ -704,6 +616,67 @@ public class CarServiceActivity extends BaseActivity {
     protected void updateView() {
         titleView.setTitle("发布");
         titleView.setBackground(R.color.background);
+        titleView.setLeftBtn(R.mipmap.ic_return_black, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //选择的服务
+                for (ServiceListModel_All.ListBean listBean : list_sv) {
+                    for (ServiceListModel_All.ListBean.VListBean vListBean : listBean.getV_list()) {
+                        if (vListBean.isIsgouxuan()) {
+                            service_name += vListBean.getVName() + "/";
+                            y_service_id_str += vListBean.getYServiceId() + ",";
+                        }
+                    }
+                }
+                if (!service_name.equals("")) {
+                    service_name = service_name.substring(0, service_name.length() - 1);
+                    MyLogger.i(">>>>>>>>服务名称：" + service_name);
+                    y_service_id_str = y_service_id_str.substring(0, y_service_id_str.length() - 1);
+                    MyLogger.i(">>>>>>>>服务ID：" + y_service_id_str);
+                }
+                //选择的门店
+                for (Fragment3Model.ListBean listBean : list2) {
+                    if (listBean.isIsgouxuan()) {
+                        y_store_id_str = listBean.getYStoreId() + ",";
+                    }
+                }
+                if (!y_store_id_str.equals("")) {
+                    y_store_id_str = y_store_id_str.substring(0, y_store_id_str.length() - 1);
+                    MyLogger.i(">>>>>>>>店铺ID：" + y_store_id_str);
+                }
+                //添加项目
+                v_list_str = jsonArray.toString();
+
+
+                //保存
+                if (!y_user_sedan_id.equals("") || !service_name.equals("") && !y_store_id_str.equals("") && !v_list_str.equals("")) {
+                    showToast("是否保存到待发布？", "是", "否", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                            showProgress(true, getString(R.string.app_loading1));
+                            Map<String, String> params = new HashMap<>();
+                            params.put("u_token", localUserInfo.getToken());
+                            params.put("y_user_sedan_id", y_user_sedan_id);
+                            params.put("service_name", service_name);
+                            params.put("y_service_id_str", y_service_id_str);
+                            params.put("y_store_id_str", y_store_id_str);
+                            params.put("v_list_str", v_list_str);
+                            params.put("is_ok", "2");//1是发布 2保存
+                            RequestUpData1(params,2);
+                        }
+                    }, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                            finish();
+                        }
+                    });
+                } else {
+                    finish();
+                }
+            }
+        });
     }
 
     @Override
@@ -826,7 +799,7 @@ public class CarServiceActivity extends BaseActivity {
      *
      * @param params
      */
-    private void RequestUpData1(Map<String, String> params) {
+    private void RequestUpData1(Map<String, String> params,int save) {
         OkhttpUtil.okHttpPost(URLs.XunJia_Add, params, headerMap, new CallBackUtil<Object>() {
             @Override
             public Object onParseResponse(Call call, Response response) {
@@ -842,8 +815,25 @@ public class CarServiceActivity extends BaseActivity {
             @Override
             public void onResponse(Object response) {
                 hideProgress();
-                myToast("提交成功");
-                finish();
+                if (save ==2){
+                    //保存
+                    showToast("保存成功\n您可在【我的】-【我的发布】进行发布", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                            finish();
+                        }
+                    });
+                }else {
+                    showToast("发布成功,请耐心等待结果\n您可在【我的】-【我的发布】查看报价", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                            finish();
+                        }
+                    });
+                }
+
             }
         });
     }
