@@ -178,6 +178,9 @@
             android:name=".activity.WaitingReleaseActivity"
             android:label="待发布" />
         <activity
+            android:name=".activity.QuotedPriceActivity"
+            android:label="已报价" />
+        <activity
             android:name=".activity.NotebookActivity"
             android:label="记事本" />
         <activity

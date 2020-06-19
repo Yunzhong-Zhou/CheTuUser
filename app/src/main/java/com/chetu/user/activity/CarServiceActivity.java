@@ -490,7 +490,7 @@ public class CarServiceActivity extends BaseActivity {
                 params.put("y_store_id_str", y_store_id_str);
                 params.put("v_list_str", v_list_str);
                 params.put("is_ok", "1");//1是发布 2保存
-                RequestUpData1(params,1);
+                RequestUpData1(params, 1);
             }
         } else {
             //发布救援
@@ -647,9 +647,8 @@ public class CarServiceActivity extends BaseActivity {
                 //添加项目
                 v_list_str = jsonArray.toString();
 
-
                 //保存
-                if (!y_user_sedan_id.equals("") || !service_name.equals("") && !y_store_id_str.equals("") && !v_list_str.equals("")) {
+                if (!y_user_sedan_id.equals("") && !service_name.equals("")) {
                     showToast("是否保存到待发布？", "是", "否", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -663,7 +662,7 @@ public class CarServiceActivity extends BaseActivity {
                             params.put("y_store_id_str", y_store_id_str);
                             params.put("v_list_str", v_list_str);
                             params.put("is_ok", "2");//1是发布 2保存
-                            RequestUpData1(params,2);
+                            RequestUpData1(params, 2);
                         }
                     }, new View.OnClickListener() {
                         @Override
@@ -799,7 +798,7 @@ public class CarServiceActivity extends BaseActivity {
      *
      * @param params
      */
-    private void RequestUpData1(Map<String, String> params,int save) {
+    private void RequestUpData1(Map<String, String> params, int save) {
         OkhttpUtil.okHttpPost(URLs.XunJia_Add, params, headerMap, new CallBackUtil<Object>() {
             @Override
             public Object onParseResponse(Call call, Response response) {
@@ -815,7 +814,7 @@ public class CarServiceActivity extends BaseActivity {
             @Override
             public void onResponse(Object response) {
                 hideProgress();
-                if (save ==2){
+                if (save == 2) {
                     //保存
                     showToast("保存成功\n您可在【我的】-【我的发布】进行发布", new View.OnClickListener() {
                         @Override
@@ -824,7 +823,7 @@ public class CarServiceActivity extends BaseActivity {
                             finish();
                         }
                     });
-                }else {
+                } else {
                     showToast("发布成功,请耐心等待结果\n您可在【我的】-【我的发布】查看报价", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {

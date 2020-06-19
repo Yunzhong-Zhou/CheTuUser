@@ -2,13 +2,16 @@ package com.chetu.user.activity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.chetu.user.R;
 import com.chetu.user.base.BaseActivity;
-import com.chetu.user.model.Fragment2Model;
+import com.chetu.user.model.WaitingReleaseModel;
 import com.chetu.user.net.URLs;
 import com.chetu.user.okhttp.CallBackUtil;
 import com.chetu.user.okhttp.OkhttpUtil;
+import com.chetu.user.utils.CommonUtil;
 import com.liaoinstan.springview.widget.SpringView;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
@@ -29,25 +32,24 @@ import okhttp3.Response;
  * 待发布
  */
 public class WaitingReleaseActivity extends BaseActivity {
+    int type = 1, is_ok = 2;// 0、待发布  1、已发布  2、全部
+    LinearLayout linearLayout1, linearLayout2, linearLayout3;
+    TextView textView1, textView2, textView3;
+    View view1, view2, view3;
     int page = 0;
     private RecyclerView recyclerView;
-    List<Fragment2Model.ListBean> list = new ArrayList<>();
-    CommonAdapter<Fragment2Model.ListBean> mAdapter;
+    List<WaitingReleaseModel.ListBean> list = new ArrayList<>();
+    CommonAdapter<WaitingReleaseModel.ListBean> mAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_waitingrelease);
-        mImmersionBar.reset()
-                .statusBarColor(R.color.background)
-                .fitsSystemWindows(true)  //使用该属性,必须指定状态栏颜色
-                .keyboardEnable(true)  //解决软键盘与底部输入框冲突问题
-                .statusBarDarkFont(true, 0.2f) //原理：如果当前设备支持状态栏字体变色，会设置状态栏字体为黑色，如果当前设备不支持状态栏字体变色，会使当前状态栏加上透明度，否则不执行透明度
-                .init();
-//        findViewByID_My(R.id.headView).setPadding(0, (int) CommonUtil.getStatusBarHeight(this), 0, 0);
     }
+
     @Override
     protected void initView() {
-//刷新
+        //刷新
         setSpringViewMore(true);//不需要加载更多
         springView.setListener(new SpringView.OnFreshListener() {
             @Override
@@ -55,6 +57,7 @@ public class WaitingReleaseActivity extends BaseActivity {
                 page = 0;
                 Map<String, String> params = new HashMap<>();
                 params.put("page", page + "");
+                params.put("is_ok", is_ok + "");
                 params.put("u_token", localUserInfo.getToken());
                 Request(params);
             }
@@ -65,6 +68,7 @@ public class WaitingReleaseActivity extends BaseActivity {
                 Map<String, String> params = new HashMap<>();
                 params.put("u_token", localUserInfo.getToken());
                 params.put("page", page + "");
+                params.put("is_ok", is_ok + "");
                 RequestMore(params);
             }
         });
@@ -72,6 +76,13 @@ public class WaitingReleaseActivity extends BaseActivity {
         recyclerView = findViewByID_My(R.id.recyclerView);
         LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(mLinearLayoutManager);
+
+        textView1 = findViewByID_My(R.id.textView1);
+        textView2 = findViewByID_My(R.id.textView2);
+        textView3 = findViewByID_My(R.id.textView3);
+        view1 = findViewByID_My(R.id.view1);
+        view2 = findViewByID_My(R.id.view2);
+        view3 = findViewByID_My(R.id.view3);
     }
 
     @Override
@@ -86,14 +97,15 @@ public class WaitingReleaseActivity extends BaseActivity {
         page = 0;
         Map<String, String> params = new HashMap<>();
         params.put("page", page + "");
+        params.put("is_ok", is_ok + "");
         params.put("u_token", localUserInfo.getToken());
         Request(params);
     }
 
     private void Request(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.Fragment3, params, headerMap, new CallBackUtil<Fragment2Model>() {
+        OkhttpUtil.okHttpPost(URLs.WaitingRelease, params, headerMap, new CallBackUtil<WaitingReleaseModel>() {
             @Override
-            public Fragment2Model onParseResponse(Call call, Response response) {
+            public WaitingReleaseModel onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -101,32 +113,92 @@ public class WaitingReleaseActivity extends BaseActivity {
             public void onFailure(Call call, Exception e, String err) {
                 hideProgress();
                 showEmptyPage();
-                myToast(err);
+//                myToast(err);
             }
 
             @Override
-            public void onResponse(Fragment2Model response) {
+            public void onResponse(WaitingReleaseModel response) {
                 hideProgress();
                 list = response.getList();
                 if (list.size() > 0) {
                     showContentPage();
-                    mAdapter = new CommonAdapter<Fragment2Model.ListBean>
+                    mAdapter = new CommonAdapter<WaitingReleaseModel.ListBean>
                             (WaitingReleaseActivity.this, R.layout.item_waitingrelease, list) {
                         @Override
-                        protected void convert(ViewHolder holder, Fragment2Model.ListBean model, int position) {
-                       /* TextView tv1 = holder.getView(R.id.tv1);
-                        TextView tv2 = holder.getView(R.id.tv2);
-                        LinearLayout ll = holder.getView(R.id.ll);
-                        tv1.setText(model.getName());
-                        tv2.setText(model.getName());
-
-                        if (item == position) {
-                            ll.setVisibility(View.VISIBLE);
-                            tv1.setVisibility(View.GONE);
-                        } else {
-                            ll.setVisibility(View.GONE);
-                            tv1.setVisibility(View.VISIBLE);
-                        }*/
+                        protected void convert(ViewHolder holder, WaitingReleaseModel.ListBean model, int position) {
+                            holder.setText(R.id.tv_title,model.getUser_sedan_info().getSName());
+                            holder.setText(R.id.tv_num,model.getUser_sedan_info().getSNumber());
+                            holder.setText(R.id.tv_content,model.getServiceName());
+                            holder.setText(R.id.tv_time,model.getCreateDate());
+                            TextView tv_delete = holder.getView(R.id.tv_delete);
+                            TextView tv_fabu = holder.getView(R.id.tv_fabu);
+                            TextView tv_baojia = holder.getView(R.id.tv_baojia);
+                            switch (model.getIsOk()){
+                                case 0:
+                                    //待发布
+                                    tv_delete.setVisibility(View.VISIBLE);
+                                    tv_fabu.setVisibility(View.VISIBLE);
+                                    tv_baojia.setVisibility(View.VISIBLE);
+                                    break;
+                                case 1:
+                                    //已发布
+                                    tv_delete.setVisibility(View.VISIBLE);
+                                    tv_fabu.setVisibility(View.GONE);
+                                    tv_baojia.setVisibility(View.VISIBLE);
+                                    break;
+                            }
+                            tv_delete.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    //删除
+                                    showToast("确认删除该询价吗？", "确认", "取消", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            dialog.dismiss();
+                                            showProgress(true, "正在删除...");
+                                            HashMap<String, String> params2 = new HashMap<>();
+                                            params2.put("y_inquiry_demand_id", model.getYInquiryDemandId());
+                                            params2.put("u_token", localUserInfo.getToken());
+                                            RequestDelete(params2);
+                                        }
+                                    }, new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            dialog.dismiss();
+                                        }
+                                    });
+                                }
+                            });
+                            tv_fabu.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    showToast("确认发布该询价吗？", "确认", "取消", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            dialog.dismiss();
+                                            showProgress(true, "正在发布...");
+                                            HashMap<String, String> params2 = new HashMap<>();
+                                            params2.put("y_inquiry_demand_id", model.getYInquiryDemandId());
+                                            params2.put("u_token", localUserInfo.getToken());
+                                            RequestFaBu(params2);
+                                        }
+                                    }, new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            dialog.dismiss();
+                                        }
+                                    });
+                                }
+                            });
+                            tv_baojia.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    //报价
+                                    Bundle bundle = new Bundle();
+                                    bundle.putSerializable("detail",model);
+                                    CommonUtil.gotoActivityWithData(WaitingReleaseActivity.this,QuotedPriceActivity.class,bundle,false);
+                                }
+                            });
 
                         }
                     };
@@ -150,9 +222,9 @@ public class WaitingReleaseActivity extends BaseActivity {
     }
 
     private void RequestMore(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.Fragment3, params, headerMap, new CallBackUtil<Fragment2Model>() {
+        OkhttpUtil.okHttpPost(URLs.WaitingRelease, params, headerMap, new CallBackUtil<WaitingReleaseModel>() {
             @Override
-            public Fragment2Model onParseResponse(Call call, Response response) {
+            public WaitingReleaseModel onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -164,9 +236,9 @@ public class WaitingReleaseActivity extends BaseActivity {
             }
 
             @Override
-            public void onResponse(Fragment2Model response) {
+            public void onResponse(WaitingReleaseModel response) {
                 hideProgress();
-                List<Fragment2Model.ListBean> list1 = new ArrayList<>();
+                List<WaitingReleaseModel.ListBean> list1 = new ArrayList<>();
                 list1 = response.getList();
                 if (list1.size() == 0) {
                     page--;
@@ -178,10 +250,110 @@ public class WaitingReleaseActivity extends BaseActivity {
             }
         });
     }
+    /**
+     * 删除
+     *
+     * @param params
+     */
+    private void RequestDelete(HashMap<String, String> params) {
+        OkhttpUtil.okHttpPost(URLs.DeleteXunJia, params, headerMap, new CallBackUtil<Object>() {
+            @Override
+            public Object onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+                hideProgress();
+                myToast(err);
+            }
+
+            @Override
+            public void onResponse(Object response) {
+                hideProgress();
+                myToast("删除成功");
+                requestServer();
+            }
+        });
+    }
+    /**
+     * 发布
+     *
+     * @param params
+     */
+    private void RequestFaBu(HashMap<String, String> params) {
+        OkhttpUtil.okHttpPost(URLs.FaBuXunJia, params, headerMap, new CallBackUtil<Object>() {
+            @Override
+            public Object onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+                hideProgress();
+                myToast(err);
+            }
+
+            @Override
+            public void onResponse(Object response) {
+                hideProgress();
+                myToast("发布成功");
+                requestServer();
+            }
+        });
+    }
+
+
+    @Override
+    public void onClick(View v) {
+        super.onClick(v);
+        switch (v.getId()) {
+            case R.id.linearLayout1:
+                //全部
+                type = 1;
+                is_ok = 2;
+                changeUI();
+                break;
+            case R.id.linearLayout2:
+                //待发布
+                type = 2;
+                is_ok = 0;
+                changeUI();
+                break;
+            case R.id.linearLayout3:
+                //已发布
+                type = 3;
+                is_ok = 1;
+                changeUI();
+                break;
+        }
+    }
+
+    private void changeUI() {
+        switch (type) {
+            case 1:
+                view1.setVisibility(View.VISIBLE);
+                view2.setVisibility(View.INVISIBLE);
+                view3.setVisibility(View.INVISIBLE);
+                requestServer();
+                break;
+            case 2:
+                view1.setVisibility(View.INVISIBLE);
+                view2.setVisibility(View.VISIBLE);
+                view3.setVisibility(View.INVISIBLE);
+                requestServer();
+                break;
+            case 3:
+                view1.setVisibility(View.INVISIBLE);
+                view2.setVisibility(View.INVISIBLE);
+                view3.setVisibility(View.VISIBLE);
+                requestServer();
+                break;
+        }
+    }
 
     @Override
     protected void updateView() {
         titleView.setTitle("待发布");
-        titleView.setBackground(R.color.background);
     }
 }
