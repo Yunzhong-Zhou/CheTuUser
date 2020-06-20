@@ -489,7 +489,7 @@ public class CarServiceActivity extends BaseActivity {
                 params.put("y_service_id_str", y_service_id_str);
                 params.put("y_store_id_str", y_store_id_str);
                 params.put("v_list_str", v_list_str);
-                params.put("is_ok", "1");//1是发布 2保存
+                params.put("is_ok", "1");//1是发布 0保存
                 RequestUpData1(params, 1);
             }
         } else {
@@ -553,6 +553,8 @@ public class CarServiceActivity extends BaseActivity {
             } else {
                 myToast("请选择门店");
             }
+        }else {
+            y_store_id_str = "";
         }
 
         //添加项目
@@ -577,6 +579,8 @@ public class CarServiceActivity extends BaseActivity {
             } else {
                 myToast("请选择门店");
             }
+        } else {
+            y_store_id = "";
         }
 
         if (y_user_sedan_id.equals("")) {
@@ -661,8 +665,8 @@ public class CarServiceActivity extends BaseActivity {
                             params.put("y_service_id_str", y_service_id_str);
                             params.put("y_store_id_str", y_store_id_str);
                             params.put("v_list_str", v_list_str);
-                            params.put("is_ok", "2");//1是发布 2保存
-                            RequestUpData1(params, 2);
+                            params.put("is_ok", "0");//1是发布 0保存
+                            RequestUpData1(params, 0);
                         }
                     }, new View.OnClickListener() {
                         @Override
@@ -814,7 +818,7 @@ public class CarServiceActivity extends BaseActivity {
             @Override
             public void onResponse(Object response) {
                 hideProgress();
-                if (save == 2) {
+                if (save == 0) {
                     //保存
                     showToast("保存成功\n您可在【我的】-【我的发布】进行发布", new View.OnClickListener() {
                         @Override
@@ -862,6 +866,7 @@ public class CarServiceActivity extends BaseActivity {
             @Override
             public void onResponse(UpFileModel response) {
 //                hideProgress();
+                car_img = "";
                 for (String s : response.getList()) {
                     car_img += s + "||";
                 }
@@ -904,8 +909,13 @@ public class CarServiceActivity extends BaseActivity {
             @Override
             public void onResponse(Object response) {
                 hideProgress();
-                myToast("提交成功");
-                finish();
+                showToast("救援发布成功,请耐心等待", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                        finish();
+                    }
+                });
             }
         });
     }

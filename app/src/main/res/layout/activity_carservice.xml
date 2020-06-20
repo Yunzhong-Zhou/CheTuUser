@@ -293,7 +293,7 @@
                             android:textColorHint="@color/grey"
                             android:textSize="15sp" />-->
                         <EditText
-                            android:id="@+id/editText5"
+                            android:id="@+id/editText4"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@color/transparent"
@@ -324,7 +324,7 @@
                             android:textSize="14sp" />
 
                         <EditText
-                            android:id="@+id/editText4"
+                            android:id="@+id/editText5"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@color/transparent"
