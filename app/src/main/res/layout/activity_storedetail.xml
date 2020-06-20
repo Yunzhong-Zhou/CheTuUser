@@ -333,7 +333,7 @@
                         android:textSize="14sp" />
 
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recyclerView2"
+                        android:id="@+id/rv_tese"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
 
@@ -344,6 +344,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:paddingBottom="13dp"
                     android:background="@drawable/yuanjiao_10_baise"
                     android:orientation="vertical">
 
@@ -353,15 +354,17 @@
                         android:gravity="center"
                         android:paddingLeft="13dp"
                         android:paddingTop="15dp"
-                        android:paddingBottom="15dp"
+                        android:paddingBottom="10dp"
                         android:text="门店技师"
                         android:textColor="@color/black3"
                         android:textSize="14sp" />
 
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recyclerView3"
+                        android:id="@+id/rv_jishi"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"/>
 
                 </LinearLayout>
                 <!--提问-->
@@ -401,7 +404,7 @@
                     </LinearLayout>
 
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recyclerView4"
+                        android:id="@+id/rv_wenti"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
 
@@ -426,7 +429,7 @@
                         android:textSize="14sp" />
 
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recyclerView5"
+                        android:id="@+id/rv_pinglun"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
 

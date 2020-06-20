@@ -8,13 +8,13 @@ import java.util.List;
  */
 public class StoreDetailModel implements Serializable {
     /**
-     * store_tech_list : []
-     * store_service_list : [{"id":"1026","yStoreServiceId":"692341585785913347","yStoreId":"692341585785913346","yState":1,"lineupSum":10,"isSheet":0,"yStateValue":"美容","sPrice":100,"pictureStr":"/static/img/20200528151327.png"}]
-     * info : {"id":"1019","yStoreId":"692341585785913346","userId":"663341570698772481","vName":"洗车商店测试","review":"5分","keywsr":"技术 修车 实","address":"观澜观光路与新丹路交叉口附近","longitude":"116.49798","latitude":"39.916485","distance":" ","phone":"  400-2333-1123","vLevel":"A级","introduce":"听广告几年了，终于体验了特色服务。轮胎是其专长。听说11年开始，线上业务。16年开始线下。现在全国1500多家店。","charactStr":"/upload/store/222.png||/upload/store/222.png","pictureStr":"/upload/store/222.png||/upload/store/222.png","slogan":"打腊 首单50","pictureArr":["/upload/store/222.png","/upload/store/222.png"],"charactArr":["/upload/store/222.png","/upload/store/222.png"],"orderSum":0,"isIndex":1,"isCollection":1,"colle_info":{"id":"25","yUserCollectionId":"723480951170007040","userId":"714547022807433216","yId":"692341585785913346","category":2,"createDate":"2020-06-19 10:15:00"}}
+     * store_tech_list : [{"id":"0","userId":"0","userBalance":0,"userName":"安卓兄弟","userIntegral":"0","yStoreId":"692341585785913345","userHash":"8E107F47DECA219F8E5366E9B76FCDB8","headPortrait":" /upload/timg.jpg"},{"id":"0","userId":"0","userBalance":0,"userName":"阿斯顿马丁","userIntegral":"0","yStoreId":"692341585785913345","userHash":"843B1049032A7E7C9F7D2E2CBE6D37A6","headPortrait":"/upload/2020-06-18/20200618164348_110881.jpg"}]
+     * store_service_list : [{"id":"1025","yStoreServiceId":"692341585785913346","yStoreId":"692341585785913345","yState":1,"lineupSum":10,"isSheet":0,"yStateValue":"保养","sPrice":100,"pictureStr":"/static/img/20200528151327.png"}]
+     * info : {"id":"1018","yStoreId":"692341585785913345","userId":"719539276219416576","vName":"维修商店测试","review":"4.5分","keywsr":"技术 修车 实","address":"凤凰山附近","longitude":"116.49798","latitude":"39.916485","distance":" ","phone":"  400-2333-1123","vLevel":"A级","introduce":"听广告几年了，终于体验了特色服务。轮胎是其专长。听说11年开始，线上业务。16年开始线下。现在全国1500多家店。","charactStr":"/upload/store/222.png||/upload/store/222.png","pictureStr":"/upload/store/222.png||/upload/store/222.png","slogan":"维修商店测试 美容首单50","pictureArr":["/upload/store/222.png","/upload/store/222.png"],"charactArr":["/upload/store/222.png","/upload/store/222.png"],"orderSum":0,"isIndex":1,"isCollection":1,"colle_info":{"id":"28","yUserCollectionId":"723934109256122368","userId":"714547022807433216","yId":"692341585785913345","category":2,"createDate":"2020-06-20 16:15:41"}}
      */
 
     private InfoBean info;
-    private List<?> store_tech_list;
+    private List<StoreTechListBean> store_tech_list;
     private List<StoreServiceListBean> store_service_list;
 
     public InfoBean getInfo() {
@@ -25,11 +25,11 @@ public class StoreDetailModel implements Serializable {
         this.info = info;
     }
 
-    public List<?> getStore_tech_list() {
+    public List<StoreTechListBean> getStore_tech_list() {
         return store_tech_list;
     }
 
-    public void setStore_tech_list(List<?> store_tech_list) {
+    public void setStore_tech_list(List<StoreTechListBean> store_tech_list) {
         this.store_tech_list = store_tech_list;
     }
 
@@ -43,13 +43,13 @@ public class StoreDetailModel implements Serializable {
 
     public static class InfoBean {
         /**
-         * id : 1019
-         * yStoreId : 692341585785913346
-         * userId : 663341570698772481
-         * vName : 洗车商店测试
-         * review : 5分
+         * id : 1018
+         * yStoreId : 692341585785913345
+         * userId : 719539276219416576
+         * vName : 维修商店测试
+         * review : 4.5分
          * keywsr : 技术 修车 实
-         * address : 观澜观光路与新丹路交叉口附近
+         * address : 凤凰山附近
          * longitude : 116.49798
          * latitude : 39.916485
          * distance :
@@ -58,13 +58,13 @@ public class StoreDetailModel implements Serializable {
          * introduce : 听广告几年了，终于体验了特色服务。轮胎是其专长。听说11年开始，线上业务。16年开始线下。现在全国1500多家店。
          * charactStr : /upload/store/222.png||/upload/store/222.png
          * pictureStr : /upload/store/222.png||/upload/store/222.png
-         * slogan : 打腊 首单50
+         * slogan : 维修商店测试 美容首单50
          * pictureArr : ["/upload/store/222.png","/upload/store/222.png"]
          * charactArr : ["/upload/store/222.png","/upload/store/222.png"]
          * orderSum : 0
          * isIndex : 1
          * isCollection : 1
-         * colle_info : {"id":"25","yUserCollectionId":"723480951170007040","userId":"714547022807433216","yId":"692341585785913346","category":2,"createDate":"2020-06-19 10:15:00"}
+         * colle_info : {"id":"28","yUserCollectionId":"723934109256122368","userId":"714547022807433216","yId":"692341585785913345","category":2,"createDate":"2020-06-20 16:15:41"}
          */
 
         private String id;
@@ -268,12 +268,12 @@ public class StoreDetailModel implements Serializable {
 
         public static class ColleInfoBean {
             /**
-             * id : 25
-             * yUserCollectionId : 723480951170007040
+             * id : 28
+             * yUserCollectionId : 723934109256122368
              * userId : 714547022807433216
-             * yId : 692341585785913346
+             * yId : 692341585785913345
              * category : 2
-             * createDate : 2020-06-19 10:15:00
+             * createDate : 2020-06-20 16:15:41
              */
 
             private String id;
@@ -333,15 +333,101 @@ public class StoreDetailModel implements Serializable {
         }
     }
 
+    public static class StoreTechListBean {
+        /**
+         * id : 0
+         * userId : 0
+         * userBalance : 0.0
+         * userName : 安卓兄弟
+         * userIntegral : 0
+         * yStoreId : 692341585785913345
+         * userHash : 8E107F47DECA219F8E5366E9B76FCDB8
+         * headPortrait :  /upload/timg.jpg
+         */
+
+        private String id;
+        private String userId;
+        private double userBalance;
+        private String userName;
+        private String userIntegral;
+        private String yStoreId;
+        private String userHash;
+        private String headPortrait;
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getUserId() {
+            return userId;
+        }
+
+        public void setUserId(String userId) {
+            this.userId = userId;
+        }
+
+        public double getUserBalance() {
+            return userBalance;
+        }
+
+        public void setUserBalance(double userBalance) {
+            this.userBalance = userBalance;
+        }
+
+        public String getUserName() {
+            return userName;
+        }
+
+        public void setUserName(String userName) {
+            this.userName = userName;
+        }
+
+        public String getUserIntegral() {
+            return userIntegral;
+        }
+
+        public void setUserIntegral(String userIntegral) {
+            this.userIntegral = userIntegral;
+        }
+
+        public String getYStoreId() {
+            return yStoreId;
+        }
+
+        public void setYStoreId(String yStoreId) {
+            this.yStoreId = yStoreId;
+        }
+
+        public String getUserHash() {
+            return userHash;
+        }
+
+        public void setUserHash(String userHash) {
+            this.userHash = userHash;
+        }
+
+        public String getHeadPortrait() {
+            return headPortrait;
+        }
+
+        public void setHeadPortrait(String headPortrait) {
+            this.headPortrait = headPortrait;
+        }
+    }
+
     public static class StoreServiceListBean {
         /**
-         * id : 1026
-         * yStoreServiceId : 692341585785913347
-         * yStoreId : 692341585785913346
+         * id : 1025
+         * yStoreServiceId : 692341585785913346
+         * yStoreId : 692341585785913345
          * yState : 1
          * lineupSum : 10
          * isSheet : 0
-         * yStateValue : 美容
+         * yStateValue : 保养
          * sPrice : 100.0
          * pictureStr : /static/img/20200528151327.png
          */

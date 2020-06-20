@@ -5,7 +5,7 @@ import android.view.View;
 
 import com.chetu.user.R;
 import com.chetu.user.base.BaseActivity;
-import com.chetu.user.model.Fragment2Model;
+import com.chetu.user.model.CouponModel;
 import com.chetu.user.net.URLs;
 import com.chetu.user.okhttp.CallBackUtil;
 import com.chetu.user.okhttp.OkhttpUtil;
@@ -31,8 +31,8 @@ import okhttp3.Response;
 public class CouponActivity extends BaseActivity {
     int page = 0;
     private RecyclerView recyclerView;
-    List<Fragment2Model.ListBean> list = new ArrayList<>();
-    CommonAdapter<Fragment2Model.ListBean> mAdapter;
+    List<CouponModel.ListBean> list = new ArrayList<>();
+    CommonAdapter<CouponModel.ListBean> mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +78,7 @@ public class CouponActivity extends BaseActivity {
     protected void initData() {
         requestServer();
     }
+
     @Override
     public void requestServer() {
         super.requestServer();
@@ -88,32 +89,35 @@ public class CouponActivity extends BaseActivity {
         params.put("u_token", localUserInfo.getToken());
         Request(params);
     }
+
     private void Request(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.Coupon, params, headerMap, new CallBackUtil<Fragment2Model>() {
+        OkhttpUtil.okHttpPost(URLs.Coupon, params, headerMap, new CallBackUtil<CouponModel>() {
             @Override
-            public Fragment2Model onParseResponse(Call call, Response response) {
+            public CouponModel onParseResponse(Call call, Response response) {
                 return null;
             }
 
             @Override
             public void onFailure(Call call, Exception e, String err) {
                 hideProgress();
-//                showEmptyPage();
-                myToast(err);
+                showEmptyPage();
+//                myToast(err);
             }
 
             @Override
-            public void onResponse(Fragment2Model response) {
+            public void onResponse(CouponModel response) {
                 hideProgress();
                 list = response.getList();
                 if (list.size() > 0) {
                     showContentPage();
-                    mAdapter = new CommonAdapter<Fragment2Model.ListBean>
+                    mAdapter = new CommonAdapter<CouponModel.ListBean>
                             (CouponActivity.this, R.layout.item_coupon, list) {
                         @Override
-                        protected void convert(ViewHolder holder, Fragment2Model.ListBean model, int position) {
-
-
+                        protected void convert(ViewHolder holder, CouponModel.ListBean model, int position) {
+                            holder.setText(R.id.tv_money, "¥" + model.getCMoney());
+                            holder.setText(R.id.tv_title, model.getCTitle());
+                            holder.setText(R.id.tv_time, "有效日期：" + model.getCEndTime());
+                            holder.setText(R.id.tv_content, model.getCMsg());
                         }
                     };
                     mAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
@@ -136,9 +140,9 @@ public class CouponActivity extends BaseActivity {
     }
 
     private void RequestMore(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.Fragment3, params, headerMap, new CallBackUtil<Fragment2Model>() {
+        OkhttpUtil.okHttpPost(URLs.Fragment3, params, headerMap, new CallBackUtil<CouponModel>() {
             @Override
-            public Fragment2Model onParseResponse(Call call, Response response) {
+            public CouponModel onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -150,9 +154,9 @@ public class CouponActivity extends BaseActivity {
             }
 
             @Override
-            public void onResponse(Fragment2Model response) {
+            public void onResponse(CouponModel response) {
                 hideProgress();
-                List<Fragment2Model.ListBean> list1 = new ArrayList<>();
+                List<CouponModel.ListBean> list1 = new ArrayList<>();
                 list1 = response.getList();
                 if (list1.size() == 0) {
                     page--;
@@ -164,6 +168,7 @@ public class CouponActivity extends BaseActivity {
             }
         });
     }
+
     @Override
     protected void updateView() {
         titleView.setTitle("优惠券");

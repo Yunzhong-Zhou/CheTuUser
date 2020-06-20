@@ -405,7 +405,7 @@ public class ProductDetailActivity extends BaseActivity {
                  */
                 Map<String, String> params = new HashMap<>();
                 params.put("y_goods_id", y_goods_id);
-                params.put("y_store_id", y_store_id);
+                params.put("y_store_id", "");
                 params.put("page", page + "");
 //                params.put("u_token", localUserInfo.getToken());
                 RequestPingJia(params);

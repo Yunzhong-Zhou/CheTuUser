@@ -104,6 +104,8 @@ public class URLs {
      * 门店详情
      */
     public static final String StoreDetail = HOST+"/api/v1/public/get_store_details";
+    //问答
+    public static final String StoreDetail_WenDa = HOST+"/api/v1/public/user_store_ques_ans_list";
     /**
      * 服务分类列表
      */
