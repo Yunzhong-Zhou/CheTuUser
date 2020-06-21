@@ -1,10 +1,13 @@
 package com.chetu.user.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -12,16 +15,23 @@ import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
+import com.bumptech.glide.Glide;
 import com.chetu.user.R;
 import com.chetu.user.activity.DraftActivity;
+import com.chetu.user.activity.MainActivity;
+import com.chetu.user.activity.MyGarageActivity;
 import com.chetu.user.activity.SearchActivity;
+import com.chetu.user.activity.StoreDetailActivity;
 import com.chetu.user.base.BaseFragment;
-import com.chetu.user.model.Fragment2Model;
+import com.chetu.user.model.Fragment3Model;
+import com.chetu.user.model.ServiceListModel_All;
 import com.chetu.user.net.URLs;
 import com.chetu.user.okhttp.CallBackUtil;
 import com.chetu.user.okhttp.OkhttpUtil;
 import com.chetu.user.utils.CommonUtil;
 import com.chetu.user.utils.MyLogger;
+import com.cy.cyflowlayoutlibrary.FlowLayout;
+import com.cy.cyflowlayoutlibrary.FlowLayoutAdapter;
 import com.liaoinstan.springview.widget.SpringView;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
@@ -47,13 +57,25 @@ public class Fragment2 extends BaseFragment {
     EditText et_search;
 
     int page = 0;
-    String longitude = "", latitude = "";
+    String longitude = "", latitude = "",service_name = "";
     private RecyclerView recyclerView;
-    List<Fragment2Model.ListBean> list = new ArrayList<>();
-    CommonAdapter<Fragment2Model.ListBean> mAdapter;
+    List<Fragment3Model.ListBean> list = new ArrayList<>();
+    CommonAdapter<Fragment3Model.ListBean> mAdapter;
 
     TextView tv_caogao;
 
+    //车辆信息
+    LinearLayout ll_car;
+    TextView tv_carname,tv_carnum;
+    ImageView iv_carlogo;
+
+    /**
+     * 服务内容
+     */
+    RecyclerView recyclerView_sv;
+    CommonAdapter<ServiceListModel_All.ListBean> mAdapter_sv;
+    List<ServiceListModel_All.ListBean> list_sv = new ArrayList<>();
+    int i1 = 0;
     //定位
     //声明AMapLocationClient类对象
     private AMapLocationClient mLocationClient = null;
@@ -91,10 +113,18 @@ public class Fragment2 extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-       /* if (MainActivity.item == 1) {
-            requestServer();
-            tv_addr.setText(localUserInfo.getCityname());
-        }*/
+        if (MainActivity.item == 1) {
+            if (!localUserInfo.getCarname().equals("")){
+                tv_carname.setText(localUserInfo.getCarname());
+                tv_carnum.setText(localUserInfo.getCarnum());
+                Glide.with(getActivity()).load(URLs.IMGHOST + localUserInfo.getCarlogo())
+                        .centerCrop()
+                        .into(iv_carlogo);//加载图片
+            }
+
+            /*requestServer();
+            tv_addr.setText(localUserInfo.getCityname());*/
+        }
     }
 
     @Override
@@ -115,10 +145,12 @@ public class Fragment2 extends BaseFragment {
             public void onRefresh() {
                 page = 0;
                 Map<String, String> params = new HashMap<>();
-                params.put("service_name","");
+                params.put("service_name", service_name);
                 params.put("page", page + "");
                 params.put("longitude", longitude);
                 params.put("latitude", latitude);
+                params.put("is_review", "1");
+                params.put("is_index", "0");//1为首页数据
                 Request(params);
             }
 
@@ -126,10 +158,12 @@ public class Fragment2 extends BaseFragment {
             public void onLoadmore() {
                 page++;
                 Map<String, String> params = new HashMap<>();
-                params.put("service_name","");
+                params.put("service_name", service_name);
                 params.put("page", page + "");
                 params.put("longitude", longitude);
                 params.put("latitude", latitude);
+                params.put("is_review", "1");
+                params.put("is_index", "0");//1为首页数据
                 RequestMore(params);
             }
         });
@@ -181,11 +215,22 @@ public class Fragment2 extends BaseFragment {
             }
         });*/
 
+        ll_car = findViewByID_My(R.id.ll_car);
+        ll_car.setOnClickListener(this);
+        tv_carname = findViewByID_My(R.id.tv_carname);
+        tv_carnum = findViewByID_My(R.id.tv_carnum);
+        iv_carlogo = findViewByID_My(R.id.iv_carlogo);
+
+
+        //服务列表
+        recyclerView_sv = findViewByID_My(R.id.recyclerView_sv);
+        LinearLayoutManager llm1 = new LinearLayoutManager(getActivity());
+        llm1.setOrientation(LinearLayoutManager.HORIZONTAL);// 设置 recyclerview 布局方式为横向布局
+        recyclerView_sv.setLayoutManager(llm1);
     }
 
     @Override
     protected void initData() {
-        requestServer();
         //初始化定位
         mLocationClient = new AMapLocationClient(getActivity());
         AMapLocationClientOption option = new AMapLocationClientOption();
@@ -230,6 +275,17 @@ public class Fragment2 extends BaseFragment {
 
                         tv_addr.setText(aMapLocation.getCity() + "");
 
+                        //第一次请求数据
+                        page = 0;
+                        Map<String, String> params = new HashMap<>();
+                        params.put("service_name", service_name);
+                        params.put("page", page + "");
+                        params.put("longitude", longitude);
+                        params.put("latitude", latitude);
+                        params.put("is_review", "1");
+                        params.put("is_index", "0");//1为首页数据
+                        Request(params);
+
                     } else {
                         //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
                         MyLogger.e("定位失败：", "location Error, ErrCode:"
@@ -245,8 +301,15 @@ public class Fragment2 extends BaseFragment {
 //        mLocationClient.stopLocation();
         // 在单次定位情况下，定位无论成功与否，都无需调用stopLocation()方法移除请求，定位sdk内部会移除
 //        if (localUserInfo.getCityname().equals("")){
-            mLocationClient.startLocation();
+//            mLocationClient.startLocation();
 //        }
+
+        //获取服务tab
+        HashMap<String, String> params2 = new HashMap<>();
+        params2.put("y_parent_id", "0");
+        RequestService(params2, 0);
+
+        requestServer();
     }
 
     @Override
@@ -265,6 +328,14 @@ public class Fragment2 extends BaseFragment {
                 //草稿
                 CommonUtil.gotoActivity(getActivity(), DraftActivity.class);
                 break;
+            case R.id.ll_car:
+                //选择车辆
+                Intent intent1 = new Intent(getActivity(), MyGarageActivity.class);
+                Bundle bundle1 = new Bundle();
+                bundle1.putInt("type", 10001);
+                intent1.putExtras(bundle1);
+                startActivityForResult(intent1, 10001, bundle1);
+                break;
 
         }
     }
@@ -278,20 +349,25 @@ public class Fragment2 extends BaseFragment {
     public void requestServer() {
         super.requestServer();
         this.showLoadingPage();
+        //        if (!longitude.equals("")) {
         page = 0;
         Map<String, String> params = new HashMap<>();
-//        params.put("u_token", localUserInfo.getToken());
-        params.put("service_name","");
+        params.put("service_name", service_name);
         params.put("page", page + "");
         params.put("longitude", longitude);
         params.put("latitude", latitude);
+        params.put("is_review", "1");
+        params.put("is_index", "0");//1为首页数据
         Request(params);
+//        } else {
+//            mLocationClient.startLocation();
+//        }
     }
 
     private void Request(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.Fragment3, params, headerMap, new CallBackUtil<Fragment2Model>() {
+        OkhttpUtil.okHttpPost(URLs.Fragment3, params, headerMap, new CallBackUtil<Fragment3Model>() {
             @Override
-            public Fragment2Model onParseResponse(Call call, Response response) {
+            public Fragment3Model onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -303,35 +379,106 @@ public class Fragment2 extends BaseFragment {
             }
 
             @Override
-            public void onResponse(Fragment2Model response) {
+            public void onResponse(Fragment3Model response) {
                 hideProgress();
                 list = response.getList();
                 if (list.size() > 0) {
                     showContentPage();
-                    mAdapter = new CommonAdapter<Fragment2Model.ListBean>
-                            (getActivity(), R.layout.item_fragment2, list) {
+                    mAdapter = new CommonAdapter<Fragment3Model.ListBean>
+                            (getActivity(), R.layout.item_fragment3, list) {
                         @Override
-                        protected void convert(ViewHolder holder, Fragment2Model.ListBean model, int position) {
-                       /* TextView tv1 = holder.getView(R.id.tv1);
-                        TextView tv2 = holder.getView(R.id.tv2);
-                        LinearLayout ll = holder.getView(R.id.ll);
-                        tv1.setText(model.getName());
-                        tv2.setText(model.getName());
+                        protected void convert(ViewHolder holder, Fragment3Model.ListBean model, int position) {
+                            ImageView imageView1 = holder.getView(R.id.imageView1);
+                            Glide.with(getActivity())
+                                    .load(URLs.IMGHOST + model.getPicture())
+                                    .centerCrop()
+                                    .placeholder(R.mipmap.loading)//加载站位图
+                                    .error(R.mipmap.zanwutupian)//加载失败
+                                    .into(imageView1);//加载图片
+                            holder.setText(R.id.tv_name, model.getVName());//店名
+                            holder.setText(R.id.tv_pingfen, model.getReview());//评分
+                            holder.setText(R.id.tv_dingdan, model.getOrderSum() + "");//订单
+                            holder.setText(R.id.tv_addr, model.getAddress());//地址
+                            holder.setText(R.id.tv_juli, model.getDistance() + "m");//距离
 
-                        if (item == position) {
-                            ll.setVisibility(View.VISIBLE);
-                            tv1.setVisibility(View.GONE);
-                        } else {
-                            ll.setVisibility(View.GONE);
-                            tv1.setVisibility(View.VISIBLE);
-                        }*/
+                            MyLogger.i(">>>>>>"+ model.getStore_service_list().size());
+                            if (model.getStore_service_list().size() > 0) {
+                                //标签
+                                FlowLayoutAdapter<Fragment3Model.ListBean.StoreServiceListBean> flowLayoutAdapter1 =
+                                        new FlowLayoutAdapter<Fragment3Model.ListBean.StoreServiceListBean>
+                                                (model.getStore_service_list()) {
+                                            @Override
+                                            public void bindDataToView(FlowLayoutAdapter.ViewHolder holder, int position,
+                                                                       Fragment3Model.ListBean.StoreServiceListBean bean) {
+//                                holder.setText(R.id.tv,bean);
+                                                TextView tv = holder.getView(R.id.tv);
+                                                tv.setText(bean.getYStateValue());
+                                    /*tv.setTextColor(getResources().getColor(R.color.black1));
+                                    tv.setBackgroundResource(R.drawable.yuanjiao_3_huise);*/
+                                            }
+
+                                            @Override
+                                            public void onItemClick(int position, Fragment3Model.ListBean.StoreServiceListBean bean) {
+//                        showToast("点击" + position);
+                                            }
+
+                                            @Override
+                                            public int getItemLayoutID(int position, Fragment3Model.ListBean.StoreServiceListBean bean) {
+                                                return R.layout.item_fragment3_flowlayout1;
+                                            }
+                                        };
+                                //服务
+                                FlowLayoutAdapter<Fragment3Model.ListBean.StoreServiceListBean> flowLayoutAdapter2 =
+                                        new FlowLayoutAdapter<Fragment3Model.ListBean.StoreServiceListBean>
+                                                (model.getStore_service_list()) {
+                                            @Override
+                                            public void bindDataToView(FlowLayoutAdapter.ViewHolder holder, int position,
+                                                                       Fragment3Model.ListBean.StoreServiceListBean bean) {
+                                                TextView tv1 = holder.getView(R.id.tv1);
+                                                tv1.setText(bean.getYStateValue() + "：");
+                                                TextView tv2 = holder.getView(R.id.tv2);
+                                                View view = holder.getView(R.id.view);
+                                                if (bean.getYState() == 0) {
+                                                    //空闲
+                                                    tv2.setText("空闲");
+                                                    tv2.setTextColor(getResources().getColor(R.color.green));
+                                                    view.setBackgroundResource(R.drawable.yuanxing_lvse);
+                                                } else {
+                                                    //忙碌
+                                                    tv2.setText("忙碌");
+                                                    tv2.setTextColor(getResources().getColor(R.color.red));
+                                                    view.setBackgroundResource(R.drawable.yuanxing_hongse);
+                                                }
+                                    /*
+                                    tv.setBackgroundResource(R.drawable.yuanjiao_3_huise);*/
+                                            }
+
+                                            @Override
+                                            public void onItemClick(int position, Fragment3Model.ListBean.StoreServiceListBean bean) {
+//                        showToast("点击" + position);
+                                            }
+
+                                            @Override
+                                            public int getItemLayoutID(int position, Fragment3Model.ListBean.StoreServiceListBean bean) {
+                                                return R.layout.item_fragment3_flowlayout2;
+                                            }
+                                        };
+                                ((FlowLayout) holder.getView(R.id.flowLayout1)).setAdapter(flowLayoutAdapter1);
+                                ((FlowLayout) holder.getView(R.id.flowLayout2)).setAdapter(flowLayoutAdapter2);
+                            }
 
                         }
                     };
+
+
                     mAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
                         @Override
                         public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
-
+                            Bundle bundle = new Bundle();
+                            bundle.putString("id", list.get(i).getYStoreId());
+                            bundle.putString("longitude", longitude);
+                            bundle.putString("latitude", latitude);
+                            CommonUtil.gotoActivityWithData(getActivity(), StoreDetailActivity.class, bundle, false);
                         }
 
                         @Override
@@ -348,9 +495,9 @@ public class Fragment2 extends BaseFragment {
     }
 
     private void RequestMore(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.Fragment3, params, headerMap, new CallBackUtil<Fragment2Model>() {
+        OkhttpUtil.okHttpPost(URLs.Fragment3, params, headerMap, new CallBackUtil<Fragment3Model>() {
             @Override
-            public Fragment2Model onParseResponse(Call call, Response response) {
+            public Fragment3Model onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -362,9 +509,9 @@ public class Fragment2 extends BaseFragment {
             }
 
             @Override
-            public void onResponse(Fragment2Model response) {
+            public void onResponse(Fragment3Model response) {
                 hideProgress();
-                List<Fragment2Model.ListBean> list1 = new ArrayList<>();
+                List<Fragment3Model.ListBean> list1 = new ArrayList<>();
                 list1 = response.getList();
                 if (list1.size() == 0) {
                     page--;
@@ -375,6 +522,91 @@ public class Fragment2 extends BaseFragment {
                 }
             }
         });
+    }
+
+
+    /**
+     * 获取服务列表
+     *
+     * @param params
+     * @param type
+     */
+    private void RequestService(HashMap<String, String> params, int type) {
+        OkhttpUtil.okHttpPost(URLs.ServiceList_all, params, headerMap, new CallBackUtil<ServiceListModel_All>() {
+            @Override
+            public ServiceListModel_All onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+                hideProgress();
+            }
+
+            @Override
+            public void onResponse(ServiceListModel_All response) {
+                hideProgress();
+                list_sv = response.getList();
+                mAdapter_sv = new CommonAdapter<ServiceListModel_All.ListBean>
+                        (getActivity(), R.layout.item_fragment2_sv, list_sv) {
+                    @Override
+                    protected void convert(ViewHolder holder, ServiceListModel_All.ListBean model, int position) {
+//                        holder.setText(R.id.tv_tab, model.getVName());
+                        TextView tv_tab = holder.getView(R.id.tv_tab);
+                        tv_tab.setText(model.getVName());
+
+                       /* if (i1 ==0){
+                            service_name = model.getVName();
+                            requestServer();
+                        }*/
+
+                        if (i1 == position) {
+                            tv_tab.setTextColor(getResources().getColor(R.color.blue));
+                        } else {
+                            tv_tab.setTextColor(getResources().getColor(R.color.black));
+                        }
+                    }
+                };
+                mAdapter_sv.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                        if (i != i1) {
+                            i1 = i;
+                            service_name = list_sv.get(i).getVName();
+                            mAdapter_sv.notifyDataSetChanged();
+                            requestServer();
+                        }
+                    }
+
+                    @Override
+                    public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                        return false;
+                    }
+                });
+                recyclerView_sv.setAdapter(mAdapter_sv);
+
+            }
+        });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case 10001:
+                //选择车辆
+                if (data != null) {
+                    Bundle bundle1 = data.getExtras();
+//                    y_user_sedan_id = bundle1.getString("car_id");
+                    tv_carname.setText(bundle1.getString("carname") + "\n" + bundle1.getString("cardetail"));
+                    tv_carnum.setText(bundle1.getString("carnum"));
+                    Glide.with(getActivity()).load(URLs.IMGHOST + bundle1.getString("carlogo"))
+                            .centerCrop()
+                            .into(iv_carlogo);//加载图片
+                }
+                break;
+        }
+
     }
 
 }

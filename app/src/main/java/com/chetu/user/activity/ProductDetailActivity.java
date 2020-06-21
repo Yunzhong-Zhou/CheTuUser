@@ -104,6 +104,7 @@ public class ProductDetailActivity extends BaseActivity {
     long allmoney = 0;
     String goods_specific_idstr = "", s_value = "", y_store_id1 = "", y_store_service_id = "0", is_install = "1";
     TextView tv_mendian;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -380,10 +381,12 @@ public class ProductDetailActivity extends BaseActivity {
                 head1_tv3.setText(response.getInfo().getGName());
                 head1_tv4.setText(response.getInfo().getGName());
                 //是否喜欢
-                if (response.getCollection_info() != null && !response.getCollection_info().getYUserCollectionId().equals("")) {
-                    y_user_collection_id = response.getCollection_info().getYUserCollectionId();
-                    isShouChange = true;
-                    iv_xihuan.setImageResource(R.mipmap.ic_xin_yixuan);
+                if (response.getCollection_info() != null && response.getCollection_info().getYUserCollectionId() != null) {
+                    if (!response.getCollection_info().getYUserCollectionId().equals("")) {
+                        y_user_collection_id = response.getCollection_info().getYUserCollectionId();
+                        isShouChange = true;
+                        iv_xihuan.setImageResource(R.mipmap.ic_xin_yixuan);
+                    }
                 } else {
                     y_user_collection_id = "";
                     isShouChange = false;

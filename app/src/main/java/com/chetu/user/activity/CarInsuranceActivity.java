@@ -84,12 +84,20 @@ public class CarInsuranceActivity extends BaseActivity {
 
         //车险询价
         editText1 = findViewByID_My(R.id.editText1);
+        editText1.setText(localUserInfo.getCarnum());
+
         editText2 = findViewByID_My(R.id.editText2);
         editText3 = findViewByID_My(R.id.editText3);
+        editText3.setText(localUserInfo.getNickname());
+
         editText4 = findViewByID_My(R.id.editText4);
+        editText4.setText(localUserInfo.getPhonenumber());
+
         editText5 = findViewByID_My(R.id.editText5);
         editText6 = findViewByID_My(R.id.editText6);
         editText7 = findViewByID_My(R.id.editText7);
+        editText7.setText(localUserInfo.getCityname());
+
         imageView1 = findViewByID_My(R.id.imageView1);
         imageView2 = findViewByID_My(R.id.imageView2);
         imageView3 = findViewByID_My(R.id.imageView3);

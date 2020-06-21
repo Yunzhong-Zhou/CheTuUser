@@ -238,6 +238,7 @@ public class Fragment3 extends BaseFragment {
                         params.put("longitude", longitude);
                         params.put("latitude", latitude);
                         params.put("is_review", is_review);
+                        params.put("is_index", is_index);//1为首页数据
                         Request(params);
 
                     } else {

@@ -151,6 +151,7 @@
                     </RelativeLayout>
                     <!--待办事项-->
                     <LinearLayout
+                        android:id="@+id/ll_car"
                         android:layout_width="match_parent"
                         android:layout_height="80dp"
                         android:layout_marginLeft="5dp"
@@ -176,6 +177,7 @@
                                 android:layout_height="28dp" />
 
                             <TextView
+                                android:id="@+id/tv_carname"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="10dp"
@@ -204,6 +206,7 @@
                                 android:layout_weight="1">
 
                                 <TextView
+                                    android:id="@+id/tv_carnum"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_centerInParent="true"

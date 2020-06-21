@@ -57,6 +57,12 @@ public class CarIllegalActivity extends BaseActivity {
         iv_gouxuan = findViewByID_My(R.id.iv_gouxuan);
 
         tv_carname = findViewByID_My(R.id.tv_carname);
+        if (!localUserInfo.getCarname().equals("")){
+            tv_carname.setText(localUserInfo.getCarname());
+            Glide.with(this).load(URLs.IMGHOST + localUserInfo.getCarlogo())
+                    .centerCrop()
+                    .into(imageView1);//加载图片
+        }
     }
 
     @Override

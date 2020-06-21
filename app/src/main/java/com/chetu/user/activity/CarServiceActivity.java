@@ -164,6 +164,15 @@ public class CarServiceActivity extends BaseActivity {
         tv_carnum = findViewByID_My(R.id.tv_carnum);
         tv_cardetail = findViewByID_My(R.id.tv_cardetail);
 
+        if (!localUserInfo.getCarname().equals("")){
+            tv_carname.setText(localUserInfo.getCarname());
+            tv_carnum.setText(localUserInfo.getCarnum());
+            Glide.with(this).load(URLs.IMGHOST + localUserInfo.getCarlogo())
+                    .centerCrop()
+                    .into(iv_carlogo);//加载图片
+        }
+
+
         recyclerView2 = findViewByID_My(R.id.recyclerView2);
         recyclerView2.setLayoutManager(new LinearLayoutManager(CarServiceActivity.this));
 

@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -21,6 +22,8 @@ import com.chetu.user.R;
 import com.chetu.user.activity.CarIllegalActivity;
 import com.chetu.user.activity.CarInsuranceActivity;
 import com.chetu.user.activity.CarServiceActivity;
+import com.chetu.user.activity.MainActivity;
+import com.chetu.user.activity.MyGarageActivity;
 import com.chetu.user.activity.ProductListActivity;
 import com.chetu.user.activity.SearchActivity;
 import com.chetu.user.activity.StoreDetailActivity;
@@ -87,6 +90,10 @@ public class Fragment1 extends BaseFragment {
     List<Fragment1TabModel> list_tab = new ArrayList<>();
     CommonAdapter<Fragment1TabModel> mAdapter_tab;
 
+    //车辆信息
+    LinearLayout ll_car;
+    TextView tv_carname,tv_carnum;
+
     //定位
     //声明AMapLocationClient类对象
     private AMapLocationClient mLocationClient = null;
@@ -108,10 +115,15 @@ public class Fragment1 extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        /*if (MainActivity.item == 0) {
-            requestServer();
-            tv_addr.setText(localUserInfo.getCityname());
-        }*/
+        if (MainActivity.item == 0) {
+            if (!localUserInfo.getCarname().equals("")){
+                tv_carname.setText(localUserInfo.getCarname());
+                tv_carnum.setText(localUserInfo.getCarnum());
+            }
+
+            /*requestServer();
+            tv_addr.setText(localUserInfo.getCityname());*/
+        }
     }
 
     @Override
@@ -202,8 +214,12 @@ public class Fragment1 extends BaseFragment {
         recyclerView2 = findViewByID_My(R.id.recyclerView2);
         recyclerView2.setLayoutManager(new GridLayoutManager(getActivity(), 2));
 
-
         banner = findViewByID_My(R.id.banner);
+
+        ll_car = findViewByID_My(R.id.ll_car);
+        ll_car.setOnClickListener(this);
+        tv_carname = findViewByID_My(R.id.tv_carname);
+        tv_carnum = findViewByID_My(R.id.tv_carnum);
     }
 
     @Override
@@ -650,6 +666,14 @@ public class Fragment1 extends BaseFragment {
                 //发布需求
                 CommonUtil.gotoActivity(getActivity(), CarServiceActivity.class);
                 break;
+            case R.id.ll_car:
+                //选择车辆
+                Intent intent1 = new Intent(getActivity(), MyGarageActivity.class);
+                Bundle bundle1 = new Bundle();
+                bundle1.putInt("type", 10001);
+                intent1.putExtras(bundle1);
+                startActivityForResult(intent1, 10001, bundle1);
+                break;
             case R.id.tv_more1:
                 //更多1
                 showProgress(true, getString(R.string.app_loading4));
@@ -713,39 +737,20 @@ public class Fragment1 extends BaseFragment {
                 }
             }
         }
-        /*//扫描结果回调
-        if (requestCode == Constant.REQ_QR_CODE) {
-            if (data != null) {
-                Bundle bundle = data.getExtras();
-                String scanResult = bundle.getString(Constant.INTENT_EXTRA_KEY_QR_SCAN);
-                MyLogger.i(">>>扫码返回>>>>" + scanResult);
-                //点击转单-掉接口1-生成二维码
-                //扫码-掉接口2-跳转到订单详情
-                if (scanResult != null && !scanResult.equals("")) {
-                    showToast("确认接受该单吗？", "确认", "取消",
-                            new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    dialog.dismiss();
-                                    showProgress(true, "正在获取转单信息...");
-                                    Map<String, String> params = new HashMap<>();
-                                    params.put("token", localUserInfo.getToken());
-                                    params.put("t_indent_confirm_id", scanResult);
-                                    params.put("type", "7");//转单确认
-                                    RequestZhuanDan(params);
-                                }
-                            }, new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    dialog.dismiss();
-                                }
-                            });
-                    *//*Bundle bundle1 = new Bundle();
-                    bundle1.putString("id", scanResult);
-                    CommonUtil.gotoActivityWithData(getActivity(), OrderDetailsActivity.class, bundle1, false);*//*
+        switch (requestCode) {
+            case 10001:
+                //选择车辆
+                if (data != null) {
+                    Bundle bundle1 = data.getExtras();
+//                    y_user_sedan_id = bundle1.getString("car_id");
+                    tv_carname.setText(bundle1.getString("carname") + "\n" + bundle1.getString("cardetail"));
+                    tv_carnum.setText(bundle1.getString("carnum"));
+                    /*Glide.with(getActivity()).load(URLs.IMGHOST + bundle1.getString("carlogo"))
+                            .centerCrop()
+                            .into(iv_carlogo);//加载图片*/
                 }
-            }
-        }*/
+                break;
+        }
     }
 
 }

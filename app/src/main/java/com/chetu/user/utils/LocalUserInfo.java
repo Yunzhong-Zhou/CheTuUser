@@ -42,6 +42,13 @@ public class LocalUserInfo {
     public static final String ISREALNAMEVALIDATED = "isRealNameValidated";//用户是否实名验证
     public static final String USERREALNAME = "userRealName";//用户真实姓名
 
+    public static final String CARNAME = "carname";//车辆名称
+    public static final String CARNUM = "carnum";//车辆车牌
+    public static final String CARDETAIL = "cardetail";//车辆详情
+    public static final String CARID = "car_id";//车辆id
+    public static final String CARLOGO = "carlogo";//车辆logo
+
+
     public static final String HXID = "hx_id";//环信id
     public static final String WINNUM1 = "winNum1";//中奖信息
     public static final String LOSENUM = "loseNum";//未中奖信息
@@ -216,6 +223,27 @@ public class LocalUserInfo {
     //保存未中奖信息
     public void setLosenum1(String string) {
         editor.putString(LOSENUM1, string);
+        editor.commit();
+    }
+
+    public void setCarname(String string) {
+        editor.putString(CARNAME, string);
+        editor.commit();
+    }
+    public void setCarnum(String string) {
+        editor.putString(CARNUM, string);
+        editor.commit();
+    }
+    public void setCardetail(String string) {
+        editor.putString(CARDETAIL, string);
+        editor.commit();
+    }
+    public void setCarid(String string) {
+        editor.putString(CARID, string);
+        editor.commit();
+    }
+    public void setCarlogo(String string) {
+        editor.putString(CARLOGO, string);
         editor.commit();
     }
 
@@ -494,6 +522,44 @@ public class LocalUserInfo {
         }
         return "";
     }
+
+    public String getCarname(){
+        String string=getString(CARNAME);
+        if (!TextUtils.isEmpty(string)) {
+            return string;
+        }
+        return "";
+    }
+    public String getCarnum(){
+        String string=getString(CARNUM);
+        if (!TextUtils.isEmpty(string)) {
+            return string;
+        }
+        return "";
+    }
+    public String getCardetail(){
+        String string=getString(CARDETAIL);
+        if (!TextUtils.isEmpty(string)) {
+            return string;
+        }
+        return "";
+    }
+    public String getCarid(){
+        String string=getString(CARID);
+        if (!TextUtils.isEmpty(string)) {
+            return string;
+        }
+        return "";
+    }
+    public String getCarlogo(){
+        String string=getString(CARLOGO);
+        if (!TextUtils.isEmpty(string)) {
+            return string;
+        }
+        return "";
+    }
+
+
     public String getEmail(){
         String email=getString(EMAIL);
         if (!TextUtils.isEmpty(email)) {

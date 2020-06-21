@@ -215,6 +215,15 @@ public class MyGarageActivity extends BaseActivity {
                                 @Override
                                 public void onClick(View v) {
                                     if (type == 10001){
+                                        //保存
+                                        localUserInfo.setCarname(model.getBrandInfo().getGroupName()
+                                                + "-" + model.getBrandInfo().getSeriesName());
+                                        localUserInfo.setCarnum(model.getSNumber());
+                                        localUserInfo.setCardetail(model.getBrandInfo().getSName());
+                                        localUserInfo.setCarid(model.getYUserSedanId());
+                                        localUserInfo.setCarlogo(model.getSLogo());
+
+
                                         Intent resultIntent = new Intent();
                                         Bundle bundle = new Bundle();
                                         bundle.putString("carname", model.getBrandInfo().getGroupName()

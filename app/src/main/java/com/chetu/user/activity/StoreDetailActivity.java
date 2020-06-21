@@ -74,6 +74,7 @@ public class StoreDetailActivity extends BaseActivity {
     CommonAdapter<String> mAdapter_wenti;
 
     //门店评论
+    TextView tv_pinglun;
     RecyclerView rv_pinglun;
     List<PingJiaModel.ListBean> list_pinglun = new ArrayList<>();
     CommonAdapter<PingJiaModel.ListBean> mAdapter_pinglun;
@@ -140,6 +141,7 @@ public class StoreDetailActivity extends BaseActivity {
         rv_wenti.setLayoutManager(new LinearLayoutManager(this));
 
         //门店评论
+        tv_pinglun = findViewByID_My(R.id.tv_pinglun);
         rv_pinglun = findViewByID_My(R.id.rv_pinglun);
         rv_pinglun.setLayoutManager(new LinearLayoutManager(this));
     }
@@ -333,7 +335,7 @@ public class StoreDetailActivity extends BaseActivity {
                 //门店特色
                 list_tese = response.getInfo().getCharactArr();
                 ArrayList<String> images = new ArrayList<>();
-                for (String s: list_tese){
+                for (String s : list_tese) {
                     images.add(URLs.IMGHOST + s);
                 }
                 mAdapter_tese = new CommonAdapter<String>
@@ -379,17 +381,24 @@ public class StoreDetailActivity extends BaseActivity {
                         holder.setText(R.id.tv_name, model.getUserName());
 
                         RatingBar ratingbar = holder.getView(R.id.ratingbar);
-//                        ratingbar.setRating(Float.valueOf(model.getStarC()));
+                        ratingbar.setRating(Float.valueOf(model.getTech_info().getStar()));
 
-//                        holder.setText(R.id.tv_time, "入驻时间：" + model.get);
+                        holder.setText(R.id.tv_time, "入驻时间：" + model.getCreateDate());
                         TextView tv_zhuangtai = holder.getView(R.id.tv_zhuangtai);
-                       /* if (model.getYState() == 0) {
-                            //空闲
-                            view.setBackgroundResource(R.drawable.yuanxing_lvse);
-                        } else {
-                            //忙碌
-                            view.setBackgroundResource(R.drawable.yuanxing_hongse);
-                        }*/
+                        switch (model.getTech_info().getWorking()) {//1为空闲 2为休假  3为忙碌
+                            case 1:
+                                tv_zhuangtai.setText("休息中");
+                                tv_zhuangtai.setBackgroundResource(R.drawable.yuanjiao_5_lanse_right);
+                                break;
+                            case 2:
+                                tv_zhuangtai.setText("休假");
+                                tv_zhuangtai.setBackgroundResource(R.drawable.yuanjiao_5_huise_right);
+                                break;
+                            case 3:
+                                tv_zhuangtai.setText("忙碌中");
+                                tv_zhuangtai.setBackgroundResource(R.drawable.yuanjiao_5_hongse_right);
+                                break;
+                        }
                     }
                 };
                 mAdapter_jishi.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
@@ -457,51 +466,52 @@ public class StoreDetailActivity extends BaseActivity {
             @Override
             public void onResponse(PingJiaModel response) {
 //                hideProgress();
-
 //                if (response.getList().size() != 0) {
 //                    loading_layout1.showContent();
 //                    loading_layout3.showContent();
-                    list_pinglun = response.getList();
+                list_pinglun = response.getList();
 
-                    mAdapter_pinglun = new CommonAdapter<PingJiaModel.ListBean>
-                            (StoreDetailActivity.this, R.layout.item_productdetail, list_pinglun) {
-                        @Override
-                        protected void convert(ViewHolder holder, PingJiaModel.ListBean model, int position) {
-                            //信息
-                            holder.setText(R.id.tv_name, model.getY_user().getUserName());
-                            holder.setText(R.id.tv_time, model.getCreateDate());
-                            holder.setText(R.id.tv_content, model.getYMsg());
-                            RatingBar ratingbar = holder.getView(R.id.ratingbar);
-                            ratingbar.setRating(Float.valueOf(model.getStarC()));
-                            ImageView iv = holder.getView(R.id.iv);
-                            Glide.with(StoreDetailActivity.this).load(model)
-                                    .centerCrop()
-                                    .placeholder(R.mipmap.loading)//加载站位图
-                                    .error(R.mipmap.zanwutupian)//加载失败
-                                    .into(iv);
+                tv_pinglun.setText("用户评论（" + list_pinglun.size() + "）");
 
-                            //横向图片
-                            RecyclerView rv = holder.getView(R.id.rv);
-                            LinearLayoutManager llm1 = new LinearLayoutManager(StoreDetailActivity.this);
-                            llm1.setOrientation(LinearLayoutManager.HORIZONTAL);// 设置 recyclerview 布局方式为横向布局
-                            rv.setLayoutManager(llm1);
-                            CommonAdapter<String> ca = new CommonAdapter<String>
-                                    (StoreDetailActivity.this, R.layout.item_img_80_60, images) {
-                                @Override
-                                protected void convert(ViewHolder holder, String model, int position) {
-                                    ImageView iv = holder.getView(R.id.iv);
-                                    Glide.with(StoreDetailActivity.this).load(model)
+                mAdapter_pinglun = new CommonAdapter<PingJiaModel.ListBean>
+                        (StoreDetailActivity.this, R.layout.item_productdetail, list_pinglun) {
+                    @Override
+                    protected void convert(ViewHolder holder, PingJiaModel.ListBean model, int position) {
+                        //信息
+                        holder.setText(R.id.tv_name, model.getY_user().getUserName());
+                        holder.setText(R.id.tv_time, model.getCreateDate());
+                        holder.setText(R.id.tv_content, model.getYMsg());
+                        RatingBar ratingbar = holder.getView(R.id.ratingbar);
+                        ratingbar.setRating(Float.valueOf(model.getStarC()));
+                        ImageView iv = holder.getView(R.id.iv);
+                        Glide.with(StoreDetailActivity.this).load(model)
+                                .centerCrop()
+                                .placeholder(R.mipmap.loading)//加载站位图
+                                .error(R.mipmap.zanwutupian)//加载失败
+                                .into(iv);
+
+                        //横向图片
+                        RecyclerView rv = holder.getView(R.id.rv);
+                        LinearLayoutManager llm1 = new LinearLayoutManager(StoreDetailActivity.this);
+                        llm1.setOrientation(LinearLayoutManager.HORIZONTAL);// 设置 recyclerview 布局方式为横向布局
+                        rv.setLayoutManager(llm1);
+                        CommonAdapter<String> ca = new CommonAdapter<String>
+                                (StoreDetailActivity.this, R.layout.item_img_80_60, images) {
+                            @Override
+                            protected void convert(ViewHolder holder, String model, int position) {
+                                ImageView iv = holder.getView(R.id.iv);
+                                Glide.with(StoreDetailActivity.this).load(model)
 //                            .centerCrop()
 //                            .apply(RequestOptions.bitmapTransform(new RoundedCorners(10)))
-                                            .placeholder(R.mipmap.loading)//加载站位图
-                                            .error(R.mipmap.zanwutupian)//加载失败
-                                            .into(iv);//加载图片
-                                }
-                            };
-                            rv.setAdapter(ca);
-                        }
-                    };
-                    rv_pinglun.setAdapter(mAdapter_pinglun);
+                                        .placeholder(R.mipmap.loading)//加载站位图
+                                        .error(R.mipmap.zanwutupian)//加载失败
+                                        .into(iv);//加载图片
+                            }
+                        };
+                        rv.setAdapter(ca);
+                    }
+                };
+                rv_pinglun.setAdapter(mAdapter_pinglun);
 
 //                } else {
 //                    loading_layout1.showEmpty();

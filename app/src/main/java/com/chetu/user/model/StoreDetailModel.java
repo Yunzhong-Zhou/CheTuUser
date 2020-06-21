@@ -8,9 +8,9 @@ import java.util.List;
  */
 public class StoreDetailModel implements Serializable {
     /**
-     * store_tech_list : [{"id":"0","userId":"0","userBalance":0,"userName":"安卓兄弟","userIntegral":"0","yStoreId":"692341585785913345","userHash":"8E107F47DECA219F8E5366E9B76FCDB8","headPortrait":" /upload/timg.jpg"},{"id":"0","userId":"0","userBalance":0,"userName":"阿斯顿马丁","userIntegral":"0","yStoreId":"692341585785913345","userHash":"843B1049032A7E7C9F7D2E2CBE6D37A6","headPortrait":"/upload/2020-06-18/20200618164348_110881.jpg"}]
-     * store_service_list : [{"id":"1025","yStoreServiceId":"692341585785913346","yStoreId":"692341585785913345","yState":1,"lineupSum":10,"isSheet":0,"yStateValue":"保养","sPrice":100,"pictureStr":"/static/img/20200528151327.png"}]
-     * info : {"id":"1018","yStoreId":"692341585785913345","userId":"719539276219416576","vName":"维修商店测试","review":"4.5分","keywsr":"技术 修车 实","address":"凤凰山附近","longitude":"116.49798","latitude":"39.916485","distance":" ","phone":"  400-2333-1123","vLevel":"A级","introduce":"听广告几年了，终于体验了特色服务。轮胎是其专长。听说11年开始，线上业务。16年开始线下。现在全国1500多家店。","charactStr":"/upload/store/222.png||/upload/store/222.png","pictureStr":"/upload/store/222.png||/upload/store/222.png","slogan":"维修商店测试 美容首单50","pictureArr":["/upload/store/222.png","/upload/store/222.png"],"charactArr":["/upload/store/222.png","/upload/store/222.png"],"orderSum":0,"isIndex":1,"isCollection":1,"colle_info":{"id":"28","yUserCollectionId":"723934109256122368","userId":"714547022807433216","yId":"692341585785913345","category":2,"createDate":"2020-06-20 16:15:41"}}
+     * store_tech_list : [{"id":"0","userId":"0","userBalance":0,"userName":"","userIntegral":"0","yStoreId":"692341585785913344","userHash":"7E5194837D4B3BBE125C07F8FA16ED0A","headPortrait":"/upload/timg.jpg","createDate":"2020-05-29 15:03:05","techJson":" {\"star\":\"4\",\"working\":\"1\"}","tech_info":{"star":4,"working":1}},{"id":"0","userId":"0","userBalance":0,"userName":"","userIntegral":"0","yStoreId":"692341585785913344","userHash":"B52CF117B3218C7AD48568134544695C","headPortrait":"/upload/timg.jpg","createDate":"2020-05-31 14:25:16","techJson":" {\"star\":\"4\",\"working\":\"1\"}","tech_info":{"star":4,"working":1}},{"id":"0","userId":"0","userBalance":0,"userName":"","userIntegral":"0","yStoreId":"692341585785913344","userHash":"5F71987EBBC44C9ADCB4578D1ED034A4","headPortrait":"/upload/timg.jpg","createDate":"2020-06-06 10:34:31","techJson":"{\"star\":0,\"working\":1}","tech_info":{"star":0,"working":1}},{"id":"0","userId":"0","userBalance":0,"userName":"","userIntegral":"0","yStoreId":"692341585785913344","userHash":"9523B35869B893EDC7529DF626CA6B04","headPortrait":"/upload/head/719242188466159616.jpg","createDate":"2020-06-07 17:31:40","techJson":"{\"star\":0,\"working\":1}","tech_info":{"star":0,"working":1}},{"id":"0","userId":"0","userBalance":0,"userName":"周锶俊","userIntegral":"0","yStoreId":"692341585785913344","userHash":"504F04C880F2A74235E7CA1801A56461","headPortrait":"/upload/2020-06-13/20200613091533_407285.png","createDate":"2020-06-10 23:19:09","techJson":"{\"star\":0,\"working\":1}","tech_info":{"star":0,"working":1}},{"id":"0","userId":"0","userBalance":0,"userName":"","userIntegral":"0","yStoreId":"692341585785913344","userHash":"018CEC7943E6A744F4701ADEC73EE8CA","headPortrait":" ","createDate":"2020-06-18 13:55:53","techJson":"{\"star\":0,\"working\":1}","tech_info":{"star":0,"working":1}}]
+     * store_service_list : [{"id":"1023","yStoreServiceId":"692341585785913344","yStoreId":"692341585785913344","yState":1,"lineupSum":10,"isSheet":0,"yStateValue":"维修","sPrice":100,"pictureStr":"/static/img/20200528151327.png"}]
+     * info : {"id":"1017","yStoreId":"692341585785913344","userId":"20180531104813","vName":"龙肆商店测试","review":"4.5分","keywsr":"保养 修车 服务","address":"深圳市光明新区公明街道东环大道松白工业区C区2栋一层106号","longitude":"116.49798","latitude":"39.916485","distance":" ","phone":" 400-2333-1123","vLevel":"A级","introduce":"听广告几年了，终于体验了特色服务。轮胎是其专长。听说11年开始，线上业务。16年开始线下。现在全国1500多家店。","charactStr":"/upload/store/222.png||/upload/store/222.png","pictureStr":"/upload/store/222.png||/upload/store/222.png","slogan":"商店测试  洗车首单10","pictureArr":["/upload/store/222.png","/upload/store/222.png"],"charactArr":["/upload/store/222.png","/upload/store/222.png"],"orderSum":4,"isIndex":1,"isCollection":1,"colle_info":{"id":"29","yUserCollectionId":"724191712410337280","userId":"714547022807433216","yId":"692341585785913344","category":2,"createDate":"2020-06-21 09:19:19"}}
      */
 
     private InfoBean info;
@@ -43,28 +43,28 @@ public class StoreDetailModel implements Serializable {
 
     public static class InfoBean {
         /**
-         * id : 1018
-         * yStoreId : 692341585785913345
-         * userId : 719539276219416576
-         * vName : 维修商店测试
+         * id : 1017
+         * yStoreId : 692341585785913344
+         * userId : 20180531104813
+         * vName : 龙肆商店测试
          * review : 4.5分
-         * keywsr : 技术 修车 实
-         * address : 凤凰山附近
+         * keywsr : 保养 修车 服务
+         * address : 深圳市光明新区公明街道东环大道松白工业区C区2栋一层106号
          * longitude : 116.49798
          * latitude : 39.916485
          * distance :
-         * phone :   400-2333-1123
+         * phone :  400-2333-1123
          * vLevel : A级
          * introduce : 听广告几年了，终于体验了特色服务。轮胎是其专长。听说11年开始，线上业务。16年开始线下。现在全国1500多家店。
          * charactStr : /upload/store/222.png||/upload/store/222.png
          * pictureStr : /upload/store/222.png||/upload/store/222.png
-         * slogan : 维修商店测试 美容首单50
+         * slogan : 商店测试  洗车首单10
          * pictureArr : ["/upload/store/222.png","/upload/store/222.png"]
          * charactArr : ["/upload/store/222.png","/upload/store/222.png"]
-         * orderSum : 0
+         * orderSum : 4
          * isIndex : 1
          * isCollection : 1
-         * colle_info : {"id":"28","yUserCollectionId":"723934109256122368","userId":"714547022807433216","yId":"692341585785913345","category":2,"createDate":"2020-06-20 16:15:41"}
+         * colle_info : {"id":"29","yUserCollectionId":"724191712410337280","userId":"714547022807433216","yId":"692341585785913344","category":2,"createDate":"2020-06-21 09:19:19"}
          */
 
         private String id;
@@ -268,12 +268,12 @@ public class StoreDetailModel implements Serializable {
 
         public static class ColleInfoBean {
             /**
-             * id : 28
-             * yUserCollectionId : 723934109256122368
+             * id : 29
+             * yUserCollectionId : 724191712410337280
              * userId : 714547022807433216
-             * yId : 692341585785913345
+             * yId : 692341585785913344
              * category : 2
-             * createDate : 2020-06-20 16:15:41
+             * createDate : 2020-06-21 09:19:19
              */
 
             private String id;
@@ -338,11 +338,14 @@ public class StoreDetailModel implements Serializable {
          * id : 0
          * userId : 0
          * userBalance : 0.0
-         * userName : 安卓兄弟
+         * userName :
          * userIntegral : 0
-         * yStoreId : 692341585785913345
-         * userHash : 8E107F47DECA219F8E5366E9B76FCDB8
-         * headPortrait :  /upload/timg.jpg
+         * yStoreId : 692341585785913344
+         * userHash : 7E5194837D4B3BBE125C07F8FA16ED0A
+         * headPortrait : /upload/timg.jpg
+         * createDate : 2020-05-29 15:03:05
+         * techJson :  {"star":"4","working":"1"}
+         * tech_info : {"star":4,"working":1}
          */
 
         private String id;
@@ -353,6 +356,9 @@ public class StoreDetailModel implements Serializable {
         private String yStoreId;
         private String userHash;
         private String headPortrait;
+        private String createDate;
+        private String techJson;
+        private TechInfoBean tech_info;
 
         public String getId() {
             return id;
@@ -417,17 +423,67 @@ public class StoreDetailModel implements Serializable {
         public void setHeadPortrait(String headPortrait) {
             this.headPortrait = headPortrait;
         }
+
+        public String getCreateDate() {
+            return createDate;
+        }
+
+        public void setCreateDate(String createDate) {
+            this.createDate = createDate;
+        }
+
+        public String getTechJson() {
+            return techJson;
+        }
+
+        public void setTechJson(String techJson) {
+            this.techJson = techJson;
+        }
+
+        public TechInfoBean getTech_info() {
+            return tech_info;
+        }
+
+        public void setTech_info(TechInfoBean tech_info) {
+            this.tech_info = tech_info;
+        }
+
+        public static class TechInfoBean {
+            /**
+             * star : 4
+             * working : 1
+             */
+
+            private int star;
+            private int working;
+
+            public int getStar() {
+                return star;
+            }
+
+            public void setStar(int star) {
+                this.star = star;
+            }
+
+            public int getWorking() {
+                return working;
+            }
+
+            public void setWorking(int working) {
+                this.working = working;
+            }
+        }
     }
 
     public static class StoreServiceListBean {
         /**
-         * id : 1025
-         * yStoreServiceId : 692341585785913346
-         * yStoreId : 692341585785913345
+         * id : 1023
+         * yStoreServiceId : 692341585785913344
+         * yStoreId : 692341585785913344
          * yState : 1
          * lineupSum : 10
          * isSheet : 0
-         * yStateValue : 保养
+         * yStateValue : 维修
          * sPrice : 100.0
          * pictureStr : /static/img/20200528151327.png
          */

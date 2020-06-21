@@ -174,7 +174,7 @@ public class CollectActivity extends BaseActivity {
 //                            holder.setText(R.id.tv_time, day + "\n" + time);
 
                             holder.setText(R.id.tv_time, day);
-                            holder.setText(R.id.tv_content, model.getGoods_info().getGName());
+                            holder.setText(R.id.tv_content, model.getGoods_info().getgDesc());
                             holder.setText(R.id.tv_moeny, "¥" + model.getGoods_info().getGPrice());
                             //删除
                             holder.getView(R.id.tv_delete).setOnClickListener(new View.OnClickListener() {

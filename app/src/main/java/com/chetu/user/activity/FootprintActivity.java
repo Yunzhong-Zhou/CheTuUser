@@ -206,7 +206,7 @@ public class FootprintActivity extends BaseActivity {
 //                            String time = strArr1[1];//时间
 //                            holder.setText(R.id.tv_time, day + "\n" + time);
                             holder.setText(R.id.tv_time, day);
-                            holder.setText(R.id.tv_content, model.getGoods_info().getGName());
+                            holder.setText(R.id.tv_content, model.getGoods_info().getgDesc());
                             holder.setText(R.id.tv_moeny, "¥" + model.getGoods_info().getGPrice());
 
                             //删除

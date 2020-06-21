@@ -96,12 +96,21 @@ public class ShangPingModel implements Serializable {
 
             private String yGoodsId;
             private String gName;
+            private String gDesc;
             private double gPrice;
             private double orPrice;
             private String gDetails;
             private String imgStr;
             private String gImg;
             private List<String> imgArr;
+
+            public String getgDesc() {
+                return gDesc;
+            }
+
+            public void setgDesc(String gDesc) {
+                this.gDesc = gDesc;
+            }
 
             public String getYGoodsId() {
                 return yGoodsId;
