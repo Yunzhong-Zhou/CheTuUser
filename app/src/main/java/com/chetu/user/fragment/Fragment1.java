@@ -93,6 +93,7 @@ public class Fragment1 extends BaseFragment {
     //车辆信息
     LinearLayout ll_car;
     TextView tv_carname,tv_carnum;
+    ImageView iv_carlogo;
 
     //定位
     //声明AMapLocationClient类对象
@@ -119,8 +120,10 @@ public class Fragment1 extends BaseFragment {
             if (!localUserInfo.getCarname().equals("")){
                 tv_carname.setText(localUserInfo.getCarname());
                 tv_carnum.setText(localUserInfo.getCarnum());
+                Glide.with(getActivity()).load(URLs.IMGHOST + localUserInfo.getCarlogo())
+                        .centerCrop()
+                        .into(iv_carlogo);//加载图片
             }
-
             /*requestServer();
             tv_addr.setText(localUserInfo.getCityname());*/
         }
@@ -134,9 +137,16 @@ public class Fragment1 extends BaseFragment {
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        /*if (MainActivity.item == 0) {
-            requestServer();
-        }*/
+        if (MainActivity.item == 0) {
+            if (!localUserInfo.getCarname().equals("")){
+                tv_carname.setText(localUserInfo.getCarname());
+                tv_carnum.setText(localUserInfo.getCarnum());
+                Glide.with(getActivity()).load(URLs.IMGHOST + localUserInfo.getCarlogo())
+                        .centerCrop()
+                        .into(iv_carlogo);//加载图片
+            }
+//            requestServer();
+        }
     }
 
     @Override
@@ -220,6 +230,7 @@ public class Fragment1 extends BaseFragment {
         ll_car.setOnClickListener(this);
         tv_carname = findViewByID_My(R.id.tv_carname);
         tv_carnum = findViewByID_My(R.id.tv_carnum);
+        iv_carlogo = findViewByID_My(R.id.iv_carlogo);
     }
 
     @Override
@@ -745,9 +756,9 @@ public class Fragment1 extends BaseFragment {
 //                    y_user_sedan_id = bundle1.getString("car_id");
                     tv_carname.setText(bundle1.getString("carname") + "\n" + bundle1.getString("cardetail"));
                     tv_carnum.setText(bundle1.getString("carnum"));
-                    /*Glide.with(getActivity()).load(URLs.IMGHOST + bundle1.getString("carlogo"))
+                    Glide.with(getActivity()).load(URLs.IMGHOST + bundle1.getString("carlogo"))
                             .centerCrop()
-                            .into(iv_carlogo);//加载图片*/
+                            .into(iv_carlogo);//加载图片
                 }
                 break;
         }

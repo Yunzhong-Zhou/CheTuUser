@@ -74,7 +74,7 @@
         <ImageView
             android:id="@+id/iv_carlogo"
             android:layout_width="34dp"
-            android:layout_height="25dp"
+            android:layout_height="34dp"
             android:layout_marginLeft="14dp" />
 
         <TextView
