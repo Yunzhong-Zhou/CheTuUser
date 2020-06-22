@@ -167,6 +167,7 @@ public class CarServiceActivity extends BaseActivity {
         if (!localUserInfo.getCarname().equals("")){
             tv_carname.setText(localUserInfo.getCarname());
             tv_carnum.setText(localUserInfo.getCarnum());
+            tv_cardetail.setText(localUserInfo.getCardetail());
             Glide.with(this).load(URLs.IMGHOST + localUserInfo.getCarlogo())
                     .centerCrop()
                     .into(iv_carlogo);//加载图片
