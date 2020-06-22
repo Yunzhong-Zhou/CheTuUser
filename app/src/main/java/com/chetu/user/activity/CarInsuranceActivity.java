@@ -85,6 +85,7 @@ public class CarInsuranceActivity extends BaseActivity {
         //车险询价
         editText1 = findViewByID_My(R.id.editText1);
         editText1.setText(localUserInfo.getCarnum());
+//        y_user_sedan_id = localUserInfo.getCarid();
 
         editText2 = findViewByID_My(R.id.editText2);
         editText3 = findViewByID_My(R.id.editText3);

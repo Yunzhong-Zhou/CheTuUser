@@ -383,11 +383,13 @@
                         android:paddingRight="13dp">
 
                         <TextView
+                            android:id="@+id/tv_wenti"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:paddingTop="15dp"
-                            android:paddingBottom="15dp"
+                            android:paddingBottom="10dp"
+                            android:drawableRight="@mipmap/ic_next_black"
                             android:text="提问"
                             android:textColor="@color/black3"
                             android:textSize="14sp" />
@@ -396,7 +398,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingTop="15dp"
-                            android:paddingBottom="15dp"
+                            android:paddingBottom="10dp"
                             android:text=""
                             android:textColor="@color/blue"
                             android:textSize="14sp" />
@@ -406,7 +408,8 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_wenti"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="10dp"/>
 
                 </LinearLayout>
                 <!--用户评论-->
@@ -435,6 +438,8 @@
                         android:layout_height="wrap_content" />
 
                     <TextView
+                        android:id="@+id/tv_more"
+                        android:onClick="onClick"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
@@ -446,17 +451,16 @@
                         android:textColor="@color/black3"
                         android:textSize="10sp" />
                 </LinearLayout>
-
                 <View
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:layout_weight="1" />
-
+                    android:layout_weight="1"/>
                 <!--下单-->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="40dp"
+                    android:layout_marginBottom="-20dp"
                     android:background="@drawable/yuanjiao_10_baise_top"
                     android:orientation="vertical">
 
@@ -484,7 +488,7 @@
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/recyclerView6"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="match_parent" />
 
                     </LinearLayout>
 

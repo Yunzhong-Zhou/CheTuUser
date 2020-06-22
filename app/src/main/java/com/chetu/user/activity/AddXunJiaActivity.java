@@ -120,7 +120,7 @@ public class AddXunJiaActivity extends BaseActivity {
 
             @Override
             public void onResponse(UpFileModel response) {
-//                hideProgress();
+                hideProgress();
 //                myToast("上传图片成功");
                 imgStr = "";
                 for (String s : response.getList()) {

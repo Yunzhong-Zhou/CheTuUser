@@ -165,6 +165,7 @@ public class CarServiceActivity extends BaseActivity {
         tv_cardetail = findViewByID_My(R.id.tv_cardetail);
 
         if (!localUserInfo.getCarname().equals("")){
+            y_user_sedan_id = localUserInfo.getCarid();
             tv_carname.setText(localUserInfo.getCarname());
             tv_carnum.setText(localUserInfo.getCarnum());
             tv_cardetail.setText(localUserInfo.getCardetail());
@@ -548,13 +549,14 @@ public class CarServiceActivity extends BaseActivity {
             MyLogger.i(">>>>>>>>服务ID：" + y_service_id_str);
         } else {
             myToast("请选择服务");
+            return false;
         }
 
         //选择的门店
         if (isZiXuan != 1) {
             for (Fragment3Model.ListBean listBean : list2) {
                 if (listBean.isIsgouxuan()) {
-                    y_store_id_str = listBean.getYStoreId() + ",";
+                    y_store_id_str += listBean.getYStoreId() + ",";
                 }
             }
             if (!y_store_id_str.equals("")) {
@@ -562,6 +564,7 @@ public class CarServiceActivity extends BaseActivity {
                 MyLogger.i(">>>>>>>>店铺ID：" + y_store_id_str);
             } else {
                 myToast("请选择门店");
+                return false;
             }
         }else {
             y_store_id_str = "";
@@ -580,7 +583,7 @@ public class CarServiceActivity extends BaseActivity {
         if (isZiXuan != 1) {
             for (Fragment3Model.ListBean listBean : list2) {
                 if (listBean.isIsgouxuan()) {
-                    y_store_id = listBean.getYStoreId() + ",";
+                    y_store_id += listBean.getYStoreId() + ",";
                 }
             }
             if (!y_store_id.equals("")) {
@@ -588,6 +591,7 @@ public class CarServiceActivity extends BaseActivity {
                 MyLogger.i(">>>>>>>>店铺ID：" + y_store_id);
             } else {
                 myToast("请选择门店");
+                return false;
             }
         } else {
             y_store_id = "";

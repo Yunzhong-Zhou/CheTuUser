@@ -76,7 +76,7 @@ public class Fragment1 extends BaseFragment {
     int page1 = 0, page2 = 0;
 
     ImageView tv_scan;
-    RelativeLayout rl_xiaoxi,rl_add;
+    RelativeLayout rl_xiaoxi, rl_add, rl_addcar;
     TextView tv_xiaoxinum, tv_more1, tv_more2;
 
     RecyclerView recyclerView1;
@@ -92,7 +92,7 @@ public class Fragment1 extends BaseFragment {
 
     //车辆信息
     LinearLayout ll_car;
-    TextView tv_carname,tv_carnum;
+    TextView tv_carname, tv_carnum;
     ImageView iv_carlogo;
 
     //定位
@@ -117,12 +117,18 @@ public class Fragment1 extends BaseFragment {
     public void onResume() {
         super.onResume();
         if (MainActivity.item == 0) {
-            if (!localUserInfo.getCarname().equals("")){
+            if (!localUserInfo.getCarname().equals("")) {
+                rl_addcar.setVisibility(View.GONE);
+                ll_car.setVisibility(View.VISIBLE);
+//                y_user_sedan_id = localUserInfo.getCarid();
                 tv_carname.setText(localUserInfo.getCarname());
                 tv_carnum.setText(localUserInfo.getCarnum());
                 Glide.with(getActivity()).load(URLs.IMGHOST + localUserInfo.getCarlogo())
                         .centerCrop()
                         .into(iv_carlogo);//加载图片
+            } else {
+                rl_addcar.setVisibility(View.VISIBLE);
+                ll_car.setVisibility(View.GONE);
             }
             /*requestServer();
             tv_addr.setText(localUserInfo.getCityname());*/
@@ -138,7 +144,7 @@ public class Fragment1 extends BaseFragment {
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         if (MainActivity.item == 0) {
-            if (!localUserInfo.getCarname().equals("")){
+            if (!localUserInfo.getCarname().equals("")) {
                 tv_carname.setText(localUserInfo.getCarname());
                 tv_carnum.setText(localUserInfo.getCarnum());
                 Glide.with(getActivity()).load(URLs.IMGHOST + localUserInfo.getCarlogo())
@@ -226,6 +232,8 @@ public class Fragment1 extends BaseFragment {
 
         banner = findViewByID_My(R.id.banner);
 
+        rl_addcar = findViewByID_My(R.id.rl_addcar);
+        rl_addcar.setOnClickListener(this);
         ll_car = findViewByID_My(R.id.ll_car);
         ll_car.setOnClickListener(this);
         tv_carname = findViewByID_My(R.id.tv_carname);
@@ -678,6 +686,7 @@ public class Fragment1 extends BaseFragment {
                 CommonUtil.gotoActivity(getActivity(), CarServiceActivity.class);
                 break;
             case R.id.ll_car:
+            case R.id.rl_addcar:
                 //选择车辆
                 Intent intent1 = new Intent(getActivity(), MyGarageActivity.class);
                 Bundle bundle1 = new Bundle();
@@ -701,7 +710,7 @@ public class Fragment1 extends BaseFragment {
             case R.id.tv_more2:
                 //更多2
                 showProgress(true, getString(R.string.app_loading4));
-                page2 ++;
+                page2++;
                 Map<String, String> params = new HashMap<>();
                 params.put("service_name", "");
                 params.put("page", page2 + "");
@@ -752,6 +761,9 @@ public class Fragment1 extends BaseFragment {
             case 10001:
                 //选择车辆
                 if (data != null) {
+                    rl_addcar.setVisibility(View.GONE);
+                    ll_car.setVisibility(View.VISIBLE);
+
                     Bundle bundle1 = data.getExtras();
 //                    y_user_sedan_id = bundle1.getString("car_id");
                     tv_carname.setText(bundle1.getString("carname") + "\n" + bundle1.getString("cardetail"));

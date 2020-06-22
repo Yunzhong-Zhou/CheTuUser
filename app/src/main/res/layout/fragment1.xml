@@ -135,16 +135,52 @@
                         android:layout_marginBottom="10dp"
                         android:layout_weight="1"
                         android:background="@drawable/yuanjiao_10_baise"
-                        android:elevation="3dp"
-                        android:gravity="center">
+                        android:elevation="3dp">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@mipmap/bg_fragment1_1"
+                            android:layout_alignParentRight="true"/>
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:drawableLeft="@mipmap/ic_fragment1"
                             android:drawablePadding="8dp"
+                            android:layout_centerInParent="true"
                             android:gravity="center"
                             android:text="发布需求"
+                            android:textColor="@color/black"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+                    </RelativeLayout>
+                    <RelativeLayout
+                        android:id="@+id/rl_addcar"
+                        android:layout_width="match_parent"
+                        android:layout_height="80dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_weight="1"
+                        android:visibility="gone"
+                        android:background="@drawable/yuanjiao_10_baise"
+                        android:elevation="3dp">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@mipmap/bg_fragment1_2"
+                            android:layout_alignParentRight="true"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableLeft="@mipmap/ic_fragment1_2"
+                            android:drawablePadding="8dp"
+                            android:layout_centerInParent="true"
+                            android:gravity="center"
+                            android:text="选择车辆"
                             android:textColor="@color/black"
                             android:textSize="15sp"
                             android:textStyle="bold" />
@@ -158,6 +194,7 @@
                         android:layout_marginRight="10dp"
                         android:layout_marginBottom="10dp"
                         android:layout_weight="1"
+                        android:visibility="visible"
                         android:background="@drawable/yuanjiao_10_baise"
                         android:elevation="3dp"
                         android:gravity="center"
@@ -185,7 +222,7 @@
                                 android:layout_marginLeft="5dp"
                                 android:gravity="center"
                                 android:singleLine="true"
-                                android:text="CarName"
+                                android:text="点此选择车辆"
                                 android:textColor="@color/black"
                                 android:textSize="15sp"
                                 android:textStyle="bold" />
@@ -218,7 +255,7 @@
                                     android:paddingTop="2dp"
                                     android:paddingRight="8dp"
                                     android:paddingBottom="2dp"
-                                    android:text="CarNumber"
+                                    android:text="选择车辆"
                                     android:textColor="@color/black3"
                                     android:textSize="11sp" />
                             </RelativeLayout>

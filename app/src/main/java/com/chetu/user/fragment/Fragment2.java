@@ -115,6 +115,7 @@ public class Fragment2 extends BaseFragment {
         super.onResume();
         if (MainActivity.item == 1) {
             if (!localUserInfo.getCarname().equals("")){
+//                y_user_sedan_id = localUserInfo.getCarid();
                 tv_carname.setText(localUserInfo.getCarname());
                 tv_carnum.setText(localUserInfo.getCarnum());
                 Glide.with(getActivity()).load(URLs.IMGHOST + localUserInfo.getCarlogo())

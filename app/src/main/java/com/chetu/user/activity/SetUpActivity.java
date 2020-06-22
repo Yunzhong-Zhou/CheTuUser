@@ -67,6 +67,7 @@ public class SetUpActivity extends BaseActivity {
                                 localUserInfo.setWalletaddr("");
                                 localUserInfo.setEmail("");
                                 localUserInfo.setUserImage("");
+                                localUserInfo.setCarname("");
                                 CommonUtil.gotoActivityWithFinishOtherAll(SetUpActivity.this, LoginActivity.class, true);
                             }
                         }, new View.OnClickListener() {

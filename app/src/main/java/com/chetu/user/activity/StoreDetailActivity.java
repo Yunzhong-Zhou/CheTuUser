@@ -12,6 +12,7 @@ import com.chetu.user.adapter.ImageAdapter;
 import com.chetu.user.base.BaseActivity;
 import com.chetu.user.model.PingJiaModel;
 import com.chetu.user.model.StoreDetailModel;
+import com.chetu.user.model.StoreDetailModel_WenDa;
 import com.chetu.user.net.URLs;
 import com.chetu.user.okhttp.CallBackUtil;
 import com.chetu.user.okhttp.OkhttpUtil;
@@ -69,9 +70,10 @@ public class StoreDetailActivity extends BaseActivity {
     CommonAdapter<StoreDetailModel.StoreTechListBean> mAdapter_jishi;
 
     //门店提问
+    TextView tv_wenti;
     RecyclerView rv_wenti;
-    List<String> list_wenti = new ArrayList<>();
-    CommonAdapter<String> mAdapter_wenti;
+    List<StoreDetailModel_WenDa.ListBean> list_wenti = new ArrayList<>();
+    CommonAdapter<StoreDetailModel_WenDa.ListBean> mAdapter_wenti;
 
     //门店评论
     TextView tv_pinglun;
@@ -137,6 +139,7 @@ public class StoreDetailActivity extends BaseActivity {
         rv_jishi.setLayoutManager(llm1);
 
         //提问
+        tv_wenti = findViewByID_My(R.id.tv_wenti);
         rv_wenti = findViewByID_My(R.id.rv_wenti);
         rv_wenti.setLayoutManager(new LinearLayoutManager(this));
 
@@ -178,11 +181,11 @@ public class StoreDetailActivity extends BaseActivity {
         page = 0;
         //获取店铺评论
         Map<String, String> params2 = new HashMap<>();
-        params1.put("u_token", localUserInfo.getToken());
-        params1.put("y_store_id", y_store_id);
-        params.put("y_goods_id", "");
-        params.put("page", page + "");
-        RequestPingLun(params1);
+        params2.put("u_token", localUserInfo.getToken());
+        params2.put("y_store_id", y_store_id);
+        params2.put("y_goods_id", "");
+        params2.put("page", page + "");
+        RequestPingLun(params2);
     }
 
     /**
@@ -423,9 +426,9 @@ public class StoreDetailActivity extends BaseActivity {
      * @param
      */
     private void RequestWenTi(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.StoreDetail_WenDa, params, headerMap, new CallBackUtil<StoreDetailModel>() {
+        OkhttpUtil.okHttpPost(URLs.StoreDetail_WenDa, params, headerMap, new CallBackUtil<StoreDetailModel_WenDa>() {
             @Override
-            public StoreDetailModel onParseResponse(Call call, Response response) {
+            public StoreDetailModel_WenDa onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -434,12 +437,26 @@ public class StoreDetailActivity extends BaseActivity {
 //                hideProgress();
 //                showEmptyPage();
 //                myToast(err);
+
             }
 
             @Override
-            public void onResponse(StoreDetailModel response) {
+            public void onResponse(StoreDetailModel_WenDa response) {
 //                hideProgress();
+                list_wenti = response.getList();
 
+                tv_wenti.setText("提问（" + list_wenti.size() + "）");
+
+                mAdapter_wenti = new CommonAdapter<StoreDetailModel_WenDa.ListBean>
+                        (StoreDetailActivity.this, R.layout.item_storedetail_wenti, list_wenti) {
+                    @Override
+                    protected void convert(ViewHolder holder, StoreDetailModel_WenDa.ListBean model, int position) {
+                        //信息
+                        holder.setText(R.id.tv_wenti, model.getMsg());
+                        holder.setText(R.id.tv_huida, "" + model.getC_list().size() + "个回答");
+                    }
+                };
+                rv_wenti.setAdapter(mAdapter_wenti);
             }
         });
     }
@@ -520,6 +537,40 @@ public class StoreDetailActivity extends BaseActivity {
             }
         });
     }
+    /**
+     * 获取评价=更多
+     *
+     * @param params
+     */
+    private void RequestPingLunMore(Map<String, String> params) {
+        OkhttpUtil.okHttpPost(URLs.PingJiaList, params, headerMap, new CallBackUtil<PingJiaModel>() {
+            @Override
+            public PingJiaModel onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+//                hideProgress();
+                myToast(err);
+                page--;
+            }
+
+            @Override
+            public void onResponse(PingJiaModel response) {
+//                hideProgress();
+                List<PingJiaModel.ListBean> list1 = new ArrayList<>();
+                list1 = response.getList();
+                if (list1.size() == 0) {
+                    page--;
+                    myToast(getString(R.string.app_nomore));
+                } else {
+                    list_pinglun.addAll(list1);
+                    mAdapter_pinglun.notifyDataSetChanged();
+                }
+            }
+        });
+    }
 
     @Override
     public void onClick(View v) {
@@ -542,6 +593,16 @@ public class StoreDetailActivity extends BaseActivity {
                     params.put("y_user_collection_id", y_user_collection_id);
                     RequestQuXiaoShouChang(params);
                 }
+                break;
+            case R.id.tv_more:
+                page ++;
+                //获取店铺评论
+                Map<String, String> params2 = new HashMap<>();
+                params2.put("u_token", localUserInfo.getToken());
+                params2.put("y_store_id", y_store_id);
+                params2.put("y_goods_id", "");
+                params2.put("page", page + "");
+                RequestPingLunMore(params2);
                 break;
         }
     }

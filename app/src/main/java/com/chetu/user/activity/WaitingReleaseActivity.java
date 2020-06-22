@@ -126,14 +126,14 @@ public class WaitingReleaseActivity extends BaseActivity {
                             (WaitingReleaseActivity.this, R.layout.item_waitingrelease, list) {
                         @Override
                         protected void convert(ViewHolder holder, WaitingReleaseModel.ListBean model, int position) {
-                            holder.setText(R.id.tv_title,model.getUser_sedan_info().getSName());
-                            holder.setText(R.id.tv_num,model.getUser_sedan_info().getSNumber());
-                            holder.setText(R.id.tv_content,model.getServiceName());
-                            holder.setText(R.id.tv_time,model.getCreateDate());
+                            holder.setText(R.id.tv_title, model.getUser_sedan_info().getSName());
+                            holder.setText(R.id.tv_num, model.getUser_sedan_info().getSNumber());
+                            holder.setText(R.id.tv_content, model.getServiceName());
+                            holder.setText(R.id.tv_time, model.getCreateDate());
                             TextView tv_delete = holder.getView(R.id.tv_delete);
                             TextView tv_fabu = holder.getView(R.id.tv_fabu);
                             TextView tv_baojia = holder.getView(R.id.tv_baojia);
-                            switch (model.getIsOk()){
+                            switch (model.getIsOk()) {
                                 case 0:
                                     //待发布
                                     tv_delete.setVisibility(View.VISIBLE);
@@ -195,8 +195,8 @@ public class WaitingReleaseActivity extends BaseActivity {
                                 public void onClick(View v) {
                                     //报价
                                     Bundle bundle = new Bundle();
-                                    bundle.putSerializable("detail",model);
-                                    CommonUtil.gotoActivityWithData(WaitingReleaseActivity.this,QuotedPriceActivity.class,bundle,false);
+                                    bundle.putSerializable("detail", model);
+                                    CommonUtil.gotoActivityWithData(WaitingReleaseActivity.this, QuotedPriceActivity.class, bundle, false);
                                 }
                             });
 
@@ -205,7 +205,9 @@ public class WaitingReleaseActivity extends BaseActivity {
                     mAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
                         @Override
                         public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
-
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable("detail", list.get(i));
+                            CommonUtil.gotoActivityWithData(WaitingReleaseActivity.this, QuotedPriceActivity.class, bundle, false);
                         }
 
                         @Override
@@ -250,6 +252,7 @@ public class WaitingReleaseActivity extends BaseActivity {
             }
         });
     }
+
     /**
      * 删除
      *
@@ -276,6 +279,7 @@ public class WaitingReleaseActivity extends BaseActivity {
             }
         });
     }
+
     /**
      * 发布
      *

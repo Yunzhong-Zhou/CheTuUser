@@ -58,6 +58,7 @@ public class CarIllegalActivity extends BaseActivity {
 
         tv_carname = findViewByID_My(R.id.tv_carname);
         if (!localUserInfo.getCarname().equals("")){
+            y_user_sedan_id = localUserInfo.getCarid();
             tv_carname.setText(localUserInfo.getCarname());
             editText1.setText(localUserInfo.getCarnum());
             Glide.with(this).load(URLs.IMGHOST + localUserInfo.getCarlogo())
