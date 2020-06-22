@@ -512,6 +512,7 @@ public class CommonUtil {
             }
         }
     }
+
     /**
      * 隐藏键盘
      */
@@ -522,6 +523,7 @@ public class CommonUtil {
             imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
         }
     }
+
     /**
      * 隐藏软键盘 - Fragment
      */
@@ -543,6 +545,7 @@ public class CommonUtil {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         return format.format(date);
     }
+
     /**
      * 调此方法输入所要转换的时间输入例如（"2014-06-14 16-09-00"）返回时间戳
      *
@@ -566,6 +569,26 @@ public class CommonUtil {
         }
         return times;
     }
+
+    public static long dataOne1(String time) {
+        SimpleDateFormat sdr = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date;
+//        String times = null;
+        long times = 0;
+        try {
+            date = sdr.parse(time);
+            times = date.getTime();
+//            times = String.valueOf(l);
+            /*
+            //返回10位数的时间戳
+            String stf = String.valueOf(l);
+            times = stf.substring(0, 10);*/
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return times;
+    }
+
     /**
      * 调用此方法输入所要转换的时间戳输入例如（1402733340）输出（"2014-06-14 16:09:00"）
      *
@@ -581,6 +604,7 @@ public class CommonUtil {
         return times;
 
     }
+
     /**
      * 调用此方法输入所要转换的时间戳输入例如（1402733340）输出（"2014-06-14 16:09:00"）
      *
@@ -612,6 +636,7 @@ public class CommonUtil {
         return times;
 
     }
+
     /**
      * 调用此方法输入所要转换的时间戳输入例如（1402733340）输出（"2014-06-14 16:09:00"）
      *
@@ -627,6 +652,7 @@ public class CommonUtil {
         return times;
 
     }
+
     /**
      * 调用此方法输入所要转换的时间戳输入例如（1402733340）输出（"2014-06-14 16:09:00"）
      *
@@ -642,8 +668,48 @@ public class CommonUtil {
         return times;
 
     }
+    /**
+     * 毫秒转时分秒 HH:mm:ss
+     *
+     * @param time
+     * @return
+     */
+    public static String timedate2(Long time) {
+        {
+            Integer ss = 1000;
+            Integer mi = ss * 60;
+            Integer hh = mi * 60;
+            Integer dd = hh * 24;
 
+            Long day = time / dd;
+            /*Long hour = (time - day * dd) / hh;//24小时制
+            Long hour1 = time / hh;
+            Long minute = (time - day * dd - hour * hh) / mi;
+            Long second = (time - day * dd - hour * hh - minute * mi) / ss;
+            Long milliSecond = time - day * dd - hour * hh - minute * mi - second * ss;*/
 
+            StringBuffer sb = new StringBuffer();
+            if(day >= 0) {
+                sb.append(day+"天");//天
+            }
+//            if(hour > 0) {
+//            sb.append(String.format("%02d", hour) + ":");//小时-取两位小数
+//            sb.append(Integer.valueOf(hour1+"") + ":");//小时-取整
+//            }
+//            if(minute > 0) {
+//            sb.append(String.format("%02d", minute) + ":");//分
+//            }
+//            if(second > 0) {
+//            sb.append(String.format("%02d", second) + "");//秒
+//            sb.append(String.format("%02d", time / ss) + "");//秒
+
+//            }
+            /*if(milliSecond > 0) {
+                sb.append(milliSecond+"毫秒");//毫秒
+            }*/
+            return sb.toString();
+        }
+    }
 
     /**
      * 毫秒转时分秒 HH:mm:ss
@@ -721,7 +787,7 @@ public class CommonUtil {
                 sb.append(String.format("%02d", minute) + ":");//分
             }
 //            if (second > 0) {
-                sb.append(String.format("%02d", second) + "s");//秒
+            sb.append(String.format("%02d", second) + "s");//秒
 //            }
             /*if(milliSecond > 0) {
                 sb.append(milliSecond+"毫秒");//毫秒

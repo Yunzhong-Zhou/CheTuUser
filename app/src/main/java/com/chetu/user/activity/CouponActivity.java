@@ -2,6 +2,7 @@ package com.chetu.user.activity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 import com.chetu.user.R;
 import com.chetu.user.base.BaseActivity;
@@ -9,6 +10,7 @@ import com.chetu.user.model.CouponModel;
 import com.chetu.user.net.URLs;
 import com.chetu.user.okhttp.CallBackUtil;
 import com.chetu.user.okhttp.OkhttpUtil;
+import com.chetu.user.utils.CommonUtil;
 import com.liaoinstan.springview.widget.SpringView;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
@@ -114,10 +116,58 @@ public class CouponActivity extends BaseActivity {
                             (CouponActivity.this, R.layout.item_coupon, list) {
                         @Override
                         protected void convert(ViewHolder holder, CouponModel.ListBean model, int position) {
-                            holder.setText(R.id.tv_money, "¥" + model.getCMoney());
-                            holder.setText(R.id.tv_title, model.getCTitle());
-                            holder.setText(R.id.tv_time, "有效日期：" + model.getCEndTime());
-                            holder.setText(R.id.tv_content, model.getCMsg());
+                            TextView tv_money = holder.getView(R.id.tv_money);
+                            TextView tv_title = holder.getView(R.id.tv_title);
+                            TextView tv_time = holder.getView(R.id.tv_time);
+                            TextView tv_shiyong = holder.getView(R.id.tv_shiyong);
+                            TextView tv_content = holder.getView(R.id.tv_content);
+                            tv_money.setText("¥" + model.getCMoney());
+                            tv_title.setText(model.getCTitle());
+                            tv_content.setText(model.getCMsg());
+
+
+                            if (!model.getCreateDate().equals("") && !model.getCEndTime().equals("")) {
+                                String[] startTime = model.getCreateDate().split(" ");
+                                String[] endTime = model.getCEndTime().split(" ");
+                                //判断是否使用
+                                if (model.getIsUse() == 0) {//未使用
+                                    //判断是否过期
+                                    if (CommonUtil.dataOne1(model.getCreateDate()) < CommonUtil.dataOne1(model.getCEndTime())) {//没过期
+                                        //计算剩余天数
+                                        String s = CommonUtil.timedate2( CommonUtil.dataOne1(model.getCEndTime())-CommonUtil.dataOne1(model.getCreateDate()) );
+
+                                        tv_shiyong.setText("立即使用");
+                                        tv_shiyong.setBackgroundResource(R.drawable.yuanjiaobiankuang_5_baise);
+                                        tv_time.setText("有效日期：" + endTime[0] + "（剩余" + s + "）");
+
+                                        tv_shiyong.setTextColor(getResources().getColor(R.color.white));
+                                        tv_money.setTextColor(getResources().getColor(R.color.white));
+                                        tv_time.setTextColor(getResources().getColor(R.color.white));
+                                        tv_content.setTextColor(getResources().getColor(R.color.white));
+                                        tv_title.setTextColor(getResources().getColor(R.color.white));
+                                    } else {//已过期
+                                        tv_shiyong.setText("已过期");
+                                        tv_shiyong.setBackgroundResource(R.color.transparent);
+                                        tv_time.setText("有效日期：" + endTime[0]);
+
+                                        tv_shiyong.setTextColor(getResources().getColor(R.color.white2));
+                                        tv_money.setTextColor(getResources().getColor(R.color.white2));
+                                        tv_time.setTextColor(getResources().getColor(R.color.white2));
+                                        tv_content.setTextColor(getResources().getColor(R.color.white2));
+                                        tv_title.setTextColor(getResources().getColor(R.color.white2));
+                                    }
+                                } else {//已使用
+                                    tv_shiyong.setText("已使用");
+                                    tv_shiyong.setBackgroundResource(R.color.transparent);
+                                    tv_time.setText("有效日期：" + endTime[0]);
+
+                                    tv_shiyong.setTextColor(getResources().getColor(R.color.white2));
+                                    tv_money.setTextColor(getResources().getColor(R.color.white2));
+                                    tv_time.setTextColor(getResources().getColor(R.color.white2));
+                                    tv_content.setTextColor(getResources().getColor(R.color.white2));
+                                    tv_title.setTextColor(getResources().getColor(R.color.white2));
+                                }
+                            }
                         }
                     };
                     mAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
