@@ -250,6 +250,20 @@ public class IntegralActivity extends BaseActivity {
             @Override
             public void onResponse(PayModel response) {
                 hideProgress();
+                //微信
+                        /*IWXAPI api= WXAPIFactory.createWXAPI(RechargeActivity.this, "wx79d0350178a9ff3a",false);//填写自己的APPID
+                        api.registerApp("wx79d0350178a9ff3a");//填写自己的APPID，注册本身APP
+                        PayReq req = new PayReq();//PayReq就是订单信息对象
+                        //给req对象赋值
+                        req.appId = appid;//APPID
+                        req.partnerId = partnerid;//    商户号
+                        req.prepayId = prepayid;//  预付款ID
+                        req.nonceStr = getRoundString();//随机数
+                        req.timeStamp = getTimeStamp();//时间戳
+                        req.packageValue = "Sign=WXPay";//固定值Sign=WXPay
+                        req.sign = sign;//签名
+                        api.sendReq(req);//将订单信息对象发送给微信服务器，即发送支付请求*/
+
                 //弹出支付宝
                 Runnable payRunnable = new Runnable() {
                     @Override
