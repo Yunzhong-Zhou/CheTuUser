@@ -44,6 +44,8 @@ public class URLs {
     public static final String QuXiaoShouChang = HOST+"/api/v1/user/user_collection_del";
     //加入购物车
     public static final String ADDShop = HOST+"/api/v1/public/user_cart_add";
+    //支付
+    public static final String Pay = HOST+"/api/v1/pay/online_payment";
     //评价列表
     public static final String PingJiaList = HOST+"/api/v1/public/get_goods_eval_list";
     /**

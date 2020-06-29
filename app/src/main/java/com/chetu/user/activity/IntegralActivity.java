@@ -1,14 +1,22 @@
 package com.chetu.user.activity;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.text.TextUtils;
 import android.view.View;
 
+import com.alipay.sdk.app.PayTask;
 import com.chetu.user.R;
 import com.chetu.user.base.BaseActivity;
 import com.chetu.user.model.Fragment2Model;
+import com.chetu.user.model.PayModel;
 import com.chetu.user.net.URLs;
 import com.chetu.user.okhttp.CallBackUtil;
 import com.chetu.user.okhttp.OkhttpUtil;
+import com.chetu.user.utils.MyLogger;
+import com.chetu.user.utils.alipay.PayResult;
 import com.liaoinstan.springview.widget.SpringView;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
@@ -33,6 +41,39 @@ public class IntegralActivity extends BaseActivity {
     private RecyclerView recyclerView;
     List<Fragment2Model.ListBean> list = new ArrayList<>();
     CommonAdapter<Fragment2Model.ListBean> mAdapter;
+
+    private static final int SDK_PAY_FLAG = 1;
+    @SuppressLint("HandlerLeak")
+    private Handler mHandler = new Handler() {
+        @SuppressWarnings("unused")
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case SDK_PAY_FLAG: {
+                    @SuppressWarnings("unchecked")
+                    PayResult payResult = new PayResult((Map<String, String>) msg.obj);
+                    /**
+                     * 对于支付结果，请商户依赖服务端的异步通知结果。同步通知结果，仅作为支付结束的通知。
+                     */
+                    String resultInfo = payResult.getResult();// 同步返回需要验证的信息
+                    String resultStatus = payResult.getResultStatus();
+                    // 判断resultStatus 为9000则代表支付成功
+                    if (TextUtils.equals(resultStatus, "9000")) {
+                        // 该笔订单是否真实支付成功，需要依赖服务端的异步通知。
+                        MyLogger.i("支付成功" + payResult);
+                        showToast("支付成功");
+                    } else {
+                        // 该笔订单真实的支付结果，需要依赖服务端的异步通知。
+                        MyLogger.i("支付失败" + payResult);
+                        showToast("支付失败");
+                    }
+                    break;
+                }
+                default:
+                    break;
+            }
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +119,7 @@ public class IntegralActivity extends BaseActivity {
     protected void initData() {
         requestServer();
     }
+
     @Override
     public void requestServer() {
         super.requestServer();
@@ -164,6 +206,7 @@ public class IntegralActivity extends BaseActivity {
             }
         });
     }
+
     @Override
     protected void updateView() {
         titleView.setTitle("积分");
@@ -175,5 +218,54 @@ public class IntegralActivity extends BaseActivity {
             }
         });
         titleView.setBackground(R.color.blue);
+
+        titleView.showRightTextview("测试支付", R.color.white, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Map<String, String> params = new HashMap<>();
+                params.put("payment", "1");
+                params.put("i_classify", "1");
+                params.put("money", "10");
+                params.put("code_str", "41338C46FA8D4938A55C6450F29BEED3");
+                params.put("u_token", localUserInfo.getToken());
+                RequestPay(params);
+            }
+        });
+
+    }
+
+    private void RequestPay(Map<String, String> params) {
+        OkhttpUtil.okHttpPost(URLs.Pay, params, headerMap, new CallBackUtil<PayModel>() {
+            @Override
+            public PayModel onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+                hideProgress();
+                myToast(err);
+            }
+
+            @Override
+            public void onResponse(PayModel response) {
+                hideProgress();
+                //弹出支付宝
+                Runnable payRunnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        PayTask alipay = new PayTask(IntegralActivity.this);
+                        Map<String, String> result = alipay.payV2(response.getOrderStr(), true);
+                        Message msg = new Message();
+                        msg.what = SDK_PAY_FLAG;
+                        msg.obj = result;
+                        mHandler.sendMessage(msg);
+                    }
+                };
+                // 必须异步调用
+                Thread payThread = new Thread(payRunnable);
+                payThread.start();
+            }
+        });
     }
 }
