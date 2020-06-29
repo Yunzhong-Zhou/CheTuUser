@@ -48,13 +48,14 @@ public class LocalUserInfo {
     public static final String CARID = "car_id";//车辆id
     public static final String CARLOGO = "carlogo";//车辆logo
 
-
     public static final String HXID = "hx_id";//环信id
     public static final String WINNUM1 = "winNum1";//中奖信息
     public static final String LOSENUM = "loseNum";//未中奖信息
     public static final String LOSENUM1 = "loseNum1";//未中奖信息
 
     public static final String ISNEWCOMER = "isNewcomer";//是否为新用户
+
+
 
     private static SharedPreferences mSharedPreferences;
     private static LocalUserInfo localUserInfo;
@@ -401,6 +402,7 @@ public class LocalUserInfo {
 //		put("payed", user.isPayed());
 
 //	}
+
 
 	/**
 	 * 获取当前用户信息

@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
@@ -523,6 +524,14 @@ public class CommonUtil {
             imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
         }
     }
+    /**
+     * 弹出键盘
+     */
+    public static void showInput(Activity context,EditText et) {
+        et.requestFocus();
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(INPUT_METHOD_SERVICE);
+        imm.showSoftInput(et, InputMethodManager.SHOW_IMPLICIT);
+    }
 
     /**
      * 隐藏软键盘 - Fragment
@@ -531,6 +540,8 @@ public class CommonUtil {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
     }
+
+
 
     //保留两位小数
     public static String twoPointConversion(double price) {

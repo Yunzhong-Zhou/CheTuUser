@@ -34,7 +34,7 @@ import okhttp3.Response;
 
 public abstract class CallBackUtil<T> {
     Type mType;
-    private Gson mGson;
+    private Gson mGson = new Gson();
     /**
      * 异步线程-传参给activity时需要
      */
@@ -63,7 +63,9 @@ public abstract class CallBackUtil<T> {
      */
     public void onSeccess(Call call, Response response) {
         mType = getSuperclassTypeParameter(getClass());
-        mGson = new Gson();
+        if (mGson == null){
+            mGson = new Gson();
+        }
         try {
             String string = response.body().string();
             if (!string.equals("")) {

@@ -21,6 +21,8 @@
             android:drawablePadding="5dp"
             android:padding="14dp"
             android:text="地址"
+            android:maxEms="8"
+            android:singleLine="true"
             android:textColor="@color/black"
             android:textSize="15sp" />
 
@@ -45,6 +47,7 @@
                 android:drawableRight="@mipmap/ic_edit_text_delbtn"
                 android:drawablePadding="5dp"
                 android:freezesText="true"
+                android:focusable="false"
                 android:gravity="center_vertical"
                 android:hint="搜索您想要的车或品牌"
                 android:imeOptions="actionSearch"
