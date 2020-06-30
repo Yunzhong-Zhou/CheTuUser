@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginTop="10dp"
     android:background="@drawable/yuanjiao_10_baise"
+    android:gravity="center_vertical"
     android:orientation="horizontal"
     android:paddingLeft="13dp"
-    android:gravity="center_vertical"
     android:paddingRight="13dp">
 
     <ImageView
@@ -82,11 +82,12 @@
                 android:id="@+id/flowLayout1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="5dp"
                 android:layout_marginTop="-5dp"
+                android:paddingTop="5dp"
                 android:paddingBottom="5dp"
                 app:height_space="5dp"
                 app:width_space="10dp" />
+
             <com.cy.cyflowlayoutlibrary.FlowLayout
                 android:id="@+id/flowLayout2"
                 android:layout_width="match_parent"
@@ -120,8 +121,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@mipmap/ic_addr_gray"
-                android:text="0.0km"
                 android:drawablePadding="5dp"
+                android:text="0.0km"
                 android:textColor="@color/black3"
                 android:textSize="12sp" />
 

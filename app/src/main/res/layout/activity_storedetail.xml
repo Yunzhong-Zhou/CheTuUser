@@ -49,9 +49,9 @@
                         android:paddingRight="10dp"
                         android:paddingBottom="5dp"
                         android:text="营业时间"
-                        android:visibility="gone"
                         android:textColor="@color/white"
-                        android:textSize="12sp" />
+                        android:textSize="12sp"
+                        android:visibility="gone" />
 
                     <View
                         android:layout_width="0dp"
@@ -117,21 +117,21 @@
 
                         <ImageView
                             android:id="@+id/iv_xihuan"
-                            android:onClick="onClick"
                             android:layout_width="17dp"
                             android:layout_height="15dp"
+                            android:onClick="onClick"
                             android:src="@mipmap/ic_xin_weixuan" />
 
                     </LinearLayout>
 
                     <TextView
                         android:id="@+id/tv_phone"
-                        android:onClick="onClick"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:drawableLeft="@mipmap/ic_call_black1"
                         android:drawablePadding="5dp"
                         android:gravity="center_vertical"
+                        android:onClick="onClick"
                         android:text="phonenum"
                         android:textColor="@color/black"
                         android:textSize="15sp"
@@ -335,7 +335,9 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_tese"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="7dp"
+                        android:paddingRight="7dp" />
 
                 </LinearLayout>
 
@@ -344,9 +346,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:paddingBottom="13dp"
                     android:background="@drawable/yuanjiao_10_baise"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:paddingBottom="13dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -364,7 +366,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:paddingLeft="10dp"
-                        android:paddingRight="10dp"/>
+                        android:paddingRight="10dp" />
 
                 </LinearLayout>
                 <!--提问-->
@@ -378,27 +380,37 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
                         android:orientation="horizontal"
                         android:paddingLeft="13dp"
-                        android:paddingRight="13dp">
+                        android:paddingTop="15dp"
+                        android:paddingRight="13dp"
+                        android:paddingBottom="10dp">
 
                         <TextView
                             android:id="@+id/tv_wenti"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:paddingTop="15dp"
-                            android:paddingBottom="10dp"
-                            android:drawableRight="@mipmap/ic_next_black"
                             android:text="提问"
                             android:textColor="@color/black3"
                             android:textSize="14sp" />
 
+
+                        <com.chetu.user.view.DiscussionAvatarView.DiscussionAvatarView
+                            android:id="@+id/mDiscussAva"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:isLastComplete="true"
+                            app:isShowAnimation="true"
+                            app:maxCount="4"
+                            app:radius="7"
+                            app:space="0.5" />
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:paddingTop="15dp"
-                            android:paddingBottom="10dp"
+                            android:drawableRight="@mipmap/ic_next_black"
                             android:text=""
                             android:textColor="@color/blue"
                             android:textSize="14sp" />
@@ -409,7 +421,7 @@
                         android:id="@+id/rv_wenti"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingBottom="10dp"/>
+                        android:paddingBottom="10dp" />
 
                 </LinearLayout>
                 <!--用户评论-->
@@ -439,22 +451,23 @@
 
                     <TextView
                         android:id="@+id/tv_more"
-                        android:onClick="onClick"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:drawableRight="@mipmap/ic_down_gray"
                         android:drawablePadding="8dp"
                         android:gravity="center"
+                        android:onClick="onClick"
                         android:padding="15dp"
                         android:text="加载更多"
                         android:textColor="@color/black3"
                         android:textSize="10sp" />
                 </LinearLayout>
+
                 <View
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1" />
                 <!--下单-->
                 <LinearLayout
                     android:layout_width="match_parent"

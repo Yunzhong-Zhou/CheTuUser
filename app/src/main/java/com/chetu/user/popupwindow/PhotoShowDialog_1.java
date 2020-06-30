@@ -8,8 +8,6 @@ import android.widget.LinearLayout;
 
 import com.bm.library.PhotoView;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
-import com.bumptech.glide.request.RequestOptions;
 import com.chetu.user.R;
 
 import androidx.annotation.NonNull;
@@ -49,13 +47,15 @@ public class PhotoShowDialog_1 extends Dialog {
         getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         PhotoView photoView = findViewById(R.id.img);
         photoView.enable();
-        RequestOptions options = new RequestOptions()
+        /*RequestOptions options = new RequestOptions()
                 .placeholder(R.mipmap.loading)
-                .error(R.mipmap.zanwutupian);
+                .error(R.mipmap.zanwutupian);*/
         Glide.with(mContext)
                 .load(url)
-                .apply(options)
-                .transition(new DrawableTransitionOptions().crossFade())
+                .placeholder(R.mipmap.loading)//加载站位图
+                .error(R.mipmap.zanwutupian)//加载失败
+                /*.apply(options)
+                .transition(new DrawableTransitionOptions().crossFade())*/
                 .into(photoView);
 
         photoView.setOnClickListener(new View.OnClickListener() {

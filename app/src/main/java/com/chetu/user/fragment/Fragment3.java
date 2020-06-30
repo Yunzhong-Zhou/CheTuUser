@@ -404,6 +404,11 @@ public class Fragment3 extends BaseFragment {
                                             @Override
                                             public void onItemClick(int position, Fragment3Model.ListBean.StoreServiceListBean bean) {
 //                        showToast("点击" + position);
+                                                Bundle bundle = new Bundle();
+                                                bundle.putString("id", model.getYStoreId());
+                                                bundle.putString("longitude", longitude);
+                                                bundle.putString("latitude", latitude);
+                                                CommonUtil.gotoActivityWithData(getActivity(), StoreDetailActivity.class, bundle, false);
                                             }
 
                                             @Override
@@ -440,6 +445,11 @@ public class Fragment3 extends BaseFragment {
                                             @Override
                                             public void onItemClick(int position, Fragment3Model.ListBean.StoreServiceListBean bean) {
 //                        showToast("点击" + position);
+                                                Bundle bundle = new Bundle();
+                                                bundle.putString("id", model.getYStoreId());
+                                                bundle.putString("longitude", longitude);
+                                                bundle.putString("latitude", latitude);
+                                                CommonUtil.gotoActivityWithData(getActivity(), StoreDetailActivity.class, bundle, false);
                                             }
 
                                             @Override

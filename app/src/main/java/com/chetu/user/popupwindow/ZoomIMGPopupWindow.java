@@ -15,8 +15,6 @@ import android.widget.Toast;
 
 import com.bm.library.PhotoView;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
-import com.bumptech.glide.request.RequestOptions;
 import com.chetu.user.R;
 import com.chetu.user.utils.MyLogger;
 
@@ -93,13 +91,15 @@ public class ZoomIMGPopupWindow extends PopupWindow {
         MyLogger.i(">>>>>>>图片url："+url);
         relativeLayout = view.findViewById(R.id.pop_layout);
         PhotoView photoView = (PhotoView) view.findViewById(R.id.img);
-        RequestOptions options = new RequestOptions()
+        /*RequestOptions options = new RequestOptions()
                 .placeholder(R.mipmap.loading)
-                .error(R.mipmap.zanwutupian);
+                .error(R.mipmap.zanwutupian);*/
         Glide.with(mContext)
                 .load(url)
-                .apply(options)
-                .transition(new DrawableTransitionOptions().crossFade())
+//                .apply(options)
+//                .transition(new DrawableTransitionOptions().crossFade())
+                .placeholder(R.mipmap.loading)//加载站位图
+                .error(R.mipmap.zanwutupian)//加载失败
                 .into(photoView);
         // 启用图片缩放功能
         photoView.enable();

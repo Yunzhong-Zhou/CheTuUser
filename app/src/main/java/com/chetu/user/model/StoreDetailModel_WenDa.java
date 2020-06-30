@@ -7,6 +7,16 @@ import java.util.List;
  * Created by zyz on 2020/6/22.
  */
 public class StoreDetailModel_WenDa implements Serializable {
+    private int sum;
+
+    public int getSum() {
+        return sum;
+    }
+
+    public void setSum(int sum) {
+        this.sum = sum;
+    }
+
     private List<ListBean> list;
 
     public List<ListBean> getList() {

@@ -17,6 +17,7 @@ import com.chetu.user.net.URLs;
 import com.chetu.user.okhttp.CallBackUtil;
 import com.chetu.user.okhttp.OkhttpUtil;
 import com.chetu.user.popupwindow.PhotoShowDialog;
+import com.chetu.user.view.DiscussionAvatarView.DiscussionAvatarView;
 import com.liaoinstan.springview.widget.SpringView;
 import com.youth.banner.Banner;
 import com.youth.banner.config.IndicatorConfig;
@@ -74,6 +75,9 @@ public class StoreDetailActivity extends BaseActivity {
     RecyclerView rv_wenti;
     List<StoreDetailModel_WenDa.ListBean> list_wenti = new ArrayList<>();
     CommonAdapter<StoreDetailModel_WenDa.ListBean> mAdapter_wenti;
+
+    DiscussionAvatarView mDiscussAva;
+    ArrayList<String> mDatas = new ArrayList<>();
 
     //门店评论
     TextView tv_pinglun;
@@ -142,6 +146,7 @@ public class StoreDetailActivity extends BaseActivity {
         tv_wenti = findViewByID_My(R.id.tv_wenti);
         rv_wenti = findViewByID_My(R.id.rv_wenti);
         rv_wenti.setLayoutManager(new LinearLayoutManager(this));
+        mDiscussAva = findViewByID_My(R.id.mDiscussAva);
 
         //门店评论
         tv_pinglun = findViewByID_My(R.id.tv_pinglun);
@@ -183,7 +188,7 @@ public class StoreDetailActivity extends BaseActivity {
         Map<String, String> params2 = new HashMap<>();
         params2.put("u_token", localUserInfo.getToken());
         params2.put("y_store_id", y_store_id);
-        params2.put("y_goods_id", "");
+        params2.put("y_goods_id", "0");
         params2.put("page", page + "");
         RequestPingLun(params2);
     }
@@ -443,9 +448,30 @@ public class StoreDetailActivity extends BaseActivity {
             @Override
             public void onResponse(StoreDetailModel_WenDa response) {
 //                hideProgress();
-                list_wenti = response.getList();
 
-                tv_wenti.setText("提问（" + list_wenti.size() + "）");
+                //取前2条数据
+                if (response.getList().size() > 2) {
+                    list_wenti = response.getList().subList(0, 2);
+                } else {
+                    list_wenti = response.getList();
+                }
+
+                //头像重叠
+                mDatas.clear();
+                for (StoreDetailModel_WenDa.ListBean bean : response.getList()) {
+//                    if (!bean.getUser_info().getHeadPortrait().trim().equals("")){
+                    mDatas.add(URLs.IMGHOST + bean.getUser_info().getHeadPortrait());
+//                    }
+                }
+               /* if (mDatas.size()>=4){
+                    mDiscussAva.setMaxCount(4);
+                }else {
+                    mDiscussAva.setMaxCount(mDatas.size());
+                }*/
+                mDiscussAva.initDatas(mDatas);
+
+
+                tv_wenti.setText("提问（" + response.getSum() + "）");
 
                 mAdapter_wenti = new CommonAdapter<StoreDetailModel_WenDa.ListBean>
                         (StoreDetailActivity.this, R.layout.item_storedetail_wenti, list_wenti) {
@@ -486,9 +512,14 @@ public class StoreDetailActivity extends BaseActivity {
 //                if (response.getList().size() != 0) {
 //                    loading_layout1.showContent();
 //                    loading_layout3.showContent();
-                list_pinglun = response.getList();
+                //取前2条数据
+                if (response.getList().size() > 2) {
+                    list_pinglun = response.getList().subList(0, 2);
+                } else {
+                    list_pinglun = response.getList();
+                }
 
-                tv_pinglun.setText("用户评论（" + list_pinglun.size() + "）");
+                tv_pinglun.setText("用户评论（" + response.getCount() + "）");
 
                 mAdapter_pinglun = new CommonAdapter<PingJiaModel.ListBean>
                         (StoreDetailActivity.this, R.layout.item_productdetail, list_pinglun) {
@@ -537,6 +568,7 @@ public class StoreDetailActivity extends BaseActivity {
             }
         });
     }
+
     /**
      * 获取评价=更多
      *
@@ -595,7 +627,7 @@ public class StoreDetailActivity extends BaseActivity {
                 }
                 break;
             case R.id.tv_more:
-                page ++;
+                page++;
                 //获取店铺评论
                 Map<String, String> params2 = new HashMap<>();
                 params2.put("u_token", localUserInfo.getToken());
