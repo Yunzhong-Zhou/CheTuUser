@@ -153,10 +153,15 @@ public class SearchActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-//        keys = getIntent().getStringExtra("keys");
         ShowHistory();
         //获取热门搜索关键词
         RequestHot(params);
+        if (getIntent().getStringExtra("keys") !=null){
+            keys = getIntent().getStringExtra("keys");
+            if (!keys.equals("")){
+                requestServer();
+            }
+        }
     }
 
     /**

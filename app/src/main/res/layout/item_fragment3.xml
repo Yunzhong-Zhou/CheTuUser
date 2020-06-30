@@ -85,7 +85,7 @@
                 android:paddingTop="5dp"
                 android:layout_marginTop="-5dp"
                 android:paddingBottom="5dp"
-                app:height_space="10dp"
+                app:height_space="5dp"
                 app:width_space="10dp" />
             <com.cy.cyflowlayoutlibrary.FlowLayout
                 android:id="@+id/flowLayout2"
@@ -94,7 +94,7 @@
                 android:layout_marginTop="-5dp"
                 android:paddingTop="5dp"
                 android:paddingBottom="5dp"
-                app:height_space="10dp"
+                app:height_space="5dp"
                 app:width_space="10dp" />
 
         </LinearLayout>

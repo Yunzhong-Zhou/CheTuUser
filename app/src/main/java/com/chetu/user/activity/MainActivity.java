@@ -143,7 +143,7 @@ public class MainActivity extends BaseActivity {
                     @Override
                     public void permissionRequestSuccess() {
                         //所有权限授权成功才会回调这里
-                        mLocationClient.startLocation();
+//                        mLocationClient.startLocation();
                     }
                     @Override
                     public void permissionRequestFail(String[] grantedPermissions, String[] deniedPermissions, String[] forceDeniedPermissions) {

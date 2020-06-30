@@ -342,7 +342,7 @@ public class StoreDetailActivity extends BaseActivity {
                     images.add(URLs.IMGHOST + s);
                 }
                 mAdapter_tese = new CommonAdapter<String>
-                        (StoreDetailActivity.this, R.layout.item_img_110_110, images) {
+                        (StoreDetailActivity.this, R.layout.item_img_m_110, images) {
                     @Override
                     protected void convert(ViewHolder holder, String model, int position) {
                         ImageView iv = holder.getView(R.id.iv);

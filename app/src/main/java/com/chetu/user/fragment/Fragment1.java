@@ -239,9 +239,9 @@ public class Fragment1 extends BaseFragment {
 
     @Override
     protected void initData() {
-
         longitude = localUserInfo.getLongitude() + "";
         latitude = localUserInfo.getLatitude() + "";
+        tv_addr.setText(localUserInfo.getCityname() + "");
 
         //获取服务项目和banner
         HashMap<String, String> params2 = new HashMap<>();
@@ -336,19 +336,19 @@ public class Fragment1 extends BaseFragment {
         showProgress(true, getString(R.string.app_loading));
 
         //获取附近活动列表数据
-//        if (!longitude.equals("")) {
-        page1 = 0;
-        Map<String, String> params1 = new HashMap<>();
-        params1.put("service_name", "");
-        params1.put("page", page1 + "");
-        params1.put("longitude", longitude);
-        params1.put("latitude", latitude);
-        params1.put("is_review", "1");
-        params1.put("is_index", "1");
-        RequestList1(params1);
-//        } else {
-//            mLocationClient.startLocation();
-//        }
+        if (!longitude.equals("")) {
+            page1 = 0;
+            Map<String, String> params1 = new HashMap<>();
+            params1.put("service_name", "");
+            params1.put("page", page1 + "");
+            params1.put("longitude", longitude);
+            params1.put("latitude", latitude);
+            params1.put("is_review", "1");
+            params1.put("is_index", "1");
+            RequestList1(params1);
+        } else {
+            mLocationClient.startLocation();
+        }
 
         //获取口碑商家列表
         page2 = 0;

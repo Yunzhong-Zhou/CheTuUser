@@ -240,6 +240,7 @@ public class Fragment2 extends BaseFragment {
     protected void initData() {
         longitude = localUserInfo.getLongitude() + "";
         latitude = localUserInfo.getLatitude() + "";
+        tv_addr.setText(localUserInfo.getCityname() + "");
         //初始化定位
         mLocationClient = new AMapLocationClient(getActivity());
         AMapLocationClientOption option = new AMapLocationClientOption();
@@ -412,7 +413,6 @@ public class Fragment2 extends BaseFragment {
                             holder.setText(R.id.tv_addr, model.getAddress());//地址
                             holder.setText(R.id.tv_juli, model.getDistance() + "m");//距离
 
-                            MyLogger.i(">>>>>>"+ model.getStore_service_list().size());
                             if (model.getStore_service_list().size() > 0) {
                                 //标签
                                 FlowLayoutAdapter<Fragment3Model.ListBean.StoreServiceListBean> flowLayoutAdapter1 =
