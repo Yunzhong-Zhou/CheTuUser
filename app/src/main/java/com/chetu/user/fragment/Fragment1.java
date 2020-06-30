@@ -35,6 +35,7 @@ import com.chetu.user.model.Fragment3Model;
 import com.chetu.user.net.URLs;
 import com.chetu.user.okhttp.CallBackUtil;
 import com.chetu.user.okhttp.OkhttpUtil;
+import com.chetu.user.popupwindow.PhotoShowDialog;
 import com.chetu.user.utils.CommonUtil;
 import com.chetu.user.utils.MyLogger;
 import com.cretin.tools.scancode.CaptureActivity;
@@ -171,11 +172,6 @@ public class Fragment1 extends BaseFragment {
         springView.setListener(new SpringView.OnFreshListener() {
             @Override
             public void onRefresh() {
-                //获取服务项目和banner
-                HashMap<String, String> params2 = new HashMap<>();
-                params2.put("y_parent_id", "0");
-                RequestService(params2, 0);
-
                 //获取附近活动列表数据
                 page1 = 0;
                 Map<String, String> params1 = new HashMap<>();
@@ -243,6 +239,16 @@ public class Fragment1 extends BaseFragment {
 
     @Override
     protected void initData() {
+
+        longitude = localUserInfo.getLongitude() + "";
+        latitude = localUserInfo.getLatitude() + "";
+
+        //获取服务项目和banner
+        HashMap<String, String> params2 = new HashMap<>();
+        params2.put("y_parent_id", "0");
+        RequestService(params2, 0);
+
+
         //初始化定位
         mLocationClient = new AMapLocationClient(getActivity());
         AMapLocationClientOption option = new AMapLocationClientOption();
@@ -285,6 +291,9 @@ public class Fragment1 extends BaseFragment {
                         latitude = aMapLocation.getLatitude() + "";
 
                         localUserInfo.setCityname(aMapLocation.getCity());
+                        localUserInfo.setLongitude(longitude);
+                        localUserInfo.setLatitude(latitude);
+
                         tv_addr.setText(aMapLocation.getCity() + "");
 
 
@@ -325,11 +334,6 @@ public class Fragment1 extends BaseFragment {
         super.requestServer();
 //        this.showLoadingPage();
         showProgress(true, getString(R.string.app_loading));
-
-        //获取服务项目和banner
-        HashMap<String, String> params2 = new HashMap<>();
-        params2.put("y_parent_id", "0");
-        RequestService(params2, 0);
 
         //获取附近活动列表数据
 //        if (!longitude.equals("")) {
@@ -437,6 +441,7 @@ public class Fragment1 extends BaseFragment {
             public void onFailure(Call call, Exception e, String err) {
                 hideProgress();
 //                myToast(err);
+                myToast(getString(R.string.app_nomore));
                 page1--;
             }
 
@@ -534,6 +539,7 @@ public class Fragment1 extends BaseFragment {
             public void onFailure(Call call, Exception e, String err) {
                 hideProgress();
 //                myToast(err);
+                myToast(getString(R.string.app_nomore));
                 page2--;
             }
 
@@ -594,10 +600,13 @@ public class Fragment1 extends BaseFragment {
                 /*Bundle bundle = new Bundle();
                 bundle.putInt("type", response.getBanner().get(position).getType());
                 CommonUtil.gotoActivityWithData(JiFenShangChengActivity.this, JiFenLieBiaoActivity.class, bundle, false);*/
+                        PhotoShowDialog photoShowDialog = new PhotoShowDialog(getActivity(), images, position);
+                        photoShowDialog.show();
                     }
                 });
 
                 //tab
+                list_tab.clear();
                 for (Fragment1ServiceListModel.IndexCustomListBean bean : response.getIndex_custom_list()) {
                     list_tab.add(new Fragment1TabModel(bean.getYServiceId(), bean.getCategory(), bean.getMsg(), bean.getImgurl()));
                 }

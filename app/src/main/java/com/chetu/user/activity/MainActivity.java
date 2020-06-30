@@ -17,6 +17,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationClient;
+import com.amap.api.location.AMapLocationClientOption;
+import com.amap.api.location.AMapLocationListener;
 import com.chetu.user.R;
 import com.chetu.user.base.BaseActivity;
 import com.chetu.user.fragment.Fragment1;
@@ -24,16 +28,25 @@ import com.chetu.user.fragment.Fragment2;
 import com.chetu.user.fragment.Fragment3;
 import com.chetu.user.fragment.Fragment4;
 import com.chetu.user.model.UpgradeModel;
+import com.chetu.user.net.URLs;
+import com.chetu.user.okhttp.CallBackUtil;
+import com.chetu.user.okhttp.OkhttpUtil;
+import com.chetu.user.utils.CommonUtil;
+import com.chetu.user.utils.MyLogger;
 import com.cretin.tools.fanpermission.FanPermissionListener;
 import com.cretin.tools.fanpermission.FanPermissionUtils;
 import com.cy.dialog.BaseDialog;
 import com.hjm.bottomtabbar.BottomTabBar;
 import com.maning.updatelibrary.InstallUtils;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import androidx.appcompat.app.AlertDialog;
+import okhttp3.Call;
+import okhttp3.Response;
 
 public class MainActivity extends BaseActivity {
     public static BottomTabBar mBottomTabBar;
@@ -41,6 +54,10 @@ public class MainActivity extends BaseActivity {
     int isShowAd = 0;//是否显示弹窗
     //更新
     UpgradeModel model_up;
+
+    //定位
+    //声明AMapLocationClient类对象
+    private AMapLocationClient mLocationClient = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +69,63 @@ public class MainActivity extends BaseActivity {
                 .keyboardEnable(true)  //解决软键盘与底部输入框冲突问题
                 .statusBarDarkFont(true, 0.2f) //原理：如果当前设备支持状态栏字体变色，会设置状态栏字体为黑色，如果当前设备不支持状态栏字体变色，会使当前状态栏加上透明度，否则不执行透明度
                 .init();
+
+        //初始化定位
+        mLocationClient = new AMapLocationClient(this);
+        AMapLocationClientOption option = new AMapLocationClientOption();
+        //设置定位场景，目前支持三种场景（签到、出行、运动，默认无场景）
+        option.setLocationPurpose(AMapLocationClientOption.AMapLocationPurpose.Transport);
+
+        //设置定位模式为AMapLocationMode.Hight_Accuracy，高精度模式。AMapLocationMode.Battery_Saving，低功耗模式。AMapLocationMode.Device_Sensors，仅设备模式。
+        option.setLocationMode(AMapLocationClientOption.AMapLocationMode.Battery_Saving);
+        //获取一次定位结果：默认为false。
+        option.setOnceLocation(true);
+        //获取最近3s内精度最高的一次定位结果：
+        //设置setOnceLocationLatest(boolean b)接口为true，启动定位时SDK会返回最近3s内精度最高的一次定位结果。如果设置其为true，setOnceLocation(boolean b)接口也会被设置为true，反之不会，默认为false。
+        option.setOnceLocationLatest(true);
+        //设置定位间隔,单位毫秒,默认为2000ms，最低1000ms。
+        option.setInterval(5 * 1000);
+        //设置是否返回地址信息（默认返回地址信息）
+        option.setNeedAddress(true);
+        //设置是否允许模拟位置,默认为true，允许模拟位置
+        option.setMockEnable(true);
+        //单位是毫秒，默认30000毫秒，建议超时时间不要低于8000毫秒。
+        option.setHttpTimeOut(30000);
+        //是否开启定位缓存机制
+        option.setLocationCacheEnable(false);
+
+        mLocationClient.setLocationOption(option);
+
+        //设置定位回调监听
+        mLocationClient.setLocationListener(new AMapLocationListener() {
+            @Override
+            public void onLocationChanged(AMapLocation aMapLocation) {
+                if (aMapLocation != null) {
+                    if (aMapLocation.getErrorCode() == 0) {
+
+                        MyLogger.i("定位信息", "\n纬度：" + aMapLocation.getLatitude()
+                                + "\n经度:" + aMapLocation.getLongitude()
+                                + "\n地址:" + aMapLocation.getAddress());
+
+                        localUserInfo.setCityname(aMapLocation.getCity());
+                        localUserInfo.setLongitude(aMapLocation.getLongitude()+ "");
+                        localUserInfo.setLatitude(aMapLocation.getLatitude() + "");
+
+                    } else {
+                        //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
+                        MyLogger.e("定位失败：", "location Error, ErrCode:"
+                                + aMapLocation.getErrorCode() + ", errInfo:"
+                                + aMapLocation.getErrorInfo());
+                        myToast("" + aMapLocation.getErrorInfo());
+                    }
+                }
+            }
+        });
+
+        //设置场景模式后最好调用一次stop，再调用start以保证场景模式生效
+//        mLocationClient.stopLocation();
+        // 在单次定位情况下，定位无论成功与否，都无需调用stopLocation()方法移除请求，定位sdk内部会移除
+//        mLocationClient.startLocation();
 
         FanPermissionUtils.with(MainActivity.this)
                 //添加所有你需要申请的权限
@@ -69,6 +143,7 @@ public class MainActivity extends BaseActivity {
                     @Override
                     public void permissionRequestSuccess() {
                         //所有权限授权成功才会回调这里
+                        mLocationClient.startLocation();
                     }
                     @Override
                     public void permissionRequestFail(String[] grantedPermissions, String[] deniedPermissions, String[] forceDeniedPermissions) {
@@ -204,9 +279,10 @@ public class MainActivity extends BaseActivity {
                     });
         }*/
 
-        /*//更新
-        RequestUpgrade("?app_type=" + 1
-                + "&type=" + "driver");//检查更新//"driver 司机 owner货主端"*/
+        //更新
+        Map<String, String> params = new HashMap<>();
+        params.put("type","1");
+        RequestUpgrade(params);//检查更新
 
 //        RequestQianDao("?token=" + localUserInfo.getToken());//签到
     }
@@ -263,16 +339,21 @@ public class MainActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void RequestUpgrade(String string) {
-        /*OkHttpClientManager.getAsyn(MainActivity.this, URLs.Upgrade + string, new OkHttpClientManager.ResultCallback<UpgradeModel>() {
+    private void RequestUpgrade(Map<String, String> params) {
+        OkhttpUtil.okHttpPost(URLs.Upgrade, params, headerMap, new CallBackUtil<UpgradeModel>() {
             @Override
-            public void onError(Request request, String info, Exception e) {
+            public UpgradeModel onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
 //                hideProgress();
+//                myToast(err);
             }
 
             @Override
             public void onResponse(UpgradeModel response) {
-                MyLogger.i(">>>>>>>>>更新" + response);
 //                hideProgress();
                 model_up = response;
                 if (Integer.valueOf(CommonUtil.getVersionCode(MainActivity.this)) < Integer.valueOf(response.getVersion_code())) {
@@ -282,7 +363,7 @@ public class MainActivity extends BaseActivity {
 //                    showToast("已经是最新版，无需更新");
                 }
             }
-        });*/
+        });
     }
 
     private void RequestQianDao(String string) {

@@ -186,6 +186,8 @@ public class Fragment3 extends BaseFragment {
 
     @Override
     protected void initData() {
+        longitude = localUserInfo.getLongitude() + "";
+        latitude = localUserInfo.getLatitude() + "";
         //初始化定位
         mLocationClient = new AMapLocationClient(getActivity());
         AMapLocationClientOption option = new AMapLocationClientOption();
@@ -227,6 +229,8 @@ public class Fragment3 extends BaseFragment {
                         latitude = aMapLocation.getLatitude() + "";
 
                         localUserInfo.setCityname(aMapLocation.getCity());
+                        localUserInfo.setLongitude(longitude);
+                        localUserInfo.setLatitude(latitude);
 
                         tv_addr.setText(aMapLocation.getCity() + "");
 

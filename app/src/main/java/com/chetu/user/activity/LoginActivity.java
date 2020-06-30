@@ -111,8 +111,9 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-//        RequestUpgrade("?app_type=" + 1
-//                + "&type=" + "owner");//检查更新//"driver 司机 owner货主端"
+        Map<String, String> params = new HashMap<>();
+        params.put("type","1");
+        RequestUpgrade(params);//检查更新
 
         /*byte[] mBytes = null;
         String mString = "{阿达大as家阿sdf什顿附asd件好久}";
@@ -297,16 +298,21 @@ public class LoginActivity extends BaseActivity {
             textView1.setText(millisUntilFinished / 1000 + getString(R.string.app_codethen));
         }
     }
-    private void RequestUpgrade(String string) {
-        /*OkHttpClientManager.getAsyn(LoginActivity.this, URLs.Upgrade + string, new OkHttpClientManager.ResultCallback<UpgradeModel>() {
+    private void RequestUpgrade(Map<String, String> params) {
+        OkhttpUtil.okHttpPost(URLs.Upgrade, params, headerMap, new CallBackUtil<UpgradeModel>() {
             @Override
-            public void onError(Request request, String info, Exception e) {
+            public UpgradeModel onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
 //                hideProgress();
+//                myToast(err);
             }
 
             @Override
             public void onResponse(UpgradeModel response) {
-                MyLogger.i(">>>>>>>>>更新" + response);
 //                hideProgress();
                 model_up = response;
                 if (Integer.valueOf(CommonUtil.getVersionCode(LoginActivity.this)) < Integer.valueOf(response.getVersion_code())) {
@@ -316,7 +322,7 @@ public class LoginActivity extends BaseActivity {
 //                    showToast("已经是最新版，无需更新");
                 }
             }
-        });*/
+        });
     }
 
     //显示是否要更新的对话框

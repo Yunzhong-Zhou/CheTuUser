@@ -33,6 +33,8 @@ public class LocalUserInfo {
     public static final String InvuteCode = "invite_code";//邀请码
 
     public static final String CITYNAME = "cityName";//选择的城市
+    public static final String LONGITUDE = "longitude";//经度
+    public static final String LATITUDE = "latitude";//纬度
 
     public static final String WALLETADDR = "wallet_addr";//钱包地址
     public static final String EMAIL = "email";//邮箱
@@ -203,6 +205,14 @@ public class LocalUserInfo {
     //保存城市
     public void setCityname(String string) {
         editor.putString(CITYNAME, string);
+        editor.commit();
+    }
+    public void setLongitude(String string) {
+        editor.putString(LONGITUDE, string);
+        editor.commit();
+    }
+    public void setLatitude(String string) {
+        editor.putString(LATITUDE, string);
         editor.commit();
     }
 
@@ -628,6 +638,20 @@ public class LocalUserInfo {
     //获取城市
     public String getCityname() {
         String string = getString(CITYNAME);
+        if (!TextUtils.isEmpty(string) && !"null".equals(string)) {
+            return string;
+        }
+        return "";
+    }
+    public String getLongitude() {
+        String string = getString(LONGITUDE);
+        if (!TextUtils.isEmpty(string) && !"null".equals(string)) {
+            return string;
+        }
+        return "";
+    }
+    public String getLatitude() {
+        String string = getString(LATITUDE);
         if (!TextUtils.isEmpty(string) && !"null".equals(string)) {
             return string;
         }
