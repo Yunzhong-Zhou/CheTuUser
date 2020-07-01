@@ -8,7 +8,7 @@ import java.util.List;
  */
 public class PingJiaModel implements Serializable {
     /**
-     * list : [{"id":"1","goodsEvalId":"692341585785913344","userId":"20180531104813","yGoodsId":"692341585785913344","yStoreId":"692341585785913344","yOrderId":"0","starC":"3","yMsg":"测试","createDate":"2019-09-27 10:31:19","y_user":{"id":"0","userId":"20180531104813","userBalance":0,"userName":"龙肆666","userIntegral":"0","yStoreId":"0","userHash":"3B2372646663FDC7A81EA8E241CB7946AC74E4C0C9CFD31F750FEE2831528FF5","headPortrait":"/upload/head/77777.jpg","userPhone":"18203048656"}}]
+     * list : [{"id":"1","goodsEvalId":"692341585785913344","userId":"20180531104813","yGoodsId":"692341585785913344","yStoreId":"692341585785913344","yOrderId":"0","starC":"3","yMsg":"测试","createDate":"2019-09-27 10:31:19","y_user":{"id":"0","userId":"20180531104813","userBalance":0,"userName":"龙肆","userIntegral":"0","yStoreId":"0","userHash":"3B2372646663FDC7A81EA8E241CB7946AC74E4C0C9CFD31F750FEE2831528FF5","headPortrait":" ","userPhone":"18203048656"},"imgStr":"/upload/pro.png||/upload/pro.png","imgArr":["/upload/pro.png","/upload/pro.png"]}]
      * count : 0
      */
 
@@ -42,7 +42,9 @@ public class PingJiaModel implements Serializable {
          * starC : 3
          * yMsg : 测试
          * createDate : 2019-09-27 10:31:19
-         * y_user : {"id":"0","userId":"20180531104813","userBalance":0,"userName":"龙肆666","userIntegral":"0","yStoreId":"0","userHash":"3B2372646663FDC7A81EA8E241CB7946AC74E4C0C9CFD31F750FEE2831528FF5","headPortrait":"/upload/head/77777.jpg","userPhone":"18203048656"}
+         * y_user : {"id":"0","userId":"20180531104813","userBalance":0,"userName":"龙肆","userIntegral":"0","yStoreId":"0","userHash":"3B2372646663FDC7A81EA8E241CB7946AC74E4C0C9CFD31F750FEE2831528FF5","headPortrait":" ","userPhone":"18203048656"}
+         * imgStr : /upload/pro.png||/upload/pro.png
+         * imgArr : ["/upload/pro.png","/upload/pro.png"]
          */
 
         private String id;
@@ -55,6 +57,8 @@ public class PingJiaModel implements Serializable {
         private String yMsg;
         private String createDate;
         private YUserBean y_user;
+        private String imgStr;
+        private List<String> imgArr;
 
         public String getId() {
             return id;
@@ -136,16 +140,32 @@ public class PingJiaModel implements Serializable {
             this.y_user = y_user;
         }
 
+        public String getImgStr() {
+            return imgStr;
+        }
+
+        public void setImgStr(String imgStr) {
+            this.imgStr = imgStr;
+        }
+
+        public List<String> getImgArr() {
+            return imgArr;
+        }
+
+        public void setImgArr(List<String> imgArr) {
+            this.imgArr = imgArr;
+        }
+
         public static class YUserBean {
             /**
              * id : 0
              * userId : 20180531104813
              * userBalance : 0.0
-             * userName : 龙肆666
+             * userName : 龙肆
              * userIntegral : 0
              * yStoreId : 0
              * userHash : 3B2372646663FDC7A81EA8E241CB7946AC74E4C0C9CFD31F750FEE2831528FF5
-             * headPortrait : /upload/head/77777.jpg
+             * headPortrait :
              * userPhone : 18203048656
              */
 

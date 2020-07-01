@@ -131,6 +131,12 @@
         <activity
             android:name=".activity.StoreDetailActivity"
             android:label="门店详情" />
+        <activity
+            android:name=".activity.TiWenListActivity"
+            android:label="提问列表" />
+        <activity
+            android:name=".activity.PingLunListActivity"
+            android:label="评论列表" />
         <!--我的-->
         <activity
             android:name=".activity.SetUpActivity"

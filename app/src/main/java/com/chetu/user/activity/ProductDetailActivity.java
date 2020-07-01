@@ -408,7 +408,7 @@ public class ProductDetailActivity extends BaseActivity {
                  */
                 Map<String, String> params = new HashMap<>();
                 params.put("y_goods_id", y_goods_id);
-                params.put("y_store_id", "");
+                params.put("y_store_id", "0");
                 params.put("page", page + "");
 //                params.put("u_token", localUserInfo.getToken());
                 RequestPingJia(params);
@@ -538,12 +538,16 @@ public class ProductDetailActivity extends BaseActivity {
                                     .into(iv);
 
                             //横向图片
+                            List<String> list_img = new ArrayList<>();
+                            for (String s : model.getImgArr()) {
+                                list_img.add(URLs.IMGHOST + s);
+                            }
                             RecyclerView rv = holder.getView(R.id.rv);
                             LinearLayoutManager llm1 = new LinearLayoutManager(ProductDetailActivity.this);
                             llm1.setOrientation(LinearLayoutManager.HORIZONTAL);// 设置 recyclerview 布局方式为横向布局
                             rv.setLayoutManager(llm1);
                             CommonAdapter<String> ca = new CommonAdapter<String>
-                                    (ProductDetailActivity.this, R.layout.item_img_80_60, images) {
+                                    (ProductDetailActivity.this, R.layout.item_img_80_80, images) {
                                 @Override
                                 protected void convert(ViewHolder holder, String model, int position) {
                                     ImageView iv = holder.getView(R.id.iv);

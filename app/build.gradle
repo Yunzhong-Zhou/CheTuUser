@@ -112,6 +112,9 @@ dependencies {
     //自定义阴影库
     implementation 'com.lijiankun24:shadowlayout:1.1.0'
 
+    //评星控件
+    implementation 'com.github.giswangsj:AndRatingBar:1.0.4'
+
     //底部选项栏
     implementation 'com.hjm:BottomTabBar:1.2.2'
 

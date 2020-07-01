@@ -17,6 +17,7 @@ import com.chetu.user.net.URLs;
 import com.chetu.user.okhttp.CallBackUtil;
 import com.chetu.user.okhttp.OkhttpUtil;
 import com.chetu.user.popupwindow.PhotoShowDialog;
+import com.chetu.user.utils.CommonUtil;
 import com.chetu.user.view.DiscussionAvatarView.DiscussionAvatarView;
 import com.liaoinstan.springview.widget.SpringView;
 import com.youth.banner.Banner;
@@ -539,12 +540,16 @@ public class StoreDetailActivity extends BaseActivity {
                                 .into(iv);
 
                         //横向图片
+                        List<String> list_img = new ArrayList<>();
+                        for (String s : model.getImgArr()) {
+                            list_img.add(URLs.IMGHOST + s);
+                        }
                         RecyclerView rv = holder.getView(R.id.rv);
                         LinearLayoutManager llm1 = new LinearLayoutManager(StoreDetailActivity.this);
                         llm1.setOrientation(LinearLayoutManager.HORIZONTAL);// 设置 recyclerview 布局方式为横向布局
                         rv.setLayoutManager(llm1);
                         CommonAdapter<String> ca = new CommonAdapter<String>
-                                (StoreDetailActivity.this, R.layout.item_img_80_60, images) {
+                                (StoreDetailActivity.this, R.layout.item_img_80_80, list_img) {
                             @Override
                             protected void convert(ViewHolder holder, String model, int position) {
                                 ImageView iv = holder.getView(R.id.iv);
@@ -626,15 +631,24 @@ public class StoreDetailActivity extends BaseActivity {
                     RequestQuXiaoShouChang(params);
                 }
                 break;
-            case R.id.tv_more:
-                page++;
+            case R.id.ll_tiwen_more:
+                //提问更多
+                Bundle bundle = new Bundle();
+                bundle.putString("y_store_id", y_store_id);
+                CommonUtil.gotoActivityWithData(StoreDetailActivity.this, TiWenListActivity.class, bundle, false);
+                break;
+            case R.id.ll_pinglun_more:
                 //获取店铺评论
+                Bundle bundle1 = new Bundle();
+                bundle1.putString("y_store_id", y_store_id);
+                CommonUtil.gotoActivityWithData(StoreDetailActivity.this, PingLunListActivity.class, bundle1, false);
+                /*page++;
                 Map<String, String> params2 = new HashMap<>();
                 params2.put("u_token", localUserInfo.getToken());
                 params2.put("y_store_id", y_store_id);
                 params2.put("y_goods_id", "");
                 params2.put("page", page + "");
-                RequestPingLunMore(params2);
+                RequestPingLunMore(params2);*/
                 break;
         }
     }
