@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/yuanjiao_10_baise"
+        android:padding="13dp">
+
+        <EditText
+            android:id="@+id/editText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/yuanjiao_5_huise1"
+            android:gravity="top"
+            android:hint="向已消费过的人提问，4～40字"
+            android:lineSpacingExtra="5dp"
+            android:minLines="5"
+            android:padding="10dp" />
+
+    </LinearLayout>
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+    <TextView
+        android:id="@+id/tv_confirm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="13dp"
+        android:background="@drawable/yuanjiao_5_lanse"
+        android:gravity="center"
+        android:onClick="onClick"
+        android:padding="15dp"
+        android:text="提问"
+        android:textColor="@color/white"
+        android:textSize="15sp" />
+</LinearLayout>

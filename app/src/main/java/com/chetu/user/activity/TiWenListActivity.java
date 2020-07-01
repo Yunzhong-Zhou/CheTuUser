@@ -2,15 +2,24 @@ package com.chetu.user.activity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.chetu.user.R;
 import com.chetu.user.base.BaseActivity;
 import com.chetu.user.model.StoreDetailModel_WenDa;
 import com.chetu.user.net.URLs;
 import com.chetu.user.okhttp.CallBackUtil;
 import com.chetu.user.okhttp.OkhttpUtil;
+import com.chetu.user.utils.CommonUtil;
+import com.cy.dialog.BaseDialog;
 import com.liaoinstan.springview.widget.SpringView;
 import com.zhy.adapter.recyclerview.CommonAdapter;
+import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,14 +39,20 @@ public class TiWenListActivity extends BaseActivity {
     int page = 0;
     String y_store_id = "";
 
-    RecyclerView recyclerView1;
-    List<StoreDetailModel_WenDa.ListBean> list1 = new ArrayList<>();
-    CommonAdapter<StoreDetailModel_WenDa.ListBean> mAdapter1;
+    RecyclerView recyclerView;
+    List<StoreDetailModel_WenDa.ListBean> list = new ArrayList<>();
+    CommonAdapter<StoreDetailModel_WenDa.ListBean> mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tiwenlist);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        requestServer();
     }
 
     @Override
@@ -65,15 +80,15 @@ public class TiWenListActivity extends BaseActivity {
                 RequestMore(params);
             }
         });
-        recyclerView1 = findViewByID_My(R.id.recyclerView1);
-        recyclerView1.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView = findViewByID_My(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
     @Override
     protected void initData() {
         y_store_id = getIntent().getStringExtra("y_store_id");
-        requestServer();
     }
+
     @Override
     public void requestServer() {
         super.requestServer();
@@ -103,35 +118,165 @@ public class TiWenListActivity extends BaseActivity {
             @Override
             public void onResponse(StoreDetailModel_WenDa response) {
                 hideProgress();
-                list1 = response.getList();
-                if (list1.size() > 0) {
+                list = response.getList();
+                /*for (int i = 0; i < list.size(); i++) {
+                    list.get(i).setExpand(false);//设置不展开
+                }*/
+                if (list.size() > 0) {
                     showContentPage();
-                    /*mAdapter1 = new CommonAdapter<ProductListModel.ListBean>
-                            (ProductListActivity.this, R.layout.item_productlist, list1) {
+                    mAdapter = new CommonAdapter<StoreDetailModel_WenDa.ListBean>
+                            (TiWenListActivity.this, R.layout.item_tiwenlist_header, list) {
                         @Override
-                        protected void convert(ViewHolder holder, ProductListModel.ListBean model, int position) {
-                            //logo
-                            ImageView imageView = holder.getView(R.id.imageView);
-                            Glide.with(ProductListActivity.this).load(URLs.IMGHOST + model.getGImg())
+                        protected void convert(ViewHolder holder, StoreDetailModel_WenDa.ListBean model, int position) {
+                            ImageView iv_head1 = holder.getView(R.id.iv_head1);
+                            Glide.with(TiWenListActivity.this).load(URLs.IMGHOST + model.getUser_info().getHeadPortrait())
                                     .centerCrop()
-                                    .apply(RequestOptions.bitmapTransform(new
-                                            RoundedCorners(CommonUtil.dip2px(ProductListActivity.this,5))))
+//                                    .apply(RequestOptions.bitmapTransform(new
+//                                            RoundedCorners(CommonUtil.dip2px(TiWenListActivity.this, 5))))
                                     .placeholder(R.mipmap.loading)//加载站位图
                                     .error(R.mipmap.zanwutupian)//加载失败
-                                    .into(imageView);//加载图片
+                                    .into(iv_head1);//加载图片
+                            holder.setText(R.id.tv_title1, model.getMsg());
+                            holder.setText(R.id.tv_name, model.getUser_info().getUserName());
 
-                            holder.setText(R.id.textView1, model.getGName());
-                            holder.setText(R.id.textView2, model.getGPrice() + "");
-                            TextView textView3 = holder.getView(R.id.textView3);
-                            textView3.setOnClickListener(new View.OnClickListener() {
+                            LinearLayout ll_huida = holder.getView(R.id.ll_huida);
+
+                            if (model.getC_list().size() > 0) {
+                                //有回答
+                                ll_huida.setVisibility(View.VISIBLE);
+                                holder.setText(R.id.tv_title2, model.getC_list().get(0).getMsg());
+                                ImageView iv_head2 = holder.getView(R.id.iv_head2);
+                                Glide.with(TiWenListActivity.this).load(URLs.IMGHOST + model.getC_list().get(0).getUser_info().getHeadPortrait())
+                                        .centerCrop()
+//                                    .apply(RequestOptions.bitmapTransform(new
+//                                            RoundedCorners(CommonUtil.dip2px(TiWenListActivity.this, 5))))
+                                        .placeholder(R.mipmap.loading)//加载站位图
+                                        .error(R.mipmap.zanwutupian)//加载失败
+                                        .into(iv_head2);//加载图片
+
+
+                                LinearLayout ll_huida_head = holder.getView(R.id.ll_huida_head);
+                                TextView tv_quanbu1 = holder.getView(R.id.tv_quanbu1);
+                                TextView tv_quanbu2 = holder.getView(R.id.tv_quanbu2);
+                                tv_quanbu1.setText("全部" + model.getC_list().size() + "个回答");
+                                tv_quanbu2.setText("全部" + model.getC_list().size() + "个回答");
+
+                                RecyclerView rv_huida = holder.getView(R.id.rv_huida);
+                                rv_huida.setLayoutManager(new LinearLayoutManager(TiWenListActivity.this));
+                                if (model.isExpand()) {
+                                    //展开
+                                    ll_huida_head.setVisibility(View.GONE);
+                                    tv_quanbu1.setVisibility(View.GONE);
+                                    tv_quanbu2.setVisibility(View.VISIBLE);
+                                    rv_huida.setVisibility(View.VISIBLE);
+
+                                    CommonAdapter<StoreDetailModel_WenDa.ListBean.CListBean> ca = new CommonAdapter<StoreDetailModel_WenDa.ListBean.CListBean>
+                                            (TiWenListActivity.this, R.layout.item_tiwenlist_huida, model.getC_list()) {
+                                        @Override
+                                        protected void convert(ViewHolder holder, StoreDetailModel_WenDa.ListBean.CListBean model, int position) {
+                                            holder.setText(R.id.textView1, model.getUser_info().getUserName());
+                                            holder.setText(R.id.textView2, model.getCreateDate());
+                                            holder.setText(R.id.textView3, model.getMsg());
+
+                                            ImageView imageView1 = holder.getView(R.id.imageView);
+                                            Glide.with(TiWenListActivity.this)
+                                                    .load(URLs.IMGHOST + model.getUser_info().getHeadPortrait())
+                                                    .centerCrop()
+                                                    .placeholder(R.mipmap.loading)//加载站位图
+                                                    .error(R.mipmap.zanwutupian)//加载失败
+                                                    .into(imageView1);//加载图片
+                                        }
+                                    };
+                                    rv_huida.setAdapter(ca);
+
+                                } else {
+                                    //未展开
+                                    ll_huida_head.setVisibility(View.VISIBLE);
+                                    tv_quanbu1.setVisibility(View.VISIBLE);
+                                    tv_quanbu2.setVisibility(View.GONE);
+                                    rv_huida.setVisibility(View.GONE);
+                                }
+
+                            } else {
+                                //没有回答
+                                ll_huida.setVisibility(View.GONE);
+                            }
+                            holder.getView(R.id.tv_quanbu1).setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    //购买
+                                    //展开
+                                    /*for (int i = 0; i < list.size(); i++) {
+                                        if (list.get(position).isExpand() == false) {
+                                            list.get(position).setExpand(true);
+                                        } else {
+                                            list.get(position).setExpand(false);
+                                        }
+                                    }*/
+                                    if (model.isExpand() == false) {
+                                        model.setExpand(true);
+                                    }
+
+                                    mAdapter.notifyDataSetChanged();
+                                }
+                            });
+                            holder.getView(R.id.tv_quanbu2).setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    //收起
+                                    if (model.isExpand() == true) {
+                                        model.setExpand(false);
+                                    }
+
+                                    mAdapter.notifyDataSetChanged();
+                                }
+                            });
+                            holder.getView(R.id.tv_huida).setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    //回答
+                                    dialog = new BaseDialog(TiWenListActivity.this);
+                                    dialog.contentView(R.layout.dialog_edit)
+                                            .layoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                                                    ViewGroup.LayoutParams.WRAP_CONTENT))
+                                            .animType(BaseDialog.AnimInType.CENTER)
+                                            .canceledOnTouchOutside(true)
+                                            .dimAmount(0.8f)
+                                            .show();
+                                    TextView tv_title = dialog.findViewById(R.id.tv_title);
+                                    tv_title.setText("回答" + model.getUser_info().getUserName());
+                                    final EditText editText1 = dialog.findViewById(R.id.editText1);
+                                    editText1.setHint("请输入回答内容");
+//                editText1.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                                    dialog.findViewById(R.id.tv_confirm).setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            if (!editText1.getText().toString().trim().equals("")) {
+                                                CommonUtil.hideSoftKeyboard_fragment(v, TiWenListActivity.this);
+                                                dialog.dismiss();
+                                                showProgress(true, getString(R.string.app_loading1));
+                                                Map<String, String> params = new HashMap<>();
+                                                params.put("msg", editText1.getText().toString().trim());
+//                                                params.put("y_parent_id", model.getYParentId());
+                                                params.put("y_parent_id", model.getYStoreQuesAnsId());//用户提问 为0  回答应填写y_store_ques_ans_id
+                                                params.put("y_store_id", model.getYStoreId());
+                                                params.put("u_token", localUserInfo.getToken());
+                                                RequestUpData(params);
+                                            } else {
+                                                myToast("请输入回复内容");
+                                            }
+                                        }
+                                    });
+                                    dialog.findViewById(R.id.dismiss).setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            dialog.dismiss();
+                                        }
+                                    });
                                 }
                             });
                         }
                     };
-                    mAdapter1.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+                    /*mAdapter1.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
                         @Override
                         public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
                             Bundle bundle = new Bundle();
@@ -143,8 +288,8 @@ public class TiWenListActivity extends BaseActivity {
                         public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
                             return false;
                         }
-                    });
-                    recyclerView1.setAdapter(mAdapter1);*/
+                    });*/
+                    recyclerView.setAdapter(mAdapter);
                 } else {
                     showEmptyPage();
                 }
@@ -181,19 +326,53 @@ public class TiWenListActivity extends BaseActivity {
                     page--;
                     myToast(getString(R.string.app_nomore));
                 } else {
-                    list1.addAll(list_1);
-                    mAdapter1.notifyDataSetChanged();
+                    list.addAll(list_1);
+                    mAdapter.notifyDataSetChanged();
                 }
             }
         });
     }
+
+    private void RequestUpData(Map<String, String> params) {
+        OkhttpUtil.okHttpPost(URLs.HuiDa, params, headerMap, new CallBackUtil() {
+            @Override
+            public Object onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+                hideProgress();
+                if (!err.equals("")) {
+                    showToast(err);
+                }
+            }
+
+            @Override
+            public void onResponse(Object response) {
+                hideProgress();
+                /*showToast("回复成功", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                        requestServer();
+                    }
+                });*/
+                myToast("回答成功");
+                requestServer();
+            }
+        });
+    }
+
     @Override
     protected void updateView() {
         titleView.setTitle("门店问答");
         titleView.showRightTextview("发起提问", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Bundle bundle = new Bundle();
+                bundle.putString("y_store_id", y_store_id);
+                CommonUtil.gotoActivityWithData(TiWenListActivity.this, AddTiWenActivity.class, bundle, false);
             }
         });
     }

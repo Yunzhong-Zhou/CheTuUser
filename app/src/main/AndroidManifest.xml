@@ -135,8 +135,12 @@
             android:name=".activity.TiWenListActivity"
             android:label="提问列表" />
         <activity
+            android:name=".activity.AddTiWenActivity"
+            android:label="发布提问" />
+        <activity
             android:name=".activity.PingLunListActivity"
             android:label="评论列表" />
+
         <!--我的-->
         <activity
             android:name=".activity.SetUpActivity"

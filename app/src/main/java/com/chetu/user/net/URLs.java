@@ -48,6 +48,8 @@ public class URLs {
     public static final String Pay = HOST+"/api/v1/pay/online_payment";
     //评价列表
     public static final String PingJiaList = HOST+"/api/v1/public/get_goods_eval_list";
+    //回复问答
+    public static final String HuiDa = HOST+"/api/v1/public/user_store_ques_ans_add";
     /**
      * *******************************首页****************************************
      * */

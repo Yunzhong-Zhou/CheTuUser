@@ -39,6 +39,16 @@ public class StoreDetailModel_WenDa implements Serializable {
          * c_list : [{"id":"1023","yStoreQuesAnsId":"715885019494612992","yParentId":"715885772770639872","yStoreId":"692341585785913344","userId":"20180531104813","msg":"回答变速箱质量如何？","user_info":{"id":"0","userId":"20180531104813","userBalance":0,"userName":"龙肆","userIntegral":"0","yStoreId":"0","headPortrait":" ","userPhone":"18203048656"},"createDate":"2020-05-29 11:11:29"}]
          * createDate : 2020-05-29 11:14:28
          */
+        private boolean isExpand = false;//表示展开和收起的状态。
+
+        public boolean isExpand() {
+            return isExpand;
+        }
+
+        public void setExpand(boolean expand) {
+            isExpand = expand;
+        }
+
 
         private String id;
         private String yStoreQuesAnsId;

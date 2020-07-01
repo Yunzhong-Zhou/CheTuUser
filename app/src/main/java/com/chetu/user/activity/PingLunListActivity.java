@@ -34,7 +34,7 @@ public class PingLunListActivity extends BaseActivity {
     int page = 0;
     String y_store_id = "";
 
-    RecyclerView recyclerView1;
+    RecyclerView recyclerView;
     List<PingJiaModel.ListBean> list_pinglun = new ArrayList<>();
     CommonAdapter<PingJiaModel.ListBean> mAdapter_pinglun;
 
@@ -71,8 +71,8 @@ public class PingLunListActivity extends BaseActivity {
                 RequestMore(params);
             }
         });
-        recyclerView1 = findViewByID_My(R.id.recyclerView1);
-        recyclerView1.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView = findViewByID_My(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
     @Override
@@ -155,7 +155,7 @@ public class PingLunListActivity extends BaseActivity {
                             rv.setAdapter(ca);
                         }
                     };
-                    recyclerView1.setAdapter(mAdapter_pinglun);
+                    recyclerView.setAdapter(mAdapter_pinglun);
                 } else {
                     showEmptyPage();
                 }
