@@ -86,6 +86,7 @@
                     android:id="@+id/ratingbar"
                     android:layout_width="wrap_content"
                     android:layout_height="12dp"
+                    android:isIndicator="true"
                     android:numStars="5"
                     android:rating="3"
                     app:bgColor="@color/red"

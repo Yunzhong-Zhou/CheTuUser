@@ -333,7 +333,7 @@ public class StoreDetailModel implements Serializable {
         }
     }
 
-    public static class StoreTechListBean {
+    public static class StoreTechListBean implements Serializable{
         /**
          * id : 0
          * userId : 0
@@ -448,7 +448,7 @@ public class StoreDetailModel implements Serializable {
             this.tech_info = tech_info;
         }
 
-        public static class TechInfoBean {
+        public static class TechInfoBean implements Serializable{
             /**
              * star : 4
              * working : 1

@@ -460,16 +460,19 @@ public class StoreDetailActivity extends BaseActivity {
                 //头像重叠
                 mDatas.clear();
                 for (StoreDetailModel_WenDa.ListBean bean : response.getList()) {
-//                    if (!bean.getUser_info().getHeadPortrait().trim().equals("")){
+                    if (mDatas.size() >= 4) {
+                        break;
+                    }
+//                    if (!bean.getUser_info().getHeadPortrait().trim().equals("")) {
                     mDatas.add(URLs.IMGHOST + bean.getUser_info().getHeadPortrait());
 //                    }
                 }
-               /* if (mDatas.size()>=4){
+                mDiscussAva.initDatas(mDatas);
+                /*if (mDatas.size() >= 4) {
                     mDiscussAva.setMaxCount(4);
-                }else {
+                } else {
                     mDiscussAva.setMaxCount(mDatas.size());
                 }*/
-                mDiscussAva.initDatas(mDatas);
 
 
                 tv_wenti.setText("提问（" + response.getSum() + "）");
@@ -561,6 +564,18 @@ public class StoreDetailActivity extends BaseActivity {
                                         .into(iv);//加载图片
                             }
                         };
+                        ca.setOnItemClickListener(new OnItemClickListener() {
+                            @Override
+                            public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                                PhotoShowDialog photoShowDialog = new PhotoShowDialog(StoreDetailActivity.this, list_img, i);
+                                photoShowDialog.show();
+                            }
+
+                            @Override
+                            public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                                return false;
+                            }
+                        });
                         rv.setAdapter(ca);
                     }
                 };

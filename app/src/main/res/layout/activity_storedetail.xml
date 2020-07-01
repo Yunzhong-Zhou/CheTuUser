@@ -442,8 +442,7 @@
                         android:onClick="onClick"
                         android:orientation="horizontal"
                         android:paddingLeft="13dp"
-                        android:paddingTop="15dp"
-                        android:paddingBottom="10dp">
+                        android:paddingTop="15dp">
 
                         <TextView
                             android:id="@+id/tv_pinglun"
