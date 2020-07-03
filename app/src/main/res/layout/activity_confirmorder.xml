@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:background="@mipmap/bg_mygarage" />
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <!--车辆信息-->
+                <LinearLayout
+                    android:id="@+id/linearLayout1"
+                    android:onClick="onClick"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="13dp"
+                    android:layout_marginRight="13dp"
+                    android:background="@drawable/yuanjiao_10_baise"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingLeft="13dp"
+                        android:paddingTop="12dp"
+                        android:paddingRight="10dp"
+                        android:paddingBottom="10dp">
+
+                        <ImageView
+                            android:id="@+id/imageView1"
+                            android:layout_width="42dp"
+                            android:layout_height="42dp"
+                            android:layout_marginRight="10dp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/tv_carname"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:maxWidth="160dp"
+                                    android:text="NAME"
+                                    android:textColor="@color/black"
+                                    android:textSize="15sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/tv_carnum"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="7dp"
+                                    android:background="@drawable/yuanjiaobiankuang_3_heise"
+                                    android:paddingLeft="3dp"
+                                    android:paddingTop="2dp"
+                                    android:paddingRight="3dp"
+                                    android:paddingBottom="2dp"
+                                    android:text="CarNumber"
+                                    android:textColor="@color/black"
+                                    android:textSize="10sp" />
+
+
+                            </LinearLayout>
+
+                            <TextView
+                                android:id="@+id/tv_cardetail"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:lineSpacingExtra="4dp"
+                                android:text="content"
+                                android:textColor="@color/black3"
+                                android:textSize="12sp" />
+
+                        </LinearLayout>
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@mipmap/ic_next_black" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingLeft="13dp"
+                        android:paddingRight="13dp"
+                        android:paddingBottom="15dp">
+
+                        <TextView
+                            android:id="@+id/tv_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableLeft="@mipmap/ic_head_black"
+                            android:drawablePadding="6dp"
+                            android:gravity="center_vertical"
+                            android:text="name"
+                            android:textColor="@color/black"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:id="@+id/tv_phone"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="50dp"
+                            android:drawableLeft="@mipmap/ic_call_black1"
+                            android:drawablePadding="6dp"
+                            android:gravity="center_vertical"
+                            android:text="name"
+                            android:textColor="@color/black"
+                            android:textSize="15sp" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+                <!--订单信息-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="13dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="13dp"
+                    android:background="@drawable/yuanjiao_10_baise"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <!--店铺信息-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingRight="10dp">
+
+                        <ImageView
+                            android:id="@+id/imageView2"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:layout_marginRight="10dp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tv_title"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="NAME"
+                                android:textColor="@color/black"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/tv_addr"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:gravity="center_vertical"
+                                    android:text="addr"
+                                    android:textColor="@color/black3"
+                                    android:textSize="13sp" />
+
+                                <TextView
+                                    android:id="@+id/tv_juli"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="10dp"
+                                    android:drawableLeft="@mipmap/ic_addr_gray"
+                                    android:drawablePadding="4dp"
+                                    android:gravity="center_vertical"
+                                    android:text="name"
+                                    android:textColor="@color/black3"
+                                    android:textSize="13sp" />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                </LinearLayout>
+                <!--接车到店-->
+                <LinearLayout
+                    android:id="@+id/ll_jiechedaodian"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="13dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="13dp"
+                    android:background="@drawable/yuanjiao_10_baise"
+                    android:gravity="center_vertical"
+                    android:onClick="onClick"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="16dp"
+                        android:paddingRight="10dp"
+                        android:paddingBottom="16dp"
+                        android:text="接车到店" />
+
+                    <ImageView
+                        android:id="@+id/iv_jiechedaodian"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="13dp"
+                        android:src="@mipmap/ic_xuanzhong" />
+
+                </LinearLayout>
+                <!--送车到家-->
+                <LinearLayout
+                    android:id="@+id/ll_songchedaojia"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="13dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="13dp"
+                    android:background="@drawable/yuanjiao_10_baise"
+                    android:gravity="center_vertical"
+                    android:onClick="onClick"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="16dp"
+                        android:paddingRight="10dp"
+                        android:paddingBottom="16dp"
+                        android:text="送车到家" />
+
+                    <ImageView
+                        android:id="@+id/iv_songchedaojia"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="13dp"
+                        android:src="@mipmap/ic_weixuan" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="13dp"
+            android:layout_marginRight="13dp"
+            android:background="@drawable/yuanjiao_10_huise1_top"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="预约到店需要选择预约时间哦!"
+            android:textColor="@color/red"
+            android:textSize="10sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="13dp"
+                android:text="合计："
+                android:textColor="#1B1B1D"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/tv_money"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="¥0"
+                android:textColor="@color/red"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_yuyuedaodian"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/yuanjiaobiankuang_5_lanse_left"
+                android:gravity="center"
+                android:onClick="onClick"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
+                android:text="预约到店"
+                android:textColor="@color/blue"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/tv_daodianshigong"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="13dp"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/yuanjiaobiankuang_5_lanse_right"
+                android:gravity="center"
+                android:onClick="onClick"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
+                android:text="到店施工"
+                android:textColor="@color/blue"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</LinearLayout>

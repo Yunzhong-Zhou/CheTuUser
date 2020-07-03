@@ -1,8 +1,11 @@
 package com.chetu.user.activity;
 
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -11,14 +14,19 @@ import com.chetu.user.R;
 import com.chetu.user.adapter.ImageAdapter;
 import com.chetu.user.base.BaseActivity;
 import com.chetu.user.model.PingJiaModel;
+import com.chetu.user.model.ServiceListModel_Store;
 import com.chetu.user.model.StoreDetailModel;
 import com.chetu.user.model.StoreDetailModel_WenDa;
+import com.chetu.user.model.XuanZeFuWuModel;
 import com.chetu.user.net.URLs;
 import com.chetu.user.okhttp.CallBackUtil;
 import com.chetu.user.okhttp.OkhttpUtil;
 import com.chetu.user.popupwindow.PhotoShowDialog;
 import com.chetu.user.utils.CommonUtil;
 import com.chetu.user.view.DiscussionAvatarView.DiscussionAvatarView;
+import com.cy.cyflowlayoutlibrary.FlowLayout;
+import com.cy.cyflowlayoutlibrary.FlowLayoutAdapter;
+import com.cy.dialog.BaseDialog;
 import com.liaoinstan.springview.widget.SpringView;
 import com.youth.banner.Banner;
 import com.youth.banner.config.IndicatorConfig;
@@ -27,6 +35,10 @@ import com.youth.banner.listener.OnPageChangeListener;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -58,10 +70,12 @@ public class StoreDetailActivity extends BaseActivity {
     boolean isShouChange = false;
     String y_user_collection_id = "";
 
+    StoreDetailModel storeDetailModel;
     //门店服务
     RecyclerView rv_tab;
     List<StoreDetailModel.StoreServiceListBean> list_tab = new ArrayList<>();
     CommonAdapter<StoreDetailModel.StoreServiceListBean> mAdapter_tab;
+
     //门店特色
     RecyclerView rv_tese;
     List<String> list_tese = new ArrayList<>();
@@ -85,6 +99,14 @@ public class StoreDetailActivity extends BaseActivity {
     RecyclerView rv_pinglun;
     List<PingJiaModel.ListBean> list_pinglun = new ArrayList<>();
     CommonAdapter<PingJiaModel.ListBean> mAdapter_pinglun;
+
+    //下单
+    double money = 0;
+    List<XuanZeFuWuModel> list_xuanze = new ArrayList<>();//选择的服务、id、金额
+    LinearLayout ll_xiadan;
+    FlowLayout flowLayout1;
+    TextView tv_money, tv_xiadan;
+    FlowLayoutAdapter<ServiceListModel_Store.ListBean> fla;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -153,6 +175,15 @@ public class StoreDetailActivity extends BaseActivity {
         tv_pinglun = findViewByID_My(R.id.tv_pinglun);
         rv_pinglun = findViewByID_My(R.id.rv_pinglun);
         rv_pinglun.setLayoutManager(new LinearLayoutManager(this));
+
+        //下单
+        ll_xiadan = findViewByID_My(R.id.ll_xiadan);
+        flowLayout1 = findViewByID_My(R.id.flowLayout1);
+        tv_money = findViewByID_My(R.id.tv_money);
+        tv_xiadan = findViewByID_My(R.id.tv_xiadan);
+
+        showUI();
+
     }
 
     @Override
@@ -216,6 +247,7 @@ public class StoreDetailActivity extends BaseActivity {
             @Override
             public void onResponse(StoreDetailModel response) {
                 hideProgress();
+                storeDetailModel = response;
                 //banner
                 /*images.add("http://file02.16sucai.com/d/file/2014/0825/dcb017b51479798f6c60b7b9bd340728.jpg");
                 images.add("http://file02.16sucai.com/d/file/2014/0825/dcb017b51479798f6c60b7b9bd340728.jpg");
@@ -312,27 +344,13 @@ public class StoreDetailActivity extends BaseActivity {
                 mAdapter_tab.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
-                        Bundle bundle = new Bundle();
-                        /*switch (list_tab.get(i).getCategory()){
-                            case 2:
-                                //跳转商品列表
-                                bundle.putString("id",list_tab.get(i).getId());
-                                CommonUtil.gotoActivityWithData(getActivity(), ProductListActivity.class,bundle);
-                                break;
-                            case 3:
-                                //跳转违章查询
-                                CommonUtil.gotoActivity(getActivity(), CarIllegalActivity.class);
-                                break;
-                            case 4:
-                                //跳转保险查询
-                                CommonUtil.gotoActivity(getActivity(), CarInsuranceActivity.class);
-                                break;
-                            default:
-                                //跳转门店搜索
-                                bundle.putString("keys",list_tab.get(i).getTitle());
-                                CommonUtil.gotoActivityWithData(getActivity(), SearchActivity.class,bundle);
-                                break;
-                        }*/
+                        //获取服务分类-二级
+                        HashMap<String, String> params = new HashMap<>();
+                        params.put("y_store_id", list_tab.get(i).getYStoreId());
+                        params.put("parent_id", list_tab.get(i).getYStoreServiceId());
+                        RequestService(params, list_tab.get(i).getYStateValue()
+                                , list_tab.get(i).getIsSheet());
+
                     }
 
                     @Override
@@ -624,6 +642,242 @@ public class StoreDetailActivity extends BaseActivity {
         });
     }
 
+    /**
+     * 获取门店服务列表-二级
+     *
+     * @param params
+     */
+    private void RequestService(HashMap<String, String> params, String title, int type) {
+        OkhttpUtil.okHttpPost(URLs.ServiceList_Store, params, headerMap, new CallBackUtil<ServiceListModel_Store>() {
+            @Override
+            public ServiceListModel_Store onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+                hideProgress();
+            }
+
+            @Override
+            public void onResponse(ServiceListModel_Store response) {
+//                hideProgress();
+                switch (type) {
+                    case 0:
+                        //弹窗列表
+                        BaseDialog dialog1 = new BaseDialog(StoreDetailActivity.this);
+                        dialog1.contentView(R.layout.dialog_list_sv)
+                                .layoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                                        ViewGroup.LayoutParams.WRAP_CONTENT))
+                                .animType(BaseDialog.AnimInType.BOTTOM)
+                                .canceledOnTouchOutside(true)
+                                .gravity(Gravity.BOTTOM)
+                                .dimAmount(0.7f)
+                                .show();
+                        TextView textView1 = dialog1.findViewById(R.id.textView1);
+                        textView1.setText(title);
+                        RecyclerView rv = dialog1.findViewById(R.id.recyclerView);
+                        rv.setLayoutManager(new LinearLayoutManager(StoreDetailActivity.this));
+
+                        CommonAdapter<ServiceListModel_Store.ListBean> adapter = new CommonAdapter<ServiceListModel_Store.ListBean>
+                                (StoreDetailActivity.this, R.layout.item_dialog_list, response.getList()) {
+                            @Override
+                            protected void convert(ViewHolder holder, ServiceListModel_Store.ListBean model, int position) {
+                                TextView tv = holder.getView(R.id.textView);
+                                ImageView iv = holder.getView(R.id.imageView);
+                                tv.setText(model.getYStateValue());
+
+
+                                tv.setTextColor(getResources().getColor(R.color.black1));
+                                iv.setImageResource(R.mipmap.ic_weixuan);
+                                for (XuanZeFuWuModel s : list_xuanze) {
+                                    if (s.getId().equals(model.getYStoreServiceId())) {
+                                        tv.setTextColor(getResources().getColor(R.color.blue));
+                                        iv.setImageResource(R.mipmap.ic_xuanzhong);
+                                    }
+                                }
+                            }
+                        };
+                        adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                                boolean isCunZai = false;
+                                for (int j = 0; j < list_xuanze.size(); j++) {
+                                    if (list_xuanze.get(j).getId().equals(response.getList().get(i).getYStoreServiceId())) {
+                                        //有这个值-移除
+                                        isCunZai = true;
+                                        list_xuanze.remove(j);
+                                    }
+                                }
+
+                                if (isCunZai == false) {
+                                    list_xuanze.add(new XuanZeFuWuModel(response.getList().get(i).getYStoreServiceId(),
+                                            response.getList().get(i).getYStateValue(), response.getList().get(i).getSPrice()));
+                                }
+
+                                adapter.notifyDataSetChanged();
+
+                                showUI();
+//                        dialog1.dismiss();
+                            }
+
+                            @Override
+                            public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                                return false;
+                            }
+                        });
+                        rv.setAdapter(adapter);
+                        dialog1.findViewById(R.id.tv_confirm).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialog1.dismiss();
+                            }
+                        });
+                        dialog1.findViewById(R.id.dismiss).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialog1.dismiss();
+                            }
+                        });
+                        break;
+                    case 1:
+                        //钣喷弹窗
+                        BaseDialog dialog2 = new BaseDialog(StoreDetailActivity.this);
+                        dialog2.contentView(R.layout.dialog_banpen)
+                                .layoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                                        ViewGroup.LayoutParams.WRAP_CONTENT))
+                                .animType(BaseDialog.AnimInType.BOTTOM)
+                                .canceledOnTouchOutside(true)
+                                .gravity(Gravity.BOTTOM)
+                                .dimAmount(0.7f)
+                                .show();
+                        TextView textView = dialog2.findViewById(R.id.textView1);
+                        textView.setText(title);
+                        ImageView imageView = dialog2.findViewById(R.id.imageView);
+
+                        if (response.getList().size() > 0) {
+                            Glide.with(StoreDetailActivity.this)
+                                    .load(URLs.IMGHOST + response.getList().get(0).getPictureStr())
+                                    .centerCrop()
+                                    .placeholder(R.mipmap.loading)//加载站位图
+                                    .error(R.mipmap.zanwutupian)//加载失败
+                                    .into(imageView);//加载图片
+                        }
+                        FlowLayout flowLayout1 = dialog2.findViewById(R.id.flowLayout1);
+                        fla = new FlowLayoutAdapter<ServiceListModel_Store.ListBean>
+                                (response.getList()) {
+                            @Override
+                            public void bindDataToView(FlowLayoutAdapter.ViewHolder holder, int position,
+                                                       ServiceListModel_Store.ListBean bean) {
+                                TextView tv = holder.getView(R.id.tv);
+                                tv.setText(bean.getYStateValue());
+
+                                tv.setTextColor(getResources().getColor(R.color.black2));
+                                tv.setBackgroundResource(R.drawable.yuanjiao_5_huise2);
+                                for (XuanZeFuWuModel s : list_xuanze) {
+                                    if (s.getId().equals(bean.getYStoreServiceId())) {
+
+                                        tv.setTextColor(getResources().getColor(R.color.white));
+                                        tv.setBackgroundResource(R.drawable.yuanjiao_5_lanse);
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onItemClick(int i, ServiceListModel_Store.ListBean bean) {
+//                        showToast("点击" + position);
+                                boolean isCunZai = false;
+                                for (int j = 0; j < list_xuanze.size(); j++) {
+                                    if (list_xuanze.get(j).getId().equals(response.getList().get(i).getYStoreServiceId())) {
+                                        //有这个值-移除
+                                        isCunZai = true;
+                                        list_xuanze.remove(j);
+                                    }
+                                }
+
+                                if (isCunZai == false) {
+                                    list_xuanze.add(new XuanZeFuWuModel(response.getList().get(i).getYStoreServiceId(),
+                                            response.getList().get(i).getYStateValue(), response.getList().get(i).getSPrice()));
+                                }
+
+                                fla.notifyDataSetChanged();
+
+                                showUI();
+                            }
+
+                            @Override
+                            public int getItemLayoutID(int position, ServiceListModel_Store.ListBean bean) {
+                                return R.layout.item_storedetail_flowlayout_banpen;
+                            }
+                        };
+                        flowLayout1.setAdapter(fla);
+
+                        dialog2.findViewById(R.id.tv_confirm).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialog2.dismiss();
+                            }
+                        });
+                        dialog2.findViewById(R.id.dismiss).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialog2.dismiss();
+                            }
+                        });
+                        break;
+                }
+            }
+        });
+    }
+
+    /**
+     * 显示选择项目、计算金额
+     */
+    private void showUI() {
+        if (list_xuanze.size() > 0) {
+            ll_xiadan.setVisibility(View.VISIBLE);
+            money = 0;
+            for (XuanZeFuWuModel model : list_xuanze) {
+                money += model.getMoney();
+            }
+            tv_money.setText("¥" + money);
+
+            FlowLayoutAdapter<XuanZeFuWuModel> flowLayoutAdapter1 =
+                    new FlowLayoutAdapter<XuanZeFuWuModel>
+                            (list_xuanze) {
+                        @Override
+                        public void bindDataToView(FlowLayoutAdapter.ViewHolder holder, int position,
+                                                   XuanZeFuWuModel bean) {
+                            TextView tv = holder.getView(R.id.tv);
+                            ImageView iv = holder.getView(R.id.iv);
+                            tv.setText(bean.getTitle());
+                            iv.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    list_xuanze.remove(position);
+                                    showUI();
+//                                    remove(position);
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onItemClick(int position, XuanZeFuWuModel bean) {
+//                        showToast("点击" + position);
+                        }
+
+                        @Override
+                        public int getItemLayoutID(int position, XuanZeFuWuModel bean) {
+                            return R.layout.item_storedetail_flowlayout;
+                        }
+                    };
+            flowLayout1.setAdapter(flowLayoutAdapter1);
+
+        } else {
+            ll_xiadan.setVisibility(View.GONE);
+        }
+    }
+
     @Override
     public void onClick(View v) {
         super.onClick(v);
@@ -656,6 +910,7 @@ public class StoreDetailActivity extends BaseActivity {
                 //获取店铺评论
                 Bundle bundle1 = new Bundle();
                 bundle1.putString("y_store_id", y_store_id);
+                bundle1.putSerializable("storeDetailModel", storeDetailModel);
                 CommonUtil.gotoActivityWithData(StoreDetailActivity.this, PingLunListActivity.class, bundle1, false);
                 /*page++;
                 Map<String, String> params2 = new HashMap<>();
@@ -665,7 +920,59 @@ public class StoreDetailActivity extends BaseActivity {
                 params2.put("page", page + "");
                 RequestPingLunMore(params2);*/
                 break;
+            case R.id.tv_xiadan:
+                //下单
+                showProgress(true, getString(R.string.app_loading1));
+                JSONArray jsonArray = new JSONArray();
+                for (XuanZeFuWuModel model : list_xuanze) {
+                    try {
+                        JSONObject object1 = new JSONObject();
+                        object1.put("y_store_service_id", model.getId());
+                        object1.put("is_service", "1");//1为服务  2为服务下边的商品 3为独立商品
+                        object1.put("g_num", "1");
+                        jsonArray.put(object1);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                Map<String, String> params = new HashMap<>();
+                params.put("u_token", localUserInfo.getToken());
+                params.put("jsonstr", jsonArray.toString());
+                RequestXiaDan(params);
+
+
+                break;
         }
+    }
+
+    /**
+     * 下单-添加购物车
+     *
+     * @param params
+     */
+    private void RequestXiaDan(Map<String, String> params) {
+        OkhttpUtil.okHttpPost(URLs.ADDShop, params, headerMap, new CallBackUtil<Object>() {
+            @Override
+            public Object onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+                hideProgress();
+            }
+
+            @Override
+            public void onResponse(Object response) {
+                hideProgress();
+                Bundle bundle2 = new Bundle();
+//                bundle2.putSerializable("XuanZeFuWuModel", (Serializable) list_xuanze);
+                bundle2.putString("y_store_id", y_store_id);
+                bundle2.putString("longitude", localUserInfo.getLongitude());
+                bundle2.putString("latitude", localUserInfo.getLatitude());
+                CommonUtil.gotoActivityWithData(StoreDetailActivity.this, ConfirmOrderActivity.class, bundle2, false);
+            }
+        });
     }
 
     /**

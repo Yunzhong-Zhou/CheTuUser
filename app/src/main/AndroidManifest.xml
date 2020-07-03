@@ -132,6 +132,12 @@
             android:name=".activity.StoreDetailActivity"
             android:label="门店详情" />
         <activity
+            android:name=".activity.ConfirmOrderActivity"
+            android:label="确认订单" />
+        <activity
+            android:name=".activity.SelectGoodsActivity"
+            android:label="选择商品" />
+        <activity
             android:name=".activity.TiWenListActivity"
             android:label="提问列表" />
         <activity
@@ -140,7 +146,9 @@
         <activity
             android:name=".activity.PingLunListActivity"
             android:label="评论列表" />
-
+        <activity
+            android:name=".activity.AddPingJiaActivity"
+            android:label="发布评价" />
         <!--我的-->
         <activity
             android:name=".activity.SetUpActivity"

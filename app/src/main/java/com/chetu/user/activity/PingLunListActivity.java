@@ -1,7 +1,6 @@
 package com.chetu.user.activity;
 
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 
@@ -9,6 +8,7 @@ import com.bumptech.glide.Glide;
 import com.chetu.user.R;
 import com.chetu.user.base.BaseActivity;
 import com.chetu.user.model.PingJiaModel;
+import com.chetu.user.model.StoreDetailModel;
 import com.chetu.user.net.URLs;
 import com.chetu.user.okhttp.CallBackUtil;
 import com.chetu.user.okhttp.OkhttpUtil;
@@ -31,6 +31,7 @@ import okhttp3.Response;
  * 评论列表
  */
 public class PingLunListActivity extends BaseActivity {
+    StoreDetailModel storeDetailModel;
     int page = 0;
     String y_store_id = "";
 
@@ -78,6 +79,7 @@ public class PingLunListActivity extends BaseActivity {
     @Override
     protected void initData() {
         y_store_id = getIntent().getStringExtra("y_store_id");
+        storeDetailModel = (StoreDetailModel) getIntent().getSerializableExtra("storeDetailModel");
         requestServer();
     }
     @Override
@@ -201,11 +203,14 @@ public class PingLunListActivity extends BaseActivity {
     @Override
     protected void updateView() {
         titleView.setTitle("门店评价");
-        titleView.showRightTextview("发布评价", new View.OnClickListener() {
+        /*titleView.showRightTextview("发布评价", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Bundle bundle1 = new Bundle();
+                bundle1.putString("y_store_id", y_store_id);
+                bundle1.putSerializable("storeDetailModel",storeDetailModel);
+                CommonUtil.gotoActivityWithData(PingLunListActivity.this, AddPingJiaActivity.class, bundle1, false);
             }
-        });
+        });*/
     }
 }

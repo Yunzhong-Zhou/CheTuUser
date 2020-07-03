@@ -41,7 +41,7 @@ public class StoreDetailModel implements Serializable {
         this.store_service_list = store_service_list;
     }
 
-    public static class InfoBean {
+    public static class InfoBean implements Serializable{
         /**
          * id : 1017
          * yStoreId : 692341585785913344
@@ -266,7 +266,7 @@ public class StoreDetailModel implements Serializable {
             this.charactArr = charactArr;
         }
 
-        public static class ColleInfoBean {
+        public static class ColleInfoBean implements Serializable{
             /**
              * id : 29
              * yUserCollectionId : 724191712410337280
@@ -475,7 +475,7 @@ public class StoreDetailModel implements Serializable {
         }
     }
 
-    public static class StoreServiceListBean {
+    public static class StoreServiceListBean implements Serializable{
         /**
          * id : 1023
          * yStoreServiceId : 692341585785913344

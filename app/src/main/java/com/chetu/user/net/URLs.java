@@ -80,6 +80,12 @@ public class URLs {
     public static final String ServiceList = HOST+"/api/v1/public/get_service_list";
     //服务分类列表
     public static final String ServiceList_all = HOST+"/api/v1/public/service_list_all";
+    //门店服务分类列表
+    public static final String ServiceList_Store = HOST+"/api/v1/public/get_store_service_content";
+    //确认订单信息
+    public static final String ConfirmOrder = HOST+"/api/v1/public/confirm_order_service";
+    //店铺商品列表-选择商品
+    public static final String SelectGoods = HOST+"/api/v1/public/get_store_goods";
     /**
      * *******************************我的****************************************
      * */

@@ -791,50 +791,50 @@ public class ProductDetailActivity extends BaseActivity {
         selects.clear();
         for (ProductDetailModel.SpecificListBeanX bean : model.getSpecific_list()) {
             selects.add(0);
-            rv.setLayoutManager(new LinearLayoutManager(ProductDetailActivity.this));
-            adapter = new CommonAdapter<ProductDetailModel.SpecificListBeanX>
-                    (ProductDetailActivity.this, R.layout.item_dialog_guige, model.getSpecific_list()) {
-                @Override
-                protected void convert(ViewHolder holder, ProductDetailModel.SpecificListBeanX model, int position) {
-                    holder.setText(R.id.tv, model.getSName());
-//                    String[] strArr = model.getSValue().split("\\|\\|");
-                    List<String> tabs = new ArrayList<>();
-                    for (ProductDetailModel.SpecificListBeanX.SpecificListBean s : model.getSpecific_List()) {
-                        tabs.add(s.getPName());
-                    }
-                    flowLayoutAdapter = new FlowLayoutAdapter<String>(tabs) {
-                        @Override
-                        public void bindDataToView(ViewHolder holder, int i, String bean) {
-                            TextView tv = holder.getView(R.id.tv);
-                            tv.setText(bean);
-                            if (selects.get(position) == i) {
-                                tv.setTextColor(getResources().getColor(R.color.blue));
-                                tv.setBackgroundResource(R.drawable.yuanjiaobiankuang_15_lanse);
-                            } else {
-                                tv.setTextColor(getResources().getColor(R.color.black));
-                                tv.setBackgroundResource(R.drawable.yuanjiao_15_huise1);
-                            }
-                        }
-
-                        @Override
-                        public void onItemClick(int i, String bean) {
-                            selects.set(position, i);
-                            adapter.notifyDataSetChanged();
-                            //计算及显示
-                            addView(tv_tab, tv_money, g_num);
-                        }
-
-                        @Override
-                        public int getItemLayoutID(int position, String bean) {
-                            return R.layout.item_guige_flowlayout;
-                        }
-                    };
-                    ((FlowLayout) holder.getView(R.id.flowLayout)).setAdapter(flowLayoutAdapter);
-
-                }
-            };
-            rv.setAdapter(adapter);
         }
+        rv.setLayoutManager(new LinearLayoutManager(ProductDetailActivity.this));
+        adapter = new CommonAdapter<ProductDetailModel.SpecificListBeanX>
+                (ProductDetailActivity.this, R.layout.item_dialog_guige, model.getSpecific_list()) {
+            @Override
+            protected void convert(ViewHolder holder, ProductDetailModel.SpecificListBeanX model, int position) {
+                holder.setText(R.id.tv, model.getSName());
+//                    String[] strArr = model.getSValue().split("\\|\\|");
+                List<String> tabs = new ArrayList<>();
+                for (ProductDetailModel.SpecificListBeanX.SpecificListBean s : model.getSpecific_List()) {
+                    tabs.add(s.getPName());
+                }
+                flowLayoutAdapter = new FlowLayoutAdapter<String>(tabs) {
+                    @Override
+                    public void bindDataToView(ViewHolder holder, int i, String bean) {
+                        TextView tv = holder.getView(R.id.tv);
+                        tv.setText(bean);
+                        if (selects.get(position) == i) {
+                            tv.setTextColor(getResources().getColor(R.color.blue));
+                            tv.setBackgroundResource(R.drawable.yuanjiaobiankuang_15_lanse);
+                        } else {
+                            tv.setTextColor(getResources().getColor(R.color.black));
+                            tv.setBackgroundResource(R.drawable.yuanjiao_15_huise1);
+                        }
+                    }
+
+                    @Override
+                    public void onItemClick(int i, String bean) {
+                        selects.set(position, i);
+                        adapter.notifyDataSetChanged();
+                        //计算及显示
+                        addView(tv_tab, tv_money, g_num);
+                    }
+
+                    @Override
+                    public int getItemLayoutID(int position, String bean) {
+                        return R.layout.item_guige_flowlayout;
+                    }
+                };
+                ((FlowLayout) holder.getView(R.id.flowLayout)).setAdapter(flowLayoutAdapter);
+
+            }
+        };
+        rv.setAdapter(adapter);
         dialog1.findViewById(R.id.tv_jian).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -906,7 +906,7 @@ public class ProductDetailActivity extends BaseActivity {
         tv_tab.setText(s_value);
 
         allmoney = (long) ((model.getInfo().getGPrice() + tabMoney) * num);
-        tv_money.setText("" + allmoney);
+        tv_money.setText("¥" + allmoney);
 
         textView_moeny.setText("¥" + allmoney);
         textView_num.setText(g_num + "");
