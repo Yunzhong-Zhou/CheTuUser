@@ -14,12 +14,17 @@ import com.chetu.user.model.SelectGoodsModel;
 import com.chetu.user.net.URLs;
 import com.chetu.user.okhttp.CallBackUtil;
 import com.chetu.user.okhttp.OkhttpUtil;
+import com.chetu.user.utils.MyLogger;
 import com.cy.cyflowlayoutlibrary.FlowLayout;
 import com.cy.cyflowlayoutlibrary.FlowLayoutAdapter;
 import com.cy.dialog.BaseDialog;
 import com.liaoinstan.springview.widget.SpringView;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,6 +46,13 @@ public class SelectGoodsActivity extends BaseActivity {
     RecyclerView recyclerView1;
     List<SelectGoodsModel.ListBean> list1 = new ArrayList<>();
     CommonAdapter<SelectGoodsModel.ListBean> mAdapter1;
+
+
+    RecyclerView[] rv;
+    CommonAdapter[] adapter;
+    List<Integer>[] selects;
+    int[] g_num;
+    String[] goods_specific_idstr, s_value, is_install;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +95,35 @@ public class SelectGoodsActivity extends BaseActivity {
         });
         recyclerView1 = findViewByID_My(R.id.recyclerView1);
         recyclerView1.setLayoutManager(new LinearLayoutManager(this));
+        findViewByID_My(R.id.tv_confirm).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //确认添加
+                showProgress(true, getString(R.string.app_loading1));
+                JSONArray jsonArray = new JSONArray();
+                for (int i = 0; i < list1.size(); i++) {
+                    if (list1.get(i).isXuanZhong()) {
+                        try {
+                            JSONObject object1 = new JSONObject();
+                            object1.put("y_store_service_id", y_store_service_id);
+                            object1.put("y_goods_id", list1.get(i).getYGoodsId());
+                            object1.put("is_service", "2");//1为服务  2为服务下边的商品 3为独立商品
+                            object1.put("g_num", g_num[i]);
+                            object1.put("s_value", s_value[i]);
+                            object1.put("goods_specific_idstr", goods_specific_idstr[i]);
+                            object1.put("is_install", is_install[i]);
+                            jsonArray.put(object1);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+                Map<String, String> params = new HashMap<>();
+                params.put("u_token", localUserInfo.getToken());
+                params.put("jsonstr", jsonArray.toString());
+                RequestXiaDan(params);
+            }
+        });
     }
 
     @Override
@@ -105,6 +146,37 @@ public class SelectGoodsActivity extends BaseActivity {
         Request(params);
     }
 
+    /**
+     * 下单-添加购物车
+     *
+     * @param params
+     */
+    private void RequestXiaDan(Map<String, String> params) {
+        OkhttpUtil.okHttpPost(URLs.ADDShop, params, headerMap, new CallBackUtil<Object>() {
+            @Override
+            public Object onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+                hideProgress();
+            }
+
+            @Override
+            public void onResponse(Object response) {
+                hideProgress();
+                showToast("添加成功", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                        finish();
+                    }
+                });
+            }
+        });
+    }
+
     private void Request(Map<String, String> params) {
         OkhttpUtil.okHttpPost(URLs.SelectGoods, params, headerMap, new CallBackUtil<SelectGoodsModel>() {
             @Override
@@ -125,6 +197,14 @@ public class SelectGoodsActivity extends BaseActivity {
                 list1 = response.getList();
                 if (list1.size() > 0) {
                     showContentPage();
+                    rv = new RecyclerView[list1.size()];
+                    adapter = new CommonAdapter[list1.size()];
+                    selects = new ArrayList[list1.size()];
+                    g_num = new int[list1.size()];
+                    goods_specific_idstr = new String[list1.size()];
+                    s_value = new String[list1.size()];
+                    is_install = new String[list1.size()];
+
                     mAdapter1 = new CommonAdapter<SelectGoodsModel.ListBean>
                             (SelectGoodsActivity.this, R.layout.item_selectgoods, list1) {
                         @Override
@@ -142,13 +222,23 @@ public class SelectGoodsActivity extends BaseActivity {
                             holder.setText(R.id.tv_title, model.getGName());
                             holder.setText(R.id.tv_money, model.getGPrice() + "");
                             TextView tv_guige = holder.getView(R.id.tv_guige);
+
+
+                            is_install[position] = "1";
+                            g_num[position] = 1;
+                            selects[position] = new ArrayList<>();
+                            if (model.getSpecific_list().size() > 0) {
+                                for (SelectGoodsModel.ListBean.SpecificListBeanX b : model.getSpecific_list()) {
+                                    selects[position].add(0);
+                                }
+                            }
+
+
                             tv_guige.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     //规格
-                                    int g_num = 1;
-                                    List<Integer> selects = new ArrayList<>();
-                                    showDialog(model, selects, g_num);
+                                    showDialog(tv_guige, model, position);
                                 }
                             });
                         }
@@ -200,13 +290,13 @@ public class SelectGoodsActivity extends BaseActivity {
     /**
      * 显示规格弹窗
      */
-    private void showDialog(SelectGoodsModel.ListBean model, List<Integer> selects, int g_num) {
+    private void showDialog(TextView tv_guige, SelectGoodsModel.ListBean model, int position) {
         BaseDialog dialog1 = new BaseDialog(SelectGoodsActivity.this);
         dialog1.contentView(R.layout.dialog_selectgoods)
                 .layoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.WRAP_CONTENT))
                 .animType(BaseDialog.AnimInType.BOTTOM)
-                .canceledOnTouchOutside(false)
+                .canceledOnTouchOutside(true)
                 .gravity(Gravity.BOTTOM)
                 .dimAmount(0.7f)
                 .show();
@@ -226,7 +316,7 @@ public class SelectGoodsActivity extends BaseActivity {
         TextView tv_tab = dialog1.findViewById(R.id.tv_tab);
 
         TextView tv_num = dialog1.findViewById(R.id.tv_num);
-        tv_num.setText(g_num + "");
+        tv_num.setText(g_num[position] + "");
 
         TextView tv_anzhuang = dialog1.findViewById(R.id.tv_anzhuang);
         TextView tv_buanzhuang = dialog1.findViewById(R.id.tv_buanzhuang);
@@ -234,7 +324,7 @@ public class SelectGoodsActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 //安装
-//                is_install = "1";
+                is_install[position] = "1";
                 tv_anzhuang.setTextColor(getResources().getColor(R.color.blue));
                 tv_anzhuang.setBackgroundResource(R.drawable.yuanjiaobiankuang_15_lanse);
                 tv_buanzhuang.setTextColor(getResources().getColor(R.color.black));
@@ -246,72 +336,70 @@ public class SelectGoodsActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 //不安装
-//                is_install = "2";
+                is_install[position] = "0";
                 tv_anzhuang.setTextColor(getResources().getColor(R.color.black));
                 tv_anzhuang.setBackgroundResource(R.drawable.yuanjiao_15_huise1);
                 tv_buanzhuang.setTextColor(getResources().getColor(R.color.blue));
                 tv_buanzhuang.setBackgroundResource(R.drawable.yuanjiaobiankuang_15_lanse);
-
             }
         });
 
-        RecyclerView rv = dialog1.findViewById(R.id.rv);
-        selects.clear();
-        for (SelectGoodsModel.ListBean.SpecificListBeanX bean : model.getSpecific_list()) {
-            selects.add(0);
-        }
-        rv.setLayoutManager(new LinearLayoutManager(SelectGoodsActivity.this));
-        CommonAdapter adapter = new CommonAdapter<SelectGoodsModel.ListBean.SpecificListBeanX>
+        rv[position] = dialog1.findViewById(R.id.rv);
+        rv[position].setLayoutManager(new LinearLayoutManager(SelectGoodsActivity.this));
+
+        adapter[position] = new CommonAdapter<SelectGoodsModel.ListBean.SpecificListBeanX>
                 (SelectGoodsActivity.this, R.layout.item_dialog_guige, model.getSpecific_list()) {
             @Override
-            protected void convert(ViewHolder holder, SelectGoodsModel.ListBean.SpecificListBeanX model1, int position) {
+            protected void convert(ViewHolder holder, SelectGoodsModel.ListBean.SpecificListBeanX model1, int item) {
                 holder.setText(R.id.tv, model1.getSName());
 //                    String[] strArr = model.getSValue().split("\\|\\|");
-                List<String> tabs = new ArrayList<>();
-                for (SelectGoodsModel.ListBean.SpecificListBeanX.SpecificListBean s : model1.getSpecific_List()) {
-                    tabs.add(s.getPName());
-                }
-                FlowLayoutAdapter flowLayoutAdapter = new FlowLayoutAdapter<String>(tabs) {
-                    @Override
-                    public void bindDataToView(FlowLayoutAdapter.ViewHolder holder, int i, String bean) {
-                        TextView tv = holder.getView(R.id.tv);
-                        tv.setText(bean);
-                        if (selects.get(position) == i) {
-                            tv.setTextColor(getResources().getColor(R.color.blue));
-                            tv.setBackgroundResource(R.drawable.yuanjiaobiankuang_15_lanse);
-                        } else {
-                            tv.setTextColor(getResources().getColor(R.color.black));
-                            tv.setBackgroundResource(R.drawable.yuanjiao_15_huise1);
+                if (model1.getSpecific_List().size() > 0) {
+                    List<String> tabs = new ArrayList<>();
+                    for (SelectGoodsModel.ListBean.SpecificListBeanX.SpecificListBean s : model1.getSpecific_List()) {
+                        tabs.add(s.getPName());
+                    }
+
+                    FlowLayoutAdapter flowLayoutAdapter = new FlowLayoutAdapter<String>(tabs) {
+                        @Override
+                        public void bindDataToView(FlowLayoutAdapter.ViewHolder holder, int i, String bean) {
+                            TextView tv = holder.getView(R.id.tv);
+                            tv.setText(bean);
+                            if (selects[position].get(item) == i) {
+                                tv.setTextColor(getResources().getColor(R.color.blue));
+                                tv.setBackgroundResource(R.drawable.yuanjiaobiankuang_15_lanse);
+                            } else {
+                                tv.setTextColor(getResources().getColor(R.color.black));
+                                tv.setBackgroundResource(R.drawable.yuanjiao_15_huise1);
+                            }
                         }
-                    }
 
-                    @Override
-                    public void onItemClick(int i, String bean) {
-                        selects.set(position, i);
-                           /* adapter.notifyDataSetChanged();
+                        @Override
+                        public void onItemClick(int i, String bean) {
+                            selects[position].set(item, i);
+                            adapter[position].notifyDataSetChanged();
                             //计算及显示
-                            addView(tv_tab, tv_money, g_num);*/
-                    }
+                            addView(tv_guige, model, tv_tab, tv_money, g_num[position], position);
+                        }
 
-                    @Override
-                    public int getItemLayoutID(int position, String bean) {
-                        return R.layout.item_guige_flowlayout;
-                    }
-                };
-                ((FlowLayout) holder.getView(R.id.flowLayout)).setAdapter(flowLayoutAdapter);
-
+                        @Override
+                        public int getItemLayoutID(int position, String bean) {
+                            return R.layout.item_guige_flowlayout;
+                        }
+                    };
+                    ((FlowLayout) holder.getView(R.id.flowLayout)).setAdapter(flowLayoutAdapter);
+                }
             }
         };
-        rv.setAdapter(adapter);
+        rv[position].setAdapter(adapter[position]);
         dialog1.findViewById(R.id.tv_jian).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //减号
-                /*if (g_num > 1) {
-                    g_num--;
-                    tv_num.setText(g_num + "");
-//                    addView(tv_tab, tv_money, g_num);
-                }*/
+                if (g_num[position] > 1) {
+                    g_num[position]--;
+                    tv_num.setText(g_num[position] + "");
+                    addView(tv_guige, model, tv_tab, tv_money, g_num[position], position);
+                }
             }
         });
         dialog1.findViewById(R.id.tv_jia).setOnClickListener(new View.OnClickListener() {
@@ -319,10 +407,10 @@ public class SelectGoodsActivity extends BaseActivity {
             public void onClick(View v) {
                 //加号
 //                        if (num < 100) {
-               /* g_num++;
-                tv_num.setText(g_num + "");
+                g_num[position]++;
+                tv_num.setText(g_num[position] + "");
 
-                addView(tv_tab, tv_money, g_num);*/
+                addView(tv_guige, model, tv_tab, tv_money, g_num[position], position);
 //                        }
             }
         });
@@ -332,8 +420,9 @@ public class SelectGoodsActivity extends BaseActivity {
                 dialog1.dismiss();
             }
         });
-//        addView(tv_tab, tv_money, g_num);
+        addView(tv_guige, model, tv_tab, tv_money, g_num[position], position);
     }
+
     /**
      * 计算
      *
@@ -341,32 +430,38 @@ public class SelectGoodsActivity extends BaseActivity {
      * @param tv_money
      * @param num
      */
-    private void addView(TextView tv_tab, TextView tv_money, int num) {
-        /*goods_specific_idstr = "";
-        s_value = "";
+    private void addView(TextView tv_guige, SelectGoodsModel.ListBean model, TextView tv_tab, TextView tv_money, int num, int position) {
+        goods_specific_idstr[position] = "";
+        s_value[position] = "";
         double tabMoney = 0;
         for (int i = 0; i < model.getSpecific_list().size(); i++) {
 //            String[] strArr = model.getSpecific_list().get(i).getSValue().split("\\|\\|");
             for (int j = 0; j < model.getSpecific_list().get(i).getSpecific_List().size(); j++) {
-                if (selects.get(i) == j) {
-                    s_value += model.getSpecific_list().get(i).getSpecific_List().get(j).getPName() + "||";
-                    goods_specific_idstr += model.getSpecific_list().get(i).getSpecific_List().get(j).getYGoodsSpecificId() + "||";
+                if (selects[position].get(i) == j) {
+                    s_value[position] += model.getSpecific_list().get(i).getSpecific_List().get(j).getPName() + "||";
+                    goods_specific_idstr[position] += model.getSpecific_list().get(i).getSpecific_List().get(j).getYGoodsSpecificId() + "||";
                     tabMoney += model.getSpecific_list().get(i).getSpecific_List().get(j).getSPrice();
                 }
             }
         }
 
-        goods_specific_idstr = goods_specific_idstr.substring(0, goods_specific_idstr.length() - 2);
-        MyLogger.i(">>>>>>" + goods_specific_idstr);
-        s_value = s_value.substring(0, s_value.length() - 2);
-        tv_tab.setText(s_value);
+        if (goods_specific_idstr[position].length() > 0) {
+            goods_specific_idstr[position] = goods_specific_idstr[position].substring(0, goods_specific_idstr[position].length() - 2);
+            MyLogger.i(">>>>>>" + goods_specific_idstr[position]);
+            s_value[position] = s_value[position].substring(0, s_value[position].length() - 2);
+        }
 
-        allmoney = (long) ((model.getInfo().getGPrice() + tabMoney) * num);
+        tv_tab.setText(s_value[position]);
+
+        double allmoney = (long) ((model.getGPrice() + tabMoney) * num);
         tv_money.setText("¥" + allmoney);
 
-        textView_moeny.setText("¥" + allmoney);
-        textView_num.setText(g_num + "");
-        head1_tv5.setText(s_value);*/
+//        textView_moeny.setText("¥" + allmoney);
+//        textView_num.setText(g_num + "");
+//        head1_tv5.setText(s_value);
+        tv_guige.setText(s_value[position] + "  数量:" + num + "   ¥" + allmoney);
+
+        list1.get(position).setXuanZhong(true);
     }
 
     @Override

@@ -67,6 +67,7 @@
                 android:layout_marginTop="5dp"
                 android:background="@drawable/yuanjiao_5_huise2"
                 android:drawableRight="@mipmap/ic_next_sanjiao"
+                android:gravity="center_vertical"
                 android:hint="选择商品规格"
                 android:padding="10dp"
                 android:textColor="@color/black"

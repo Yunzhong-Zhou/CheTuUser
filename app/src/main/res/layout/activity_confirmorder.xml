@@ -29,12 +29,12 @@
                 <!--车辆信息-->
                 <LinearLayout
                     android:id="@+id/linearLayout1"
-                    android:onClick="onClick"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="13dp"
                     android:layout_marginRight="13dp"
                     android:background="@drawable/yuanjiao_10_baise"
+                    android:onClick="onClick"
                     android:orientation="vertical">
 
                     <LinearLayout
@@ -267,6 +267,7 @@
                     android:layout_marginLeft="13dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginRight="13dp"
+                    android:layout_marginBottom="20dp"
                     android:background="@drawable/yuanjiao_10_baise"
                     android:gravity="center_vertical"
                     android:onClick="onClick"
@@ -302,6 +303,7 @@
 
         <TextView
             android:id="@+id/tv_time"
+            android:onClick="onClick"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="13dp"
@@ -360,13 +362,13 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginRight="13dp"
                 android:layout_marginBottom="5dp"
-                android:background="@drawable/yuanjiaobiankuang_5_lanse_right"
+                android:background="@drawable/yuanjiao_5_lanse_right"
                 android:gravity="center"
                 android:onClick="onClick"
                 android:paddingTop="12dp"
                 android:paddingBottom="12dp"
                 android:text="到店施工"
-                android:textColor="@color/blue"
+                android:textColor="@color/white"
                 android:textSize="15sp" />
 
         </LinearLayout>

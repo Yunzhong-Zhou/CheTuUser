@@ -38,6 +38,10 @@ import com.youth.banner.listener.OnPageChangeListener;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -674,7 +678,7 @@ public class ProductDetailActivity extends BaseActivity {
 
             case R.id.textView_goumai:
                 if (match()) {
-                    HashMap<String, String> params = new HashMap<>();
+                    /*Map<String, String> params = new HashMap<>();
                     params.put("u_token", localUserInfo.getToken());
                     params.put("y_store_id", y_store_id1);
                     params.put("y_store_service_id", y_store_service_id);
@@ -684,6 +688,24 @@ public class ProductDetailActivity extends BaseActivity {
                     params.put("goods_specific_idstr", goods_specific_idstr);
                     params.put("s_value", s_value);
                     params.put("is_install", is_install);
+                    RequestAdd(params);*/
+                    JSONArray jsonArray = new JSONArray();
+                    try {
+                        JSONObject object1 = new JSONObject();
+                        object1.put("y_store_service_id", y_store_service_id);
+                        object1.put("y_goods_id", y_goods_id);
+                        object1.put("is_service", "3");//1为服务  2为服务下边的商品 3为独立商品
+                        object1.put("g_num", g_num + "");
+                        object1.put("s_value", s_value);
+                        object1.put("goods_specific_idstr", goods_specific_idstr);
+                        object1.put("is_install", is_install);
+                        jsonArray.put(object1);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    Map<String, String> params = new HashMap<>();
+                    params.put("u_token", localUserInfo.getToken());
+                    params.put("jsonstr", jsonArray.toString());
                     RequestAdd(params);
                 }
                 break;
@@ -698,7 +720,7 @@ public class ProductDetailActivity extends BaseActivity {
      *
      * @param params
      */
-    private void RequestAdd(HashMap<String, String> params) {
+    private void RequestAdd(Map<String, String> params) {
         OkhttpUtil.okHttpPost(URLs.ADDShop, params, headerMap, new CallBackUtil<Object>() {
             @Override
             public Object onParseResponse(Call call, Response response) {
@@ -735,7 +757,7 @@ public class ProductDetailActivity extends BaseActivity {
                 .layoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.WRAP_CONTENT))
                 .animType(BaseDialog.AnimInType.BOTTOM)
-                .canceledOnTouchOutside(false)
+                .canceledOnTouchOutside(true)
                 .gravity(Gravity.BOTTOM)
                 .dimAmount(0.7f)
                 .show();
@@ -778,7 +800,7 @@ public class ProductDetailActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 //不安装
-                is_install = "2";
+                is_install = "0";
                 tv_anzhuang.setTextColor(getResources().getColor(R.color.black));
                 tv_anzhuang.setBackgroundResource(R.drawable.yuanjiao_15_huise1);
                 tv_buanzhuang.setTextColor(getResources().getColor(R.color.blue));

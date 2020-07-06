@@ -48,6 +48,7 @@
                     android:layout_height="12dp"
                     android:numStars="5"
                     android:rating="5"
+                    android:isIndicator="true"
                     app:bgDrawable="@mipmap/rating_off_yellow"
                     app:starColor="#F2D719"
                     app:bgColor="#F2D719"

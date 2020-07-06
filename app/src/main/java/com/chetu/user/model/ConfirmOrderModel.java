@@ -8,7 +8,7 @@ import java.util.List;
  */
 public class ConfirmOrderModel implements Serializable {
     /**
-     * service_list : [{"id":"1166","yCartId":"728581339992817664","yStoreId":"692341585785913344","userId":"714547022807433216","isService":1,"yStoreServiceId":"692341585785913353","isIntegral":0,"gIntegral":0,"yGoodsId":"0","store_service_info":{"id":"1032","yStoreServiceId":"692341585785913353","yStoreId":"692341585785913344","yState":1,"lineupSum":10,"isSheet":1,"yStateValue":"右前门","sPrice":100,"pictureStr":"/upload/2020-06-02/20200602102222_621580.png"},"createDate":"2020-07-03 12:02:07","vPrice":100,"gNum":1,"goods_cart_list":[]},{"id":"1167","yCartId":"728581340026372096","yStoreId":"692341585785913344","userId":"714547022807433216","isService":1,"yStoreServiceId":"692341585785913352","isIntegral":0,"gIntegral":0,"yGoodsId":"0","store_service_info":{"id":"1031","yStoreServiceId":"692341585785913352","yStoreId":"692341585785913344","yState":1,"lineupSum":10,"isSheet":1,"yStateValue":"在前门","sPrice":100,"pictureStr":"/upload/2020-06-02/20200602102222_621580.png"},"createDate":"2020-07-03 12:02:07","vPrice":100,"gNum":1,"goods_cart_list":[]},{"id":"1168","yCartId":"728581340064120832","yStoreId":"692341585785913344","userId":"714547022807433216","isService":1,"yStoreServiceId":"692341585785913351","isIntegral":0,"gIntegral":0,"yGoodsId":"0","store_service_info":{"id":"1030","yStoreServiceId":"692341585785913351","yStoreId":"692341585785913344","yState":1,"lineupSum":10,"isSheet":1,"yStateValue":"右叶板子","sPrice":100,"pictureStr":"/upload/2020-06-02/20200602102222_621580.png"},"createDate":"2020-07-03 12:02:07","vPrice":100,"gNum":1,"goods_cart_list":[]},{"id":"1169","yCartId":"728581340089286656","yStoreId":"692341585785913344","userId":"714547022807433216","isService":1,"yStoreServiceId":"692341585785913350","isIntegral":0,"gIntegral":0,"yGoodsId":"0","store_service_info":{"id":"1029","yStoreServiceId":"692341585785913350","yStoreId":"692341585785913344","yState":1,"lineupSum":10,"isSheet":0,"yStateValue":"机盖","sPrice":100,"pictureStr":"/upload/2020-06-02/20200602102222_621580.png"},"createDate":"2020-07-03 12:02:07","vPrice":100,"gNum":1,"goods_cart_list":[]},{"id":"1170","yCartId":"728581340131229696","yStoreId":"692341585785913344","userId":"714547022807433216","isService":1,"yStoreServiceId":"692341585785913349","isIntegral":0,"gIntegral":0,"yGoodsId":"0","store_service_info":{"id":"1028","yStoreServiceId":"692341585785913349","yStoreId":"692341585785913344","yState":1,"lineupSum":10,"isSheet":1,"yStateValue":"左叶板子","sPrice":100,"pictureStr":"/upload/2020-06-02/20200602102222_621580.png"},"createDate":"2020-07-03 12:02:07","vPrice":100,"gNum":1,"goods_cart_list":[]},{"id":"1171","yCartId":"728581340160589824","yStoreId":"692341585785913344","userId":"714547022807433216","isService":1,"yStoreServiceId":"692341585785913101","isIntegral":0,"gIntegral":0,"yGoodsId":"0","store_service_info":{"id":"1035","yStoreServiceId":"692341585785913101","yStoreId":"692341585785913344","yState":1,"lineupSum":10,"isSheet":1,"yStateValue":"维修二级2","sPrice":100,"pictureStr":"/upload/2020-06-02/20200602102222_621580.png"},"createDate":"2020-07-03 12:02:07","vPrice":100,"gNum":1,"goods_cart_list":[]},{"id":"1172","yCartId":"728581340185755648","yStoreId":"692341585785913344","userId":"714547022807433216","isService":1,"yStoreServiceId":"6923415857859139100","isIntegral":0,"gIntegral":0,"yGoodsId":"0","store_service_info":{"id":"1034","yStoreServiceId":"6923415857859139100","yStoreId":"692341585785913344","yState":1,"lineupSum":10,"isSheet":1,"yStateValue":"维修二级2","sPrice":100,"pictureStr":"/upload/2020-06-02/20200602102222_621580.png"},"createDate":"2020-07-03 12:02:07","vPrice":100,"gNum":1,"goods_cart_list":[]},{"id":"1173","yCartId":"728581340210921472","yStoreId":"692341585785913344","userId":"714547022807433216","isService":1,"yStoreServiceId":"692341585785913999","isIntegral":0,"gIntegral":0,"yGoodsId":"0","store_service_info":{"id":"1033","yStoreServiceId":"692341585785913999","yStoreId":"692341585785913344","yState":1,"lineupSum":10,"isSheet":1,"yStateValue":"维修二级1","sPrice":100,"pictureStr":"/upload/2020-06-02/20200602102222_621580.png"},"createDate":"2020-07-03 12:02:07","vPrice":100,"gNum":1,"goods_cart_list":[]}]
+     * service_list : [{"id":"1166","yCartId":"728581339992817664","yStoreId":"692341585785913344","userId":"714547022807433216","isService":1,"yStoreServiceId":"692341585785913353","isIntegral":0,"gIntegral":0,"yGoodsId":"0","store_service_info":{"id":"1032","yStoreServiceId":"692341585785913353","yStoreId":"692341585785913344","yState":1,"lineupSum":10,"isSheet":1,"yStateValue":"右前门","sPrice":100,"pictureStr":"/upload/2020-06-02/20200602102222_621580.png"},"createDate":"2020-07-03 12:02:07","vPrice":100,"gNum":1,"goods_cart_list":[{"id":"1220","yCartId":"729690295234461696","yStoreId":"692341585785913344","userId":"714547022807433216","isService":2,"isInstall":0,"yStoreServiceId":"692341585785913353","isIntegral":0,"gIntegral":0,"yGoodsId":"692341585785913345","goodsValue":"绿色||xl","goods_info":{"id":"1018","yGoodsId":"692341585785913345","yClassifyId":"692341585785913344","yStoreId":"692341585785913344","gName":"百魅 汽车遮阳挡6件套防晒隔热遮阳板挡阳板加厚前档太阳后挡侧挡","gDesc":"适用捷渡凌度360小米家盯盯拍70迈正际行车记录仪降压线停车监控","gPrice":1000,"orPrice":3000,"imgStr":"/upload/pro.png||/upload/pro.png","gImg":"/upload/pro.png","gState":1,"isPopular":1,"isIntegral":0,"gIntegral":0,"createDate":"2019-09-27 10:31:19","isSoffer":1},"createDate":"2020-07-06 13:28:43","vPrice":1180,"gNum":3}]},{"id":"1167","yCartId":"728581340026372096","yStoreId":"692341585785913344","userId":"714547022807433216","isService":1,"yStoreServiceId":"692341585785913352","isIntegral":0,"gIntegral":0,"yGoodsId":"0","store_service_info":{"id":"1031","yStoreServiceId":"692341585785913352","yStoreId":"692341585785913344","yState":1,"lineupSum":10,"isSheet":1,"yStateValue":"在前门","sPrice":100,"pictureStr":"/upload/2020-06-02/20200602102222_621580.png"},"createDate":"2020-07-03 12:02:07","vPrice":100,"gNum":1,"goods_cart_list":[]},{"id":"1168","yCartId":"728581340064120832","yStoreId":"692341585785913344","userId":"714547022807433216","isService":1,"yStoreServiceId":"692341585785913351","isIntegral":0,"gIntegral":0,"yGoodsId":"0","store_service_info":{"id":"1030","yStoreServiceId":"692341585785913351","yStoreId":"692341585785913344","yState":1,"lineupSum":10,"isSheet":1,"yStateValue":"右叶板子","sPrice":100,"pictureStr":"/upload/2020-06-02/20200602102222_621580.png"},"createDate":"2020-07-03 12:02:07","vPrice":100,"gNum":1,"goods_cart_list":[]},{"id":"1169","yCartId":"728581340089286656","yStoreId":"692341585785913344","userId":"714547022807433216","isService":1,"yStoreServiceId":"692341585785913350","isIntegral":0,"gIntegral":0,"yGoodsId":"0","store_service_info":{"id":"1029","yStoreServiceId":"692341585785913350","yStoreId":"692341585785913344","yState":1,"lineupSum":10,"isSheet":0,"yStateValue":"机盖","sPrice":100,"pictureStr":"/upload/2020-06-02/20200602102222_621580.png"},"createDate":"2020-07-03 12:02:07","vPrice":100,"gNum":1,"goods_cart_list":[]},{"id":"1170","yCartId":"728581340131229696","yStoreId":"692341585785913344","userId":"714547022807433216","isService":1,"yStoreServiceId":"692341585785913349","isIntegral":0,"gIntegral":0,"yGoodsId":"0","store_service_info":{"id":"1028","yStoreServiceId":"692341585785913349","yStoreId":"692341585785913344","yState":1,"lineupSum":10,"isSheet":1,"yStateValue":"左叶板子","sPrice":100,"pictureStr":"/upload/2020-06-02/20200602102222_621580.png"},"createDate":"2020-07-03 12:02:07","vPrice":100,"gNum":1,"goods_cart_list":[]},{"id":"1171","yCartId":"728581340160589824","yStoreId":"692341585785913344","userId":"714547022807433216","isService":1,"yStoreServiceId":"692341585785913101","isIntegral":0,"gIntegral":0,"yGoodsId":"0","store_service_info":{"id":"1035","yStoreServiceId":"692341585785913101","yStoreId":"692341585785913344","yState":1,"lineupSum":10,"isSheet":1,"yStateValue":"维修二级2","sPrice":100,"pictureStr":"/upload/2020-06-02/20200602102222_621580.png"},"createDate":"2020-07-03 12:02:07","vPrice":100,"gNum":1,"goods_cart_list":[]},{"id":"1172","yCartId":"728581340185755648","yStoreId":"692341585785913344","userId":"714547022807433216","isService":1,"yStoreServiceId":"6923415857859139100","isIntegral":0,"gIntegral":0,"yGoodsId":"0","store_service_info":{"id":"1034","yStoreServiceId":"6923415857859139100","yStoreId":"692341585785913344","yState":1,"lineupSum":10,"isSheet":1,"yStateValue":"维修二级2","sPrice":100,"pictureStr":"/upload/2020-06-02/20200602102222_621580.png"},"createDate":"2020-07-03 12:02:07","vPrice":100,"gNum":1,"goods_cart_list":[]},{"id":"1173","yCartId":"728581340210921472","yStoreId":"692341585785913344","userId":"714547022807433216","isService":1,"yStoreServiceId":"692341585785913999","isIntegral":0,"gIntegral":0,"yGoodsId":"0","store_service_info":{"id":"1033","yStoreServiceId":"692341585785913999","yStoreId":"692341585785913344","yState":1,"lineupSum":10,"isSheet":1,"yStateValue":"维修二级1","sPrice":100,"pictureStr":"/upload/2020-06-02/20200602102222_621580.png"},"createDate":"2020-07-03 12:02:07","vPrice":100,"gNum":1,"goods_cart_list":[]}]
      * goods_cart_list : []
      * store_info : {"id":"1017","yStoreId":"692341585785913344","userId":"20180531104813","vName":"龙肆商店测试","review":"4.5","keywsr":"保养 修车 服务","address":"深圳市光明新区公明街道东环大道松白工业区C区2栋一层106号","longitude":"116.49798","latitude":"39.916485","picture":"/upload/store/222.png","distance":"12246.42","phone":" 400-2333-1123","vLevel":"A级","introduce":"听广告几年了，终于体验了特色服务。轮胎是其专长。听说11年开始，线上业务。16年开始线下。现在全国1500多家店。","charactStr":"/upload/store/222.png||/upload/store/222.png","pictureStr":"/upload/store/222.png||/upload/store/222.png","slogan":"商店测试  洗车首单10","isIndex":1}
      */
@@ -242,7 +242,7 @@ public class ConfirmOrderModel implements Serializable {
          * createDate : 2020-07-03 12:02:07
          * vPrice : 100.0
          * gNum : 1
-         * goods_cart_list : []
+         * goods_cart_list : [{"id":"1220","yCartId":"729690295234461696","yStoreId":"692341585785913344","userId":"714547022807433216","isService":2,"isInstall":0,"yStoreServiceId":"692341585785913353","isIntegral":0,"gIntegral":0,"yGoodsId":"692341585785913345","goodsValue":"绿色||xl","goods_info":{"id":"1018","yGoodsId":"692341585785913345","yClassifyId":"692341585785913344","yStoreId":"692341585785913344","gName":"百魅 汽车遮阳挡6件套防晒隔热遮阳板挡阳板加厚前档太阳后挡侧挡","gDesc":"适用捷渡凌度360小米家盯盯拍70迈正际行车记录仪降压线停车监控","gPrice":1000,"orPrice":3000,"imgStr":"/upload/pro.png||/upload/pro.png","gImg":"/upload/pro.png","gState":1,"isPopular":1,"isIntegral":0,"gIntegral":0,"createDate":"2019-09-27 10:31:19","isSoffer":1},"createDate":"2020-07-06 13:28:43","vPrice":1180,"gNum":3}]
          */
 
         private String id;
@@ -258,7 +258,7 @@ public class ConfirmOrderModel implements Serializable {
         private String createDate;
         private double vPrice;
         private int gNum;
-        private List<?> goods_cart_list;
+        private List<GoodsCartListBean> goods_cart_list;
 
         public String getId() {
             return id;
@@ -364,11 +364,11 @@ public class ConfirmOrderModel implements Serializable {
             this.gNum = gNum;
         }
 
-        public List<?> getGoods_cart_list() {
+        public List<GoodsCartListBean> getGoods_cart_list() {
             return goods_cart_list;
         }
 
-        public void setGoods_cart_list(List<?> goods_cart_list) {
+        public void setGoods_cart_list(List<GoodsCartListBean> goods_cart_list) {
             this.goods_cart_list = goods_cart_list;
         }
 
@@ -465,6 +465,328 @@ public class ConfirmOrderModel implements Serializable {
 
             public void setPictureStr(String pictureStr) {
                 this.pictureStr = pictureStr;
+            }
+        }
+
+        public static class GoodsCartListBean {
+            /**
+             * id : 1220
+             * yCartId : 729690295234461696
+             * yStoreId : 692341585785913344
+             * userId : 714547022807433216
+             * isService : 2
+             * isInstall : 0
+             * yStoreServiceId : 692341585785913353
+             * isIntegral : 0
+             * gIntegral : 0
+             * yGoodsId : 692341585785913345
+             * goodsValue : 绿色||xl
+             * goods_info : {"id":"1018","yGoodsId":"692341585785913345","yClassifyId":"692341585785913344","yStoreId":"692341585785913344","gName":"百魅 汽车遮阳挡6件套防晒隔热遮阳板挡阳板加厚前档太阳后挡侧挡","gDesc":"适用捷渡凌度360小米家盯盯拍70迈正际行车记录仪降压线停车监控","gPrice":1000,"orPrice":3000,"imgStr":"/upload/pro.png||/upload/pro.png","gImg":"/upload/pro.png","gState":1,"isPopular":1,"isIntegral":0,"gIntegral":0,"createDate":"2019-09-27 10:31:19","isSoffer":1}
+             * createDate : 2020-07-06 13:28:43
+             * vPrice : 1180.0
+             * gNum : 3
+             */
+
+            private String id;
+            private String yCartId;
+            private String yStoreId;
+            private String userId;
+            private int isService;
+            private int isInstall;
+            private String yStoreServiceId;
+            private int isIntegral;
+            private int gIntegral;
+            private String yGoodsId;
+            private String goodsValue;
+            private GoodsInfoBean goods_info;
+            private String createDate;
+            private double vPrice;
+            private int gNum;
+
+            public String getId() {
+                return id;
+            }
+
+            public void setId(String id) {
+                this.id = id;
+            }
+
+            public String getYCartId() {
+                return yCartId;
+            }
+
+            public void setYCartId(String yCartId) {
+                this.yCartId = yCartId;
+            }
+
+            public String getYStoreId() {
+                return yStoreId;
+            }
+
+            public void setYStoreId(String yStoreId) {
+                this.yStoreId = yStoreId;
+            }
+
+            public String getUserId() {
+                return userId;
+            }
+
+            public void setUserId(String userId) {
+                this.userId = userId;
+            }
+
+            public int getIsService() {
+                return isService;
+            }
+
+            public void setIsService(int isService) {
+                this.isService = isService;
+            }
+
+            public int getIsInstall() {
+                return isInstall;
+            }
+
+            public void setIsInstall(int isInstall) {
+                this.isInstall = isInstall;
+            }
+
+            public String getYStoreServiceId() {
+                return yStoreServiceId;
+            }
+
+            public void setYStoreServiceId(String yStoreServiceId) {
+                this.yStoreServiceId = yStoreServiceId;
+            }
+
+            public int getIsIntegral() {
+                return isIntegral;
+            }
+
+            public void setIsIntegral(int isIntegral) {
+                this.isIntegral = isIntegral;
+            }
+
+            public int getGIntegral() {
+                return gIntegral;
+            }
+
+            public void setGIntegral(int gIntegral) {
+                this.gIntegral = gIntegral;
+            }
+
+            public String getYGoodsId() {
+                return yGoodsId;
+            }
+
+            public void setYGoodsId(String yGoodsId) {
+                this.yGoodsId = yGoodsId;
+            }
+
+            public String getGoodsValue() {
+                return goodsValue;
+            }
+
+            public void setGoodsValue(String goodsValue) {
+                this.goodsValue = goodsValue;
+            }
+
+            public GoodsInfoBean getGoods_info() {
+                return goods_info;
+            }
+
+            public void setGoods_info(GoodsInfoBean goods_info) {
+                this.goods_info = goods_info;
+            }
+
+            public String getCreateDate() {
+                return createDate;
+            }
+
+            public void setCreateDate(String createDate) {
+                this.createDate = createDate;
+            }
+
+            public double getVPrice() {
+                return vPrice;
+            }
+
+            public void setVPrice(double vPrice) {
+                this.vPrice = vPrice;
+            }
+
+            public int getGNum() {
+                return gNum;
+            }
+
+            public void setGNum(int gNum) {
+                this.gNum = gNum;
+            }
+
+            public static class GoodsInfoBean {
+                /**
+                 * id : 1018
+                 * yGoodsId : 692341585785913345
+                 * yClassifyId : 692341585785913344
+                 * yStoreId : 692341585785913344
+                 * gName : 百魅 汽车遮阳挡6件套防晒隔热遮阳板挡阳板加厚前档太阳后挡侧挡
+                 * gDesc : 适用捷渡凌度360小米家盯盯拍70迈正际行车记录仪降压线停车监控
+                 * gPrice : 1000.0
+                 * orPrice : 3000.0
+                 * imgStr : /upload/pro.png||/upload/pro.png
+                 * gImg : /upload/pro.png
+                 * gState : 1
+                 * isPopular : 1
+                 * isIntegral : 0
+                 * gIntegral : 0
+                 * createDate : 2019-09-27 10:31:19
+                 * isSoffer : 1
+                 */
+
+                private String id;
+                private String yGoodsId;
+                private String yClassifyId;
+                private String yStoreId;
+                private String gName;
+                private String gDesc;
+                private double gPrice;
+                private double orPrice;
+                private String imgStr;
+                private String gImg;
+                private int gState;
+                private int isPopular;
+                private int isIntegral;
+                private int gIntegral;
+                private String createDate;
+                private int isSoffer;
+
+                public String getId() {
+                    return id;
+                }
+
+                public void setId(String id) {
+                    this.id = id;
+                }
+
+                public String getYGoodsId() {
+                    return yGoodsId;
+                }
+
+                public void setYGoodsId(String yGoodsId) {
+                    this.yGoodsId = yGoodsId;
+                }
+
+                public String getYClassifyId() {
+                    return yClassifyId;
+                }
+
+                public void setYClassifyId(String yClassifyId) {
+                    this.yClassifyId = yClassifyId;
+                }
+
+                public String getYStoreId() {
+                    return yStoreId;
+                }
+
+                public void setYStoreId(String yStoreId) {
+                    this.yStoreId = yStoreId;
+                }
+
+                public String getGName() {
+                    return gName;
+                }
+
+                public void setGName(String gName) {
+                    this.gName = gName;
+                }
+
+                public String getGDesc() {
+                    return gDesc;
+                }
+
+                public void setGDesc(String gDesc) {
+                    this.gDesc = gDesc;
+                }
+
+                public double getGPrice() {
+                    return gPrice;
+                }
+
+                public void setGPrice(double gPrice) {
+                    this.gPrice = gPrice;
+                }
+
+                public double getOrPrice() {
+                    return orPrice;
+                }
+
+                public void setOrPrice(double orPrice) {
+                    this.orPrice = orPrice;
+                }
+
+                public String getImgStr() {
+                    return imgStr;
+                }
+
+                public void setImgStr(String imgStr) {
+                    this.imgStr = imgStr;
+                }
+
+                public String getGImg() {
+                    return gImg;
+                }
+
+                public void setGImg(String gImg) {
+                    this.gImg = gImg;
+                }
+
+                public int getGState() {
+                    return gState;
+                }
+
+                public void setGState(int gState) {
+                    this.gState = gState;
+                }
+
+                public int getIsPopular() {
+                    return isPopular;
+                }
+
+                public void setIsPopular(int isPopular) {
+                    this.isPopular = isPopular;
+                }
+
+                public int getIsIntegral() {
+                    return isIntegral;
+                }
+
+                public void setIsIntegral(int isIntegral) {
+                    this.isIntegral = isIntegral;
+                }
+
+                public int getGIntegral() {
+                    return gIntegral;
+                }
+
+                public void setGIntegral(int gIntegral) {
+                    this.gIntegral = gIntegral;
+                }
+
+                public String getCreateDate() {
+                    return createDate;
+                }
+
+                public void setCreateDate(String createDate) {
+                    this.createDate = createDate;
+                }
+
+                public int getIsSoffer() {
+                    return isSoffer;
+                }
+
+                public void setIsSoffer(int isSoffer) {
+                    this.isSoffer = isSoffer;
+                }
             }
         }
     }

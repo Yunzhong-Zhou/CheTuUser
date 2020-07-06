@@ -7,6 +7,7 @@ import java.util.List;
  * Created by zyz on 2020/7/3.
  */
 public class SelectGoodsModel implements Serializable {
+
     private List<ListBean> list;
 
     public List<ListBean> getList() {
@@ -37,6 +38,16 @@ public class SelectGoodsModel implements Serializable {
          * isSoffer : 1
          * specific_list : [{"id":"1030","yGoodsSpecificTypeId":"692341585785913346","yGoodsId":"692341585785913345","sName":"颜色","createDate":"2019-09-27 10:31:19","specific_List":[{"yGoodsSpecificId":"692341585785913355","yGoodsSpecificTypeId":"692341585785913346","yGoodsId":"692341585785913345","pName":"红色","sPrice":90},{"yGoodsSpecificId":"692341585785913354","yGoodsSpecificTypeId":"692341585785913346","yGoodsId":"692341585785913345","pName":"黑色","sPrice":90},{"yGoodsSpecificId":"692341585785913353","yGoodsSpecificTypeId":"692341585785913346","yGoodsId":"692341585785913345","pName":"绿色","sPrice":90}]},{"id":"1031","yGoodsSpecificTypeId":"692341585785913347","yGoodsId":"692341585785913345","sName":"尺寸","createDate":"2019-09-27 10:31:19","specific_List":[{"yGoodsSpecificId":"692341585785913352","yGoodsSpecificTypeId":"692341585785913347","yGoodsId":"692341585785913345","pName":"xxl","sPrice":90},{"yGoodsSpecificId":"692341585785913351","yGoodsSpecificTypeId":"692341585785913347","yGoodsId":"692341585785913345","pName":"xl","sPrice":90},{"yGoodsSpecificId":"692341585785913350","yGoodsSpecificTypeId":"692341585785913347","yGoodsId":"692341585785913345","pName":"ml","sPrice":90}]}]
          */
+
+        private boolean isXuanZhong = false;
+
+        public boolean isXuanZhong() {
+            return isXuanZhong;
+        }
+
+        public void setXuanZhong(boolean xuanZhong) {
+            isXuanZhong = xuanZhong;
+        }
 
         private String id;
         private String yGoodsId;

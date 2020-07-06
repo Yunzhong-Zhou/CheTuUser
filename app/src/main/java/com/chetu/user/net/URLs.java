@@ -86,6 +86,10 @@ public class URLs {
     public static final String ConfirmOrder = HOST+"/api/v1/public/confirm_order_service";
     //店铺商品列表-选择商品
     public static final String SelectGoods = HOST+"/api/v1/public/get_store_goods";
+    //删除服务或商品
+    public static final String DeleteServiceOrGoods = HOST+"/api/v1/public/user_cart_del";
+    //修改商品数量
+    public static final String ChageGoodsNum = HOST+"/api/v1/public/user_cart_save_num";
     /**
      * *******************************我的****************************************
      * */
