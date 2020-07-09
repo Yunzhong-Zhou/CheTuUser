@@ -138,6 +138,9 @@
             android:name=".activity.SelectGoodsActivity"
             android:label="选择商品" />
         <activity
+            android:name=".activity.SelectTimeActivity"
+            android:label="选择时间" />
+        <activity
             android:name=".activity.TiWenListActivity"
             android:label="提问列表" />
         <activity

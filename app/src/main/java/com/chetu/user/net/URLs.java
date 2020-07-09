@@ -44,6 +44,8 @@ public class URLs {
     public static final String QuXiaoShouChang = HOST+"/api/v1/user/user_collection_del";
     //加入购物车
     public static final String ADDShop = HOST+"/api/v1/public/user_cart_add";
+    //提交订单
+    public static final String ADDOrder = HOST+"/api/v1/public/increase_order_service";
     //支付
     public static final String Pay = HOST+"/api/v1/pay/online_payment";
     //评价列表
@@ -90,6 +92,8 @@ public class URLs {
     public static final String DeleteServiceOrGoods = HOST+"/api/v1/public/user_cart_del";
     //修改商品数量
     public static final String ChageGoodsNum = HOST+"/api/v1/public/user_cart_save_num";
+    //选择预约时间
+    public static final String SelectTime= HOST+"/api/v1/public/store_free_time";
     /**
      * *******************************我的****************************************
      * */

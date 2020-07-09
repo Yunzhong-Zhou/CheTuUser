@@ -107,7 +107,11 @@ public class SelectGoodsActivity extends BaseActivity {
                             JSONObject object1 = new JSONObject();
                             object1.put("y_store_service_id", y_store_service_id);
                             object1.put("y_goods_id", list1.get(i).getYGoodsId());
-                            object1.put("is_service", "2");//1为服务  2为服务下边的商品 3为独立商品
+                            if (!y_store_service_id.equals("")){
+                                object1.put("is_service", "2");//1为服务  2为服务下边的商品 3为独立商品
+                            }else {
+                                object1.put("is_service", "3");//1为服务  2为服务下边的商品 3为独立商品
+                            }
                             object1.put("g_num", g_num[i]);
                             object1.put("s_value", s_value[i]);
                             object1.put("goods_specific_idstr", goods_specific_idstr[i]);

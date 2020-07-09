@@ -1,12 +1,16 @@
 package com.chetu.user.activity;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.chetu.user.R;
 import com.chetu.user.base.BaseActivity;
-import com.chetu.user.model.Fragment2Model;
+import com.chetu.user.model.MyOrderModel;
 import com.chetu.user.net.URLs;
 import com.chetu.user.okhttp.CallBackUtil;
 import com.chetu.user.okhttp.OkhttpUtil;
@@ -34,10 +38,10 @@ public class MyOrderActivity extends BaseActivity {
     int type = 1;
     int page = 0;
     private RecyclerView recyclerView;
-    List<Fragment2Model.ListBean> list = new ArrayList<>();
-    CommonAdapter<Fragment2Model.ListBean> mAdapter;
+    List<MyOrderModel.ListBean> list = new ArrayList<>();
+    CommonAdapter<MyOrderModel.ListBean> mAdapter;
 
-    TextView tv_type1,tv_type2,tv_type3,tv_type4,tv_type5,tv_type6,tv_type7;
+    TextView tv_type1, tv_type2, tv_type3, tv_type4, tv_type5, tv_type6, tv_type7;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +59,7 @@ public class MyOrderActivity extends BaseActivity {
                 page = 0;
                 Map<String, String> params = new HashMap<>();
                 params.put("page", page + "");
-                params.put("g_state", (type-1) + "");
+                params.put("g_state", (type - 1) + "");
                 params.put("u_token", localUserInfo.getToken());
                 Request(params);
             }
@@ -66,7 +70,7 @@ public class MyOrderActivity extends BaseActivity {
                 Map<String, String> params = new HashMap<>();
                 params.put("u_token", localUserInfo.getToken());
                 params.put("page", page + "");
-                params.put("g_state", (type-1) + "");
+                params.put("g_state", (type - 1) + "");
                 RequestMore(params);
             }
         });
@@ -99,14 +103,14 @@ public class MyOrderActivity extends BaseActivity {
         Map<String, String> params = new HashMap<>();
         params.put("page", page + "");
         params.put("u_token", localUserInfo.getToken());
-        params.put("g_state", (type-1) + "");
+        params.put("g_state", (type - 1) + "");
         Request(params);
     }
 
     private void Request(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.MyOrder, params, headerMap, new CallBackUtil<Fragment2Model>() {
+        OkhttpUtil.okHttpPost(URLs.MyOrder, params, headerMap, new CallBackUtil<MyOrderModel>() {
             @Override
-            public Fragment2Model onParseResponse(Call call, Response response) {
+            public MyOrderModel onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -118,28 +122,125 @@ public class MyOrderActivity extends BaseActivity {
             }
 
             @Override
-            public void onResponse(Fragment2Model response) {
+            public void onResponse(MyOrderModel response) {
                 hideProgress();
                 list = response.getList();
                 if (list.size() > 0) {
                     showContentPage();
-                    mAdapter = new CommonAdapter<Fragment2Model.ListBean>
+                    mAdapter = new CommonAdapter<MyOrderModel.ListBean>
                             (MyOrderActivity.this, R.layout.item_myorder, list) {
                         @Override
-                        protected void convert(ViewHolder holder, Fragment2Model.ListBean model, int position) {
-                       /* TextView tv1 = holder.getView(R.id.tv1);
-                        TextView tv2 = holder.getView(R.id.tv2);
-                        LinearLayout ll = holder.getView(R.id.ll);
-                        tv1.setText(model.getName());
-                        tv2.setText(model.getName());
+                        protected void convert(ViewHolder holder, MyOrderModel.ListBean model, int position) {
+                            holder.setText(R.id.tv_ordernum, "订单编号:" + model.getYOrderId());
+                            holder.setText(R.id.tv_ordertime, "下单时间:" + model.getCreateDate());
+                            holder.setText(R.id.tv_carname, "" + model.getUser_sedan_info().getBrandInfo().getGroupName() + "-" + model.getUser_sedan_info().getBrandInfo().getSeriesName());
+                            holder.setText(R.id.tv_carnum, model.getUser_sedan_info().getSNumber());
+                            //预约时间
+                            TextView tv_time = holder.getView(R.id.tv_time);
+                            if (!model.getAppoinTime().equals("")) {
+                                tv_time.setVisibility(View.VISIBLE);
+                                tv_time.setText("预约时间:" + model.getAppoinTime());
+                            } else {
+                                tv_time.setVisibility(View.GONE);
+                            }
+                            ImageView iv = holder.getView(R.id.iv);
+                            Glide.with(MyOrderActivity.this).load(URLs.IMGHOST + model.getStore_info().getPicture())
+//                            .centerCrop()
+//                            .apply(RequestOptions.bitmapTransform(new RoundedCorners(10)))
+                                    .placeholder(R.mipmap.loading)//加载站位图
+                                    .error(R.mipmap.zanwutupian)//加载失败
+                                    .into(iv);//加载图片
+                            holder.setText(R.id.tv_storename, model.getStore_info().getVName());
+                            holder.setText(R.id.tv_addr, model.getStore_info().getAddress());
+                            holder.setText(R.id.tv_money, "¥" + model.getGPrice());
+                            //接车人
+                            TextView tv_name = holder.getView(R.id.tv_name);
+                            if (model.getTechn_sedan_info() != null) {
+                                tv_name.setVisibility(View.VISIBLE);
+                                //                            tv_name.setText("接车人："+model.get);
+                            } else {
+                                tv_name.setVisibility(View.GONE);
+                            }
+                            TextView type1 = holder.getView(R.id.type1);
+                            TextView type2 = holder.getView(R.id.type2);
+                            TextView type3 = holder.getView(R.id.type3);
+                            switch (model.getGState()) {
+                                case 0:
+                                    //待接车
+                                    type1.setText("待接车");
+                                    type2.setText("未付款");
+                                    type3.setVisibility(View.GONE);
+                                    break;
+                                case 1:
+                                    //待分配
+                                    type1.setText("待分配");
+                                    type2.setText("未付款");
+                                    type3.setVisibility(View.GONE);
+                                    break;
+                                case 2:
+                                    //待施工
+                                    type1.setText("待施工");
+                                    type2.setText("未付款");
+                                    type3.setVisibility(View.GONE);
+                                    break;
+                                case 3:
+                                    //进行中
+                                    type1.setText("进行中");
+                                    type2.setText("未付款");
+                                    type3.setVisibility(View.GONE);
+                                    break;
+                                case 4:
+                                    //待复检
+                                    type1.setText("待复检");
+                                    type2.setText("未付款");
+                                    type3.setVisibility(View.GONE);
+                                    break;
+                                case 5:
+                                    //已完工
+                                    type1.setText("已完工");
 
-                        if (item == position) {
-                            ll.setVisibility(View.VISIBLE);
-                            tv1.setVisibility(View.GONE);
-                        } else {
-                            ll.setVisibility(View.GONE);
-                            tv1.setVisibility(View.VISIBLE);
-                        }*/
+                                    type3.setVisibility(View.GONE);
+                                    break;
+                                case 6:
+                                    //已提车
+                                    type1.setText("已提车");
+                                    type3.setVisibility(View.VISIBLE);
+                                    break;
+                            }
+
+
+                            holder.getView(R.id.iv_call).setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    showToast("确认拨打 " + model.getStore_info().getPhone() + " 吗？", "确认", "取消",
+                                            new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v) {
+                                                    dialog.dismiss();
+                                                    //创建打电话的意图
+                                                    Intent intent = new Intent();
+                                                    //设置拨打电话的动作
+                                                    intent.setAction(Intent.ACTION_CALL);//直接拨出电话
+//                               intent.setAction(Intent.ACTION_DIAL);//只调用拨号界面，不拨出电话
+                                                    //设置拨打电话的号码
+                                                    intent.setData(Uri.parse("tel:" + model.getStore_info().getPhone()));
+                                                    //开启打电话的意图
+                                                    startActivity(intent);
+                                                }
+                                            }, new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v) {
+                                                    dialog.dismiss();
+                                                }
+                                            });
+                                }
+                            });
+                            holder.getView(R.id.iv_message).setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+
+                                }
+                            });
 
                         }
                     };
@@ -200,9 +301,9 @@ public class MyOrderActivity extends BaseActivity {
     }
 
     private void RequestMore(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.Fragment3, params, headerMap, new CallBackUtil<Fragment2Model>() {
+        OkhttpUtil.okHttpPost(URLs.Fragment3, params, headerMap, new CallBackUtil<MyOrderModel>() {
             @Override
-            public Fragment2Model onParseResponse(Call call, Response response) {
+            public MyOrderModel onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -214,9 +315,9 @@ public class MyOrderActivity extends BaseActivity {
             }
 
             @Override
-            public void onResponse(Fragment2Model response) {
+            public void onResponse(MyOrderModel response) {
                 hideProgress();
-                List<Fragment2Model.ListBean> list1 = new ArrayList<>();
+                List<MyOrderModel.ListBean> list1 = new ArrayList<>();
                 list1 = response.getList();
                 if (list1.size() == 0) {
                     page--;
@@ -232,7 +333,7 @@ public class MyOrderActivity extends BaseActivity {
     @Override
     public void onClick(View v) {
         super.onClick(v);
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.tv_type1:
                 //待接车
                 type = 1;

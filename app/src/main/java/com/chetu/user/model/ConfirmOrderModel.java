@@ -15,7 +15,8 @@ public class ConfirmOrderModel implements Serializable {
 
     private StoreInfoBean store_info;
     private List<ServiceListBean> service_list;
-    private List<?> goods_cart_list;
+    private List<GoodsCartListBean> goods_cart_list;
+
 
     public StoreInfoBean getStore_info() {
         return store_info;
@@ -33,13 +34,14 @@ public class ConfirmOrderModel implements Serializable {
         this.service_list = service_list;
     }
 
-    public List<?> getGoods_cart_list() {
+    public List<GoodsCartListBean> getGoods_cart_list() {
         return goods_cart_list;
     }
 
-    public void setGoods_cart_list(List<?> goods_cart_list) {
+    public void setGoods_cart_list(List<GoodsCartListBean> goods_cart_list) {
         this.goods_cart_list = goods_cart_list;
     }
+
 
     public static class StoreInfoBean {
         /**
@@ -787,6 +789,328 @@ public class ConfirmOrderModel implements Serializable {
                 public void setIsSoffer(int isSoffer) {
                     this.isSoffer = isSoffer;
                 }
+            }
+        }
+    }
+
+    public static class GoodsCartListBean {
+        /**
+         * id : 1257
+         * yCartId : 730061671808106496
+         * yStoreId : 692341585785913344
+         * userId : 714547022807433216
+         * isService : 3
+         * isInstall : 0
+         * yStoreServiceId : 0
+         * isIntegral : 0
+         * gIntegral : 0
+         * yGoodsId : 692341585785913344
+         * goodsValue :
+         * goods_info : {"id":"1017","yGoodsId":"692341585785913344","yClassifyId":"692341585785913344","yStoreId":"692341585785913344","gName":"gps定位器小型车载牛追跟定仪器远程录音订位汽车辆跟踪追踪神器","gDesc":"适用对象: 汽车跟踪器 附加功能: 录音功能  颜色分类: 以下套餐都有：10重精准定","gPrice":1000,"orPrice":3000,"imgStr":"/upload/pro.png||/upload/pro.png","gImg":"/upload/pro.png","gState":1,"isPopular":1,"isIntegral":1,"gIntegral":500,"createDate":"2019-09-27 10:31:19","isSoffer":1}
+         * createDate : 2020-07-07 14:04:26
+         * vPrice : 1000.0
+         * gNum : 1
+         */
+
+        private String id;
+        private String yCartId;
+        private String yStoreId;
+        private String userId;
+        private int isService;
+        private int isInstall;
+        private String yStoreServiceId;
+        private int isIntegral;
+        private int gIntegral;
+        private String yGoodsId;
+        private String goodsValue;
+        private GoodsInfoBean goods_info;
+        private String createDate;
+        private double vPrice;
+        private int gNum;
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getYCartId() {
+            return yCartId;
+        }
+
+        public void setYCartId(String yCartId) {
+            this.yCartId = yCartId;
+        }
+
+        public String getYStoreId() {
+            return yStoreId;
+        }
+
+        public void setYStoreId(String yStoreId) {
+            this.yStoreId = yStoreId;
+        }
+
+        public String getUserId() {
+            return userId;
+        }
+
+        public void setUserId(String userId) {
+            this.userId = userId;
+        }
+
+        public int getIsService() {
+            return isService;
+        }
+
+        public void setIsService(int isService) {
+            this.isService = isService;
+        }
+
+        public int getIsInstall() {
+            return isInstall;
+        }
+
+        public void setIsInstall(int isInstall) {
+            this.isInstall = isInstall;
+        }
+
+        public String getYStoreServiceId() {
+            return yStoreServiceId;
+        }
+
+        public void setYStoreServiceId(String yStoreServiceId) {
+            this.yStoreServiceId = yStoreServiceId;
+        }
+
+        public int getIsIntegral() {
+            return isIntegral;
+        }
+
+        public void setIsIntegral(int isIntegral) {
+            this.isIntegral = isIntegral;
+        }
+
+        public int getGIntegral() {
+            return gIntegral;
+        }
+
+        public void setGIntegral(int gIntegral) {
+            this.gIntegral = gIntegral;
+        }
+
+        public String getYGoodsId() {
+            return yGoodsId;
+        }
+
+        public void setYGoodsId(String yGoodsId) {
+            this.yGoodsId = yGoodsId;
+        }
+
+        public String getGoodsValue() {
+            return goodsValue;
+        }
+
+        public void setGoodsValue(String goodsValue) {
+            this.goodsValue = goodsValue;
+        }
+
+        public GoodsInfoBean getGoods_info() {
+            return goods_info;
+        }
+
+        public void setGoods_info(GoodsInfoBean goods_info) {
+            this.goods_info = goods_info;
+        }
+
+        public String getCreateDate() {
+            return createDate;
+        }
+
+        public void setCreateDate(String createDate) {
+            this.createDate = createDate;
+        }
+
+        public double getVPrice() {
+            return vPrice;
+        }
+
+        public void setVPrice(double vPrice) {
+            this.vPrice = vPrice;
+        }
+
+        public int getGNum() {
+            return gNum;
+        }
+
+        public void setGNum(int gNum) {
+            this.gNum = gNum;
+        }
+
+        public static class GoodsInfoBean {
+            /**
+             * id : 1017
+             * yGoodsId : 692341585785913344
+             * yClassifyId : 692341585785913344
+             * yStoreId : 692341585785913344
+             * gName : gps定位器小型车载牛追跟定仪器远程录音订位汽车辆跟踪追踪神器
+             * gDesc : 适用对象: 汽车跟踪器 附加功能: 录音功能  颜色分类: 以下套餐都有：10重精准定
+             * gPrice : 1000.0
+             * orPrice : 3000.0
+             * imgStr : /upload/pro.png||/upload/pro.png
+             * gImg : /upload/pro.png
+             * gState : 1
+             * isPopular : 1
+             * isIntegral : 1
+             * gIntegral : 500
+             * createDate : 2019-09-27 10:31:19
+             * isSoffer : 1
+             */
+
+            private String id;
+            private String yGoodsId;
+            private String yClassifyId;
+            private String yStoreId;
+            private String gName;
+            private String gDesc;
+            private double gPrice;
+            private double orPrice;
+            private String imgStr;
+            private String gImg;
+            private int gState;
+            private int isPopular;
+            private int isIntegral;
+            private int gIntegral;
+            private String createDate;
+            private int isSoffer;
+
+            public String getId() {
+                return id;
+            }
+
+            public void setId(String id) {
+                this.id = id;
+            }
+
+            public String getYGoodsId() {
+                return yGoodsId;
+            }
+
+            public void setYGoodsId(String yGoodsId) {
+                this.yGoodsId = yGoodsId;
+            }
+
+            public String getYClassifyId() {
+                return yClassifyId;
+            }
+
+            public void setYClassifyId(String yClassifyId) {
+                this.yClassifyId = yClassifyId;
+            }
+
+            public String getYStoreId() {
+                return yStoreId;
+            }
+
+            public void setYStoreId(String yStoreId) {
+                this.yStoreId = yStoreId;
+            }
+
+            public String getGName() {
+                return gName;
+            }
+
+            public void setGName(String gName) {
+                this.gName = gName;
+            }
+
+            public String getGDesc() {
+                return gDesc;
+            }
+
+            public void setGDesc(String gDesc) {
+                this.gDesc = gDesc;
+            }
+
+            public double getGPrice() {
+                return gPrice;
+            }
+
+            public void setGPrice(double gPrice) {
+                this.gPrice = gPrice;
+            }
+
+            public double getOrPrice() {
+                return orPrice;
+            }
+
+            public void setOrPrice(double orPrice) {
+                this.orPrice = orPrice;
+            }
+
+            public String getImgStr() {
+                return imgStr;
+            }
+
+            public void setImgStr(String imgStr) {
+                this.imgStr = imgStr;
+            }
+
+            public String getGImg() {
+                return gImg;
+            }
+
+            public void setGImg(String gImg) {
+                this.gImg = gImg;
+            }
+
+            public int getGState() {
+                return gState;
+            }
+
+            public void setGState(int gState) {
+                this.gState = gState;
+            }
+
+            public int getIsPopular() {
+                return isPopular;
+            }
+
+            public void setIsPopular(int isPopular) {
+                this.isPopular = isPopular;
+            }
+
+            public int getIsIntegral() {
+                return isIntegral;
+            }
+
+            public void setIsIntegral(int isIntegral) {
+                this.isIntegral = isIntegral;
+            }
+
+            public int getGIntegral() {
+                return gIntegral;
+            }
+
+            public void setGIntegral(int gIntegral) {
+                this.gIntegral = gIntegral;
+            }
+
+            public String getCreateDate() {
+                return createDate;
+            }
+
+            public void setCreateDate(String createDate) {
+                this.createDate = createDate;
+            }
+
+            public int getIsSoffer() {
+                return isSoffer;
+            }
+
+            public void setIsSoffer(int isSoffer) {
+                this.isSoffer = isSoffer;
             }
         }
     }
