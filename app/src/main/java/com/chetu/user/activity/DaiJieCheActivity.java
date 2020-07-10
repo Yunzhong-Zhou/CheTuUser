@@ -1,13 +1,17 @@
 package com.chetu.user.activity;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.chetu.user.R;
 import com.chetu.user.base.BaseActivity;
-import com.chetu.user.model.DaiJieCheModel;
+import com.chetu.user.model.OrderDetailModel_DaiJieChe;
 import com.chetu.user.net.URLs;
 import com.chetu.user.okhttp.CallBackUtil;
 import com.chetu.user.okhttp.OkhttpUtil;
@@ -25,12 +29,15 @@ import okhttp3.Response;
  */
 public class DaiJieCheActivity extends BaseActivity {
     int type = 1;
-    String id = "";
-    DaiJieCheModel model;
+    String y_order_id = "";
+    OrderDetailModel_DaiJieChe model;
 
     private LinearLayout linearLayout1, linearLayout2, ll_fuwu, ll_beizhu;
     private TextView textView1, textView2;
     private View view1, view2;
+
+    TextView tv_storename,tv_addr,tv_juli,tv_carname,tv_carcontent,tv_beizhu;
+    ImageView iv_storelogo,iv_carlogo;
 
 
     @Override
@@ -52,7 +59,7 @@ public class DaiJieCheActivity extends BaseActivity {
             @Override
             public void onRefresh() {
                 Map<String, String> params = new HashMap<>();
-                params.put("id", id);
+                params.put("y_order_id", y_order_id);
                 params.put("u_token", localUserInfo.getToken());
                 Request(params);
             }
@@ -67,18 +74,26 @@ public class DaiJieCheActivity extends BaseActivity {
         linearLayout2.setOnClickListener(this);
         ll_fuwu = findViewByID_My(R.id.ll_fuwu);
         ll_beizhu = findViewByID_My(R.id.ll_beizhu);
-
         textView1 = findViewByID_My(R.id.textView1);
         textView2 = findViewByID_My(R.id.textView2);
-
         view1 = findViewByID_My(R.id.view1);
         view2 = findViewByID_My(R.id.view2);
+
+        tv_storename = findViewByID_My(R.id.tv_storename);
+        tv_addr = findViewByID_My(R.id.tv_addr);
+        tv_juli = findViewByID_My(R.id.tv_juli);
+        tv_carname = findViewByID_My(R.id.tv_carname);
+        tv_carcontent = findViewByID_My(R.id.tv_carcontent);
+        iv_storelogo = findViewByID_My(R.id.iv_storelogo);
+        iv_carlogo = findViewByID_My(R.id.iv_carlogo);
+        tv_beizhu = findViewByID_My(R.id.tv_beizhu);
+
     }
 
     @Override
     protected void initData() {
-        id = getIntent().getStringExtra("id");
-
+        y_order_id = getIntent().getStringExtra("y_order_id");
+        requestServer();
     }
 
     @Override
@@ -87,15 +102,15 @@ public class DaiJieCheActivity extends BaseActivity {
 //        this.showLoadingPage();
         showProgress(true, getString(R.string.app_loading));
         Map<String, String> params = new HashMap<>();
-        params.put("id", id);
+        params.put("y_order_id", y_order_id);
         params.put("u_token", localUserInfo.getToken());
         Request(params);
     }
 
     private void Request(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.DaiJieChe, params, headerMap, new CallBackUtil<DaiJieCheModel>() {
+        OkhttpUtil.okHttpPost(URLs.OrderDetail, params, headerMap, new CallBackUtil<OrderDetailModel_DaiJieChe>() {
             @Override
-            public DaiJieCheModel onParseResponse(Call call, Response response) {
+            public OrderDetailModel_DaiJieChe onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -107,8 +122,25 @@ public class DaiJieCheActivity extends BaseActivity {
             }
 
             @Override
-            public void onResponse(DaiJieCheModel response) {
+            public void onResponse(OrderDetailModel_DaiJieChe response) {
                 hideProgress();
+                model = response;
+                tv_storename.setText(model.getStore_info().getVName());
+                tv_addr.setText(model.getStore_info().getAddress());
+                tv_juli.setText(model.getDistance()+"m");
+                tv_carname.setText(model.getUser_sedan_info().getBrandInfo().getGroupName()+"-"+model.getUser_sedan_info().getBrandInfo().getSeriesName());
+                tv_carcontent.setText(model.getUser_sedan_info().getBrandInfo().getSName());
+//                tv_beizhu.setText(model.);//备注
+                Glide.with(DaiJieCheActivity.this).load(model.getStore_info().getPicture())
+                        .centerCrop()
+                        .placeholder(R.mipmap.loading)//加载站位图
+                        .error(R.mipmap.zanwutupian)//加载失败
+                        .into(iv_storelogo);
+                Glide.with(DaiJieCheActivity.this).load(model.getUser_sedan_info().getSLogo())
+                        .centerCrop()
+                        .placeholder(R.mipmap.loading)//加载站位图
+                        .error(R.mipmap.zanwutupian)//加载失败
+                        .into(iv_carlogo);
             }
         });
     }
@@ -124,6 +156,38 @@ public class DaiJieCheActivity extends BaseActivity {
             case R.id.linearLayout2:
                 type = 2;
                 changeUI();
+                break;
+            case R.id.iv_call:
+                //拨打电话
+                showToast("确认拨打 " + model.getStore_info().getPhone() + " 吗？", "确认", "取消",
+                        new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialog.dismiss();
+                                //创建打电话的意图
+                                Intent intent = new Intent();
+                                //设置拨打电话的动作
+                                intent.setAction(Intent.ACTION_CALL);//直接拨出电话
+//                               intent.setAction(Intent.ACTION_DIAL);//只调用拨号界面，不拨出电话
+                                //设置拨打电话的号码
+                                intent.setData(Uri.parse("tel:" + model.getStore_info().getPhone()));
+                                //开启打电话的意图
+                                startActivity(intent);
+                            }
+                        }, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialog.dismiss();
+                            }
+                        });
+                break;
+            case R.id.iv_message:
+                //发消息
+
+                break;
+            case R.id.tv_confirm:
+                //确定
+
                 break;
         }
     }

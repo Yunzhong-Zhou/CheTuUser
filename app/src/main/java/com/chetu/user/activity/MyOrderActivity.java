@@ -15,6 +15,8 @@ import com.chetu.user.net.URLs;
 import com.chetu.user.okhttp.CallBackUtil;
 import com.chetu.user.okhttp.OkhttpUtil;
 import com.chetu.user.utils.CommonUtil;
+import com.cy.cyflowlayoutlibrary.FlowLayout;
+import com.cy.cyflowlayoutlibrary.FlowLayoutAdapter;
 import com.liaoinstan.springview.widget.SpringView;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
@@ -145,7 +147,7 @@ public class MyOrderActivity extends BaseActivity {
                             }
                             ImageView iv = holder.getView(R.id.iv);
                             Glide.with(MyOrderActivity.this).load(URLs.IMGHOST + model.getStore_info().getPicture())
-//                            .centerCrop()
+                                    .centerCrop()
 //                            .apply(RequestOptions.bitmapTransform(new RoundedCorners(10)))
                                     .placeholder(R.mipmap.loading)//加载站位图
                                     .error(R.mipmap.zanwutupian)//加载失败
@@ -161,6 +163,41 @@ public class MyOrderActivity extends BaseActivity {
                             } else {
                                 tv_name.setVisibility(View.GONE);
                             }
+
+                            //服务
+                            if (model.getOrder_service_list().size() > 0) {
+                                //标签
+                                FlowLayoutAdapter<MyOrderModel.ListBean.OrderServiceListBean> flowLayoutAdapter1 =
+                                        new FlowLayoutAdapter<MyOrderModel.ListBean.OrderServiceListBean>
+                                                (model.getOrder_service_list()) {
+                                            @Override
+                                            public void bindDataToView(FlowLayoutAdapter.ViewHolder holder, int position,
+                                                                       MyOrderModel.ListBean.OrderServiceListBean bean) {
+//                                holder.setText(R.id.tv,bean);
+                                                TextView tv = holder.getView(R.id.tv);
+                                                tv.setText(bean.getServiceStr());
+                                    /*tv.setTextColor(getResources().getColor(R.color.black1));
+                                    tv.setBackgroundResource(R.drawable.yuanjiao_3_huise);*/
+                                            }
+
+                                            @Override
+                                            public void onItemClick(int position, MyOrderModel.ListBean.OrderServiceListBean bean) {
+//                        showToast("点击" + position);
+                                               /* Bundle bundle = new Bundle();
+                                                bundle.putString("id", model.getYStoreId());
+                                                bundle.putString("longitude", longitude);
+                                                bundle.putString("latitude", latitude);
+                                                CommonUtil.gotoActivityWithData(getActivity(), StoreDetailActivity.class, bundle, false);*/
+                                            }
+
+                                            @Override
+                                            public int getItemLayoutID(int position, MyOrderModel.ListBean.OrderServiceListBean bean) {
+                                                return R.layout.item_fragment3_flowlayout1;
+                                            }
+                                        };
+                                ((FlowLayout) holder.getView(R.id.flowLayout1)).setAdapter(flowLayoutAdapter1);
+                            }
+
                             TextView type1 = holder.getView(R.id.type1);
                             TextView type2 = holder.getView(R.id.type2);
                             TextView type3 = holder.getView(R.id.type3);
@@ -248,43 +285,39 @@ public class MyOrderActivity extends BaseActivity {
                         @Override
                         public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
                             Bundle bundle = new Bundle();
-                            switch (type) {
+                            bundle.putString("y_order_id", list.get(i).getYOrderId());
+                            bundle.putInt("g_state", type-1);
+                            CommonUtil.gotoActivityWithData(MyOrderActivity.this, OrderDetailActivity.class, bundle, false);
+                            /*switch (type) {
                                 case 1:
                                     //待接车
-                                    bundle.putString("id", list.get(i).getId());
                                     CommonUtil.gotoActivityWithData(MyOrderActivity.this, DaiJieCheActivity.class, bundle, false);
                                     break;
                                 case 2:
                                     //待分配
-                                    bundle.putString("id", list.get(i).getId());
                                     CommonUtil.gotoActivityWithData(MyOrderActivity.this, DaiFenPeiActivity.class, bundle, false);
                                     break;
                                 case 3:
                                     //待施工
-                                    bundle.putString("id", list.get(i).getId());
                                     CommonUtil.gotoActivityWithData(MyOrderActivity.this, DaiShiGongActivity.class, bundle, false);
                                     break;
                                 case 4:
                                     //进行中
-                                    bundle.putString("id", list.get(i).getId());
                                     CommonUtil.gotoActivityWithData(MyOrderActivity.this, JinXingZhongActivity.class, bundle, false);
                                     break;
                                 case 5:
                                     //待复检
-                                    bundle.putString("id", list.get(i).getId());
                                     CommonUtil.gotoActivityWithData(MyOrderActivity.this, DaiFuJianActivity.class, bundle, false);
                                     break;
                                 case 6:
                                     //已完工
-                                    bundle.putString("id", list.get(i).getId());
                                     CommonUtil.gotoActivityWithData(MyOrderActivity.this, YiWanGongActivity.class, bundle, false);
                                     break;
                                 case 7:
                                     //已提车
-                                    bundle.putString("id", list.get(i).getId());
                                     CommonUtil.gotoActivityWithData(MyOrderActivity.this, YiTiCheActivity.class, bundle, false);
                                     break;
-                            }
+                            }*/
                         }
 
                         @Override

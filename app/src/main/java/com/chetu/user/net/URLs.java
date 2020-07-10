@@ -142,8 +142,8 @@ public class URLs {
     public static final String Collect = HOST+"/api/v1/user/user_collection_list_page";
     //删除收藏
     public static final String DeleteCollect = HOST+"/api/v1/user/user_collection_del";
-    //待接车
-    public static final String DaiJieChe = HOST+"/api/v1/user/user_collection_list_page";
+    //订单详情
+    public static final String OrderDetail = HOST+"/api/v1/user/user_order_details";
     //商家加盟
     public static final String AddMerchant = HOST+"/api/v1/user/user_apply_store_info";
     //商家加盟1

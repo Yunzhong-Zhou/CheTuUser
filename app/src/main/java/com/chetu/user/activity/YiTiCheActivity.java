@@ -7,7 +7,7 @@ import android.widget.TextView;
 
 import com.chetu.user.R;
 import com.chetu.user.base.BaseActivity;
-import com.chetu.user.model.DaiJieCheModel;
+import com.chetu.user.model.OrderDetailModel_DaiJieChe;
 import com.chetu.user.net.URLs;
 import com.chetu.user.okhttp.CallBackUtil;
 import com.chetu.user.okhttp.OkhttpUtil;
@@ -25,8 +25,8 @@ import okhttp3.Response;
  */
 public class YiTiCheActivity extends BaseActivity {
     int type = 1;
-    String id = "";
-    DaiJieCheModel model;
+    String y_order_id = "";
+    OrderDetailModel_DaiJieChe model;
 
     private LinearLayout linearLayout1, linearLayout2, linearLayout3, ll_fuwu,ll_jiance, ll_beizhu;
     private TextView textView1, textView2, textView3;
@@ -51,7 +51,7 @@ public class YiTiCheActivity extends BaseActivity {
             @Override
             public void onRefresh() {
                 Map<String, String> params = new HashMap<>();
-                params.put("id", id);
+                params.put("y_order_id", y_order_id);
                 params.put("u_token", localUserInfo.getToken());
                 Request(params);
             }
@@ -79,7 +79,8 @@ public class YiTiCheActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        id = getIntent().getStringExtra("id");
+        y_order_id = getIntent().getStringExtra("y_order_id");
+        requestServer();
 
     }
 
@@ -89,15 +90,15 @@ public class YiTiCheActivity extends BaseActivity {
 //        this.showLoadingPage();
         showProgress(true, getString(R.string.app_loading));
         Map<String, String> params = new HashMap<>();
-        params.put("id", id);
+        params.put("y_order_id", y_order_id);
         params.put("u_token", localUserInfo.getToken());
         Request(params);
     }
 
     private void Request(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.DaiJieChe, params, headerMap, new CallBackUtil<DaiJieCheModel>() {
+        OkhttpUtil.okHttpPost(URLs.OrderDetail, params, headerMap, new CallBackUtil<OrderDetailModel_DaiJieChe>() {
             @Override
-            public DaiJieCheModel onParseResponse(Call call, Response response) {
+            public OrderDetailModel_DaiJieChe onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -109,7 +110,7 @@ public class YiTiCheActivity extends BaseActivity {
             }
 
             @Override
-            public void onResponse(DaiJieCheModel response) {
+            public void onResponse(OrderDetailModel_DaiJieChe response) {
                 hideProgress();
             }
         });
