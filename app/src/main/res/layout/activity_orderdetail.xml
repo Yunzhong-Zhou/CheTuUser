@@ -283,27 +283,22 @@
                             android:id="@+id/ll_fuwu"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:background="@color/background"
                             android:orientation="vertical"
                             android:visibility="visible">
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="0.5dp"
-                                android:background="@color/xian" />
 
                             <androidx.recyclerview.widget.RecyclerView
                                 android:id="@+id/rv_service"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content" />
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/yuanjiao_10_baise_bottom" />
 
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="10dp"
-                                android:background="@color/background" />
                             <!--其他商品-->
                             <LinearLayout
+                                android:id="@+id/ll_other"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
                                 android:background="@drawable/yuanjiao_10_baise"
                                 android:orientation="vertical">
 
@@ -323,14 +318,11 @@
 
                             </LinearLayout>
 
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="10dp"
-                                android:background="@color/background" />
 
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
                                 android:background="@drawable/yuanjiao_10_baise"
                                 android:orientation="vertical">
 
@@ -598,15 +590,16 @@
 
     <!--合计-->
     <LinearLayout
+        android:id="@+id/ll_heji1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/yuanjiao_10_baise_top"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingLeft="13dp"
-        android:paddingTop="20dp"
+        android:paddingTop="15dp"
         android:paddingRight="13dp"
-        android:paddingBottom="20dp">
+        android:paddingBottom="15dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -656,6 +649,119 @@
             android:textColor="@color/red"
             android:textSize="15sp"
             android:textStyle="bold" />
+
+    </LinearLayout>
+    <!--合计-->
+    <LinearLayout
+        android:id="@+id/ll_heji2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="13dp"
+        android:layout_marginRight="13dp"
+        android:layout_marginBottom="-3dp"
+        android:background="@drawable/yuanjiao_10_baise_top"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="13dp"
+        android:paddingTop="8dp"
+        android:paddingRight="13dp"
+        android:paddingBottom="8dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="商品服务："
+            android:textColor="@color/black"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/tv_servicemoney2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="¥0"
+            android:textColor="@color/red"
+            android:textSize="10sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:text="检测项目："
+            android:textColor="@color/black"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/tv_jiancemoney2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="¥0"
+            android:textColor="@color/red"
+            android:textSize="10sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="合计："
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_allmoney2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="¥0"
+            android:textColor="@color/red"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:background="@drawable/yuanjiao_10_baise_top"
+        android:elevation="3dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="13dp"
+        android:paddingTop="8dp"
+        android:paddingRight="13dp"
+        android:paddingBottom="8dp">
+
+        <TextView
+            android:id="@+id/tv_dashang"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/yuanjiaobiankuang_5_huise"
+            android:gravity="center"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="已打赏（¥0.00）"
+            android:textColor="@color/black3"
+            android:textStyle="bold"
+            android:textSize="15sp" />
+
+
+        <TextView
+            android:id="@+id/tv_pinglun"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/yuanjiaobiankuang_5_huise"
+            android:gravity="center"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="评论"
+            android:textStyle="bold"
+            android:textColor="@color/blue"
+            android:textSize="15sp" />
 
     </LinearLayout>
 </LinearLayout>

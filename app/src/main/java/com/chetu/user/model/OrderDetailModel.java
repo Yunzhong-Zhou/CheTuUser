@@ -23,6 +23,9 @@ public class OrderDetailModel implements Serializable {
 
     private double order_service_total_price;
     private double v_order_goods_total_price;
+    private double techn_goods_total_price;
+    private double testing_details_total_price;
+    private double testing_total_price;
     private double distance;
     private OrderInfoBean order_info;
     private StoreInfoBean store_info;
@@ -30,6 +33,36 @@ public class OrderDetailModel implements Serializable {
     private double order_price;
     private List<OrderServiceListBean> order_service_list;
     private List<VOrderGoodsListBean> v_order_goods_list;
+    /**
+     * techn_sedan_info : {"id":"1043","yTechnSedanId":"730732604248031232","yOrderId":"730063630766178304","ySedanBrandId":"716704933323210752","yStoreId":"692341585785913344","userId":"719539276219416576","licenseNumber":"粤A12345","ownerName":"阿斯顿马丁","ownerPhone":"18306043086","frameNumber":"adfdssa45666","vehicleMileage":"2000","compInsuranceTime":"2026-07-09","comInsuranceTime":"2023-07-09","annualReviewTime":"2035-07-09","vRemarks":"备注","sedanBrandJson":"{\"brandName\":\"阿斯顿・马丁\",\"groupName\":\"阿斯顿・马丁\",\"id\":87667,\"parentId\":716704210728517632,\"sLogo\":\"/upload/logo/716723976784576512.jpg\",\"sName\":\"2016款 5.2T 设计师定制版\",\"seriesName\":\"阿斯顿・马丁DB11\",\"vDispla\":\"4T\",\"vYear\":\"2015\",\"ySedanBrandId\":716704933323210752}","gPrice":3640,"isOrder":1,"createDate":"2020-07-09 10:30:29","gState":1,"isEval":0,"brandInfo":{"id":"87667","ySedanBrandId":"716704933323210752","parentId":"716704210728517632","sName":"2016款 5.2T 设计师定制版","sLogo":"/upload/logo/716723976784576512.jpg","seriesName":"阿斯顿・马丁DB11","groupName":"阿斯顿・马丁","brandName":"阿斯顿・马丁","vYear":"2015","vDispla":"4T"},"appeImgstr":"/upload/2020-07-09/20200709103028_755752.jpg||/upload/2020-07-09/20200709103028_973472.jpeg||/upload/2020-07-09/20200709103028_4017.jpeg","estimateTime":"  ","rewardMoney":0}
+     */
+
+    private TechnSedanInfoBean techn_sedan_info;
+
+
+    public double getTechn_goods_total_price() {
+        return techn_goods_total_price;
+    }
+
+    public void setTechn_goods_total_price(double techn_goods_total_price) {
+        this.techn_goods_total_price = techn_goods_total_price;
+    }
+
+    public double getTesting_details_total_price() {
+        return testing_details_total_price;
+    }
+
+    public void setTesting_details_total_price(double testing_details_total_price) {
+        this.testing_details_total_price = testing_details_total_price;
+    }
+
+    public double getTesting_total_price() {
+        return testing_total_price;
+    }
+
+    public void setTesting_total_price(double testing_total_price) {
+        this.testing_total_price = testing_total_price;
+    }
 
     public double getOrder_service_total_price() {
         return order_service_total_price;
@@ -101,6 +134,14 @@ public class OrderDetailModel implements Serializable {
 
     public void setV_order_goods_list(List<VOrderGoodsListBean> v_order_goods_list) {
         this.v_order_goods_list = v_order_goods_list;
+    }
+
+    public TechnSedanInfoBean getTechn_sedan_info() {
+        return techn_sedan_info;
+    }
+
+    public void setTechn_sedan_info(TechnSedanInfoBean techn_sedan_info) {
+        this.techn_sedan_info = techn_sedan_info;
     }
 
     public static class OrderInfoBean {
@@ -1686,6 +1727,262 @@ public class OrderDetailModel implements Serializable {
             public void setImgArr(List<String> imgArr) {
                 this.imgArr = imgArr;
             }
+        }
+    }
+
+    public static class TechnSedanInfoBean {
+        /**
+         * id : 1043
+         * yTechnSedanId : 730732604248031232
+         * yOrderId : 730063630766178304
+         * ySedanBrandId : 716704933323210752
+         * yStoreId : 692341585785913344
+         * userId : 719539276219416576
+         * licenseNumber : 粤A12345
+         * ownerName : 阿斯顿马丁
+         * ownerPhone : 18306043086
+         * frameNumber : adfdssa45666
+         * vehicleMileage : 2000
+         * compInsuranceTime : 2026-07-09
+         * comInsuranceTime : 2023-07-09
+         * annualReviewTime : 2035-07-09
+         * vRemarks : 备注
+         * sedanBrandJson : {"brandName":"阿斯顿・马丁","groupName":"阿斯顿・马丁","id":87667,"parentId":716704210728517632,"sLogo":"/upload/logo/716723976784576512.jpg","sName":"2016款 5.2T 设计师定制版","seriesName":"阿斯顿・马丁DB11","vDispla":"4T","vYear":"2015","ySedanBrandId":716704933323210752}
+         * gPrice : 3640.0
+         * isOrder : 1
+         * createDate : 2020-07-09 10:30:29
+         * gState : 1
+         * isEval : 0
+         * brandInfo : {"id":"87667","ySedanBrandId":"716704933323210752","parentId":"716704210728517632","sName":"2016款 5.2T 设计师定制版","sLogo":"/upload/logo/716723976784576512.jpg","seriesName":"阿斯顿・马丁DB11","groupName":"阿斯顿・马丁","brandName":"阿斯顿・马丁","vYear":"2015","vDispla":"4T"}
+         * appeImgstr : /upload/2020-07-09/20200709103028_755752.jpg||/upload/2020-07-09/20200709103028_973472.jpeg||/upload/2020-07-09/20200709103028_4017.jpeg
+         * estimateTime :
+         * rewardMoney : 0.0
+         */
+
+        private String id;
+        private String yTechnSedanId;
+        private String yOrderId;
+        private String ySedanBrandId;
+        private String yStoreId;
+        private String userId;
+        private String licenseNumber;
+        private String ownerName;
+        private String ownerPhone;
+        private String frameNumber;
+        private String vehicleMileage;
+        private String compInsuranceTime;
+        private String comInsuranceTime;
+        private String annualReviewTime;
+        private String vRemarks;
+        private String sedanBrandJson;
+        private double gPrice;
+        private int isOrder;
+        private String createDate;
+        private int gState;
+        private int isEval;
+        private UserSedanInfoBean.BrandInfoBean brandInfo;
+        private String appeImgstr;
+        private String estimateTime;
+        private double rewardMoney;
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getYTechnSedanId() {
+            return yTechnSedanId;
+        }
+
+        public void setYTechnSedanId(String yTechnSedanId) {
+            this.yTechnSedanId = yTechnSedanId;
+        }
+
+        public String getYOrderId() {
+            return yOrderId;
+        }
+
+        public void setYOrderId(String yOrderId) {
+            this.yOrderId = yOrderId;
+        }
+
+        public String getYSedanBrandId() {
+            return ySedanBrandId;
+        }
+
+        public void setYSedanBrandId(String ySedanBrandId) {
+            this.ySedanBrandId = ySedanBrandId;
+        }
+
+        public String getYStoreId() {
+            return yStoreId;
+        }
+
+        public void setYStoreId(String yStoreId) {
+            this.yStoreId = yStoreId;
+        }
+
+        public String getUserId() {
+            return userId;
+        }
+
+        public void setUserId(String userId) {
+            this.userId = userId;
+        }
+
+        public String getLicenseNumber() {
+            return licenseNumber;
+        }
+
+        public void setLicenseNumber(String licenseNumber) {
+            this.licenseNumber = licenseNumber;
+        }
+
+        public String getOwnerName() {
+            return ownerName;
+        }
+
+        public void setOwnerName(String ownerName) {
+            this.ownerName = ownerName;
+        }
+
+        public String getOwnerPhone() {
+            return ownerPhone;
+        }
+
+        public void setOwnerPhone(String ownerPhone) {
+            this.ownerPhone = ownerPhone;
+        }
+
+        public String getFrameNumber() {
+            return frameNumber;
+        }
+
+        public void setFrameNumber(String frameNumber) {
+            this.frameNumber = frameNumber;
+        }
+
+        public String getVehicleMileage() {
+            return vehicleMileage;
+        }
+
+        public void setVehicleMileage(String vehicleMileage) {
+            this.vehicleMileage = vehicleMileage;
+        }
+
+        public String getCompInsuranceTime() {
+            return compInsuranceTime;
+        }
+
+        public void setCompInsuranceTime(String compInsuranceTime) {
+            this.compInsuranceTime = compInsuranceTime;
+        }
+
+        public String getComInsuranceTime() {
+            return comInsuranceTime;
+        }
+
+        public void setComInsuranceTime(String comInsuranceTime) {
+            this.comInsuranceTime = comInsuranceTime;
+        }
+
+        public String getAnnualReviewTime() {
+            return annualReviewTime;
+        }
+
+        public void setAnnualReviewTime(String annualReviewTime) {
+            this.annualReviewTime = annualReviewTime;
+        }
+
+        public String getVRemarks() {
+            return vRemarks;
+        }
+
+        public void setVRemarks(String vRemarks) {
+            this.vRemarks = vRemarks;
+        }
+
+        public String getSedanBrandJson() {
+            return sedanBrandJson;
+        }
+
+        public void setSedanBrandJson(String sedanBrandJson) {
+            this.sedanBrandJson = sedanBrandJson;
+        }
+
+        public double getGPrice() {
+            return gPrice;
+        }
+
+        public void setGPrice(double gPrice) {
+            this.gPrice = gPrice;
+        }
+
+        public int getIsOrder() {
+            return isOrder;
+        }
+
+        public void setIsOrder(int isOrder) {
+            this.isOrder = isOrder;
+        }
+
+        public String getCreateDate() {
+            return createDate;
+        }
+
+        public void setCreateDate(String createDate) {
+            this.createDate = createDate;
+        }
+
+        public int getGState() {
+            return gState;
+        }
+
+        public void setGState(int gState) {
+            this.gState = gState;
+        }
+
+        public int getIsEval() {
+            return isEval;
+        }
+
+        public void setIsEval(int isEval) {
+            this.isEval = isEval;
+        }
+
+        public UserSedanInfoBean.BrandInfoBean getBrandInfo() {
+            return brandInfo;
+        }
+
+        public void setBrandInfo(UserSedanInfoBean.BrandInfoBean brandInfo) {
+            this.brandInfo = brandInfo;
+        }
+
+        public String getAppeImgstr() {
+            return appeImgstr;
+        }
+
+        public void setAppeImgstr(String appeImgstr) {
+            this.appeImgstr = appeImgstr;
+        }
+
+        public String getEstimateTime() {
+            return estimateTime;
+        }
+
+        public void setEstimateTime(String estimateTime) {
+            this.estimateTime = estimateTime;
+        }
+
+        public double getRewardMoney() {
+            return rewardMoney;
+        }
+
+        public void setRewardMoney(double rewardMoney) {
+            this.rewardMoney = rewardMoney;
         }
     }
 }

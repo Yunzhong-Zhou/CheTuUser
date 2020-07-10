@@ -648,14 +648,14 @@ public class LocalUserInfo {
         if (!TextUtils.isEmpty(string) && !"null".equals(string)) {
             return string;
         }
-        return "";
+        return "0";
     }
     public String getLatitude() {
         String string = getString(LATITUDE);
         if (!TextUtils.isEmpty(string) && !"null".equals(string)) {
             return string;
         }
-        return "";
+        return "0";
     }
 
     //获取环信ID
