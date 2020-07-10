@@ -243,11 +243,6 @@ public class Fragment1 extends BaseFragment {
         latitude = localUserInfo.getLatitude() + "";
         tv_addr.setText(localUserInfo.getCityname() + "");
 
-        //获取服务项目和banner
-        HashMap<String, String> params2 = new HashMap<>();
-        params2.put("y_parent_id", "0");
-        RequestService(params2, 0);
-
 
         //初始化定位
         mLocationClient = new AMapLocationClient(getActivity());
@@ -334,6 +329,11 @@ public class Fragment1 extends BaseFragment {
         super.requestServer();
 //        this.showLoadingPage();
         showProgress(true, getString(R.string.app_loading));
+
+        //获取服务项目和banner
+        HashMap<String, String> params2 = new HashMap<>();
+        params2.put("y_parent_id", "0");
+        RequestService(params2, 0);
 
         //获取附近活动列表数据
         if (!longitude.equals("")) {

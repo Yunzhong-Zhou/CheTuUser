@@ -9,7 +9,8 @@
     <com.liaoinstan.springview.widget.SpringView
         android:id="@+id/springView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_weight="1">
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -95,6 +96,9 @@
                                 android:id="@+id/flowLayout1"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_marginLeft="-5dp"
+                                android:layout_marginTop="-5dp"
+                                android:layout_marginRight="-5dp"
                                 android:padding="5dp"
                                 app:height_space="5dp"
                                 app:width_space="5dp" />
@@ -104,7 +108,6 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
                             android:gravity="center_vertical"
                             android:orientation="horizontal">
 
@@ -134,7 +137,7 @@
                             android:id="@+id/tv_jiecheren"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
+                            android:layout_marginTop="5dp"
                             android:text="接车人："
                             android:textColor="@color/black"
                             android:textSize="13sp" />
@@ -143,7 +146,7 @@
                             android:id="@+id/tv_wanchengtime"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
+                            android:layout_marginTop="5dp"
                             android:text="完成时间："
                             android:textColor="@color/black"
                             android:textSize="13sp" />
@@ -289,9 +292,36 @@
                                 android:background="@color/xian" />
 
                             <androidx.recyclerview.widget.RecyclerView
-                                android:id="@+id/recyclerView"
+                                android:id="@+id/rv_service"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content" />
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="10dp"
+                                android:background="@color/background" />
+                            <!--其他商品-->
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/yuanjiao_10_baise"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:padding="10dp"
+                                    android:text="其他商品"
+                                    android:textColor="@color/black"
+                                    android:textSize="15sp"
+                                    android:textStyle="bold" />
+
+                                <androidx.recyclerview.widget.RecyclerView
+                                    android:id="@+id/rv_other"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content" />
+
+                            </LinearLayout>
 
                             <View
                                 android:layout_width="match_parent"
@@ -562,71 +592,70 @@
                     </LinearLayout>
 
                 </RelativeLayout>
-                <!--合计-->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/yuanjiao_10_baise_top"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingLeft="13dp"
-                    android:paddingTop="20dp"
-                    android:paddingRight="13dp"
-                    android:paddingBottom="20dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="商品服务："
-                        android:textColor="@color/black"
-                        android:textSize="10sp" />
-
-                    <TextView
-                        android:id="@+id/tv_servicemoney"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="¥0"
-                        android:textColor="@color/red"
-                        android:textSize="10sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
-                        android:text="检测项目："
-                        android:textColor="@color/black"
-                        android:textSize="10sp" />
-
-                    <TextView
-                        android:id="@+id/tv_jiancemoney"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="¥0"
-                        android:textColor="@color/red"
-                        android:textSize="10sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="合计："
-                        android:textColor="@color/black"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tv_allmoney"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="¥0"
-                        android:textColor="@color/red"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
-
-                </LinearLayout>
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
     </com.liaoinstan.springview.widget.SpringView>
 
+    <!--合计-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/yuanjiao_10_baise_top"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="13dp"
+        android:paddingTop="20dp"
+        android:paddingRight="13dp"
+        android:paddingBottom="20dp">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="商品服务："
+            android:textColor="@color/black"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/tv_servicemoney"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="¥0"
+            android:textColor="@color/red"
+            android:textSize="10sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:text="检测项目："
+            android:textColor="@color/black"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/tv_jiancemoney"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="¥0"
+            android:textColor="@color/red"
+            android:textSize="10sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="合计："
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_allmoney"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="¥0"
+            android:textColor="@color/red"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
 </LinearLayout>

@@ -15,6 +15,7 @@ import com.chetu.user.model.ShangPingModel;
 import com.chetu.user.net.URLs;
 import com.chetu.user.okhttp.CallBackUtil;
 import com.chetu.user.okhttp.OkhttpUtil;
+import com.chetu.user.utils.CommonUtil;
 import com.liaoinstan.springview.widget.SpringView;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
@@ -236,7 +237,9 @@ public class FootprintActivity extends BaseActivity {
                     mAdapter1.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
                         @Override
                         public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
-
+                            Bundle bundle = new Bundle();
+                            bundle.putString("y_goods_id", list1.get(i).getGoods_info().getYGoodsId());
+                            CommonUtil.gotoActivityWithData(FootprintActivity.this, ProductDetailActivity.class, bundle, false);
                         }
 
                         @Override
@@ -371,7 +374,11 @@ public class FootprintActivity extends BaseActivity {
                     mAdapter2.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
                         @Override
                         public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
-
+                            Bundle bundle = new Bundle();
+                            bundle.putString("id", list2.get(i).getStore_info().getYStoreId());
+                            bundle.putString("longitude", localUserInfo.getLongitude());
+                            bundle.putString("latitude", localUserInfo.getLatitude());
+                            CommonUtil.gotoActivityWithData(FootprintActivity.this, StoreDetailActivity.class, bundle, false);
                         }
 
                         @Override

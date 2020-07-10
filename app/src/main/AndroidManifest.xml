@@ -172,6 +172,9 @@
             android:name=".activity.MyOrderActivity"
             android:label="我的订单" />
         <activity
+            android:name=".activity.OrderDetailActivity"
+            android:label="订单详情" />
+        <activity
             android:name=".activity.DaiJieCheActivity"
             android:label="待接车" />
         <activity

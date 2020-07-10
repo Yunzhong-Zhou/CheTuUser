@@ -8,7 +8,7 @@ public class URLs {
     //测试地址
     public static String IMGHOST = "http://frb.yxy5g.com";//图片地址
     public static String HOST = "http://120.24.110.237:1000";//接口地址
-
+    public static String KFHOST = "http://chat.yxy5g.com";//客服地址
     //正式地址
 //    public static String IMGHOST = "http://wuliu.xianxianla.com";//图片地址
 //    public static String HOST = "http://wuliu.xianxianla.com";//接口地址

@@ -1,5 +1,7 @@
 package com.chetu.user.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -65,12 +67,18 @@ public class MyOrderModel implements Serializable {
         private UserSedanInfoBean user_sedan_info;
         private TechnSedanInfoBean techn_sedan_info;
         private TechnUserInfoBean techn_user_info;
+
         private StoreInfoBean store_info;
         private int isDelivery;
         private int isPick;
         private int isEval;
         private List<OrderServiceListBean> order_service_list;
         private List<String> service_list;
+        /**
+         * kf_user_info : {"userId":"716658563904176128","userBalance":0,"yStoreId":"692341585785913344","userName":"测试修改","userAccount":"TGFW0N","uToken":"08F3D8195605B5792734F5EAB4DC443F4799E798C97444D60431E82DD368BF93","isTechn":1,"userIntegral":"300","userHash":"B52CF117B3218C7AD48568134544695C","headPortrait":" ","userPhone":"18284128946","userJson":"{}","techJson":" {\"star\":\"4\",\"working\":\"1\"}","isAuth":1,"isKf":0}
+         */
+
+        private KfUserInfoBean kf_user_info;
 
         public String getId() {
             return id;
@@ -246,6 +254,14 @@ public class MyOrderModel implements Serializable {
 
         public void setService_list(List<String> service_list) {
             this.service_list = service_list;
+        }
+
+        public KfUserInfoBean getKf_user_info() {
+            return kf_user_info;
+        }
+
+        public void setKf_user_info(KfUserInfoBean kf_user_info) {
+            this.kf_user_info = kf_user_info;
         }
 
         public static class UserSedanInfoBean {
@@ -1533,6 +1549,164 @@ public class MyOrderModel implements Serializable {
                         this.isSoffer = isSoffer;
                     }
                 }
+            }
+        }
+
+        public static class KfUserInfoBean {
+            /**
+             * userId : 716658563904176128
+             * userBalance : 0.0
+             * yStoreId : 692341585785913344
+             * userName : 测试修改
+             * userAccount : TGFW0N
+             * uToken : 08F3D8195605B5792734F5EAB4DC443F4799E798C97444D60431E82DD368BF93
+             * isTechn : 1
+             * userIntegral : 300
+             * userHash : B52CF117B3218C7AD48568134544695C
+             * headPortrait :
+             * userPhone : 18284128946
+             * userJson : {}
+             * techJson :  {"star":"4","working":"1"}
+             * isAuth : 1
+             * isKf : 0
+             */
+
+            @SerializedName("userId")
+            private String userIdX;
+            private double userBalance;
+            @SerializedName("yStoreId")
+            private String yStoreIdX;
+            private String userName;
+            private String userAccount;
+            private String uToken;
+            private int isTechn;
+            private String userIntegral;
+            private String userHash;
+            private String headPortrait;
+            private String userPhone;
+            private String userJson;
+            private String techJson;
+            private int isAuth;
+            private int isKf;
+
+            public String getUserIdX() {
+                return userIdX;
+            }
+
+            public void setUserIdX(String userIdX) {
+                this.userIdX = userIdX;
+            }
+
+            public double getUserBalance() {
+                return userBalance;
+            }
+
+            public void setUserBalance(double userBalance) {
+                this.userBalance = userBalance;
+            }
+
+            public String getYStoreIdX() {
+                return yStoreIdX;
+            }
+
+            public void setYStoreIdX(String yStoreIdX) {
+                this.yStoreIdX = yStoreIdX;
+            }
+
+            public String getUserName() {
+                return userName;
+            }
+
+            public void setUserName(String userName) {
+                this.userName = userName;
+            }
+
+            public String getUserAccount() {
+                return userAccount;
+            }
+
+            public void setUserAccount(String userAccount) {
+                this.userAccount = userAccount;
+            }
+
+            public String getUToken() {
+                return uToken;
+            }
+
+            public void setUToken(String uToken) {
+                this.uToken = uToken;
+            }
+
+            public int getIsTechn() {
+                return isTechn;
+            }
+
+            public void setIsTechn(int isTechn) {
+                this.isTechn = isTechn;
+            }
+
+            public String getUserIntegral() {
+                return userIntegral;
+            }
+
+            public void setUserIntegral(String userIntegral) {
+                this.userIntegral = userIntegral;
+            }
+
+            public String getUserHash() {
+                return userHash;
+            }
+
+            public void setUserHash(String userHash) {
+                this.userHash = userHash;
+            }
+
+            public String getHeadPortrait() {
+                return headPortrait;
+            }
+
+            public void setHeadPortrait(String headPortrait) {
+                this.headPortrait = headPortrait;
+            }
+
+            public String getUserPhone() {
+                return userPhone;
+            }
+
+            public void setUserPhone(String userPhone) {
+                this.userPhone = userPhone;
+            }
+
+            public String getUserJson() {
+                return userJson;
+            }
+
+            public void setUserJson(String userJson) {
+                this.userJson = userJson;
+            }
+
+            public String getTechJson() {
+                return techJson;
+            }
+
+            public void setTechJson(String techJson) {
+                this.techJson = techJson;
+            }
+
+            public int getIsAuth() {
+                return isAuth;
+            }
+
+            public void setIsAuth(int isAuth) {
+                this.isAuth = isAuth;
+            }
+
+            public int getIsKf() {
+                return isKf;
+            }
+
+            public void setIsKf(int isKf) {
+                this.isKf = isKf;
             }
         }
     }

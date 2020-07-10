@@ -16,6 +16,11 @@ public class StoreDetailModel implements Serializable {
     private InfoBean info;
     private List<StoreTechListBean> store_tech_list;
     private List<StoreServiceListBean> store_service_list;
+    /**
+     * kf_user_info : {"userId":"714547022807433216","userBalance":0,"yStoreId":"714547022807433216","userName":"阿斯顿马丁","userAccount":"Y11P3D","uToken":"878FFBB91EB36C913E76875CFB338E035AC9046CF8BD6A4D568B2A1A8A79ACDE","isTechn":0,"userHash":"36635C17B0E19DD1E14A92D8895B47CD","headPortrait":"/upload/2020-06-13/20200613085845_638405.jpeg","userPhone":"18306043086","userJson":"{\"birthday\":\"2002-07-13\",\"u_gender\":\"男\"}","techJson":" {\"star\":\"4\",\"working\":\"1\"}","isAuth":1,"isKf":0}
+     */
+
+    private KfUserInfoBean kf_user_info;
 
     public InfoBean getInfo() {
         return info;
@@ -39,6 +44,14 @@ public class StoreDetailModel implements Serializable {
 
     public void setStore_service_list(List<StoreServiceListBean> store_service_list) {
         this.store_service_list = store_service_list;
+    }
+
+    public KfUserInfoBean getKf_user_info() {
+        return kf_user_info;
+    }
+
+    public void setKf_user_info(KfUserInfoBean kf_user_info) {
+        this.kf_user_info = kf_user_info;
     }
 
     public static class InfoBean implements Serializable{
@@ -568,6 +581,152 @@ public class StoreDetailModel implements Serializable {
 
         public void setPictureStr(String pictureStr) {
             this.pictureStr = pictureStr;
+        }
+    }
+
+    public static class KfUserInfoBean {
+        /**
+         * userId : 714547022807433216
+         * userBalance : 0.0
+         * yStoreId : 714547022807433216
+         * userName : 阿斯顿马丁
+         * userAccount : Y11P3D
+         * uToken : 878FFBB91EB36C913E76875CFB338E035AC9046CF8BD6A4D568B2A1A8A79ACDE
+         * isTechn : 0
+         * userHash : 36635C17B0E19DD1E14A92D8895B47CD
+         * headPortrait : /upload/2020-06-13/20200613085845_638405.jpeg
+         * userPhone : 18306043086
+         * userJson : {"birthday":"2002-07-13","u_gender":"男"}
+         * techJson :  {"star":"4","working":"1"}
+         * isAuth : 1
+         * isKf : 0
+         */
+
+        private String userId;
+        private double userBalance;
+        private String yStoreId;
+        private String userName;
+        private String userAccount;
+        private String uToken;
+        private int isTechn;
+        private String userHash;
+        private String headPortrait;
+        private String userPhone;
+        private String userJson;
+        private String techJson;
+        private int isAuth;
+        private int isKf;
+
+        public String getUserId() {
+            return userId;
+        }
+
+        public void setUserId(String userId) {
+            this.userId = userId;
+        }
+
+        public double getUserBalance() {
+            return userBalance;
+        }
+
+        public void setUserBalance(double userBalance) {
+            this.userBalance = userBalance;
+        }
+
+        public String getYStoreId() {
+            return yStoreId;
+        }
+
+        public void setYStoreId(String yStoreId) {
+            this.yStoreId = yStoreId;
+        }
+
+        public String getUserName() {
+            return userName;
+        }
+
+        public void setUserName(String userName) {
+            this.userName = userName;
+        }
+
+        public String getUserAccount() {
+            return userAccount;
+        }
+
+        public void setUserAccount(String userAccount) {
+            this.userAccount = userAccount;
+        }
+
+        public String getUToken() {
+            return uToken;
+        }
+
+        public void setUToken(String uToken) {
+            this.uToken = uToken;
+        }
+
+        public int getIsTechn() {
+            return isTechn;
+        }
+
+        public void setIsTechn(int isTechn) {
+            this.isTechn = isTechn;
+        }
+
+        public String getUserHash() {
+            return userHash;
+        }
+
+        public void setUserHash(String userHash) {
+            this.userHash = userHash;
+        }
+
+        public String getHeadPortrait() {
+            return headPortrait;
+        }
+
+        public void setHeadPortrait(String headPortrait) {
+            this.headPortrait = headPortrait;
+        }
+
+        public String getUserPhone() {
+            return userPhone;
+        }
+
+        public void setUserPhone(String userPhone) {
+            this.userPhone = userPhone;
+        }
+
+        public String getUserJson() {
+            return userJson;
+        }
+
+        public void setUserJson(String userJson) {
+            this.userJson = userJson;
+        }
+
+        public String getTechJson() {
+            return techJson;
+        }
+
+        public void setTechJson(String techJson) {
+            this.techJson = techJson;
+        }
+
+        public int getIsAuth() {
+            return isAuth;
+        }
+
+        public void setIsAuth(int isAuth) {
+            this.isAuth = isAuth;
+        }
+
+        public int getIsKf() {
+            return isKf;
+        }
+
+        public void setIsKf(int isKf) {
+            this.isKf = isKf;
         }
     }
 }

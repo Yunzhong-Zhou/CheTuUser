@@ -1,5 +1,7 @@
 package com.chetu.user.activity;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -13,13 +15,20 @@ import com.chetu.user.model.OrderDetailModel;
 import com.chetu.user.net.URLs;
 import com.chetu.user.okhttp.CallBackUtil;
 import com.chetu.user.okhttp.OkhttpUtil;
+import com.chetu.user.utils.CommonUtil;
 import com.cy.cyflowlayoutlibrary.FlowLayout;
 import com.cy.cyflowlayoutlibrary.FlowLayoutAdapter;
 import com.liaoinstan.springview.widget.SpringView;
+import com.zhy.adapter.recyclerview.CommonAdapter;
+import com.zhy.adapter.recyclerview.base.ViewHolder;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -29,7 +38,7 @@ import okhttp3.Response;
  */
 public class OrderDetailActivity extends BaseActivity {
     int type = 1, g_state = 0;
-    String y_order_id = "";
+    String y_order_id = "", longitude = "", latitude = "";
     OrderDetailModel model;
 
     private LinearLayout linearLayout1, linearLayout2, linearLayout3, ll_fuwu, ll_jiance, ll_beizhu;
@@ -41,6 +50,12 @@ public class OrderDetailActivity extends BaseActivity {
             tv_servicemoney, tv_jiancemoney, tv_allmoney;
     FlowLayout flowLayout1;
     ImageView iv_storelogo, iv_carlogo;
+
+    RecyclerView rv_service, rv_other;
+    List<OrderDetailModel.OrderServiceListBean> list_service = new ArrayList<>();
+    CommonAdapter<OrderDetailModel.OrderServiceListBean> mAdapter_service;
+    List<OrderDetailModel.VOrderGoodsListBean> list_other = new ArrayList<>();
+    CommonAdapter<OrderDetailModel.VOrderGoodsListBean> mAdapter_other;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +78,8 @@ public class OrderDetailActivity extends BaseActivity {
                 Map<String, String> params = new HashMap<>();
                 params.put("y_order_id", y_order_id);
                 params.put("u_token", localUserInfo.getToken());
+                params.put("longitude", localUserInfo.getLongitude());
+                params.put("latitude", localUserInfo.getLatitude());
                 Request(params);
             }
 
@@ -103,6 +120,10 @@ public class OrderDetailActivity extends BaseActivity {
         tv_allmoney = findViewByID_My(R.id.tv_allmoney);
 
         flowLayout1 = findViewByID_My(R.id.flowLayout1);
+        rv_service = findViewByID_My(R.id.rv_service);
+        rv_service.setLayoutManager(new LinearLayoutManager(this));
+        rv_other = findViewByID_My(R.id.rv_other);
+        rv_other.setLayoutManager(new LinearLayoutManager(this));
 
     }
 
@@ -121,6 +142,8 @@ public class OrderDetailActivity extends BaseActivity {
         Map<String, String> params = new HashMap<>();
         params.put("y_order_id", y_order_id);
         params.put("u_token", localUserInfo.getToken());
+        params.put("longitude", localUserInfo.getLongitude());
+        params.put("latitude", localUserInfo.getLatitude());
         Request(params);
     }
 
@@ -142,6 +165,19 @@ public class OrderDetailActivity extends BaseActivity {
             public void onResponse(OrderDetailModel response) {
                 hideProgress();
                 model = response;
+                /**
+                 * 订单信息
+                 */
+                Glide.with(OrderDetailActivity.this).load(URLs.IMGHOST + model.getStore_info().getPicture())
+                        .centerCrop()
+                        .placeholder(R.mipmap.loading)//加载站位图
+                        .error(R.mipmap.zanwutupian)//加载失败
+                        .into(iv_storelogo);
+                Glide.with(OrderDetailActivity.this).load(URLs.IMGHOST + model.getUser_sedan_info().getSLogo())
+                        .centerCrop()
+                        .placeholder(R.mipmap.loading)//加载站位图
+                        .error(R.mipmap.zanwutupian)//加载失败
+                        .into(iv_carlogo);
                 tv_storename.setText(model.getStore_info().getVName());//门店名称
                 tv_addr.setText(model.getStore_info().getAddress());//门店地址
                 tv_juli.setText(model.getDistance() + "m");//门店距离
@@ -154,21 +190,12 @@ public class OrderDetailActivity extends BaseActivity {
                                 @Override
                                 public void bindDataToView(FlowLayoutAdapter.ViewHolder holder, int position,
                                                            OrderDetailModel.OrderServiceListBean bean) {
-//                                holder.setText(R.id.tv,bean);
                                     TextView tv = holder.getView(R.id.tv);
                                     tv.setText(bean.getServiceStr());
-                                    /*tv.setTextColor(getResources().getColor(R.color.black1));
-                                    tv.setBackgroundResource(R.drawable.yuanjiao_3_huise);*/
                                 }
 
                                 @Override
                                 public void onItemClick(int position, OrderDetailModel.OrderServiceListBean bean) {
-//                        showToast("点击" + position);
-                                               /* Bundle bundle = new Bundle();
-                                                bundle.putString("id", model.getYStoreId());
-                                                bundle.putString("longitude", longitude);
-                                                bundle.putString("latitude", latitude);
-                                                CommonUtil.gotoActivityWithData(getActivity(), StoreDetailActivity.class, bundle, false);*/
                                 }
 
                                 @Override
@@ -186,25 +213,98 @@ public class OrderDetailActivity extends BaseActivity {
                 } else {
                     tv_name.setVisibility(View.GONE);
                 }*/
-                //完成时间
+                //时间
+                tv_wanchengtime.setText("预约时间：" + model.getOrder_info().getAppoinTime());
 
-
-
+                //车辆名称
                 tv_carname.setText(model.getUser_sedan_info().getBrandInfo().getGroupName() + "-" + model.getUser_sedan_info().getBrandInfo().getSeriesName());
+                //车辆详情
                 tv_carcontent.setText(model.getUser_sedan_info().getBrandInfo().getSName());
-
+                tv_servicenum.setText(model.getOrder_service_list().size() + "项");//服务项目个数
+                int goodsnum = 0;
+                for (OrderDetailModel.VOrderGoodsListBean bean : model.getV_order_goods_list()) {
+                    goodsnum += bean.getGNum();
+                }
+                tv_goodsnum.setText(goodsnum + "");//商品个数
+                tv_allmoney1.setText("¥" + (model.getOrder_service_total_price() + model.getV_order_goods_total_price()));//服务和商品总价格
 
 //                tv_beizhu.setText(model.);//备注
-                Glide.with(OrderDetailActivity.this).load(model.getStore_info().getPicture())
-                        .centerCrop()
-                        .placeholder(R.mipmap.loading)//加载站位图
-                        .error(R.mipmap.zanwutupian)//加载失败
-                        .into(iv_storelogo);
-                Glide.with(OrderDetailActivity.this).load(model.getUser_sedan_info().getSLogo())
-                        .centerCrop()
-                        .placeholder(R.mipmap.loading)//加载站位图
-                        .error(R.mipmap.zanwutupian)//加载失败
-                        .into(iv_carlogo);
+
+                /**
+                 * 服务和商品
+                 */
+                //商品列表
+                list_service = response.getOrder_service_list();
+                mAdapter_service = new CommonAdapter<OrderDetailModel.OrderServiceListBean>
+                        (OrderDetailActivity.this, R.layout.item_orderdetail_service, list_service) {
+                    @Override
+                    protected void convert(ViewHolder holder, OrderDetailModel.OrderServiceListBean model, int position) {
+                        //信息
+                        /*holder.setText(R.id.title, model.getStore_service_info().getYStateValue());
+                        holder.setText(R.id.money, "¥" + model.getStore_service_info().getSPrice());
+                        //商品列表
+                        RecyclerView rv = holder.getView(R.id.rv);
+                        LinearLayoutManager llm1 = new LinearLayoutManager(OrderDetailActivity.this);
+                        llm1.setOrientation(LinearLayoutManager.VERTICAL);// 设置 recyclerview 布局方式为横向布局
+                        rv.setLayoutManager(llm1);
+//                        int[] num = new int[model.getGoods_cart_list().size()];
+                        CommonAdapter<ConfirmOrderModel.ServiceListBean.GoodsCartListBean> ca =
+                                new CommonAdapter<ConfirmOrderModel.ServiceListBean.GoodsCartListBean>
+                                        (OrderDetailActivity.this, R.layout.item_confirmorder_goods, model.getGoods_cart_list()) {
+                                    @Override
+                                    protected void convert(ViewHolder holder, ConfirmOrderModel.ServiceListBean.GoodsCartListBean model1, int p) {
+                                        ImageView iv = holder.getView(R.id.iv);
+                                        Glide.with(OrderDetailActivity.this).load(URLs.IMGHOST + model1.getGoods_info().getGImg())
+//                            .centerCrop()
+//                            .apply(RequestOptions.bitmapTransform(new RoundedCorners(10)))
+                                                .placeholder(R.mipmap.loading)//加载站位图
+                                                .error(R.mipmap.zanwutupian)//加载失败
+                                                .into(iv);//加载图片
+                                        holder.setText(R.id.tv_title, model1.getGoods_info().getGName());
+                                        holder.setText(R.id.tv_tab, model1.getGoodsValue());
+//                                        num = model1.getGNum();
+                                        holder.setText(R.id.tv_num, model1.getGNum() + "");
+                                        holder.setText(R.id.tv_money, "" + model1.getVPrice() * model1.getGNum());
+
+                                    }
+                                };
+                        rv.setAdapter(ca);*/
+
+                    }
+                };
+                rv_service.setAdapter(mAdapter_service);
+
+                //其他商品
+                list_other = response.getV_order_goods_list();
+
+                mAdapter_other = new CommonAdapter<OrderDetailModel.VOrderGoodsListBean>
+                        (OrderDetailActivity.this, R.layout.item_confirmorder_goods, list_other) {
+                    @Override
+                    protected void convert(ViewHolder holder, OrderDetailModel.VOrderGoodsListBean model1, int p) {
+                        /*ImageView iv = holder.getView(R.id.iv);
+                        Glide.with(OrderDetailActivity.this).load(URLs.IMGHOST + model1.getGoods_info().getGImg())
+//                            .centerCrop()
+//                            .apply(RequestOptions.bitmapTransform(new RoundedCorners(10)))
+                                .placeholder(R.mipmap.loading)//加载站位图
+                                .error(R.mipmap.zanwutupian)//加载失败
+                                .into(iv);//加载图片
+                        holder.setText(R.id.tv_title, model1.getGoods_info().getGName());
+                        holder.setText(R.id.tv_tab, model1.getGoodsValue());
+//                                        num = model1.getGNum();
+                        holder.setText(R.id.tv_num, model1.getGNum() + "");
+                        holder.setText(R.id.tv_money, "" + model1.getVPrice() * model1.getGNum());*/
+                    }
+                };
+                rv_other.setAdapter(mAdapter_other);
+
+                /**
+                 * 统计
+                 */
+                tv_servicemoney.setText("¥" + (model.getOrder_service_total_price() + model.getV_order_goods_total_price()));//商品和服务总价格
+//                tv_jiancemoney.setText("¥" + model.get);//检测总价格
+                tv_allmoney.setText("¥" + model.getOrder_price());//服务和商品总价格
+
+
             }
         });
     }
@@ -224,6 +324,37 @@ public class OrderDetailActivity extends BaseActivity {
             case R.id.linearLayout3:
                 type = 3;
                 changeUI();
+                break;
+            case R.id.iv_call:
+                //拨打电话
+                showToast("确认拨打 " + model.getStore_info().getPhone() + " 吗？", "确认", "取消",
+                        new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialog.dismiss();
+                                //创建打电话的意图
+                                Intent intent = new Intent();
+                                //设置拨打电话的动作
+                                intent.setAction(Intent.ACTION_CALL);//直接拨出电话
+//                               intent.setAction(Intent.ACTION_DIAL);//只调用拨号界面，不拨出电话
+                                //设置拨打电话的号码
+                                intent.setData(Uri.parse("tel:" + model.getStore_info().getPhone()));
+                                //开启打电话的意图
+                                startActivity(intent);
+                            }
+                        }, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialog.dismiss();
+                            }
+                        });
+                break;
+            case R.id.iv_message:
+                String url = URLs.KFHOST+"/#/pages/chetu-kf/chetu-kf?token="+localUserInfo.getToken()+
+                        "&kf_userHash="+model.getOrder_info().getKf_user_info().getUserHash();
+                Bundle bundle = new Bundle();
+                bundle.putString("url", url);
+                CommonUtil.gotoActivityWithData(OrderDetailActivity.this, WebContentActivity.class, bundle, false);
                 break;
         }
     }
@@ -276,6 +407,7 @@ public class OrderDetailActivity extends BaseActivity {
             case 0:
                 //待接车
                 titleView.setTitle("待接车");
+                tv_jiecheren.setVisibility(View.GONE);
                 break;
             case 1:
                 //待分配

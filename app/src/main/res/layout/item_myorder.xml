@@ -50,7 +50,8 @@
             android:id="@+id/tv_carname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:maxWidth="140dp"
+            android:layout_weight="1"
+            android:singleLine="true"
             android:text="CarName"
             android:textColor="@color/black"
             android:textSize="14sp" />
@@ -68,13 +69,15 @@
             android:text="CarNumber"
             android:textColor="@color/black"
             android:textSize="11sp" />
-
+        <!--<View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>-->
         <TextView
             android:id="@+id/tv_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginLeft="0dp"
+            android:layout_marginLeft="10dp"
             android:gravity="right"
             android:text="预约时间:"
             android:textColor="@color/blue"
@@ -92,6 +95,8 @@
             android:id="@+id/flowLayout1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="-5dp"
+            android:layout_marginRight="-5dp"
             android:padding="5dp"
             app:height_space="5dp"
             app:width_space="5dp" />

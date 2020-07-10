@@ -275,7 +275,11 @@ public class MyOrderActivity extends BaseActivity {
                             holder.getView(R.id.iv_message).setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-
+                                    String url = URLs.KFHOST + "/#/pages/chetu-kf/chetu-kf?token=" + localUserInfo.getToken() +
+                                            "&kf_userHash=" + model.getKf_user_info().getUserHash();
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString("url", url);
+                                    CommonUtil.gotoActivityWithData(MyOrderActivity.this, WebContentActivity.class, bundle, false);
                                 }
                             });
 

@@ -25,13 +25,11 @@
                     android:scaleType="fitXY"/>
                 
                 <de.hdodenhof.circleimageview.CircleImageView
-                    android:layout_width="78dp"
-                    android:layout_height="78dp"
+                    android:layout_width="92dp"
+                    android:layout_height="85dp"
                     android:layout_centerHorizontal="true"
                     android:layout_alignParentBottom="true"
-                    android:src="@mipmap/ic_launcher"
-                    android:padding="3dp"
-                    android:background="@drawable/yuanxing_baiise"/>
+                    android:src="@mipmap/ic_login_logo" />
             </RelativeLayout>
 
             <View
@@ -41,8 +39,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
                 android:orientation="vertical">
 
                 <RelativeLayout
@@ -56,7 +54,7 @@
                         android:gravity="center_vertical"
                         android:hint="请输入手机号"
                         android:inputType="phone"
-                        android:paddingLeft="35dp"
+                        android:paddingLeft="30dp"
                         android:singleLine="true"
                         android:textColor="@color/black4"
                         android:textColorHint="@color/txt_hint"
@@ -125,10 +123,9 @@
                 android:layout_weight="1" />
             <TextView
                 android:id="@+id/textView2"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
+                android:layout_gravity="center_horizontal"
                 android:background="@mipmap/bg_login_btn"
                 android:gravity="center"
                 android:onClick="onClick"
