@@ -35,7 +35,7 @@ public class HelloActivity extends Activity {
         Boolean user_first = setting.getBoolean("FIRST", true);
 
         // 如果是第一次启动，则先进入功能引导页
-        if (user_first) {
+        /*if (user_first) {
             setting.edit().putBoolean("FIRST", false).commit();
             Intent intent = new Intent(this, GuideActivity.class);
             startActivity(intent);
@@ -49,7 +49,14 @@ public class HelloActivity extends Activity {
                     enterHomeActivity();
                 }
             }, 2000);
-        }
+        }*/
+        setContentView(R.layout.activity_hello);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                enterHomeActivity();
+            }
+        }, 2000);
 
     }
 
