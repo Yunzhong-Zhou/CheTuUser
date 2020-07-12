@@ -106,6 +106,7 @@ public class SelectGoodsActivity extends BaseActivity {
                         try {
                             JSONObject object1 = new JSONObject();
                             object1.put("y_store_service_id", y_store_service_id);
+                            object1.put("y_store_id", y_store_id);
                             object1.put("y_goods_id", list1.get(i).getYGoodsId());
                             if (!y_store_service_id.equals("")){
                                 object1.put("is_service", "2");//1为服务  2为服务下边的商品 3为独立商品

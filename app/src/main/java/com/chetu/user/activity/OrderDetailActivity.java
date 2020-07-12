@@ -458,6 +458,17 @@ public class OrderDetailActivity extends BaseActivity {
                 bundle.putString("url", url);
                 CommonUtil.gotoActivityWithData(OrderDetailActivity.this, WebContentActivity.class, bundle, false);
                 break;
+            case R.id.tv_dashang:
+                //打赏
+
+                break;
+            case R.id.tv_pinglun:
+                //评论
+                Bundle bundle1 = new Bundle();
+                bundle1.putSerializable("OrderDetailModel",model);
+                CommonUtil.gotoActivityWithData(OrderDetailActivity.this, AddPingLunActivity.class, bundle1, false);
+
+                break;
         }
     }
 
@@ -527,6 +538,8 @@ public class OrderDetailActivity extends BaseActivity {
                 ll_heji1.setVisibility(View.GONE);
                 ll_heji2.setVisibility(View.VISIBLE);
                 ll_btn.setVisibility(View.VISIBLE);
+                tv_dashang.setVisibility(View.VISIBLE);
+                tv_pinglun.setVisibility(View.GONE);
                 break;
             case 3:
                 //进行中
@@ -534,6 +547,8 @@ public class OrderDetailActivity extends BaseActivity {
                 ll_heji1.setVisibility(View.GONE);
                 ll_heji2.setVisibility(View.VISIBLE);
                 ll_btn.setVisibility(View.VISIBLE);
+                tv_dashang.setVisibility(View.VISIBLE);
+                tv_pinglun.setVisibility(View.GONE);
                 break;
             case 4:
                 //待复检
@@ -541,6 +556,8 @@ public class OrderDetailActivity extends BaseActivity {
                 ll_heji1.setVisibility(View.GONE);
                 ll_heji2.setVisibility(View.VISIBLE);
                 ll_btn.setVisibility(View.VISIBLE);
+                tv_dashang.setVisibility(View.VISIBLE);
+                tv_pinglun.setVisibility(View.GONE);
                 break;
             case 5:
                 //已完工
@@ -548,6 +565,8 @@ public class OrderDetailActivity extends BaseActivity {
                 ll_heji1.setVisibility(View.GONE);
                 ll_heji2.setVisibility(View.VISIBLE);
                 ll_btn.setVisibility(View.VISIBLE);
+                tv_dashang.setVisibility(View.VISIBLE);
+                tv_pinglun.setVisibility(View.GONE);
                 break;
             case 6:
                 //已提车
@@ -555,6 +574,8 @@ public class OrderDetailActivity extends BaseActivity {
                 ll_heji1.setVisibility(View.GONE);
                 ll_heji2.setVisibility(View.VISIBLE);
                 ll_btn.setVisibility(View.VISIBLE);
+                tv_dashang.setVisibility(View.VISIBLE);
+                tv_pinglun.setVisibility(View.VISIBLE);
                 break;
         }
     }

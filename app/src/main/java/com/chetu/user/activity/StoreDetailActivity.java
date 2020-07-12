@@ -900,6 +900,13 @@ public class StoreDetailActivity extends BaseActivity {
                     RequestQuXiaoShouChang(params);
                 }
                 break;
+            case R.id.tv_zhizhu:
+                //自助套餐
+                Bundle bundle2 = new Bundle();
+                bundle2.putString("y_store_id", y_store_id);
+                bundle2.putString("y_store_service_id", "");
+                CommonUtil.gotoActivityWithData(StoreDetailActivity.this, SelectGoodsActivity.class, bundle2, false);
+                break;
             case R.id.ll_tiwen_more:
                 //提问更多
                 Bundle bundle = new Bundle();
@@ -939,7 +946,6 @@ public class StoreDetailActivity extends BaseActivity {
                 params.put("u_token", localUserInfo.getToken());
                 params.put("jsonstr", jsonArray.toString());
                 RequestXiaDan(params);
-
 
                 break;
         }

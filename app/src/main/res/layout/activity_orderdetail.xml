@@ -157,7 +157,7 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginBottom="20dp"
+                    android:layout_marginBottom="10dp"
                     android:layout_weight="1">
 
                     <!--服务内容-->
@@ -596,6 +596,7 @@
         android:background="@drawable/yuanjiao_10_baise_top"
         android:gravity="center_vertical"
         android:orientation="horizontal"
+        android:layout_marginTop="10dp"
         android:paddingLeft="13dp"
         android:paddingTop="15dp"
         android:paddingRight="13dp"
@@ -659,6 +660,7 @@
         android:layout_marginLeft="13dp"
         android:layout_marginRight="13dp"
         android:layout_marginBottom="-3dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/yuanjiao_10_baise_top"
         android:gravity="center_vertical"
         android:orientation="horizontal"
@@ -734,22 +736,24 @@
 
         <TextView
             android:id="@+id/tv_dashang"
+            android:onClick="onClick"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginRight="5dp"
             android:layout_weight="1"
-            android:background="@drawable/yuanjiaobiankuang_5_huise"
+            android:background="@drawable/yuanjiao_5_lanse"
             android:gravity="center"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
-            android:text="已打赏（¥0.00）"
-            android:textColor="@color/black3"
+            android:text="打赏技师"
+            android:textColor="@color/white"
             android:textStyle="bold"
             android:textSize="15sp" />
 
 
         <TextView
             android:id="@+id/tv_pinglun"
+            android:onClick="onClick"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"

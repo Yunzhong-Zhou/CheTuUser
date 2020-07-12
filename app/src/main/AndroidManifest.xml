@@ -152,6 +152,9 @@
         <activity
             android:name=".activity.AddPingJiaActivity"
             android:label="发布评价" />
+        <activity
+            android:name=".activity.AddPingLunActivity"
+            android:label="发布评价" />
         <!--我的-->
         <activity
             android:name=".activity.SetUpActivity"

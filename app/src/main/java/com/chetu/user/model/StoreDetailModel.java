@@ -584,7 +584,7 @@ public class StoreDetailModel implements Serializable {
         }
     }
 
-    public static class KfUserInfoBean {
+    public static class KfUserInfoBean implements Serializable{
         /**
          * userId : 714547022807433216
          * userBalance : 0.0

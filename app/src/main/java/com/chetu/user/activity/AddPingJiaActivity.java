@@ -40,6 +40,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by zyz on 2020/7/1.
+ * 发布评论-多个技师
  */
 public class AddPingJiaActivity extends BaseActivity {
     StoreDetailModel storeDetailModel;

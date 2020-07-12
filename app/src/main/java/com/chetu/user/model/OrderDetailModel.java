@@ -144,7 +144,7 @@ public class OrderDetailModel implements Serializable {
         this.techn_sedan_info = techn_sedan_info;
     }
 
-    public static class OrderInfoBean {
+    public static class OrderInfoBean implements Serializable{
         /**
          * id : 1091
          * yOrderId : 731104409815089152
@@ -303,7 +303,7 @@ public class OrderDetailModel implements Serializable {
             this.kf_user_info = kf_user_info;
         }
 
-        public static class KfUserInfoBean {
+        public static class KfUserInfoBean implements Serializable{
             /**
              * userId : 716658563904176128
              * userBalance : 0.0
@@ -462,7 +462,7 @@ public class OrderDetailModel implements Serializable {
         }
     }
 
-    public static class StoreInfoBean {
+    public static class StoreInfoBean implements Serializable{
         /**
          * id : 1017
          * yStoreId : 692341585785913344
@@ -648,7 +648,7 @@ public class OrderDetailModel implements Serializable {
         }
     }
 
-    public static class UserSedanInfoBean {
+    public static class UserSedanInfoBean implements Serializable{
         /**
          * id : 1088
          * yUserSedanId : 724585460164198400
@@ -833,7 +833,7 @@ public class OrderDetailModel implements Serializable {
             this.createDate = createDate;
         }
 
-        public static class BrandInfoBean {
+        public static class BrandInfoBean implements Serializable{
             /**
              * id : 87667
              * ySedanBrandId : 716704933323210752
@@ -940,7 +940,7 @@ public class OrderDetailModel implements Serializable {
         }
     }
 
-    public static class OrderServiceListBean {
+    public static class OrderServiceListBean implements Serializable{
         /**
          * id : 94
          * yOrderServiceId : 731104410121273344
@@ -1075,7 +1075,7 @@ public class OrderDetailModel implements Serializable {
             this.order_goods_list = order_goods_list;
         }
 
-        public static class OrderGoodsListBean {
+        public static class OrderGoodsListBean implements Serializable{
             /**
              * id : 119
              * yOrderGoodsId : 731104410066747392
@@ -1220,7 +1220,7 @@ public class OrderDetailModel implements Serializable {
                 this.goods_info = goods_info;
             }
 
-            public static class GoodsInfoBean {
+            public static class GoodsInfoBean implements Serializable{
                 /**
                  * id : 1017
                  * yGoodsId : 692341585785913344
@@ -1398,7 +1398,7 @@ public class OrderDetailModel implements Serializable {
         }
     }
 
-    public static class VOrderGoodsListBean {
+    public static class VOrderGoodsListBean implements Serializable{
         /**
          * id : 117
          * yOrderGoodsId : 731104409840254976
@@ -1553,7 +1553,7 @@ public class OrderDetailModel implements Serializable {
             this.goods_info = goods_info;
         }
 
-        public static class GoodsInfoBeanX {
+        public static class GoodsInfoBeanX implements Serializable{
             /**
              * id : 1017
              * yGoodsId : 692341585785913344
@@ -1730,7 +1730,7 @@ public class OrderDetailModel implements Serializable {
         }
     }
 
-    public static class TechnSedanInfoBean {
+    public static class TechnSedanInfoBean implements Serializable{
         /**
          * id : 1043
          * yTechnSedanId : 730732604248031232

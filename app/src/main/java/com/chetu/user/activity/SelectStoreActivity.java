@@ -312,6 +312,7 @@ public class SelectStoreActivity extends BaseActivity {
                                 Intent resultIntent = new Intent();
                                 Bundle bundle = new Bundle();
                                 bundle.putString("y_store_id1", list.get(i).getYStoreId());
+//                                bundle.putString("y_store_service_id", list.get(i).getStore_service_list().get(i).getYStoreServiceId());
                                 bundle.putString("store_name", list.get(i).getVName());
                                 resultIntent.putExtras(bundle);
                                 SelectStoreActivity.this.setResult(RESULT_OK, resultIntent);

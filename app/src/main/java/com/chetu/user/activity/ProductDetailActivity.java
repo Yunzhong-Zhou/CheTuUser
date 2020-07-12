@@ -694,6 +694,7 @@ public class ProductDetailActivity extends BaseActivity {
                         JSONObject object1 = new JSONObject();
                         object1.put("y_store_service_id", y_store_service_id);
                         object1.put("y_goods_id", y_goods_id);
+                        object1.put("y_store_id", y_store_id1);
                         object1.put("is_service", "3");//1为服务  2为服务下边的商品 3为独立商品
                         object1.put("g_num", g_num + "");
                         object1.put("s_value", s_value);
@@ -922,9 +923,13 @@ public class ProductDetailActivity extends BaseActivity {
             }
         }
 
-        goods_specific_idstr = goods_specific_idstr.substring(0, goods_specific_idstr.length() - 2);
+        if (goods_specific_idstr.length() >0){
+            goods_specific_idstr = goods_specific_idstr.substring(0, goods_specific_idstr.length() - 2);
+        }
         MyLogger.i(">>>>>>" + goods_specific_idstr);
-        s_value = s_value.substring(0, s_value.length() - 2);
+        if (s_value.length() >0){
+            s_value = s_value.substring(0, s_value.length() - 2);
+        }
         tv_tab.setText(s_value);
 
         allmoney = (long) ((model.getInfo().getGPrice() + tabMoney) * num);
@@ -936,10 +941,10 @@ public class ProductDetailActivity extends BaseActivity {
     }
 
     private boolean match() {
-        if (goods_specific_idstr.equals("")) {
+        /*if (goods_specific_idstr.equals("")) {
             myToast("请先选择规格");
             return false;
-        }
+        }*/
 
         if (is_install.equals("1")) {
             if (y_store_id1.equals("")) {
