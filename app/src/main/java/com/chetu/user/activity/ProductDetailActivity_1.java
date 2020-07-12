@@ -401,14 +401,14 @@ public class ProductDetailActivity_1 extends BaseActivity {
                     protected void convert(ViewHolder holder, PingJiaModel.ListBean model, int position) {
                         //用户评论
                         TextView pinglun = holder.getView(R.id.pinglun);
-                        pinglun.setText("用户评论（" + list.size() + "）");
+                        pinglun.setText("用户评论（" + response.getSum() + "）");
                         if (position == 2)
                             pinglun.setVisibility(View.VISIBLE);
                         else
                             pinglun.setVisibility(View.GONE);
 
                         //信息
-                        holder.setText(R.id.tv_name, model.getY_user().getUserName());
+                        holder.setText(R.id.tv_name, model.getUser_info().getUserName());
                         holder.setText(R.id.tv_time, model.getCreateDate());
                         holder.setText(R.id.tv_content, model.getYMsg());
                         RatingBar ratingbar = holder.getView(R.id.ratingbar);

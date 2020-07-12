@@ -690,6 +690,23 @@ public class Fragment1 extends BaseFragment {
                 //消息
                 String url = URLs.KFHOST+"/#/pages/chetu-kf/chetu-kf?token="+localUserInfo.getToken()+
                         "&kf_userHash="+localUserInfo.getKfuserhash();
+                /*WebUtilsConfig config1 =
+                        new WebUtilsConfig()
+                                .setTitleBackgroundColor(R.color.colorPrimary)//设置标题栏背景色
+//                                .setBackText("关闭")//设置返回按钮的文案
+                                .setBackBtnRes(R.mipmap.ic_return_black)//设置返回按钮的图标
+//                                .setMoreBtnRes(R.mipmap.more_web)//设置更多按钮的图标
+                                .setShowBackText(false)//设置是否显示返回按钮的文案
+                                .setShowMoreBtn(false)//设置是否显示更多按钮
+                                .setShowTitleLine(false)//设置是否显示标题下面的分割线
+                                .setShowTitleView(true)//设置是否显示标题栏，网页是全屏的时候可以选择隐藏标题栏
+//                                .setTitleBackgroundRes(getResources().getColor(R.color.white))//设置标题栏背景资源
+                                .setTitleBackgroundColor(R.color.white)
+//                                .setBackTextColor(-1)//设置返回按钮的文案颜色
+                                .setTitleTextColor(R.color.black)//设置标题文字颜色
+                                .setStateBarTextColorDark(true)//设置状态栏文字颜色是否是暗色，如果你设置了标题栏背景颜色为白色，这里需要设置true，否则状态栏看不到文案了
+                                .setTitleLineColor(R.color.app_title_color);//设置标题栏下面的分割线的颜色
+                OpenWebActivity.openWebView(getActivity(), url, config1);*/
                 Bundle bundle = new Bundle();
                 bundle.putString("url", url);
                 CommonUtil.gotoActivityWithData(getActivity(), WebContentActivity.class, bundle, false);

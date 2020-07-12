@@ -23,6 +23,7 @@ import com.chetu.user.net.URLs;
 import com.chetu.user.okhttp.CallBackUtil;
 import com.chetu.user.okhttp.OkhttpUtil;
 import com.chetu.user.popupwindow.PhotoShowDialog;
+import com.chetu.user.utils.CommonUtil;
 import com.chetu.user.utils.MyLogger;
 import com.chetu.user.view.LoadingLayout;
 import com.chetu.user.view.MyDefaultFooter;
@@ -134,6 +135,7 @@ public class ProductDetailActivity extends BaseActivity {
         head1_tv3 = View1.findViewById(R.id.head1_tv3);
         head1_tv4 = View1.findViewById(R.id.head1_tv4);
         head1_tv5 = View1.findViewById(R.id.head1_tv5);
+        head1_tv5.setText("数量" + g_num);
 
         iv_xihuan = View1.findViewById(R.id.iv_xihuan);
 
@@ -318,7 +320,7 @@ public class ProductDetailActivity extends BaseActivity {
             @Override
             public void onResponse(ProductDetailModel response) {
                 model = response;
-//                hideProgress();
+                hideProgress();
 //                showContentPage();
 
                 y_store_id = response.getInfo().getYStoreId();
@@ -410,12 +412,12 @@ public class ProductDetailActivity extends BaseActivity {
                 /**
                  * 第三页-评论
                  */
-                Map<String, String> params = new HashMap<>();
+               /* Map<String, String> params = new HashMap<>();
                 params.put("y_goods_id", y_goods_id);
                 params.put("y_store_id", "0");
                 params.put("page", page + "");
 //                params.put("u_token", localUserInfo.getToken());
-                RequestPingJia(params);
+                RequestPingJia(params);*/
             }
         });
     }
@@ -465,8 +467,8 @@ public class ProductDetailActivity extends BaseActivity {
                     }
 
                     list_view3 = response.getList();
-                    head1_pinglun.setText("用户评论（" + list_view3.size() + "）");
-                    head3_pinglun.setText("用户评论（" + list_view3.size() + "）");
+                    head1_pinglun.setText("用户评论（" + response.getSum() + "）");
+                    head3_pinglun.setText("用户评论（" + response.getSum() + "）");
 
                     mAdapter_view1 = new CommonAdapter<PingJiaModel.ListBean>
                             (ProductDetailActivity.this, R.layout.item_productdetail, list_view1) {
@@ -481,7 +483,7 @@ public class ProductDetailActivity extends BaseActivity {
                             pinglun.setVisibility(View.GONE);*/
 
                             //信息
-                            holder.setText(R.id.tv_name, model.getY_user().getUserName());
+                            holder.setText(R.id.tv_name, model.getUser_info().getUserName());
                             holder.setText(R.id.tv_time, model.getCreateDate());
                             holder.setText(R.id.tv_content, model.getYMsg());
                             RatingBar ratingbar = holder.getView(R.id.ratingbar);
@@ -529,7 +531,7 @@ public class ProductDetailActivity extends BaseActivity {
                             pinglun.setVisibility(View.GONE);*/
 
                             //信息
-                            holder.setText(R.id.tv_name, model.getY_user().getUserName());
+                            holder.setText(R.id.tv_name, model.getUser_info().getUserName());
                             holder.setText(R.id.tv_time, model.getCreateDate());
                             holder.setText(R.id.tv_content, model.getYMsg());
                             RatingBar ratingbar = holder.getView(R.id.ratingbar);
@@ -694,7 +696,7 @@ public class ProductDetailActivity extends BaseActivity {
                         JSONObject object1 = new JSONObject();
                         object1.put("y_store_service_id", y_store_service_id);
                         object1.put("y_goods_id", y_goods_id);
-                        object1.put("y_store_id", y_store_id1);
+//                        object1.put("y_store_id", y_store_id1);
                         object1.put("is_service", "3");//1为服务  2为服务下边的商品 3为独立商品
                         object1.put("g_num", g_num + "");
                         object1.put("s_value", s_value);
@@ -741,7 +743,13 @@ public class ProductDetailActivity extends BaseActivity {
                     @Override
                     public void onClick(View v) {
                         dialog.dismiss();
-                        finish();
+//                        finish();
+                        Bundle bundle2 = new Bundle();
+//                bundle2.putSerializable("XuanZeFuWuModel", (Serializable) list_xuanze);
+                        bundle2.putString("y_store_id", y_store_id);
+                        bundle2.putString("longitude", localUserInfo.getLongitude());
+                        bundle2.putString("latitude", localUserInfo.getLatitude());
+                        CommonUtil.gotoActivityWithData(ProductDetailActivity.this, ConfirmOrderActivity.class, bundle2, false);
                     }
                 });
 
@@ -923,11 +931,11 @@ public class ProductDetailActivity extends BaseActivity {
             }
         }
 
-        if (goods_specific_idstr.length() >0){
+        if (goods_specific_idstr.length() > 0) {
             goods_specific_idstr = goods_specific_idstr.substring(0, goods_specific_idstr.length() - 2);
         }
         MyLogger.i(">>>>>>" + goods_specific_idstr);
-        if (s_value.length() >0){
+        if (s_value.length() > 0) {
             s_value = s_value.substring(0, s_value.length() - 2);
         }
         tv_tab.setText(s_value);
@@ -937,7 +945,7 @@ public class ProductDetailActivity extends BaseActivity {
 
         textView_moeny.setText("¥" + allmoney);
         textView_num.setText(g_num + "");
-        head1_tv5.setText(s_value);
+        head1_tv5.setText("数量" + g_num + " " + s_value);
     }
 
     private boolean match() {
@@ -946,12 +954,12 @@ public class ProductDetailActivity extends BaseActivity {
             return false;
         }*/
 
-        if (is_install.equals("1")) {
+       /* if (is_install.equals("1")) {
             if (y_store_id1.equals("")) {
                 myToast("请选择门店");
                 return false;
             }
-        }
+        }*/
 
         return true;
     }

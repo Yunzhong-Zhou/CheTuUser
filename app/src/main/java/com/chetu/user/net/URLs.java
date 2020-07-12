@@ -52,6 +52,8 @@ public class URLs {
     public static final String Pay = HOST+"/api/v1/pay/online_payment";
     //评价列表
     public static final String PingJiaList = HOST+"/api/v1/public/get_goods_eval_list";
+    //门店评价列表
+    public static final String PingJiaList_Store = HOST+"/api/v1/public/get_store_eval_list";
     //发布评价
     public static final String AddPingJia = HOST+"/api/v1/user/user_add_eval";
     //回复问答

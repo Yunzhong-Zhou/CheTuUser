@@ -8,19 +8,19 @@ import java.util.List;
  */
 public class PingJiaModel implements Serializable {
     /**
-     * list : [{"id":"1","goodsEvalId":"692341585785913344","userId":"20180531104813","yGoodsId":"692341585785913344","yStoreId":"692341585785913344","yOrderId":"0","starC":"3","yMsg":"测试","createDate":"2019-09-27 10:31:19","y_user":{"id":"0","userId":"20180531104813","userBalance":0,"userName":"龙肆","userIntegral":"0","yStoreId":"0","userHash":"3B2372646663FDC7A81EA8E241CB7946AC74E4C0C9CFD31F750FEE2831528FF5","headPortrait":" ","userPhone":"18203048656"},"imgStr":"/upload/pro.png||/upload/pro.png","imgArr":["/upload/pro.png","/upload/pro.png"]}]
-     * count : 0
+     * sum : 8
+     * list : [{"id":"53","yStoreEvalId":"731827676834168832","yStoreId":"692341585785913344","userId":"714547022807433216","yTechnSedanId":"730732604248031232","vCy":2,"starC":"5","yMsg":"阿斯顿马丁路德金阿斯顿","createDate":"2020-07-12 11:01:54","imgStr":"/upload/2020-07-12/20200712110154_401022.jpg","imgArr":["/upload/2020-07-12/20200712110154_401022.jpg"],"userJson":"{\"headPortrait\":\"/upload/2020-06-13/20200613085845_638405.jpeg\",\"id\":0,\"userAccount\":\"Y11P3D\",\"userBalance\":0.0,\"userHash\":\"36635C17B0E19DD1E14A92D8895B47CD\",\"userId\":0,\"userIntegral\":0,\"userName\":\"阿斯顿马丁\",\"userPhone\":18306043086,\"yStoreId\":0}","orderJson":"{\"imgStr\":\"/upload/logo/716723976784576512.jpg\",\"serviceStr\":\"右前门\",\"y_order_id\":730063630766178304}","user_info":{"id":"0","userId":"714547022807433216","userBalance":0,"userName":"阿斯顿马丁","userIntegral":"0","yStoreId":"0","userHash":"36635C17B0E19DD1E14A92D8895B47CD","headPortrait":"/upload/2020-06-13/20200613085845_638405.jpeg","userPhone":"18306043086"}},{"id":"52","yStoreEvalId":"731548505843171328","yStoreId":"692341585785913344","userId":"714547022807433216","yTechnSedanId":"730732604248031232","vCy":2,"starC":"5","yMsg":"ahshsh","createDate":"2020-07-11 16:32:35","imgStr":"/upload/2020-07-11/20200711163234_596057.png||/upload/2020-07-11/20200711163234_296758.png||/upload/2020-07-11/20200711163234_134762.png","imgArr":["/upload/2020-07-11/20200711163234_596057.png","/upload/2020-07-11/20200711163234_296758.png","/upload/2020-07-11/20200711163234_134762.png"],"userJson":"{\"headPortrait\":\"/upload/2020-06-13/20200613085845_638405.jpeg\",\"id\":0,\"userAccount\":\"Y11P3D\",\"userBalance\":0.0,\"userHash\":\"36635C17B0E19DD1E14A92D8895B47CD\",\"userId\":0,\"userIntegral\":0,\"userName\":\"阿斯顿马丁\",\"userPhone\":18306043086,\"yStoreId\":0}","orderJson":"{\"imgStr\":\"/upload/logo/716723976784576512.jpg\",\"serviceStr\":\"右前门\",\"y_order_id\":730063630766178304}","user_info":{"id":"0","userId":"714547022807433216","userBalance":0,"userName":"阿斯顿马丁","userIntegral":"0","yStoreId":"0","userHash":"36635C17B0E19DD1E14A92D8895B47CD","headPortrait":"/upload/2020-06-13/20200613085845_638405.jpeg","userPhone":"18306043086"}},{"id":"49","yStoreEvalId":"730024300899205120","yStoreId":"692341585785913344","userId":"20180531104813","yTechnSedanId":"728681233067802624","vCy":2,"starC":"5","yMsg":"123","createDate":"2020-07-07 11:35:56","userJson":"{\"headPortrait\":\" \",\"id\":0,\"userAccount\":\"6545764\",\"userBalance\":0.0,\"userHash\":\"3B2372646663FDC7A81EA8E241CB7946AC74E4C0C9CFD31F750FEE2831528FF5\",\"userId\":0,\"userIntegral\":0,\"userName\":\"龙肆\",\"userPhone\":18203048656,\"yStoreId\":0}","orderJson":"{\"imgStr\":\"/upload/logo/716723979414405120.jpg\",\"serviceStr\":\"在前门右叶板子\",\"y_order_id\":728916430245855232}","user_info":{"id":"0","userId":"20180531104813","userBalance":0,"userName":"龙肆","userIntegral":"0","yStoreId":"0","userHash":"3B2372646663FDC7A81EA8E241CB7946AC74E4C0C9CFD31F750FEE2831528FF5","headPortrait":"/upload/2020-07-12/20200712101732_309412.jpg","userPhone":"18203048656"}},{"id":"47","yStoreEvalId":"730021545165979648","yStoreId":"692341585785913344","userId":"720416799337742336","yTechnSedanId":"728681233067802624","vCy":2,"starC":"5","yMsg":"123","createDate":"2020-07-07 11:24:59","userJson":"{\"headPortrait\":\"/upload/2020-06-26/20200626202107_110858.png\",\"id\":0,\"userAccount\":\"1NMYRB\",\"userBalance\":0.0,\"userHash\":\"504F04C880F2A74235E7CA1801A56461\",\"userId\":0,\"userIntegral\":0,\"userName\":\"周锶俊\",\"userPhone\":18582808302,\"yStoreId\":0}","orderJson":"{\"imgStr\":\"/upload/logo/716723979414405120.jpg\",\"serviceStr\":\"在前门右叶板子\",\"y_order_id\":728916430245855232}","user_info":{"id":"0","userId":"720416799337742336","userBalance":0,"userName":"周锶俊","userIntegral":"0","yStoreId":"0","userHash":"504F04C880F2A74235E7CA1801A56461","headPortrait":"/upload/2020-06-26/20200626202107_110858.png","userPhone":"18582808302"}},{"id":"45","yStoreEvalId":"730021109931442176","yStoreId":"692341585785913344","userId":"720416799337742336","yTechnSedanId":"728681233067802624","vCy":2,"starC":"5","yMsg":"123","createDate":"2020-07-07 11:23:15","userJson":"{\"headPortrait\":\"/upload/2020-06-26/20200626202107_110858.png\",\"id\":0,\"userAccount\":\"1NMYRB\",\"userBalance\":0.0,\"userHash\":\"504F04C880F2A74235E7CA1801A56461\",\"userId\":0,\"userIntegral\":0,\"userName\":\"周锶俊\",\"userPhone\":18582808302,\"yStoreId\":0}","orderJson":"{\"imgStr\":\"/upload/logo/716723979414405120.jpg\",\"serviceStr\":\"在前门右叶板子\",\"y_order_id\":728916430245855232}","user_info":{"id":"0","userId":"720416799337742336","userBalance":0,"userName":"周锶俊","userIntegral":"0","yStoreId":"0","userHash":"504F04C880F2A74235E7CA1801A56461","headPortrait":"/upload/2020-06-26/20200626202107_110858.png","userPhone":"18582808302"}},{"id":"44","yStoreEvalId":"730020575942017024","yStoreId":"692341585785913344","userId":"720416799337742336","yTechnSedanId":"728917123266510848","vCy":2,"starC":"5","yMsg":"维修师傅说我要好好休息一下了。我是一个劲地想起来","createDate":"2020-07-07 11:21:08","imgStr":"/upload/2020-07-07/20200707112107_894064.png","imgArr":["/upload/2020-07-07/20200707112107_894064.png"],"userJson":"{\"headPortrait\":\"/upload/2020-06-26/20200626202107_110858.png\",\"id\":0,\"userAccount\":\"1NMYRB\",\"userBalance\":0.0,\"userHash\":\"504F04C880F2A74235E7CA1801A56461\",\"userId\":0,\"userIntegral\":0,\"userName\":\"周锶俊\",\"userPhone\":18582808302,\"yStoreId\":0}","orderJson":"{\"imgStr\":\"/upload/logo/716723979414405120.jpg\",\"serviceStr\":\"在前门右叶板子\",\"y_order_id\":728916430245855232}","user_info":{"id":"0","userId":"720416799337742336","userBalance":0,"userName":"周锶俊","userIntegral":"0","yStoreId":"0","userHash":"504F04C880F2A74235E7CA1801A56461","headPortrait":"/upload/2020-06-26/20200626202107_110858.png","userPhone":"18582808302"}},{"id":"36","yStoreEvalId":"726390845938335744","yStoreId":"692341585785913344","userId":"720416799337742336","yTechnSedanId":"725651523920461824","vCy":2,"starC":"5","yMsg":"Good","createDate":"2020-06-27 10:57:53","imgStr":"/upload/2020-06-27/20200627105752_947968.png","imgArr":["/upload/2020-06-27/20200627105752_947968.png"],"userJson":"{\"headPortrait\":\"/upload/2020-06-26/20200626202107_110858.png\",\"id\":0,\"userAccount\":\"1NMYRB\",\"userBalance\":0.0,\"userHash\":\"504F04C880F2A74235E7CA1801A56461\",\"userId\":0,\"userIntegral\":0,\"userName\":\"周锶俊\",\"userPhone\":18582808302,\"yStoreId\":0}","orderJson":"{\"imgStr\":\"/upload/logo/716723978600710144.jpg\",\"serviceStr\":\"\",\"y_order_id\":724763010417033216}","user_info":{"id":"0","userId":"720416799337742336","userBalance":0,"userName":"周锶俊","userIntegral":"0","yStoreId":"0","userHash":"504F04C880F2A74235E7CA1801A56461","headPortrait":"/upload/2020-06-26/20200626202107_110858.png","userPhone":"18582808302"}},{"id":"33","yStoreEvalId":"726366860068519936","yStoreId":"692341585785913344","userId":"20180531104813","yTechnSedanId":"725651523920461824","vCy":2,"starC":"5","yMsg":"U4e0dU9519","createDate":"2020-06-27 09:22:34","imgStr":"/upload/2020-06-26/20200626234259_469662.png","imgArr":["/upload/2020-06-26/20200626234259_469662.png"],"userJson":"{\"headPortrait\":\" \",\"id\":0,\"userAccount\":\"6545764\",\"userBalance\":0.0,\"userHash\":\"3B2372646663FDC7A81EA8E241CB7946AC74E4C0C9CFD31F750FEE2831528FF5\",\"userId\":0,\"userIntegral\":0,\"userName\":\"龙肆\",\"yStoreId\":0}","orderJson":"{\"imgStr\":\"/upload/logo/716723978600710144.jpg\",\"serviceStr\":\"\",\"y_order_id\":724763010417033216}","user_info":{"id":"0","userId":"20180531104813","userBalance":0,"userName":"龙肆","userIntegral":"0","yStoreId":"0","userHash":"3B2372646663FDC7A81EA8E241CB7946AC74E4C0C9CFD31F750FEE2831528FF5","headPortrait":"/upload/2020-07-12/20200712101732_309412.jpg","userPhone":"18203048656"}}]
      */
 
-    private int count;
+    private int sum;
     private List<ListBean> list;
 
-    public int getCount() {
-        return count;
+    public int getSum() {
+        return sum;
     }
 
-    public void setCount(int count) {
-        this.count = count;
+    public void setSum(int sum) {
+        this.sum = sum;
     }
 
     public List<ListBean> getList() {
@@ -33,31 +33,35 @@ public class PingJiaModel implements Serializable {
 
     public static class ListBean {
         /**
-         * id : 1
-         * goodsEvalId : 692341585785913344
-         * userId : 20180531104813
-         * yGoodsId : 692341585785913344
+         * id : 53
+         * yStoreEvalId : 731827676834168832
          * yStoreId : 692341585785913344
-         * yOrderId : 0
-         * starC : 3
-         * yMsg : 测试
-         * createDate : 2019-09-27 10:31:19
-         * y_user : {"id":"0","userId":"20180531104813","userBalance":0,"userName":"龙肆","userIntegral":"0","yStoreId":"0","userHash":"3B2372646663FDC7A81EA8E241CB7946AC74E4C0C9CFD31F750FEE2831528FF5","headPortrait":" ","userPhone":"18203048656"}
-         * imgStr : /upload/pro.png||/upload/pro.png
-         * imgArr : ["/upload/pro.png","/upload/pro.png"]
+         * userId : 714547022807433216
+         * yTechnSedanId : 730732604248031232
+         * vCy : 2
+         * starC : 5
+         * yMsg : 阿斯顿马丁路德金阿斯顿
+         * createDate : 2020-07-12 11:01:54
+         * imgStr : /upload/2020-07-12/20200712110154_401022.jpg
+         * imgArr : ["/upload/2020-07-12/20200712110154_401022.jpg"]
+         * userJson : {"headPortrait":"/upload/2020-06-13/20200613085845_638405.jpeg","id":0,"userAccount":"Y11P3D","userBalance":0.0,"userHash":"36635C17B0E19DD1E14A92D8895B47CD","userId":0,"userIntegral":0,"userName":"阿斯顿马丁","userPhone":18306043086,"yStoreId":0}
+         * orderJson : {"imgStr":"/upload/logo/716723976784576512.jpg","serviceStr":"右前门","y_order_id":730063630766178304}
+         * user_info : {"id":"0","userId":"714547022807433216","userBalance":0,"userName":"阿斯顿马丁","userIntegral":"0","yStoreId":"0","userHash":"36635C17B0E19DD1E14A92D8895B47CD","headPortrait":"/upload/2020-06-13/20200613085845_638405.jpeg","userPhone":"18306043086"}
          */
 
         private String id;
-        private String goodsEvalId;
-        private String userId;
-        private String yGoodsId;
+        private String yStoreEvalId;
         private String yStoreId;
-        private String yOrderId;
+        private String userId;
+        private String yTechnSedanId;
+        private int vCy;
         private String starC;
         private String yMsg;
         private String createDate;
-        private YUserBean y_user;
         private String imgStr;
+        private String userJson;
+        private String orderJson;
+        private UserInfoBean user_info;
         private List<String> imgArr;
 
         public String getId() {
@@ -68,28 +72,12 @@ public class PingJiaModel implements Serializable {
             this.id = id;
         }
 
-        public String getGoodsEvalId() {
-            return goodsEvalId;
+        public String getYStoreEvalId() {
+            return yStoreEvalId;
         }
 
-        public void setGoodsEvalId(String goodsEvalId) {
-            this.goodsEvalId = goodsEvalId;
-        }
-
-        public String getUserId() {
-            return userId;
-        }
-
-        public void setUserId(String userId) {
-            this.userId = userId;
-        }
-
-        public String getYGoodsId() {
-            return yGoodsId;
-        }
-
-        public void setYGoodsId(String yGoodsId) {
-            this.yGoodsId = yGoodsId;
+        public void setYStoreEvalId(String yStoreEvalId) {
+            this.yStoreEvalId = yStoreEvalId;
         }
 
         public String getYStoreId() {
@@ -100,12 +88,28 @@ public class PingJiaModel implements Serializable {
             this.yStoreId = yStoreId;
         }
 
-        public String getYOrderId() {
-            return yOrderId;
+        public String getUserId() {
+            return userId;
         }
 
-        public void setYOrderId(String yOrderId) {
-            this.yOrderId = yOrderId;
+        public void setUserId(String userId) {
+            this.userId = userId;
+        }
+
+        public String getYTechnSedanId() {
+            return yTechnSedanId;
+        }
+
+        public void setYTechnSedanId(String yTechnSedanId) {
+            this.yTechnSedanId = yTechnSedanId;
+        }
+
+        public int getVCy() {
+            return vCy;
+        }
+
+        public void setVCy(int vCy) {
+            this.vCy = vCy;
         }
 
         public String getStarC() {
@@ -132,20 +136,36 @@ public class PingJiaModel implements Serializable {
             this.createDate = createDate;
         }
 
-        public YUserBean getY_user() {
-            return y_user;
-        }
-
-        public void setY_user(YUserBean y_user) {
-            this.y_user = y_user;
-        }
-
         public String getImgStr() {
             return imgStr;
         }
 
         public void setImgStr(String imgStr) {
             this.imgStr = imgStr;
+        }
+
+        public String getUserJson() {
+            return userJson;
+        }
+
+        public void setUserJson(String userJson) {
+            this.userJson = userJson;
+        }
+
+        public String getOrderJson() {
+            return orderJson;
+        }
+
+        public void setOrderJson(String orderJson) {
+            this.orderJson = orderJson;
+        }
+
+        public UserInfoBean getUser_info() {
+            return user_info;
+        }
+
+        public void setUser_info(UserInfoBean user_info) {
+            this.user_info = user_info;
         }
 
         public List<String> getImgArr() {
@@ -156,17 +176,17 @@ public class PingJiaModel implements Serializable {
             this.imgArr = imgArr;
         }
 
-        public static class YUserBean {
+        public static class UserInfoBean {
             /**
              * id : 0
-             * userId : 20180531104813
+             * userId : 714547022807433216
              * userBalance : 0.0
-             * userName : 龙肆
+             * userName : 阿斯顿马丁
              * userIntegral : 0
              * yStoreId : 0
-             * userHash : 3B2372646663FDC7A81EA8E241CB7946AC74E4C0C9CFD31F750FEE2831528FF5
-             * headPortrait :
-             * userPhone : 18203048656
+             * userHash : 36635C17B0E19DD1E14A92D8895B47CD
+             * headPortrait : /upload/2020-06-13/20200613085845_638405.jpeg
+             * userPhone : 18306043086
              */
 
             private String id;

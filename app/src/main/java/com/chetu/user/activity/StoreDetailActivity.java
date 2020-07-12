@@ -515,7 +515,7 @@ public class StoreDetailActivity extends BaseActivity {
      * @param
      */
     private void RequestPingLun(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.PingJiaList, params, headerMap, new CallBackUtil<PingJiaModel>() {
+        OkhttpUtil.okHttpPost(URLs.PingJiaList_Store, params, headerMap, new CallBackUtil<PingJiaModel>() {
             @Override
             public PingJiaModel onParseResponse(Call call, Response response) {
                 return null;
@@ -541,14 +541,14 @@ public class StoreDetailActivity extends BaseActivity {
                     list_pinglun = response.getList();
                 }
 
-                tv_pinglun.setText("用户评论（" + response.getCount() + "）");
+                tv_pinglun.setText("用户评论（" + response.getSum() + "）");
 
                 mAdapter_pinglun = new CommonAdapter<PingJiaModel.ListBean>
                         (StoreDetailActivity.this, R.layout.item_productdetail, list_pinglun) {
                     @Override
                     protected void convert(ViewHolder holder, PingJiaModel.ListBean model, int position) {
                         //信息
-                        holder.setText(R.id.tv_name, model.getY_user().getUserName());
+                        holder.setText(R.id.tv_name, model.getUser_info().getUserName());
                         holder.setText(R.id.tv_time, model.getCreateDate());
                         holder.setText(R.id.tv_content, model.getYMsg());
                         RatingBar ratingbar = holder.getView(R.id.ratingbar);
@@ -613,7 +613,7 @@ public class StoreDetailActivity extends BaseActivity {
      * @param params
      */
     private void RequestPingLunMore(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.PingJiaList, params, headerMap, new CallBackUtil<PingJiaModel>() {
+        OkhttpUtil.okHttpPost(URLs.PingJiaList_Store, params, headerMap, new CallBackUtil<PingJiaModel>() {
             @Override
             public PingJiaModel onParseResponse(Call call, Response response) {
                 return null;

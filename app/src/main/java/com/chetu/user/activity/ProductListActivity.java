@@ -3,7 +3,6 @@ package com.chetu.user.activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
@@ -134,13 +133,14 @@ public class ProductListActivity extends BaseActivity {
 
                             holder.setText(R.id.textView1, model.getGName());
                             holder.setText(R.id.textView2, model.getGPrice() + "");
-                            TextView textView3 = holder.getView(R.id.textView3);
+                            /*TextView textView3 = holder.getView(R.id.textView3);
                             textView3.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     //购买
+
                                 }
-                            });
+                            });*/
                         }
                     };
                     mAdapter1.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {

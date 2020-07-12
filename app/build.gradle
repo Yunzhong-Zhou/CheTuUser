@@ -163,6 +163,8 @@ dependencies {
 
     //动态申请权限
     implementation 'com.github.MZCretin:FanPermission:1.0.0'
+    //打开webview
+    implementation 'com.github.MZCretin:WebViewUtils:v1.0.4-x'
 
     //微信
     implementation 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+'

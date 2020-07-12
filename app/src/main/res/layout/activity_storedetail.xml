@@ -445,8 +445,9 @@
                         android:layout_height="wrap_content"
                         android:onClick="onClick"
                         android:orientation="horizontal"
-                        android:paddingLeft="13dp"
-                        android:paddingTop="15dp">
+                        android:paddingLeft="10dp"
+                        android:paddingTop="15dp"
+                        android:paddingBottom="10dp">
 
                         <TextView
                             android:id="@+id/tv_pinglun"

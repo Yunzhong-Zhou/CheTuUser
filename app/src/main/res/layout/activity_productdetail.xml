@@ -62,6 +62,7 @@
             android:onClick="onClick"
             android:padding="10dp"
             android:text="评价"
+            android:visibility="gone"
             android:textColor="@color/black2"
             android:textSize="15sp"
             android:textStyle="bold" />

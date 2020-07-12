@@ -96,7 +96,7 @@ public class PingLunListActivity extends BaseActivity {
     }
 
     private void Request(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.PingJiaList, params, headerMap, new CallBackUtil<PingJiaModel>() {
+        OkhttpUtil.okHttpPost(URLs.PingJiaList_Store, params, headerMap, new CallBackUtil<PingJiaModel>() {
             @Override
             public PingJiaModel onParseResponse(Call call, Response response) {
                 return null;
@@ -120,7 +120,7 @@ public class PingLunListActivity extends BaseActivity {
                         @Override
                         protected void convert(ViewHolder holder, PingJiaModel.ListBean model, int position) {
                             //信息
-                            holder.setText(R.id.tv_name, model.getY_user().getUserName());
+                            holder.setText(R.id.tv_name, model.getUser_info().getUserName());
                             holder.setText(R.id.tv_time, model.getCreateDate());
                             holder.setText(R.id.tv_content, model.getYMsg());
                             RatingBar ratingbar = holder.getView(R.id.ratingbar);
@@ -171,7 +171,7 @@ public class PingLunListActivity extends BaseActivity {
      * @param params
      */
     private void RequestMore(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.PingJiaList, params, headerMap, new CallBackUtil<PingJiaModel>() {
+        OkhttpUtil.okHttpPost(URLs.PingJiaList_Store, params, headerMap, new CallBackUtil<PingJiaModel>() {
             @Override
             public PingJiaModel onParseResponse(Call call, Response response) {
                 return null;
