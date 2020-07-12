@@ -28,6 +28,7 @@ import com.chetu.user.activity.NotebookActivity;
 import com.chetu.user.activity.ServiceCenterActivity;
 import com.chetu.user.activity.SetUpActivity;
 import com.chetu.user.activity.WaitingReleaseActivity;
+import com.chetu.user.activity.WebContentActivity;
 import com.chetu.user.base.BaseFragment;
 import com.chetu.user.model.Fragment4Model;
 import com.chetu.user.net.URLs;
@@ -252,6 +253,11 @@ public class Fragment4 extends BaseFragment {
                 break;
             case R.id.rl_xiaoxi:
                 //消息
+                String url = URLs.KFHOST+"/#/pages/chetu-kf/chetu-kf?token="+localUserInfo.getToken()+
+                        "&kf_userHash="+localUserInfo.getKfuserhash();
+                Bundle bundle = new Bundle();
+                bundle.putString("url", url);
+                CommonUtil.gotoActivityWithData(getActivity(), WebContentActivity.class, bundle, false);
 //                CommonUtil.gotoActivity(getActivity(), .class);
                 break;
             case R.id.linearLayout1:

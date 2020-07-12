@@ -33,11 +33,18 @@ public class OrderDetailModel implements Serializable {
     private double order_price;
     private List<OrderServiceListBean> order_service_list;
     private List<VOrderGoodsListBean> v_order_goods_list;
+
+
     /**
      * techn_sedan_info : {"id":"1043","yTechnSedanId":"730732604248031232","yOrderId":"730063630766178304","ySedanBrandId":"716704933323210752","yStoreId":"692341585785913344","userId":"719539276219416576","licenseNumber":"粤A12345","ownerName":"阿斯顿马丁","ownerPhone":"18306043086","frameNumber":"adfdssa45666","vehicleMileage":"2000","compInsuranceTime":"2026-07-09","comInsuranceTime":"2023-07-09","annualReviewTime":"2035-07-09","vRemarks":"备注","sedanBrandJson":"{\"brandName\":\"阿斯顿・马丁\",\"groupName\":\"阿斯顿・马丁\",\"id\":87667,\"parentId\":716704210728517632,\"sLogo\":\"/upload/logo/716723976784576512.jpg\",\"sName\":\"2016款 5.2T 设计师定制版\",\"seriesName\":\"阿斯顿・马丁DB11\",\"vDispla\":\"4T\",\"vYear\":\"2015\",\"ySedanBrandId\":716704933323210752}","gPrice":3640,"isOrder":1,"createDate":"2020-07-09 10:30:29","gState":1,"isEval":0,"brandInfo":{"id":"87667","ySedanBrandId":"716704933323210752","parentId":"716704210728517632","sName":"2016款 5.2T 设计师定制版","sLogo":"/upload/logo/716723976784576512.jpg","seriesName":"阿斯顿・马丁DB11","groupName":"阿斯顿・马丁","brandName":"阿斯顿・马丁","vYear":"2015","vDispla":"4T"},"appeImgstr":"/upload/2020-07-09/20200709103028_755752.jpg||/upload/2020-07-09/20200709103028_973472.jpeg||/upload/2020-07-09/20200709103028_4017.jpeg","estimateTime":"  ","rewardMoney":0}
      */
 
     private TechnSedanInfoBean techn_sedan_info;
+    /**
+     * tech_user_info : {"userId":"20180531104813","userBalance":0,"yStoreId":"692341585785913352","userName":"龙肆","userAccount":"6545764","uToken":"773EDB6D2715FACF9C93354CAC5B1A3372872DC4D5AC085867C7490E9984D33E","isTechn":1,"userIntegral":"10","userHash":"3B2372646663FDC7A81EA8E241CB7946AC74E4C0C9CFD31F750FEE2831528FF5","headPortrait":"/upload/2020-07-12/20200712101732_309412.jpg","userPhone":"18203048656","userJson":"{\"birthday\":\"1985.12.48\",\"u_gender\":\"男\"}","techJson":" {\"star\":\"4\",\"working\":\"1\"}","authJson":"{\"identity_back\":\"\",\"identity_card\":\"511303199303275632\",\"identity_positive\":\"\",\"real_name\":\"sad\"}","isAuth":0,"isKf":1,"isPickup":1}
+     */
+
+    private TechUserInfoBean tech_user_info;
 
 
     public double getTechn_goods_total_price() {
@@ -142,6 +149,14 @@ public class OrderDetailModel implements Serializable {
 
     public void setTechn_sedan_info(TechnSedanInfoBean techn_sedan_info) {
         this.techn_sedan_info = techn_sedan_info;
+    }
+
+    public TechUserInfoBean getTech_user_info() {
+        return tech_user_info;
+    }
+
+    public void setTech_user_info(TechUserInfoBean tech_user_info) {
+        this.tech_user_info = tech_user_info;
     }
 
     public static class OrderInfoBean implements Serializable{
@@ -1983,6 +1998,182 @@ public class OrderDetailModel implements Serializable {
 
         public void setRewardMoney(double rewardMoney) {
             this.rewardMoney = rewardMoney;
+        }
+    }
+
+    public static class TechUserInfoBean implements Serializable{
+        /**
+         * userId : 20180531104813
+         * userBalance : 0.0
+         * yStoreId : 692341585785913352
+         * userName : 龙肆
+         * userAccount : 6545764
+         * uToken : 773EDB6D2715FACF9C93354CAC5B1A3372872DC4D5AC085867C7490E9984D33E
+         * isTechn : 1
+         * userIntegral : 10
+         * userHash : 3B2372646663FDC7A81EA8E241CB7946AC74E4C0C9CFD31F750FEE2831528FF5
+         * headPortrait : /upload/2020-07-12/20200712101732_309412.jpg
+         * userPhone : 18203048656
+         * userJson : {"birthday":"1985.12.48","u_gender":"男"}
+         * techJson :  {"star":"4","working":"1"}
+         * authJson : {"identity_back":"","identity_card":"511303199303275632","identity_positive":"","real_name":"sad"}
+         * isAuth : 0
+         * isKf : 1
+         * isPickup : 1
+         */
+
+        private String userId;
+        private double userBalance;
+        private String yStoreId;
+        private String userName;
+        private String userAccount;
+        private String uToken;
+        private int isTechn;
+        private String userIntegral;
+        private String userHash;
+        private String headPortrait;
+        private String userPhone;
+        private String userJson;
+        private String techJson;
+        private String authJson;
+        private int isAuth;
+        private int isKf;
+        private int isPickup;
+
+        public String getUserId() {
+            return userId;
+        }
+
+        public void setUserId(String userId) {
+            this.userId = userId;
+        }
+
+        public double getUserBalance() {
+            return userBalance;
+        }
+
+        public void setUserBalance(double userBalance) {
+            this.userBalance = userBalance;
+        }
+
+        public String getYStoreId() {
+            return yStoreId;
+        }
+
+        public void setYStoreId(String yStoreId) {
+            this.yStoreId = yStoreId;
+        }
+
+        public String getUserName() {
+            return userName;
+        }
+
+        public void setUserName(String userName) {
+            this.userName = userName;
+        }
+
+        public String getUserAccount() {
+            return userAccount;
+        }
+
+        public void setUserAccount(String userAccount) {
+            this.userAccount = userAccount;
+        }
+
+        public String getUToken() {
+            return uToken;
+        }
+
+        public void setUToken(String uToken) {
+            this.uToken = uToken;
+        }
+
+        public int getIsTechn() {
+            return isTechn;
+        }
+
+        public void setIsTechn(int isTechn) {
+            this.isTechn = isTechn;
+        }
+
+        public String getUserIntegral() {
+            return userIntegral;
+        }
+
+        public void setUserIntegral(String userIntegral) {
+            this.userIntegral = userIntegral;
+        }
+
+        public String getUserHash() {
+            return userHash;
+        }
+
+        public void setUserHash(String userHash) {
+            this.userHash = userHash;
+        }
+
+        public String getHeadPortrait() {
+            return headPortrait;
+        }
+
+        public void setHeadPortrait(String headPortrait) {
+            this.headPortrait = headPortrait;
+        }
+
+        public String getUserPhone() {
+            return userPhone;
+        }
+
+        public void setUserPhone(String userPhone) {
+            this.userPhone = userPhone;
+        }
+
+        public String getUserJson() {
+            return userJson;
+        }
+
+        public void setUserJson(String userJson) {
+            this.userJson = userJson;
+        }
+
+        public String getTechJson() {
+            return techJson;
+        }
+
+        public void setTechJson(String techJson) {
+            this.techJson = techJson;
+        }
+
+        public String getAuthJson() {
+            return authJson;
+        }
+
+        public void setAuthJson(String authJson) {
+            this.authJson = authJson;
+        }
+
+        public int getIsAuth() {
+            return isAuth;
+        }
+
+        public void setIsAuth(int isAuth) {
+            this.isAuth = isAuth;
+        }
+
+        public int getIsKf() {
+            return isKf;
+        }
+
+        public void setIsKf(int isKf) {
+            this.isKf = isKf;
+        }
+
+        public int getIsPickup() {
+            return isPickup;
+        }
+
+        public void setIsPickup(int isPickup) {
+            this.isPickup = isPickup;
         }
     }
 }

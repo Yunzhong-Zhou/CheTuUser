@@ -27,6 +27,7 @@ import com.chetu.user.activity.MyGarageActivity;
 import com.chetu.user.activity.ProductListActivity;
 import com.chetu.user.activity.SearchActivity;
 import com.chetu.user.activity.StoreDetailActivity;
+import com.chetu.user.activity.WebContentActivity;
 import com.chetu.user.adapter.CircleImageAdapter;
 import com.chetu.user.base.BaseFragment;
 import com.chetu.user.model.Fragment1ServiceListModel;
@@ -687,7 +688,11 @@ public class Fragment1 extends BaseFragment {
                 break;
             case R.id.rl_xiaoxi:
                 //消息
-
+                String url = URLs.KFHOST+"/#/pages/chetu-kf/chetu-kf?token="+localUserInfo.getToken()+
+                        "&kf_userHash="+localUserInfo.getKfuserhash();
+                Bundle bundle = new Bundle();
+                bundle.putString("url", url);
+                CommonUtil.gotoActivityWithData(getActivity(), WebContentActivity.class, bundle, false);
                 break;
 
             case R.id.rl_add:

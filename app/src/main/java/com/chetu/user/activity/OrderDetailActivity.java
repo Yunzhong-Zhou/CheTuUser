@@ -219,14 +219,40 @@ public class OrderDetailActivity extends BaseActivity {
                 }
 
                 //接车人
-                /*if (model.getTechn_sedan_info() != null) {
-                    tv_name.setVisibility(View.VISIBLE);
-                    tv_name.setText("接车人：" + model.get);
+                if (model.getTech_user_info() != null && model.getTech_user_info().getUserName()!=null) {
+                    tv_jiecheren.setVisibility(View.VISIBLE);
+                    tv_jiecheren.setText("接车人：" + model.getTech_user_info().getUserName());
                 } else {
-                    tv_name.setVisibility(View.GONE);
-                }*/
+                    tv_jiecheren.setVisibility(View.GONE);
+                }
                 //时间
                 tv_wanchengtime.setText("预约时间：" + model.getOrder_info().getAppoinTime());
+
+                //打赏按钮
+                if (model.getTechn_sedan_info().getRewardMoney() > 0){
+                    tv_dashang.setText("已打赏（"+model.getTechn_sedan_info().getRewardMoney()+"）");
+                    tv_dashang.setTextColor(getResources().getColor(R.color.black3));
+                    tv_dashang.setBackgroundResource(R.drawable.yuanjiaobiankuang_5_huise);
+                    tv_dashang.setClickable(false);
+                }else {
+                    tv_dashang.setText("打赏技师");
+                    tv_dashang.setTextColor(getResources().getColor(R.color.white));
+                    tv_dashang.setBackgroundResource(R.drawable.yuanjiao_5_lanse);
+                    tv_dashang.setClickable(true);
+                }
+
+                //评论按钮
+                if (model.getTechn_sedan_info().getIsEval()  == 1){
+                    tv_pinglun.setText("已评论");
+                    tv_pinglun.setTextColor(getResources().getColor(R.color.black3));
+                    tv_pinglun.setBackgroundResource(R.drawable.yuanjiaobiankuang_5_huise);
+                    tv_pinglun.setClickable(false);
+                }else {
+                    tv_pinglun.setText("评论");
+                    tv_pinglun.setTextColor(getResources().getColor(R.color.blue));
+                    tv_pinglun.setBackgroundResource(R.drawable.yuanjiaobiankuang_5_lanse);
+                    tv_pinglun.setClickable(true);
+                }
 
                 //车辆名称
                 tv_carname.setText(model.getUser_sedan_info().getBrandInfo().getGroupName() + "-" + model.getUser_sedan_info().getBrandInfo().getSeriesName());

@@ -155,11 +155,12 @@ public class MyOrderActivity extends BaseActivity {
                             holder.setText(R.id.tv_storename, model.getStore_info().getVName());
                             holder.setText(R.id.tv_addr, model.getStore_info().getAddress());
                             holder.setText(R.id.tv_money, "¥" + model.getGPrice());
+
                             //接车人
                             TextView tv_name = holder.getView(R.id.tv_name);
-                            if (model.getTechn_sedan_info() != null) {
+                            if (model.getTechn_user_info() != null && model.getTechn_user_info().getUserName() != null) {
                                 tv_name.setVisibility(View.VISIBLE);
-                                //                            tv_name.setText("接车人："+model.get);
+                                tv_name.setText("接车人：" + model.getTechn_user_info().getUserName());
                             } else {
                                 tv_name.setVisibility(View.GONE);
                             }
@@ -235,13 +236,22 @@ public class MyOrderActivity extends BaseActivity {
                                 case 5:
                                     //已完工
                                     type1.setText("已完工");
-
                                     type3.setVisibility(View.GONE);
                                     break;
                                 case 6:
                                     //已提车
                                     type1.setText("已提车");
+
                                     type3.setVisibility(View.VISIBLE);
+                                    if (model.getIsEval() == 1) {
+                                        type3.setText("已评论");
+                                        type3.setTextColor(getResources().getColor(R.color.black3));
+                                        type3.setBackgroundResource(R.drawable.yuanjiaobiankuang_5_huise);
+                                    } else {
+                                        type3.setText("去评论");
+                                        type3.setTextColor(getResources().getColor(R.color.white));
+                                        type3.setBackgroundResource(R.drawable.yuanjiao_5_lanse);
+                                    }
                                     break;
                             }
 
@@ -290,7 +300,7 @@ public class MyOrderActivity extends BaseActivity {
                         public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
                             Bundle bundle = new Bundle();
                             bundle.putString("y_order_id", list.get(i).getYOrderId());
-                            bundle.putInt("g_state", type-1);
+                            bundle.putInt("g_state", type - 1);
                             CommonUtil.gotoActivityWithData(MyOrderActivity.this, OrderDetailActivity.class, bundle, false);
                             /*switch (type) {
                                 case 1:

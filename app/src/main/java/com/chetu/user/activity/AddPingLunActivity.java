@@ -8,6 +8,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.chetu.user.R;
 import com.chetu.user.base.BaseActivity;
 import com.chetu.user.model.OrderDetailModel;
@@ -130,16 +131,17 @@ public class AddPingLunActivity extends BaseActivity {
     @Override
     protected void initData() {
         orderDetailModel = (OrderDetailModel) getIntent().getSerializableExtra("OrderDetailModel");
-        /*Glide.with(AddPingLunActivity.this).load(orderDetailModel.)
-                .centerCrop()
+
+        if (orderDetailModel.getTech_user_info() != null && orderDetailModel.getTech_user_info().getUserName() != null){
+            Glide.with(AddPingLunActivity.this).load(URLs.IMGHOST + orderDetailModel.getTech_user_info().getHeadPortrait())
+                    .centerCrop()
 //                            .apply(RequestOptions.bitmapTransform(new RoundedCorners(10)))
-                .placeholder(R.mipmap.loading)//加载站位图
-                .error(R.mipmap.zanwutupian)//加载失败
-                .into(imageView);//加载图片*/
+                    .placeholder(R.mipmap.loading)//加载站位图
+                    .error(R.mipmap.zanwutupian)//加载失败
+                    .into(imageView);//加载图片
 
-        tv_name.setText(orderDetailModel.getOrder_info().getKf_user_info().getUserName());
-
-
+            tv_name.setText(orderDetailModel.getTech_user_info().getUserName());
+        }
     }
 
     @Override
@@ -162,8 +164,8 @@ public class AddPingLunActivity extends BaseActivity {
         y_store_id1 = orderDetailModel.getOrder_info().getYStoreId();
         y_order_id1 = orderDetailModel.getOrder_info().getYOrderId();
         y_goods_id1 = "0";
-        user_hash1 = "";
-        star_c1 = ratingbar1.getRating() + "";
+        user_hash1 = orderDetailModel.getTech_user_info().getUserHash();
+        star_c1 = (int) ratingbar1.getRating() + "";
         v_cy1 = "2";//1是技师  2门店
         y_msg1 = editText1.getText().toString().trim();
         if (TextUtils.isEmpty(y_msg1)) {
@@ -181,8 +183,8 @@ public class AddPingLunActivity extends BaseActivity {
         y_store_id2 = orderDetailModel.getOrder_info().getYStoreId();
         y_order_id2 = orderDetailModel.getOrder_info().getYOrderId();
         y_goods_id2 = "0";
-        user_hash2 = orderDetailModel.getOrder_info().getKf_user_info().getUserHash();
-        star_c2 = ratingbar2.getRating() + "";
+        user_hash2 = orderDetailModel.getTech_user_info().getUserHash();
+        star_c2 = (int) ratingbar2.getRating() + "";
         v_cy2 = "1";//1是技师  2门店
         y_msg2 = editText2.getText().toString().trim();
         if (TextUtils.isEmpty(y_msg2)) {
@@ -289,7 +291,7 @@ public class AddPingLunActivity extends BaseActivity {
                 }
                 Map<String, String> params = new HashMap<>();
                 params.put("u_token", localUserInfo.getToken());
-                params.put("jsonstr", jsonArray.toString());
+                params.put("jsonStr", jsonArray.toString());
                 RequestUpData(params);
                 /*Map<String, String> params = new HashMap<>();
                 params.put("u_token", localUserInfo.getToken());

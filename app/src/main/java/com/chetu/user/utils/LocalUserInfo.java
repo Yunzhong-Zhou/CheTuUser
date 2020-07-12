@@ -24,6 +24,7 @@ public class LocalUserInfo {
     public static final String USERJOB = "userJob";//用户职位
     public static final String BELONGID = "belong_id";//所属id
     public static final String USERIMAGE= "userImage";//用户头像
+
     public static final String Language_Type= "language_type";//语言
     public static final String Mobile_State_Code= "mobile_state_code";//国家代码
     public static final String Country_IMG= "country_img";//国家代码
@@ -32,6 +33,7 @@ public class LocalUserInfo {
     public static final String Gather= "gather";//是否开通收款(1:否，2：是)
     public static final String InvuteCode = "invite_code";//邀请码
 
+    public static final String KFUSERHASH = "KFUserHash";//客服userHash
     public static final String CITYNAME = "cityName";//选择的城市
     public static final String LONGITUDE = "longitude";//经度
     public static final String LATITUDE = "latitude";//纬度
@@ -200,6 +202,10 @@ public class LocalUserInfo {
     //设置是否为新人
     public void setIsnewcomer(String string) {
         editor.putString(ISNEWCOMER, string);
+        editor.commit();
+    }
+    public void setKfuserhash(String string) {
+        editor.putString(KFUSERHASH, string);
         editor.commit();
     }
     //保存城市
@@ -634,6 +640,13 @@ public class LocalUserInfo {
             return string;
         }
         return "1";
+    }
+    public String getKfuserhash() {
+        String string = getString(KFUSERHASH);
+        if (!TextUtils.isEmpty(string) && !"null".equals(string)) {
+            return string;
+        }
+        return "";
     }
     //获取城市
     public String getCityname() {

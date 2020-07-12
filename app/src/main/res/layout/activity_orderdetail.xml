@@ -758,7 +758,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:layout_weight="1"
-            android:background="@drawable/yuanjiaobiankuang_5_huise"
+            android:background="@drawable/yuanjiaobiankuang_5_lanse"
             android:gravity="center"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
