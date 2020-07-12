@@ -7,17 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import com.chetu.user.R;
-import com.chetu.user.model.FristAppModel;
-import com.chetu.user.net.URLs;
-import com.chetu.user.okhttp.CallBackUtil;
-import com.chetu.user.okhttp.OkhttpUtil;
 import com.chetu.user.utils.LocalUserInfo;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import okhttp3.Call;
-import okhttp3.Response;
 
 
 /**
@@ -60,9 +50,7 @@ public class HelloActivity extends Activity {
                 }
             }, 2000);
         }*/
-        //第一次启动获取数据
-        Map<String, String> params = new HashMap<>();
-        RequestFrist(params);//检查更新
+
 
         setContentView(R.layout.activity_hello);
         new Handler().postDelayed(new Runnable() {
@@ -74,35 +62,7 @@ public class HelloActivity extends Activity {
 
     }
 
-    /**
-     * 第一次启动需要获取的数据
-     *
-     * @param params
-     */
-    private void RequestFrist(Map<String, String> params) {
-        Map<String, String> headerMap = new HashMap<>();
-        headerMap.put("apikey", URLs.APIKEY);
-        headerMap.put("hversion", URLs.HVERSION);
 
-        OkhttpUtil.okHttpPost(URLs.FristApp, params, headerMap, new CallBackUtil<FristAppModel>() {
-            @Override
-            public FristAppModel onParseResponse(Call call, Response response) {
-                return null;
-            }
-
-            @Override
-            public void onFailure(Call call, Exception e, String err) {
-//                hideProgress();
-//                myToast(err);
-            }
-
-            @Override
-            public void onResponse(FristAppModel response) {
-//                hideProgress();
-                LocalUserInfo.getInstance(HelloActivity.this).setKfuserhash(response.getConf_info().getKf_info().getUserHash());
-            }
-        });
-    }
 
     private void enterHomeActivity() {
 //        LocalUserInfo.getInstance(HelloActivity.this).setUserId("");

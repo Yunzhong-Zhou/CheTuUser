@@ -643,7 +643,7 @@ public class LocalUserInfo {
     }
     public String getKfuserhash() {
         String string = getString(KFUSERHASH);
-        if (!TextUtils.isEmpty(string) && !"null".equals(string)) {
+        if (!TextUtils.isEmpty(string) ) {
             return string;
         }
         return "";

@@ -27,6 +27,7 @@ import com.chetu.user.fragment.Fragment1;
 import com.chetu.user.fragment.Fragment2;
 import com.chetu.user.fragment.Fragment3;
 import com.chetu.user.fragment.Fragment4;
+import com.chetu.user.model.FristAppModel;
 import com.chetu.user.model.UpgradeModel;
 import com.chetu.user.net.URLs;
 import com.chetu.user.okhttp.CallBackUtil;
@@ -278,7 +279,8 @@ public class MainActivity extends BaseActivity {
                         }
                     });
         }*/
-
+        //第一次启动获取数据
+        RequestFrist(params);
         //更新
         Map<String, String> params = new HashMap<>();
         params.put("type","1");
@@ -338,7 +340,31 @@ public class MainActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
     }
+    /**
+     * 第一次启动需要获取的数据
+     *
+     * @param params
+     */
+    private void RequestFrist(Map<String, String> params) {
+        OkhttpUtil.okHttpPost(URLs.FristApp, params, headerMap, new CallBackUtil<FristAppModel>() {
+            @Override
+            public FristAppModel onParseResponse(Call call, Response response) {
+                return null;
+            }
 
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+//                hideProgress();
+//                myToast(err);
+            }
+
+            @Override
+            public void onResponse(FristAppModel response) {
+//                hideProgress();
+                localUserInfo.setKfuserhash(response.getConf_info().getKf_info().getUserHash());
+            }
+        });
+    }
     private void RequestUpgrade(Map<String, String> params) {
         OkhttpUtil.okHttpPost(URLs.Upgrade, params, headerMap, new CallBackUtil<UpgradeModel>() {
             @Override
