@@ -244,7 +244,6 @@ public class Fragment1 extends BaseFragment {
         latitude = localUserInfo.getLatitude() + "";
         tv_addr.setText(localUserInfo.getCityname() + "");
 
-
         //初始化定位
         mLocationClient = new AMapLocationClient(getActivity());
         AMapLocationClientOption option = new AMapLocationClientOption();

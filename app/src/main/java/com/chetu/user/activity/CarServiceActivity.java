@@ -259,10 +259,10 @@ public class CarServiceActivity extends BaseActivity {
                                 rv.setVisibility(View.VISIBLE);
                             }
 
-                            CommonAdapter<ServiceListModel_All.ListBean.VListBean> ca = new CommonAdapter<ServiceListModel_All.ListBean.VListBean>
+                            CommonAdapter<ServiceListModel_All.ListBean.VListBeanX> ca = new CommonAdapter<ServiceListModel_All.ListBean.VListBeanX>
                                     (CarServiceActivity.this, R.layout.item_carservice_sv_child, model.getV_list()) {
                                 @Override
-                                protected void convert(ViewHolder holder, ServiceListModel_All.ListBean.VListBean listBean, int item) {
+                                protected void convert(ViewHolder holder, ServiceListModel_All.ListBean.VListBeanX listBean, int item) {
                                     holder.setText(R.id.textView, listBean.getVName());
                                     ImageView imageView = holder.getView(R.id.imageView);
                                     if (listBean.isIsgouxuan()) {
@@ -535,7 +535,7 @@ public class CarServiceActivity extends BaseActivity {
         }
         //选择的服务
         for (ServiceListModel_All.ListBean listBean : list_sv) {
-            for (ServiceListModel_All.ListBean.VListBean vListBean : listBean.getV_list()) {
+            for (ServiceListModel_All.ListBean.VListBeanX vListBean : listBean.getV_list()) {
                 if (vListBean.isIsgouxuan()) {
                     service_name += vListBean.getVName() + "/";
                     y_service_id_str += vListBean.getYServiceId() + ",";
@@ -639,7 +639,7 @@ public class CarServiceActivity extends BaseActivity {
             public void onClick(View v) {
                 //选择的服务
                 for (ServiceListModel_All.ListBean listBean : list_sv) {
-                    for (ServiceListModel_All.ListBean.VListBean vListBean : listBean.getV_list()) {
+                    for (ServiceListModel_All.ListBean.VListBeanX vListBean : listBean.getV_list()) {
                         if (vListBean.isIsgouxuan()) {
                             service_name += vListBean.getVName() + "/";
                             y_service_id_str += vListBean.getYServiceId() + ",";

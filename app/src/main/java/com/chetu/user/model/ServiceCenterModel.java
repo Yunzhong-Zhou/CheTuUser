@@ -22,23 +22,25 @@ public class ServiceCenterModel implements Serializable {
          * id : 0
          * userId : 0
          * userBalance : 0.0
-         * userName : 龙肆技师
-         * uToken : 096DC2A3D177D683E0A124CAA17D7FB54B034F67FF7B53C8A8799B8C0DB14550
+         * userName : 龙肆
          * isKf : 1
          * userIntegral : 0
          * yStoreId : 0
-         * headPortrait : /upload/timg.jpg
+         * userHash : 3B2372646663FDC7A81EA8E241CB7946AC74E4C0C9CFD31F750FEE2831528FF5
+         * headPortrait : /upload/2020-07-12/20200712101732_309412.jpg
+         * isOnline : 1
          */
 
         private String id;
         private String userId;
         private double userBalance;
         private String userName;
-        private String uToken;
         private int isKf;
         private String userIntegral;
         private String yStoreId;
+        private String userHash;
         private String headPortrait;
+        private int isOnline;
 
         public String getId() {
             return id;
@@ -72,14 +74,6 @@ public class ServiceCenterModel implements Serializable {
             this.userName = userName;
         }
 
-        public String getUToken() {
-            return uToken;
-        }
-
-        public void setUToken(String uToken) {
-            this.uToken = uToken;
-        }
-
         public int getIsKf() {
             return isKf;
         }
@@ -104,12 +98,28 @@ public class ServiceCenterModel implements Serializable {
             this.yStoreId = yStoreId;
         }
 
+        public String getUserHash() {
+            return userHash;
+        }
+
+        public void setUserHash(String userHash) {
+            this.userHash = userHash;
+        }
+
         public String getHeadPortrait() {
             return headPortrait;
         }
 
         public void setHeadPortrait(String headPortrait) {
             this.headPortrait = headPortrait;
+        }
+
+        public int getIsOnline() {
+            return isOnline;
+        }
+
+        public void setIsOnline(int isOnline) {
+            this.isOnline = isOnline;
         }
     }
 }

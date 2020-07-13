@@ -562,8 +562,10 @@ public class StoreDetailActivity extends BaseActivity {
 
                         //横向图片
                         List<String> list_img = new ArrayList<>();
-                        for (String s : model.getImgArr()) {
-                            list_img.add(URLs.IMGHOST + s);
+                        if (model.getImgArr() != null) {
+                            for (String s : model.getImgArr()) {
+                                list_img.add(URLs.IMGHOST + s);
+                            }
                         }
                         RecyclerView rv = holder.getView(R.id.rv);
                         LinearLayoutManager llm1 = new LinearLayoutManager(StoreDetailActivity.this);
@@ -575,7 +577,7 @@ public class StoreDetailActivity extends BaseActivity {
                             protected void convert(ViewHolder holder, String model, int position) {
                                 ImageView iv = holder.getView(R.id.iv);
                                 Glide.with(StoreDetailActivity.this).load(model)
-//                            .centerCrop()
+                                        .centerCrop()
 //                            .apply(RequestOptions.bitmapTransform(new RoundedCorners(10)))
                                         .placeholder(R.mipmap.loading)//加载站位图
                                         .error(R.mipmap.zanwutupian)//加载失败
@@ -1035,8 +1037,8 @@ public class StoreDetailActivity extends BaseActivity {
         titleView.setRightBtn(R.mipmap.ic_message_blue, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String url = URLs.KFHOST+"/#/pages/chetu-kf/chetu-kf?token="+localUserInfo.getToken()+
-                        "&kf_userHash="+storeDetailModel.getKf_user_info().getUserHash();
+                String url = URLs.KFHOST + "/#/pages/chetu-kf/chetu-kf?token=" + localUserInfo.getToken() +
+                        "&kf_userHash=" + storeDetailModel.getKf_user_info().getUserHash();
                 Bundle bundle = new Bundle();
                 bundle.putString("url", url);
                 CommonUtil.gotoActivityWithData(StoreDetailActivity.this, WebContentActivity.class, bundle, false);

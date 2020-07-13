@@ -82,6 +82,7 @@ public class PingLunListActivity extends BaseActivity {
         storeDetailModel = (StoreDetailModel) getIntent().getSerializableExtra("storeDetailModel");
         requestServer();
     }
+
     @Override
     public void requestServer() {
         super.requestServer();
@@ -105,7 +106,7 @@ public class PingLunListActivity extends BaseActivity {
             @Override
             public void onFailure(Call call, Exception e, String err) {
                 hideProgress();
-//                showEmptyPage();
+                showEmptyPage();
 //                myToast(err);
             }
 
@@ -134,9 +135,12 @@ public class PingLunListActivity extends BaseActivity {
 
                             //横向图片
                             List<String> list_img = new ArrayList<>();
-                            for (String s : model.getImgArr()) {
-                                list_img.add(URLs.IMGHOST + s);
+                            if (model.getImgArr() != null) {
+                                for (String s : model.getImgArr()) {
+                                    list_img.add(URLs.IMGHOST + s);
+                                }
                             }
+
                             RecyclerView rv = holder.getView(R.id.rv);
                             LinearLayoutManager llm1 = new LinearLayoutManager(PingLunListActivity.this);
                             llm1.setOrientation(LinearLayoutManager.HORIZONTAL);// 设置 recyclerview 布局方式为横向布局
@@ -147,7 +151,7 @@ public class PingLunListActivity extends BaseActivity {
                                 protected void convert(ViewHolder holder, String model, int position) {
                                     ImageView iv = holder.getView(R.id.iv);
                                     Glide.with(PingLunListActivity.this).load(model)
-//                            .centerCrop()
+                                            .centerCrop()
 //                            .apply(RequestOptions.bitmapTransform(new RoundedCorners(10)))
                                             .placeholder(R.mipmap.loading)//加载站位图
                                             .error(R.mipmap.zanwutupian)//加载失败
@@ -200,6 +204,7 @@ public class PingLunListActivity extends BaseActivity {
             }
         });
     }
+
     @Override
     protected void updateView() {
         titleView.setTitle("门店评价");

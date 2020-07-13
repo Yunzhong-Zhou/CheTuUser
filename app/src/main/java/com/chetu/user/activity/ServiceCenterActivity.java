@@ -12,6 +12,7 @@ import com.chetu.user.model.ServiceCenterModel;
 import com.chetu.user.net.URLs;
 import com.chetu.user.okhttp.CallBackUtil;
 import com.chetu.user.okhttp.OkhttpUtil;
+import com.chetu.user.utils.CommonUtil;
 import com.liaoinstan.springview.widget.SpringView;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
@@ -120,6 +121,8 @@ public class ServiceCenterActivity extends BaseActivity {
                             Glide.with(ServiceCenterActivity.this)
                                     .load(URLs.IMGHOST + model.getHeadPortrait())
                                     .centerCrop()
+                                    .placeholder(R.mipmap.loading)//加载站位图
+                                    .error(R.mipmap.zanwutupian)//加载失败
                                     .into(imageView1);//加载图片
 
                             holder.setText(R.id.tv_name, model.getUserName());
@@ -141,7 +144,11 @@ public class ServiceCenterActivity extends BaseActivity {
                     mAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
                         @Override
                         public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
-
+                            String url = URLs.KFHOST+"/#/pages/chetu-kf/chetu-kf?token="+localUserInfo.getToken()+
+                                    "&kf_userHash="+list.get(i).getUserHash();
+                            Bundle bundle = new Bundle();
+                            bundle.putString("url", url);
+                            CommonUtil.gotoActivityWithData(ServiceCenterActivity.this, WebContentActivity.class, bundle, false);
                         }
 
                         @Override

@@ -219,7 +219,7 @@ public class OrderDetailActivity extends BaseActivity {
                 }
 
                 //接车人
-                if (model.getTech_user_info() != null && model.getTech_user_info().getUserName()!=null) {
+                if (model.getTech_user_info() != null && model.getTech_user_info().getUserName() != null) {
                     tv_jiecheren.setVisibility(View.VISIBLE);
                     tv_jiecheren.setText("接车人：" + model.getTech_user_info().getUserName());
                 } else {
@@ -229,12 +229,12 @@ public class OrderDetailActivity extends BaseActivity {
                 tv_wanchengtime.setText("预约时间：" + model.getOrder_info().getAppoinTime());
 
                 //打赏按钮
-                if (model.getTechn_sedan_info().getRewardMoney() > 0){
-                    tv_dashang.setText("已打赏（"+model.getTechn_sedan_info().getRewardMoney()+"）");
+                if (model.getTechn_sedan_info() != null && model.getTechn_sedan_info().getRewardMoney() > 0) {
+                    tv_dashang.setText("已打赏（" + model.getTechn_sedan_info().getRewardMoney() + "）");
                     tv_dashang.setTextColor(getResources().getColor(R.color.black3));
                     tv_dashang.setBackgroundResource(R.drawable.yuanjiaobiankuang_5_huise);
                     tv_dashang.setClickable(false);
-                }else {
+                } else {
                     tv_dashang.setText("打赏技师");
                     tv_dashang.setTextColor(getResources().getColor(R.color.white));
                     tv_dashang.setBackgroundResource(R.drawable.yuanjiao_5_lanse);
@@ -242,12 +242,12 @@ public class OrderDetailActivity extends BaseActivity {
                 }
 
                 //评论按钮
-                if (model.getTechn_sedan_info().getIsEval()  == 1){
+                if (model.getTechn_sedan_info() != null && model.getTechn_sedan_info().getIsEval() == 1) {
                     tv_pinglun.setText("已评论");
                     tv_pinglun.setTextColor(getResources().getColor(R.color.black3));
                     tv_pinglun.setBackgroundResource(R.drawable.yuanjiaobiankuang_5_huise);
                     tv_pinglun.setClickable(false);
-                }else {
+                } else {
                     tv_pinglun.setText("评论");
                     tv_pinglun.setTextColor(getResources().getColor(R.color.blue));
                     tv_pinglun.setBackgroundResource(R.drawable.yuanjiaobiankuang_5_lanse);
@@ -491,7 +491,7 @@ public class OrderDetailActivity extends BaseActivity {
             case R.id.tv_pinglun:
                 //评论
                 Bundle bundle1 = new Bundle();
-                bundle1.putSerializable("OrderDetailModel",model);
+                bundle1.putSerializable("OrderDetailModel", model);
                 CommonUtil.gotoActivityWithData(OrderDetailActivity.this, AddPingLunActivity.class, bundle1, false);
 
                 break;

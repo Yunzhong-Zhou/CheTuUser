@@ -57,7 +57,10 @@ public class Fragment2 extends BaseFragment {
     EditText et_search;
 
     int page = 0;
-    String longitude = "", latitude = "",service_name = "";
+    String longitude = "", latitude = "", service_name = "";
+    /**
+     * 门店
+     */
     private RecyclerView recyclerView;
     List<Fragment3Model.ListBean> list = new ArrayList<>();
     CommonAdapter<Fragment3Model.ListBean> mAdapter;
@@ -66,16 +69,28 @@ public class Fragment2 extends BaseFragment {
 
     //车辆信息
     LinearLayout ll_car;
-    TextView tv_carname,tv_carnum;
+    TextView tv_carname, tv_carnum;
     ImageView iv_carlogo;
 
     /**
      * 服务内容
      */
     RecyclerView recyclerView_sv;
-    CommonAdapter<ServiceListModel_All.ListBean> mAdapter_sv;
+    CommonAdapter<String> mAdapter_sv;
+    List<String> list_name = new ArrayList<>();
     List<ServiceListModel_All.ListBean> list_sv = new ArrayList<>();
     int i1 = 0;
+
+    /**
+     * 服务tab
+     */
+    LinearLayout ll_tab;
+    RecyclerView rv_tab1, rv_tab2;
+    CommonAdapter<ServiceListModel_All.ListBean.VListBeanX> ca_tab1;
+    List<ServiceListModel_All.ListBean.VListBeanX> list_tab1 = new ArrayList<>();
+    CommonAdapter<ServiceListModel_All.ListBean.VListBeanX.VListBean> ca_tab2;
+    List<ServiceListModel_All.ListBean.VListBeanX.VListBean> list_tab2 = new ArrayList<>();
+
     //定位
     //声明AMapLocationClient类对象
     private AMapLocationClient mLocationClient = null;
@@ -114,7 +129,7 @@ public class Fragment2 extends BaseFragment {
     public void onResume() {
         super.onResume();
         if (MainActivity.item == 1) {
-            if (!localUserInfo.getCarname().equals("")){
+            if (!localUserInfo.getCarname().equals("")) {
 //                y_user_sedan_id = localUserInfo.getCarid();
                 tv_carname.setText(localUserInfo.getCarname());
                 tv_carnum.setText(localUserInfo.getCarnum());
@@ -131,7 +146,7 @@ public class Fragment2 extends BaseFragment {
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         if (MainActivity.item == 1) {
-            if (!localUserInfo.getCarname().equals("")){
+            if (!localUserInfo.getCarname().equals("")) {
                 tv_carname.setText(localUserInfo.getCarname());
                 tv_carnum.setText(localUserInfo.getCarnum());
                 Glide.with(getActivity()).load(URLs.IMGHOST + localUserInfo.getCarlogo())
@@ -234,6 +249,15 @@ public class Fragment2 extends BaseFragment {
         LinearLayoutManager llm1 = new LinearLayoutManager(getActivity());
         llm1.setOrientation(LinearLayoutManager.HORIZONTAL);// 设置 recyclerview 布局方式为横向布局
         recyclerView_sv.setLayoutManager(llm1);
+
+        //服务tab
+        ll_tab = findViewByID_My(R.id.ll_tab);
+        ll_tab.setVisibility(View.GONE);
+        rv_tab1 = findViewByID_My(R.id.rv_tab1);
+        rv_tab1.setLayoutManager(new LinearLayoutManager(getActivity()));
+        rv_tab2 = findViewByID_My(R.id.rv_tab2);
+        rv_tab2.setLayoutManager(new LinearLayoutManager(getActivity()));
+
     }
 
     @Override
@@ -274,7 +298,7 @@ public class Fragment2 extends BaseFragment {
                 if (aMapLocation != null) {
                     if (aMapLocation.getErrorCode() == 0) {
 
-                        MyLogger.i("定位信息","纬度：" + aMapLocation.getLatitude()
+                        MyLogger.i("定位信息", "纬度：" + aMapLocation.getLatitude()
                                 + "\n经度:" + aMapLocation.getLongitude()
                                 + "\n地址:" + aMapLocation.getAddress());
 //                        register_addr = aMapLocation.getAddress();
@@ -515,7 +539,7 @@ public class Fragment2 extends BaseFragment {
             @Override
             public void onFailure(Call call, Exception e, String err) {
                 hideProgress();
-//                myToast(err);
+                myToast(err);
                 page--;
             }
 
@@ -558,19 +582,25 @@ public class Fragment2 extends BaseFragment {
             public void onResponse(ServiceListModel_All response) {
                 hideProgress();
                 list_sv = response.getList();
-                mAdapter_sv = new CommonAdapter<ServiceListModel_All.ListBean>
-                        (getActivity(), R.layout.item_fragment2_sv, list_sv) {
+                /**
+                 * 第一级
+                 */
+                list_name.clear();
+                list_name.add("热门");
+                for (ServiceListModel_All.ListBean bean : list_sv) {
+                    list_name.add(bean.getVName());
+                }
+                mAdapter_sv = new CommonAdapter<String>
+                        (getActivity(), R.layout.item_fragment2_sv, list_name) {
                     @Override
-                    protected void convert(ViewHolder holder, ServiceListModel_All.ListBean model, int position) {
+                    protected void convert(ViewHolder holder, String model, int position) {
 //                        holder.setText(R.id.tv_tab, model.getVName());
                         TextView tv_tab = holder.getView(R.id.tv_tab);
-                        tv_tab.setText(model.getVName());
-
+                        tv_tab.setText(model);
                        /* if (i1 ==0){
                             service_name = model.getVName();
                             requestServer();
                         }*/
-
                         if (i1 == position) {
                             tv_tab.setTextColor(getResources().getColor(R.color.blue));
                         } else {
@@ -581,11 +611,98 @@ public class Fragment2 extends BaseFragment {
                 mAdapter_sv.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                        /* */
                         if (i != i1) {
+                            if (i == 0) {//热门
+                                ll_tab.setVisibility(View.GONE);
+                                service_name = "";
+                            } else {
+                                ll_tab.setVisibility(View.VISIBLE);
+                                service_name = list_sv.get(i - 1).getVName();
+                                /**
+                                 * 第二级
+                                 */
+                                list_tab1 = list_sv.get(i - 1).getV_list();
+                                MyLogger.i(">>>>>>>list_tab1:"+list_tab1.size());
+                                if (list_tab1.size() == 0) {
+                                    //第二级没有数据-隐藏第三级
+                                   rv_tab2.setVisibility(View.INVISIBLE);
+                                }else {
+                                    rv_tab2.setVisibility(View.VISIBLE);
+
+                                }
+                                ca_tab1 = new CommonAdapter<ServiceListModel_All.ListBean.VListBeanX>
+                                        (getActivity(), R.layout.item_fragment2_sv_tab1, list_tab1) {
+                                    @Override
+                                    protected void convert(ViewHolder holder, ServiceListModel_All.ListBean.VListBeanX listBean, int item) {
+                                        holder.setText(R.id.textView, listBean.getVName());
+                                        ImageView imageView = holder.getView(R.id.imageView);
+                                        if (listBean.isIsgouxuan()) {
+                                            imageView.setImageResource(R.mipmap.ic_yixuan_juxing);
+                                        } else {
+                                            imageView.setImageResource(R.mipmap.ic_weixuan_juxing);
+                                        }
+                                    }
+                                };
+                                ca_tab1.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+                                    @Override
+                                    public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int item) {
+
+                                        /**
+                                         * 第三级
+                                         */
+                                        list_tab2 = list_tab1.get(item).getV_list();
+//                                        ca_tab2.notifyDataSetChanged();
+                                        ca_tab2 = new CommonAdapter<ServiceListModel_All.ListBean.VListBeanX.VListBean>
+                                                (getActivity(), R.layout.item_fragment2_sv_tab1, list_tab2) {
+                                            @Override
+                                            protected void convert(ViewHolder holder, ServiceListModel_All.ListBean.VListBeanX.VListBean listBean, int item) {
+                                                holder.setText(R.id.textView, listBean.getVName());
+                                                ImageView imageView = holder.getView(R.id.imageView);
+                                                if (listBean.isIsgouxuan()) {
+                                                    imageView.setImageResource(R.mipmap.ic_yixuan_juxing);
+                                                } else {
+                                                    imageView.setImageResource(R.mipmap.ic_weixuan_juxing);
+                                                }
+                                            }
+                                        };
+                                        ca_tab2.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+                                            @Override
+                                            public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                                                if (!list_tab2.get(i).isIsgouxuan())
+                                                    list_tab2.get(i).setIsgouxuan(true);
+                                                else
+                                                    list_tab2.get(i).setIsgouxuan(false);
+
+                                                ca_tab2.notifyDataSetChanged();
+                                            }
+
+                                            @Override
+                                            public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                                                return false;
+                                            }
+                                        });
+                                        rv_tab2.setAdapter(ca_tab2);
+
+                                        //选择
+                                        if (!list_tab1.get(item).isIsgouxuan())
+                                            list_tab1.get(item).setIsgouxuan(true);
+                                        else list_tab1.get(item).setIsgouxuan(false);
+
+                                        ca_tab1.notifyDataSetChanged();
+                                    }
+
+                                    @Override
+                                    public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                                        return false;
+                                    }
+                                });
+                                rv_tab1.setAdapter(ca_tab1);
+
+
+                            }
                             i1 = i;
-                            service_name = list_sv.get(i).getVName();
                             mAdapter_sv.notifyDataSetChanged();
-                            requestServer();
                         }
                     }
 

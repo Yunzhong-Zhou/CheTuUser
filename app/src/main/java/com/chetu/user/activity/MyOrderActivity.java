@@ -139,7 +139,7 @@ public class MyOrderActivity extends BaseActivity {
                             holder.setText(R.id.tv_carnum, model.getUser_sedan_info().getSNumber());
                             //预约时间
                             TextView tv_time = holder.getView(R.id.tv_time);
-                            if (!model.getAppoinTime().equals("")) {
+                            if (model.getAppoinTime() != null && !model.getAppoinTime().equals("")) {
                                 tv_time.setVisibility(View.VISIBLE);
                                 tv_time.setText("预约时间:" + model.getAppoinTime());
                             } else {
