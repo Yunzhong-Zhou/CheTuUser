@@ -145,7 +145,9 @@ public class ServiceCenterActivity extends BaseActivity {
                         @Override
                         public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
                             String url = URLs.KFHOST+"/#/pages/chetu-kf/chetu-kf?token="+localUserInfo.getToken()+
-                                    "&kf_userHash="+list.get(i).getUserHash();
+                                    "&kf_userHash="+list.get(i).getUserHash()+
+                                    "&nickName=" + list.get(i).getUserName() +
+                                    "&headerPic=" + URLs.IMGHOST + list.get(i).getHeadPortrait();
                             Bundle bundle = new Bundle();
                             bundle.putString("url", url);
                             CommonUtil.gotoActivityWithData(ServiceCenterActivity.this, WebContentActivity.class, bundle, false);

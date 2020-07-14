@@ -20,7 +20,7 @@ public class URLs {
     public static final String APIKEY = "773EDB6D2715FACF9C93354CAC5B1A3372872DC4D5AC085867C7490E9984D33E";
     public static final String HVERSION = "1.0";
 
-    //更新
+    //第一次加载
     public static final String FristApp = HOST+"/api/v1/public/get_conf_info";
     //更新
     public static final String Upgrade = HOST+"/api/article/sys-upgrade";

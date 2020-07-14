@@ -479,7 +479,9 @@ public class OrderDetailActivity extends BaseActivity {
                 break;
             case R.id.iv_message:
                 String url = URLs.KFHOST + "/#/pages/chetu-kf/chetu-kf?token=" + localUserInfo.getToken() +
-                        "&kf_userHash=" + model.getOrder_info().getKf_user_info().getUserHash();
+                        "&kf_userHash=" + model.getOrder_info().getKf_user_info().getUserHash()+
+                        "&nickName=" + model.getOrder_info().getKf_user_info().getUserName() +
+                        "&headerPic=" + URLs.IMGHOST + model.getOrder_info().getKf_user_info().getHeadPortrait();
                 Bundle bundle = new Bundle();
                 bundle.putString("url", url);
                 CommonUtil.gotoActivityWithData(OrderDetailActivity.this, WebContentActivity.class, bundle, false);

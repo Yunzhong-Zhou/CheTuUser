@@ -629,7 +629,6 @@ public class Fragment2 extends BaseFragment {
                                    rv_tab2.setVisibility(View.INVISIBLE);
                                 }else {
                                     rv_tab2.setVisibility(View.VISIBLE);
-
                                 }
                                 ca_tab1 = new CommonAdapter<ServiceListModel_All.ListBean.VListBeanX>
                                         (getActivity(), R.layout.item_fragment2_sv_tab1, list_tab1) {
@@ -654,15 +653,17 @@ public class Fragment2 extends BaseFragment {
                                         list_tab2 = list_tab1.get(item).getV_list();
 //                                        ca_tab2.notifyDataSetChanged();
                                         ca_tab2 = new CommonAdapter<ServiceListModel_All.ListBean.VListBeanX.VListBean>
-                                                (getActivity(), R.layout.item_fragment2_sv_tab1, list_tab2) {
+                                                (getActivity(), R.layout.item_fragment2_sv_tab2, list_tab2) {
                                             @Override
                                             protected void convert(ViewHolder holder, ServiceListModel_All.ListBean.VListBeanX.VListBean listBean, int item) {
                                                 holder.setText(R.id.textView, listBean.getVName());
-                                                ImageView imageView = holder.getView(R.id.imageView);
+                                                TextView tianjia = holder.getView(R.id.tianjia);
                                                 if (listBean.isIsgouxuan()) {
-                                                    imageView.setImageResource(R.mipmap.ic_yixuan_juxing);
+                                                    tianjia.setTextColor(getResources().getColor(R.color.black3));
+                                                    tianjia.setText("已添加");
                                                 } else {
-                                                    imageView.setImageResource(R.mipmap.ic_weixuan_juxing);
+                                                    tianjia.setTextColor(getResources().getColor(R.color.blue));
+                                                    tianjia.setText("添加");
                                                 }
                                             }
                                         };
@@ -674,6 +675,7 @@ public class Fragment2 extends BaseFragment {
                                                 else
                                                     list_tab2.get(i).setIsgouxuan(false);
 
+                                                showSelete();
                                                 ca_tab2.notifyDataSetChanged();
                                             }
 
@@ -716,6 +718,27 @@ public class Fragment2 extends BaseFragment {
             }
         });
     }
+
+    /**
+     * 显示选择的服务
+     */
+    private void showSelete() {
+        String service = "";
+        for (ServiceListModel_All.ListBean bean1 : list_sv) {//第一级
+            for (ServiceListModel_All.ListBean.VListBeanX bean2 : bean1.getV_list()){//第二级
+                if (bean2.isIsgouxuan()){
+                    service+=bean2.getVName()+"|";
+                }
+                for (ServiceListModel_All.ListBean.VListBeanX.VListBean bean3 : bean2.getV_list()){//第二级
+                    if (bean3.isIsgouxuan()){
+                        service+=bean3.getVName()+"|";
+                    }
+                }
+            }
+        }
+        MyLogger.i(">>>>>>"+service);
+    }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

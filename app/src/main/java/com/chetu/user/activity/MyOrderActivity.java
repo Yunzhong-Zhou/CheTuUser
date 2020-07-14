@@ -286,7 +286,9 @@ public class MyOrderActivity extends BaseActivity {
                                 @Override
                                 public void onClick(View v) {
                                     String url = URLs.KFHOST + "/#/pages/chetu-kf/chetu-kf?token=" + localUserInfo.getToken() +
-                                            "&kf_userHash=" + model.getKf_user_info().getUserHash();
+                                            "&kf_userHash=" + model.getKf_user_info().getUserHash()+
+                                            "&nickName=" + model.getKf_user_info().getUserName() +
+                                            "&headerPic=" + URLs.IMGHOST + model.getKf_user_info().getHeadPortrait();
                                     Bundle bundle = new Bundle();
                                     bundle.putString("url", url);
                                     CommonUtil.gotoActivityWithData(MyOrderActivity.this, WebContentActivity.class, bundle, false);

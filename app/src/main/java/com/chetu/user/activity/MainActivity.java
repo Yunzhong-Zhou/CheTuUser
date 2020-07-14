@@ -362,6 +362,8 @@ public class MainActivity extends BaseActivity {
             public void onResponse(FristAppModel response) {
 //                hideProgress();
                 localUserInfo.setKfuserhash(response.getConf_info().getKf_info().getUserHash());
+                localUserInfo.setKfhead(URLs.IMGHOST+response.getConf_info().getKf_info().getHeadPortrait());
+                localUserInfo.setKfname(response.getConf_info().getKf_info().getUserName());
             }
         });
     }

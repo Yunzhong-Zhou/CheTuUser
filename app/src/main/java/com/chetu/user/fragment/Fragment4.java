@@ -56,7 +56,7 @@ public class Fragment4 extends BaseFragment {
             tv_xiaoxinum;
     LinearLayout linearLayout1, linearLayout2, linearLayout3, linearLayout4, linearLayout5, linearLayout6,
             linearLayout7, linearLayout8, linearLayout9, linearLayout10, linearLayout11, linearLayout12,
-            linearLayout13, linearLayout14, linearLayout15,linearLayout16;
+            linearLayout13, linearLayout14, linearLayout15,linearLayout16,linearLayout17;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -156,6 +156,7 @@ public class Fragment4 extends BaseFragment {
         linearLayout14 = findViewByID_My(R.id.linearLayout14);
         linearLayout15 = findViewByID_My(R.id.linearLayout15);
         linearLayout16 = findViewByID_My(R.id.linearLayout16);
+        linearLayout17 = findViewByID_My(R.id.linearLayout17);
 
         linearLayout1.setOnClickListener(this);
         linearLayout2.setOnClickListener(this);
@@ -173,6 +174,7 @@ public class Fragment4 extends BaseFragment {
         linearLayout14.setOnClickListener(this);
         linearLayout15.setOnClickListener(this);
         linearLayout16.setOnClickListener(this);
+        linearLayout17.setOnClickListener(this);
 
     }
 
@@ -253,8 +255,10 @@ public class Fragment4 extends BaseFragment {
                 break;
             case R.id.rl_xiaoxi:
                 //消息
-                String url = URLs.KFHOST+"/#/pages/chetu-kf/chetu-kf?token="+localUserInfo.getToken()+
-                        "&kf_userHash="+localUserInfo.getKfuserhash();
+                String url = URLs.KFHOST + "/#/pages/chetu-kf/chetu-kf?token=" + localUserInfo.getToken() +
+                        "&kf_userHash=" + localUserInfo.getKfuserhash() +
+                        "&nickName=" + localUserInfo.getKfname() +
+                        "&headerPic=" + localUserInfo.getKfhead();
                 Bundle bundle = new Bundle();
                 bundle.putString("url", url);
                 CommonUtil.gotoActivityWithData(getActivity(), WebContentActivity.class, bundle, false);
@@ -335,6 +339,13 @@ public class Fragment4 extends BaseFragment {
             case R.id.linearLayout15:
                 //客服中心
                 CommonUtil.gotoActivity(getActivity(), ServiceCenterActivity.class);
+                break;
+            case R.id.linearLayout17:
+                //聊天列表
+                String url1 = URLs.KFHOST + "/#/pages/chetu-kf/chat_list?token=" + localUserInfo.getToken();
+                Bundle bundle1 = new Bundle();
+                bundle1.putString("url", url1);
+                CommonUtil.gotoActivityWithData(getActivity(), WebContentActivity.class, bundle1, false);
                 break;
         }
     }

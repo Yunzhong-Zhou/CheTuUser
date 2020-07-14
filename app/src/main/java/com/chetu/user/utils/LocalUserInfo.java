@@ -14,7 +14,7 @@ public class LocalUserInfo {
     public static final String PREFERENCE_NAME = "local_userinfo";
     public static final String USERPHOTO_FILENAME = "userphotoname";//头像图片文件名
 
-    public static final String Time= "time";//时间戳
+    public static final String Time = "time";//时间戳
     public static final String Token = "token";//token
     public static final String UserType = "userType";//用户类型
     public static final String Version = "version";//版本号
@@ -23,17 +23,20 @@ public class LocalUserInfo {
     public static final String USERID = "userID";//用户id
     public static final String USERJOB = "userJob";//用户职位
     public static final String BELONGID = "belong_id";//所属id
-    public static final String USERIMAGE= "userImage";//用户头像
+    public static final String USERIMAGE = "userImage";//用户头像
 
-    public static final String Language_Type= "language_type";//语言
-    public static final String Mobile_State_Code= "mobile_state_code";//国家代码
-    public static final String Country_IMG= "country_img";//国家代码
-    public static final String Pay= "pay";//是否开通支付(1:否，2：是)
-    public static final String Merchant= "merchant";//是否为商户(1:否，2：是)
-    public static final String Gather= "gather";//是否开通收款(1:否，2：是)
+    public static final String Language_Type = "language_type";//语言
+    public static final String Mobile_State_Code = "mobile_state_code";//国家代码
+    public static final String Country_IMG = "country_img";//国家代码
+    public static final String Pay = "pay";//是否开通支付(1:否，2：是)
+    public static final String Merchant = "merchant";//是否为商户(1:否，2：是)
+    public static final String Gather = "gather";//是否开通收款(1:否，2：是)
     public static final String InvuteCode = "invite_code";//邀请码
 
     public static final String KFUSERHASH = "KFUserHash";//客服userHash
+    public static final String KFHEAD = "KFHead";//客服头像
+    public static final String KFNAME = "KFName";//客服昵称
+
     public static final String CITYNAME = "cityName";//选择的城市
     public static final String LONGITUDE = "longitude";//经度
     public static final String LATITUDE = "latitude";//纬度
@@ -58,7 +61,6 @@ public class LocalUserInfo {
     public static final String LOSENUM1 = "loseNum1";//未中奖信息
 
     public static final String ISNEWCOMER = "isNewcomer";//是否为新用户
-
 
 
     private static SharedPreferences mSharedPreferences;
@@ -89,134 +91,171 @@ public class LocalUserInfo {
         editor.putString(Time, string);
         editor.commit();
     }
+
     //设置token
     public void setToken(String string) {
         editor.putString(Token, string);
         editor.commit();
     }
+
     //设置用户类型
     public void setUserType(String string) {
         editor.putString(UserType, string);
         editor.commit();
     }
+
     //设置版本号
     public void setVersion(String string) {
         editor.putString(Version, string);
         editor.commit();
     }
+
     //设置用户名
     public void setUserName(String string) {
         editor.putString(USERNAME, string);
         editor.commit();
     }
+
     //设置昵称
     public void setNickname(String string) {
         editor.putString(NICKNAME, string);
         editor.commit();
     }
+
     //设置用户id
     public void setUserId(String string) {
         editor.putString(USERID, string);
         editor.commit();
     }
+
     //设置用户职位
     public void setUserJob(String string) {
         editor.putString(USERJOB, string);
         editor.commit();
     }
+
     //设置用户所属id
     public void setBelongid(String string) {
         editor.putString(BELONGID, string);
         editor.commit();
     }
+
     //设置用户头像
     public void setUserImage(String string) {
         editor.putString(USERIMAGE, string);
         editor.commit();
     }
+
     //设置语言
     public void setLanguage_Type(String string) {
         editor.putString(Language_Type, string);
         editor.commit();
     }
+
     //设置国家图片
     public void setCountry_IMG(String string) {
         editor.putString(Country_IMG, string);
         editor.commit();
     }
+
     //是否开通支付
     public void setPay(String string) {
         editor.putString(Pay, string);
         editor.commit();
     }
+
     //是否开通收款
     public void setGather(String string) {
         editor.putString(Gather, string);
         editor.commit();
     }
+
     //是否为商户
     public void setMerchant(String string) {
         editor.putString(Merchant, string);
         editor.commit();
     }
+
     //设置本地存储的头像文件名
     public void setUserPhotoName(String photoName) {
         editor.putString(USERPHOTO_FILENAME, photoName);
         editor.commit();
     }
+
     //保存个人简介
     public void setUserCaption(String userCaption) {
         editor.putString(USERCAPTION, userCaption);
         editor.commit();
     }
+
     //保存手机号码
     public void setPhoneNumber(String phoneNumber) {
         editor.putString(PHONENUMBER, phoneNumber);
         editor.commit();
     }
+
     //保存邮箱
     public void setEmail(String email) {
         editor.putString(EMAIL, email);
         editor.commit();
     }
+
     //保存钱包地址
     public void setWalletaddr(String string) {
         editor.putString(WALLETADDR, string);
         editor.commit();
     }
+
     //保存邀请码
     public void setInvuteCode(String string) {
         editor.putString(InvuteCode, string);
         editor.commit();
     }
+
     //设置实名认证状态
     public void setIsVerified(String string) {
         editor.putString(ISREALNAMEVALIDATED, string);
         editor.commit();
     }
+
     //设置实名认证状态
     public void setMobile_State_Code(String string) {
         editor.putString(Mobile_State_Code, string);
         editor.commit();
     }
+
     //设置是否为新人
     public void setIsnewcomer(String string) {
         editor.putString(ISNEWCOMER, string);
         editor.commit();
     }
+
     public void setKfuserhash(String string) {
         editor.putString(KFUSERHASH, string);
         editor.commit();
     }
+
+    public void setKfhead(String string) {
+        editor.putString(KFHEAD, string);
+        editor.commit();
+    }
+
+    public void setKfname(String string) {
+        editor.putString(KFNAME, string);
+        editor.commit();
+    }
+
     //保存城市
     public void setCityname(String string) {
         editor.putString(CITYNAME, string);
         editor.commit();
     }
+
     public void setLongitude(String string) {
         editor.putString(LONGITUDE, string);
         editor.commit();
     }
+
     public void setLatitude(String string) {
         editor.putString(LATITUDE, string);
         editor.commit();
@@ -227,16 +266,19 @@ public class LocalUserInfo {
         editor.putString(HXID, string);
         editor.commit();
     }
+
     //保存中奖信息
     public void setWinnum1(String string) {
         editor.putString(WINNUM1, string);
         editor.commit();
     }
+
     //保存未中奖信息
     public void setLosenum(String string) {
         editor.putString(LOSENUM, string);
         editor.commit();
     }
+
     //保存未中奖信息
     public void setLosenum1(String string) {
         editor.putString(LOSENUM1, string);
@@ -247,18 +289,22 @@ public class LocalUserInfo {
         editor.putString(CARNAME, string);
         editor.commit();
     }
+
     public void setCarnum(String string) {
         editor.putString(CARNUM, string);
         editor.commit();
     }
+
     public void setCardetail(String string) {
         editor.putString(CARDETAIL, string);
         editor.commit();
     }
+
     public void setCarid(String string) {
         editor.putString(CARID, string);
         editor.commit();
     }
+
     public void setCarlogo(String string) {
         editor.putString(CARLOGO, string);
         editor.commit();
@@ -394,10 +440,10 @@ public class LocalUserInfo {
         editor.commit();
     }
 
-	/**
-	 * 保存用户信息
-	 * @param
-	 */
+    /**
+     * 保存用户信息
+     * @param
+     */
 //	public void putUser(UserInfo userInfo) {
 //        MyLogger.i(">>>>>>>>>>保存用户信息" + userInfo.toString());
         /*put(USERNAME, userInfo.getUserName());
@@ -420,10 +466,11 @@ public class LocalUserInfo {
 //	}
 
 
-	/**
-	 * 获取当前用户信息
-	 * @return
-	 */
+    /**
+     * 获取当前用户信息
+     *
+     * @return
+     */
 //	public UserInfo getUser(){
 //        if (!TextUtils.isEmpty(getString(USERNAME))) {
 //            UserInfo info = new UserInfo(getInt(Constant.PRE_USER_ID, Integer.MIN_VALUE),
@@ -435,142 +482,160 @@ public class LocalUserInfo {
 //        }
 //        return null;
 //	}
-    public String getTime(){
-        String string=getString(Time);
+    public String getTime() {
+        String string = getString(Time);
         if (!TextUtils.isEmpty(string)) {
             return string;
         }
         return "";
     }
-    public String getToken(){
-        String string=getString(Token);
+
+    public String getToken() {
+        String string = getString(Token);
         if (!TextUtils.isEmpty(string)) {
             return string;
         }
         return "";
     }
-    public String getUserType(){
-        String string=getString(UserType);
+
+    public String getUserType() {
+        String string = getString(UserType);
         if (!TextUtils.isEmpty(string)) {
             return string;
         }
         return "";
     }
-    public String getVersion(){
-        String string=getString(Version);
+
+    public String getVersion() {
+        String string = getString(Version);
         if (!TextUtils.isEmpty(string)) {
             return string;
         }
         return "";
     }
-    public String getUserName(){
-        String string=getString(USERNAME);
+
+    public String getUserName() {
+        String string = getString(USERNAME);
         if (!TextUtils.isEmpty(string)) {
             return string;
         }
         return "";
     }
-    public String getNickname(){
-        String string=getString(NICKNAME);
+
+    public String getNickname() {
+        String string = getString(NICKNAME);
         if (!TextUtils.isEmpty(string)) {
             return string;
         }
         return "";
     }
-    public String getWalletaddr(){
-        String string=getString(WALLETADDR);
+
+    public String getWalletaddr() {
+        String string = getString(WALLETADDR);
         if (!TextUtils.isEmpty(string)) {
             return string;
         }
         return "";
     }
-    public String getUserId(){
-        String useid=getString(USERID);
+
+    public String getUserId() {
+        String useid = getString(USERID);
         if (!TextUtils.isEmpty(useid)) {
             return useid;
         }
         return "";
     }
-    public String getUserJob(){
-        String string=getString(USERJOB);
+
+    public String getUserJob() {
+        String string = getString(USERJOB);
         if (!TextUtils.isEmpty(string)) {
             return string;
         }
         return "";
     }
-    public String getBelongid(){
-        String string=getString(BELONGID);
+
+    public String getBelongid() {
+        String string = getString(BELONGID);
         if (!TextUtils.isEmpty(string)) {
             return string;
         }
         return "";
     }
-    public String getUserImage(){
-        String string=getString(USERIMAGE);
+
+    public String getUserImage() {
+        String string = getString(USERIMAGE);
         if (!TextUtils.isEmpty(string)) {
             return string;
         }
         return "";
     }
-    public String getCountry_IMG(){
-        String string=getString(Country_IMG);
+
+    public String getCountry_IMG() {
+        String string = getString(Country_IMG);
         if (!TextUtils.isEmpty(string)) {
             return string;
         }
         return "";
     }
-    public String getLanguage_Type(){
-        String string=getString(Language_Type);
+
+    public String getLanguage_Type() {
+        String string = getString(Language_Type);
         if (!TextUtils.isEmpty(string)) {
             return string;
         }
         return "zh";
     }
-    public String getUserRealName(){
-        String userRealName=getString(USERREALNAME);
+
+    public String getUserRealName() {
+        String userRealName = getString(USERREALNAME);
         if (!TextUtils.isEmpty(userRealName)) {
             return userRealName;
         }
         return "";
     }
-    public String getPhonenumber(){
-        String phoneNumber=getString(PHONENUMBER);
+
+    public String getPhonenumber() {
+        String phoneNumber = getString(PHONENUMBER);
         if (!TextUtils.isEmpty(phoneNumber)) {
             return phoneNumber;
         }
         return "";
     }
 
-    public String getCarname(){
-        String string=getString(CARNAME);
+    public String getCarname() {
+        String string = getString(CARNAME);
         if (!TextUtils.isEmpty(string)) {
             return string;
         }
         return "";
     }
-    public String getCarnum(){
-        String string=getString(CARNUM);
+
+    public String getCarnum() {
+        String string = getString(CARNUM);
         if (!TextUtils.isEmpty(string)) {
             return string;
         }
         return "";
     }
-    public String getCardetail(){
-        String string=getString(CARDETAIL);
+
+    public String getCardetail() {
+        String string = getString(CARDETAIL);
         if (!TextUtils.isEmpty(string)) {
             return string;
         }
         return "";
     }
-    public String getCarid(){
-        String string=getString(CARID);
+
+    public String getCarid() {
+        String string = getString(CARID);
         if (!TextUtils.isEmpty(string)) {
             return string;
         }
         return "";
     }
-    public String getCarlogo(){
-        String string=getString(CARLOGO);
+
+    public String getCarlogo() {
+        String string = getString(CARLOGO);
         if (!TextUtils.isEmpty(string)) {
             return string;
         }
@@ -578,76 +643,102 @@ public class LocalUserInfo {
     }
 
 
-    public String getEmail(){
-        String email=getString(EMAIL);
+    public String getEmail() {
+        String email = getString(EMAIL);
         if (!TextUtils.isEmpty(email)) {
             return email;
         }
         return "";
     }
-    public String getInvuteCode(){
-        String string=getString(InvuteCode);
+
+    public String getInvuteCode() {
+        String string = getString(InvuteCode);
         if (!TextUtils.isEmpty(string)) {
             return string;
         }
         return "";
     }
-    public String getlevel(){
-        String level=getString(LEVEL);
-        if (!TextUtils.isEmpty(level)&&!"null".equals(level)) {
+
+    public String getlevel() {
+        String level = getString(LEVEL);
+        if (!TextUtils.isEmpty(level) && !"null".equals(level)) {
             return level;
         }
         return "0";
     }
-    public String getuserCaption(){
-        String userCaption=getString(USERCAPTION);
-        if (!TextUtils.isEmpty(userCaption)&&!"null".equals(userCaption)) {
+
+    public String getuserCaption() {
+        String userCaption = getString(USERCAPTION);
+        if (!TextUtils.isEmpty(userCaption) && !"null".equals(userCaption)) {
             return userCaption;
         }
         return "无";
     }
-    public String getIsVerified(){
-        String isrealnamevalidated=getString(ISREALNAMEVALIDATED);
+
+    public String getIsVerified() {
+        String isrealnamevalidated = getString(ISREALNAMEVALIDATED);
         if (!TextUtils.isEmpty(isrealnamevalidated)) {
             return isrealnamevalidated;
         }
         return "2";//1 认证 2 未认证
     }
-    public String getMobile_State_Code(){
-        String string=getString(Mobile_State_Code);
+
+    public String getMobile_State_Code() {
+        String string = getString(Mobile_State_Code);
         if (!TextUtils.isEmpty(string)) {
             return string;
         }
         return "86";
     }
-    public String getPay(){
-        String string=getString(Pay);
+
+    public String getPay() {
+        String string = getString(Pay);
         if (!TextUtils.isEmpty(string)) {
             return string;
         }
         return "1";
     }
-    public String getGather(){
-        String string=getString(Gather);
+
+    public String getGather() {
+        String string = getString(Gather);
         if (!TextUtils.isEmpty(string)) {
             return string;
         }
         return "1";
     }
-    public String getMerchant(){
-        String string=getString(Merchant);
+
+    public String getMerchant() {
+        String string = getString(Merchant);
         if (!TextUtils.isEmpty(string)) {
             return string;
         }
         return "1";
     }
+
     public String getKfuserhash() {
         String string = getString(KFUSERHASH);
-        if (!TextUtils.isEmpty(string) ) {
+        if (!TextUtils.isEmpty(string)) {
             return string;
         }
         return "";
     }
+
+    public String getKfhead() {
+        String string = getString(KFHEAD);
+        if (!TextUtils.isEmpty(string)) {
+            return string;
+        }
+        return "";
+    }
+
+    public String getKfname() {
+        String string = getString(KFNAME);
+        if (!TextUtils.isEmpty(string)) {
+            return string;
+        }
+        return "";
+    }
+
     //获取城市
     public String getCityname() {
         String string = getString(CITYNAME);
@@ -656,6 +747,7 @@ public class LocalUserInfo {
         }
         return "";
     }
+
     public String getLongitude() {
         String string = getString(LONGITUDE);
         if (!TextUtils.isEmpty(string) && !"null".equals(string)) {
@@ -663,6 +755,7 @@ public class LocalUserInfo {
         }
         return "0";
     }
+
     public String getLatitude() {
         String string = getString(LATITUDE);
         if (!TextUtils.isEmpty(string) && !"null".equals(string)) {
@@ -679,6 +772,7 @@ public class LocalUserInfo {
         }
         return "";
     }
+
     //获取中奖信息
     public String getWinnum1() {
         String string = getString(WINNUM1);
@@ -687,6 +781,7 @@ public class LocalUserInfo {
         }
         return "";
     }
+
     //获取未中奖信息
     public String getLosenum() {
         String string = getString(LOSENUM);
@@ -695,6 +790,7 @@ public class LocalUserInfo {
         }
         return "";
     }
+
     //获取未中奖信息
     public String getLosenum1() {
         String string = getString(LOSENUM1);
@@ -703,8 +799,9 @@ public class LocalUserInfo {
         }
         return "";
     }
-    public String getIsnewcomer(){
-        String string=getString(ISNEWCOMER);
+
+    public String getIsnewcomer() {
+        String string = getString(ISNEWCOMER);
         if (!TextUtils.isEmpty(string)) {
             return string;
         }
@@ -712,7 +809,7 @@ public class LocalUserInfo {
     }
 
 
-    public boolean isLogin(){
+    public boolean isLogin() {
         return !TextUtils.isEmpty(getString(USERID));
     }
 }

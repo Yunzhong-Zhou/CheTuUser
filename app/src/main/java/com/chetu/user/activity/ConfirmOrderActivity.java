@@ -408,7 +408,7 @@ public class ConfirmOrderActivity extends BaseActivity {
                     }
                 }
                 //计算其他商品价格
-                for (ConfirmOrderModel.GoodsCartListBean otherBean:list_other){
+                for (ConfirmOrderModel.GoodsCartListBean otherBean : list_other) {
                     allmoney += otherBean.getGNum() * otherBean.getVPrice();
                 }
                 tv_money.setText("¥" + allmoney);
@@ -569,31 +569,31 @@ public class ConfirmOrderActivity extends BaseActivity {
                 tv_yuyuedaodian.setTextColor(getResources().getColor(R.color.blue));
                 tv_daodianshigong.setBackgroundResource(R.drawable.yuanjiao_5_lanse_right);
                 tv_daodianshigong.setTextColor(getResources().getColor(R.color.white));
-//                if (match()) {
-                showToast("确认提交订单吗？", "确认", "取消", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                        showProgress(true, getString(R.string.app_loading1));
-                        Map<String, String> params = new HashMap<>();
-                        params.put("u_token", localUserInfo.getToken());
-                        params.put("y_store_id", y_store_id);
-                        params.put("longitude", longitude);
-                        params.put("latitude", latitude);
-                        params.put("y_user_sedan_id", y_user_sedan_id);
-                        params.put("appoin_time", "");
-                        params.put("is_pick", is_pick);
-                        params.put("is_delivery", is_delivery);
-                        RequestAdd(params);
-                    }
-                }, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                    }
-                });
+                if (match()) {
+                    showToast("确认提交订单吗？", "确认", "取消", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                            showProgress(true, getString(R.string.app_loading1));
+                            Map<String, String> params = new HashMap<>();
+                            params.put("u_token", localUserInfo.getToken());
+                            params.put("y_store_id", y_store_id);
+                            params.put("longitude", longitude);
+                            params.put("latitude", latitude);
+                            params.put("y_user_sedan_id", y_user_sedan_id);
+                            params.put("appoin_time", "");
+                            params.put("is_pick", is_pick);
+                            params.put("is_delivery", is_delivery);
+                            RequestAdd(params);
+                        }
+                    }, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                        }
+                    });
 
-//                }
+                }
                 break;
         }
     }
@@ -635,6 +635,11 @@ public class ConfirmOrderActivity extends BaseActivity {
                 myToast("请选择预约时间");
                 return false;
             }
+        }
+
+        if (y_user_sedan_id.equals("")){
+            myToast("请选择车辆");
+            return false;
         }
         return true;
     }

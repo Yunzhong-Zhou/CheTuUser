@@ -687,8 +687,10 @@ public class Fragment1 extends BaseFragment {
                 break;
             case R.id.rl_xiaoxi:
                 //消息
-                String url = URLs.KFHOST+"/#/pages/chetu-kf/chetu-kf?token="+localUserInfo.getToken()+
-                        "&kf_userHash="+localUserInfo.getKfuserhash();
+                String url = URLs.KFHOST + "/#/pages/chetu-kf/chetu-kf?token=" + localUserInfo.getToken() +
+                        "&kf_userHash=" + localUserInfo.getKfuserhash() +
+                        "&nickName=" + localUserInfo.getKfname() +
+                        "&headerPic=" + localUserInfo.getKfhead();
                 /*WebUtilsConfig config1 =
                         new WebUtilsConfig()
                                 .setTitleBackgroundColor(R.color.colorPrimary)//设置标题栏背景色
