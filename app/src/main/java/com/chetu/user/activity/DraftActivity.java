@@ -1,11 +1,12 @@
 package com.chetu.user.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
 import com.chetu.user.R;
 import com.chetu.user.base.BaseActivity;
-import com.chetu.user.model.Fragment2Model;
+import com.chetu.user.model.DraftListModel;
 import com.chetu.user.net.URLs;
 import com.chetu.user.okhttp.CallBackUtil;
 import com.chetu.user.okhttp.OkhttpUtil;
@@ -30,8 +31,8 @@ import okhttp3.Response;
  */
 public class DraftActivity extends BaseActivity {
     private RecyclerView recyclerView;
-    List<Fragment2Model.ListBean> list = new ArrayList<>();
-    CommonAdapter<Fragment2Model.ListBean> mAdapter;
+    List<DraftListModel.ListBean> list = new ArrayList<>();
+    CommonAdapter<DraftListModel.ListBean> mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +49,7 @@ public class DraftActivity extends BaseActivity {
     @Override
     protected void initView() {
         //刷新
-        setSpringViewMore(true);//不需要加载更多
+        setSpringViewMore(false);//不需要加载更多
         springView.setListener(new SpringView.OnFreshListener() {
             @Override
             public void onRefresh() {
@@ -82,9 +83,9 @@ public class DraftActivity extends BaseActivity {
     }
 
     private void Request(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.Fragment3, params, headerMap, new CallBackUtil<Fragment2Model>() {
+        OkhttpUtil.okHttpPost(URLs.DraftList, params, headerMap, new CallBackUtil<DraftListModel>() {
             @Override
-            public Fragment2Model onParseResponse(Call call, Response response) {
+            public DraftListModel onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -96,29 +97,54 @@ public class DraftActivity extends BaseActivity {
             }
 
             @Override
-            public void onResponse(Fragment2Model response) {
+            public void onResponse(DraftListModel response) {
                 hideProgress();
                 list = response.getList();
                 if (list.size() > 0) {
                     showContentPage();
-                    mAdapter = new CommonAdapter<Fragment2Model.ListBean>
+                    mAdapter = new CommonAdapter<DraftListModel.ListBean>
                             (DraftActivity.this, R.layout.item_draft, list) {
                         @Override
-                        protected void convert(ViewHolder holder, Fragment2Model.ListBean model, int position) {
-                       /* TextView tv1 = holder.getView(R.id.tv1);
-                        TextView tv2 = holder.getView(R.id.tv2);
-                        LinearLayout ll = holder.getView(R.id.ll);
-                        tv1.setText(model.getName());
-                        tv2.setText(model.getName());
+                        protected void convert(ViewHolder holder, DraftListModel.ListBean model, int position) {
+                            holder.setText(R.id.tv_tabs,model.getVStrs());
+                            String[] strArr = model.getVStrs().split("\\|\\|");
+                            holder.setText(R.id.tv_yixuan,"已选："+strArr.length+"项");
 
-                        if (item == position) {
-                            ll.setVisibility(View.VISIBLE);
-                            tv1.setVisibility(View.GONE);
-                        } else {
-                            ll.setVisibility(View.GONE);
-                            tv1.setVisibility(View.VISIBLE);
-                        }*/
+                            holder.getView(R.id.tv_delete).setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    //删除
+                                    showToast("确认删除该草稿吗？", "取消", "确认", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            dialog.dismiss();
+                                        }
+                                    }, new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            dialog.dismiss();
+                                            showProgress(true,"正在删除，请稍候...");
+                                            Map<String, String> params = new HashMap<>();
+                                            params.put("u_token", localUserInfo.getToken());
+                                            params.put("y_draft_id", model.getYDraftId());
+                                            RequestDelete(params);
+                                        }
+                                    });
 
+                                }
+                            });
+                            holder.getView(R.id.tv_pipei).setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    //匹配商家
+                                    Intent intent1 = new Intent(DraftActivity.this, SelectStoreActivity.class);
+                                    Bundle bundle1 = new Bundle();
+                                    bundle1.putInt("type", 0);
+                                    bundle1.putString("service_name", model.getVStrs());
+                                    intent1.putExtras(bundle1);
+                                    startActivityForResult(intent1, 10001, bundle1);
+                                }
+                            });
                         }
                     };
                     mAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
@@ -136,6 +162,34 @@ public class DraftActivity extends BaseActivity {
                 } else {
                     showEmptyPage();
                 }
+            }
+        });
+    }
+
+    /**
+     * 删除草稿
+     * @param params
+     */
+    private void RequestDelete(Map<String, String> params) {
+        OkhttpUtil.okHttpPost(URLs.DeleteDraft, params, headerMap, new CallBackUtil() {
+            @Override
+            public Object onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+                hideProgress();
+                if (!err.equals("")) {
+                    showToast(err);
+                }
+            }
+
+            @Override
+            public void onResponse(Object response) {
+                hideProgress();
+                myToast("删除成功");
+                requestServer();
             }
         });
     }

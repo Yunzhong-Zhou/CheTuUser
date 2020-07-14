@@ -91,6 +91,14 @@ public class Fragment2 extends BaseFragment {
     CommonAdapter<ServiceListModel_All.ListBean.VListBeanX.VListBean> ca_tab2;
     List<ServiceListModel_All.ListBean.VListBeanX.VListBean> list_tab2 = new ArrayList<>();
 
+    /**
+     * 悬浮窗
+     */
+    String v_strs = "";
+    LinearLayout ll_xuanfu;
+    TextView tv_tabs, tv_yixuan, tv_savecaogao, tv_pipei;
+
+
     //定位
     //声明AMapLocationClient类对象
     private AMapLocationClient mLocationClient = null;
@@ -258,6 +266,14 @@ public class Fragment2 extends BaseFragment {
         rv_tab2 = findViewByID_My(R.id.rv_tab2);
         rv_tab2.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+        //悬浮窗
+        ll_xuanfu = findViewByID_My(R.id.ll_xuanfu);
+        tv_tabs = findViewByID_My(R.id.tv_tabs);
+        tv_yixuan = findViewByID_My(R.id.tv_yixuan);
+        tv_savecaogao = findViewByID_My(R.id.tv_savecaogao);
+        tv_savecaogao.setOnClickListener(this);
+        tv_pipei = findViewByID_My(R.id.tv_pipei);
+        tv_pipei.setOnClickListener(this);
     }
 
     @Override
@@ -371,6 +387,27 @@ public class Fragment2 extends BaseFragment {
                 bundle1.putInt("type", 10001);
                 intent1.putExtras(bundle1);
                 startActivityForResult(intent1, 10001, bundle1);
+                break;
+
+            case R.id.tv_savecaogao:
+                //保存草稿
+                showProgress(true,"正在保存，请稍候...");
+                Map<String, String> params = new HashMap<>();
+                params.put("u_token", localUserInfo.getToken());
+                params.put("v_strs", v_strs);
+                RequestSave(params);
+                break;
+            case R.id.tv_pipei:
+                //匹配商家
+                /*Map<String, String> params1 = new HashMap<>();
+                params1.put("u_token", localUserInfo.getToken());
+                params1.put("v_strs", v_strs);
+                RequestPiPei(params1);*/
+                service_name = v_strs;
+                requestServer();
+                tv_pipei.setClickable(false);
+                tv_pipei.setText("已匹配");
+                tv_pipei.setBackgroundResource(R.drawable.yuanjiao_5_heise);
                 break;
 
         }
@@ -586,7 +623,7 @@ public class Fragment2 extends BaseFragment {
                  * 第一级
                  */
                 list_name.clear();
-                list_name.add("热门");
+                list_name.add("门店");
                 for (ServiceListModel_All.ListBean bean : list_sv) {
                     list_name.add(bean.getVName());
                 }
@@ -623,11 +660,11 @@ public class Fragment2 extends BaseFragment {
                                  * 第二级
                                  */
                                 list_tab1 = list_sv.get(i - 1).getV_list();
-                                MyLogger.i(">>>>>>>list_tab1:"+list_tab1.size());
+                                MyLogger.i(">>>>>>>list_tab1:" + list_tab1.size());
                                 if (list_tab1.size() == 0) {
                                     //第二级没有数据-隐藏第三级
-                                   rv_tab2.setVisibility(View.INVISIBLE);
-                                }else {
+                                    rv_tab2.setVisibility(View.INVISIBLE);
+                                } else {
                                     rv_tab2.setVisibility(View.VISIBLE);
                                 }
                                 ca_tab1 = new CommonAdapter<ServiceListModel_All.ListBean.VListBeanX>
@@ -675,7 +712,7 @@ public class Fragment2 extends BaseFragment {
                                                 else
                                                     list_tab2.get(i).setIsgouxuan(false);
 
-                                                showSelete();
+                                                showSelectService();//显示选择的服务
                                                 ca_tab2.notifyDataSetChanged();
                                             }
 
@@ -690,6 +727,8 @@ public class Fragment2 extends BaseFragment {
                                         if (!list_tab1.get(item).isIsgouxuan())
                                             list_tab1.get(item).setIsgouxuan(true);
                                         else list_tab1.get(item).setIsgouxuan(false);
+
+                                        showSelectService();//显示选择的服务
 
                                         ca_tab1.notifyDataSetChanged();
                                     }
@@ -722,23 +761,85 @@ public class Fragment2 extends BaseFragment {
     /**
      * 显示选择的服务
      */
-    private void showSelete() {
-        String service = "";
+    private void showSelectService() {
+        v_strs = "";
+        int count = 0;
         for (ServiceListModel_All.ListBean bean1 : list_sv) {//第一级
-            for (ServiceListModel_All.ListBean.VListBeanX bean2 : bean1.getV_list()){//第二级
-                if (bean2.isIsgouxuan()){
-                    service+=bean2.getVName()+"|";
+            for (ServiceListModel_All.ListBean.VListBeanX bean2 : bean1.getV_list()) {//第二级
+                if (bean2.isIsgouxuan()) {
+                    count++;
+                    v_strs += bean2.getVName() + "||";
                 }
-                for (ServiceListModel_All.ListBean.VListBeanX.VListBean bean3 : bean2.getV_list()){//第二级
-                    if (bean3.isIsgouxuan()){
-                        service+=bean3.getVName()+"|";
+                for (ServiceListModel_All.ListBean.VListBeanX.VListBean bean3 : bean2.getV_list()) {//第二级
+                    if (bean3.isIsgouxuan()) {
+                        count++;
+                        v_strs += bean3.getVName() + "||";
                     }
                 }
             }
         }
-        MyLogger.i(">>>>>>"+service);
-    }
+        MyLogger.i(">>>>>>" + v_strs+count);
+        if (!v_strs.equals("")) {
+            ll_xuanfu.setVisibility(View.VISIBLE);
+            v_strs = v_strs.substring(0, v_strs.length() - 2);
+            tv_tabs.setText(v_strs);
+            tv_yixuan.setText("已选："+count+"项");
 
+            if (service_name.equals(v_strs)){
+                tv_pipei.setClickable(false);
+                tv_pipei.setText("已匹配");
+                tv_pipei.setBackgroundResource(R.drawable.yuanjiao_5_heise);
+            }else {
+                tv_pipei.setClickable(true);
+                tv_pipei.setText("匹配商家");
+                tv_pipei.setBackgroundResource(R.drawable.yuanjiao_5_lanse);
+            }
+        } else {
+            ll_xuanfu.setVisibility(View.GONE);
+        }
+    }
+    /**
+     * 保存草稿
+     * @param params
+     */
+    private void RequestSave(Map<String, String> params) {
+        OkhttpUtil.okHttpPost(URLs.SaveDraft, params, headerMap, new CallBackUtil() {
+            @Override
+            public Object onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+                hideProgress();
+                if (!err.equals("")) {
+                    showToast(err);
+                }
+            }
+
+            @Override
+            public void onResponse(Object response) {
+                hideProgress();
+                myToast("保存成功");
+                for (ServiceListModel_All.ListBean bean1 : list_sv) {//第一级
+                    for (ServiceListModel_All.ListBean.VListBeanX bean2 : bean1.getV_list()) {//第二级
+                        if (bean2.isIsgouxuan()) {
+                            bean2.setIsgouxuan(false);
+                        }
+                        for (ServiceListModel_All.ListBean.VListBeanX.VListBean bean3 : bean2.getV_list()) {//第二级
+                            if (bean3.isIsgouxuan()) {
+                                bean3.setIsgouxuan(false);
+                            }
+                        }
+                    }
+                }
+                mAdapter_sv.notifyDataSetChanged();
+                ca_tab1.notifyDataSetChanged();
+                ca_tab2.notifyDataSetChanged();
+                showSelectService();
+            }
+        });
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

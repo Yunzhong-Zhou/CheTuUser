@@ -17,6 +17,7 @@ import com.chetu.user.model.Fragment3Model;
 import com.chetu.user.net.URLs;
 import com.chetu.user.okhttp.CallBackUtil;
 import com.chetu.user.okhttp.OkhttpUtil;
+import com.chetu.user.utils.CommonUtil;
 import com.chetu.user.utils.MyLogger;
 import com.cy.cyflowlayoutlibrary.FlowLayout;
 import com.cy.cyflowlayoutlibrary.FlowLayoutAdapter;
@@ -64,7 +65,7 @@ public class SelectStoreActivity extends BaseActivity {
     }
     @Override
     protected void initView() {
-//刷新
+        //刷新
         setSpringViewMore(true);//不需要加载更多
         springView.setListener(new SpringView.OnFreshListener() {
             @Override
@@ -106,6 +107,7 @@ public class SelectStoreActivity extends BaseActivity {
     @Override
     protected void initData() {
         type = getIntent().getIntExtra("type",0);
+        service_name = getIntent().getStringExtra("service_name");
         //初始化定位
         mLocationClient = new AMapLocationClient(this);
         AMapLocationClientOption option = new AMapLocationClientOption();
@@ -317,6 +319,12 @@ public class SelectStoreActivity extends BaseActivity {
                                 resultIntent.putExtras(bundle);
                                 SelectStoreActivity.this.setResult(RESULT_OK, resultIntent);
                                 finish();
+                            }else {
+                                Bundle bundle = new Bundle();
+                                bundle.putString("id", response.getList().get(i).getYStoreId());
+                                bundle.putString("longitude", localUserInfo.getLongitude());
+                                bundle.putString("latitude", localUserInfo.getLatitude());
+                                CommonUtil.gotoActivityWithData(SelectStoreActivity.this, StoreDetailActivity.class, bundle, false);
                             }
                         }
 

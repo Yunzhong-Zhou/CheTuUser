@@ -6,11 +6,13 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.alipay.sdk.app.PayTask;
 import com.chetu.user.R;
 import com.chetu.user.base.BaseActivity;
-import com.chetu.user.model.Fragment2Model;
+import com.chetu.user.model.IntegralModel;
 import com.chetu.user.model.PayModel;
 import com.chetu.user.net.URLs;
 import com.chetu.user.okhttp.CallBackUtil;
@@ -39,8 +41,9 @@ import okhttp3.Response;
 public class IntegralActivity extends BaseActivity {
     int page = 0;
     private RecyclerView recyclerView;
-    List<Fragment2Model.ListBean> list = new ArrayList<>();
-    CommonAdapter<Fragment2Model.ListBean> mAdapter;
+    List<IntegralModel.ListBean> list = new ArrayList<>();
+    CommonAdapter<IntegralModel.ListBean> mAdapter;
+    TextView tv_jifen;
 
     private static final int SDK_PAY_FLAG = 1;
     @SuppressLint("HandlerLeak")
@@ -82,7 +85,7 @@ public class IntegralActivity extends BaseActivity {
                 .statusBarColor(R.color.blue)
                 .fitsSystemWindows(true)  //使用该属性,必须指定状态栏颜色
                 .keyboardEnable(true)  //解决软键盘与底部输入框冲突问题
-                .statusBarDarkFont(true, 0.2f) //原理：如果当前设备支持状态栏字体变色，会设置状态栏字体为黑色，如果当前设备不支持状态栏字体变色，会使当前状态栏加上透明度，否则不执行透明度
+//                .statusBarDarkFont(true, 0.2f) //原理：如果当前设备支持状态栏字体变色，会设置状态栏字体为黑色，如果当前设备不支持状态栏字体变色，会使当前状态栏加上透明度，否则不执行透明度
                 .init();
     }
 
@@ -96,6 +99,7 @@ public class IntegralActivity extends BaseActivity {
                 page = 0;
                 Map<String, String> params = new HashMap<>();
                 params.put("page", page + "");
+                params.put("is_integral", "2");//1为资金明细 2为积分明细
                 params.put("u_token", localUserInfo.getToken());
                 Request(params);
             }
@@ -106,6 +110,7 @@ public class IntegralActivity extends BaseActivity {
                 Map<String, String> params = new HashMap<>();
                 params.put("u_token", localUserInfo.getToken());
                 params.put("page", page + "");
+                params.put("is_integral", "2");//1为资金明细 2为积分明细
                 RequestMore(params);
             }
         });
@@ -113,10 +118,12 @@ public class IntegralActivity extends BaseActivity {
         recyclerView = findViewByID_My(R.id.recyclerView);
         LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(mLinearLayoutManager);
+        tv_jifen = findViewByID_My(R.id.tv_jifen);
     }
 
     @Override
     protected void initData() {
+        tv_jifen.setText(getIntent().getStringExtra("jifen"));
         requestServer();
     }
 
@@ -127,14 +134,15 @@ public class IntegralActivity extends BaseActivity {
         page = 0;
         Map<String, String> params = new HashMap<>();
         params.put("page", page + "");
+        params.put("is_integral", "2");//1为资金明细 2为积分明细
         params.put("u_token", localUserInfo.getToken());
         Request(params);
     }
 
     private void Request(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.Integral, params, headerMap, new CallBackUtil<Fragment2Model>() {
+        OkhttpUtil.okHttpPost(URLs.Integral, params, headerMap, new CallBackUtil<IntegralModel>() {
             @Override
-            public Fragment2Model onParseResponse(Call call, Response response) {
+            public IntegralModel onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -146,15 +154,26 @@ public class IntegralActivity extends BaseActivity {
             }
 
             @Override
-            public void onResponse(Fragment2Model response) {
+            public void onResponse(IntegralModel response) {
                 hideProgress();
                 list = response.getList();
                 if (list.size() > 0) {
                     showContentPage();
-                    mAdapter = new CommonAdapter<Fragment2Model.ListBean>
+                    mAdapter = new CommonAdapter<IntegralModel.ListBean>
                             (IntegralActivity.this, R.layout.item_integral, list) {
                         @Override
-                        protected void convert(ViewHolder holder, Fragment2Model.ListBean model, int position) {
+                        protected void convert(ViewHolder holder, IntegralModel.ListBean model, int position) {
+                            ImageView imageView = holder.getView(R.id.imageView);
+                            if (model.getNature() == 1) {//收入
+                                imageView.setImageResource(R.mipmap.ic_add_blue1);
+                                holder.setText(R.id.tv_money, "+" + model.getMoney());
+                            } else {
+                                imageView.setImageResource(R.mipmap.ic_list_gray);
+                                holder.setText(R.id.tv_money, "-" + model.getMoney());
+                            }
+                            holder.setText(R.id.tv_title, model.getMsg());
+                            holder.setText(R.id.tv_time, model.getCreateDate());
+                            holder.setText(R.id.tv_shengyu, "剩余积分：" + model.getReMoney());
 
                         }
                     };
@@ -178,9 +197,9 @@ public class IntegralActivity extends BaseActivity {
     }
 
     private void RequestMore(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.Integral, params, headerMap, new CallBackUtil<Fragment2Model>() {
+        OkhttpUtil.okHttpPost(URLs.Integral, params, headerMap, new CallBackUtil<IntegralModel>() {
             @Override
-            public Fragment2Model onParseResponse(Call call, Response response) {
+            public IntegralModel onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -192,9 +211,9 @@ public class IntegralActivity extends BaseActivity {
             }
 
             @Override
-            public void onResponse(Fragment2Model response) {
+            public void onResponse(IntegralModel response) {
                 hideProgress();
-                List<Fragment2Model.ListBean> list1 = new ArrayList<>();
+                List<IntegralModel.ListBean> list1 = new ArrayList<>();
                 list1 = response.getList();
                 if (list1.size() == 0) {
                     page--;

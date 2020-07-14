@@ -896,6 +896,7 @@ public class ProductDetailActivity extends BaseActivity {
                 Intent intent1 = new Intent(ProductDetailActivity.this, SelectStoreActivity.class);
                 Bundle bundle1 = new Bundle();
                 bundle1.putInt("type", 10001);
+                bundle1.putString("service_name", "");
                 intent1.putExtras(bundle1);
                 startActivityForResult(intent1, 10001, bundle1);
             }

@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide;
 import com.chetu.user.R;
 import com.chetu.user.base.BaseActivity;
 import com.chetu.user.model.BaoXianModel;
+import com.chetu.user.model.CarIllegalModel;
 import com.chetu.user.net.URLs;
 import com.chetu.user.okhttp.CallBackUtil;
 import com.chetu.user.okhttp.OkhttpUtil;
@@ -123,7 +124,7 @@ public class CarIllegalActivity extends BaseActivity {
             case R.id.tv_tiaoli:
                 //《违章查缴服务》
                 Bundle bundle = new Bundle();
-                bundle.putString("url", URLs.HOST + "/api/article/detail-html?id=695f319cf27fca852841071e6bb7948d");
+                bundle.putString("url", URLs.HOST + "/single/h5/violation?user_hash="+localUserInfo.getUserId());
                 CommonUtil.gotoActivityWithData(CarIllegalActivity.this, WebContentActivity.class, bundle, false);
                 break;
             case R.id.tv_upload:
@@ -176,9 +177,9 @@ public class CarIllegalActivity extends BaseActivity {
     }
 
     private void RequestUpData(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.CarIllegal, params, headerMap, new CallBackUtil<Object>() {
+        OkhttpUtil.okHttpPost(URLs.CarIllegal, params, headerMap, new CallBackUtil<CarIllegalModel>() {
             @Override
-            public Object onParseResponse(Call call, Response response) {
+            public CarIllegalModel onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -189,10 +190,19 @@ public class CarIllegalActivity extends BaseActivity {
             }
 
             @Override
-            public void onResponse(Object response) {
+            public void onResponse(CarIllegalModel response) {
                 hideProgress();
-                myToast("提交成功");
+                showToast("提交成功，点击确认为您跳转查询结果", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                        Bundle bundle = new Bundle();
+                        bundle.putString("url", URLs.HOST + "/single/h5/violation_closing?y_vio_regulat_id="+localUserInfo.getUserId());
+                        CommonUtil.gotoActivityWithData(CarIllegalActivity.this, WebContentActivity.class, bundle, false);
+                    }
+                });
 //                finish();
+
             }
         });
     }

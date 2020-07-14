@@ -50,13 +50,14 @@ import static com.chetu.user.net.URLs.IMGHOST;
  * 我的
  */
 public class Fragment4 extends BaseFragment {
+    Fragment4Model model;
     ImageView iv_shezhi, iv_jinbi, imageView1;
     RelativeLayout rl_xiaoxi;
     TextView textView1, textView2, textView3, textView4, textView5, textView6, textView7, textView8, textView9,
             tv_xiaoxinum;
     LinearLayout linearLayout1, linearLayout2, linearLayout3, linearLayout4, linearLayout5, linearLayout6,
             linearLayout7, linearLayout8, linearLayout9, linearLayout10, linearLayout11, linearLayout12,
-            linearLayout13, linearLayout14, linearLayout15,linearLayout16,linearLayout17;
+            linearLayout13, linearLayout14, linearLayout15, linearLayout16, linearLayout17;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -199,6 +200,7 @@ public class Fragment4 extends BaseFragment {
             @Override
             public void onResponse(Fragment4Model response) {
                 hideProgress();
+                model = response;
                 //保存头像
                 localUserInfo.setUserImage(response.getUser_info().getHeadPortrait());
                 if (!response.getUser_info().getHeadPortrait().equals("") && getActivity() != null)
@@ -217,15 +219,14 @@ public class Fragment4 extends BaseFragment {
                 textView4.setText(localUserInfo.getPhonenumber());
 
                 //车辆信息
-                if (response.getUser_info().getUser_sedan_info().getId() != null){
+                if (response.getUser_info().getUser_sedan_info().getId() != null) {
                     textView2.setText(response.getUser_info().getUser_sedan_info().getBrandInfo().getGroupName() + "-" +
                             response.getUser_info().getUser_sedan_info().getBrandInfo().getSeriesName());
-                    textView6.setText(response.getUser_info().getUser_sedan_info().getCompTime()+"天");//保养
-                    textView7.setText(response.getUser_info().getUser_sedan_info().getCompTime()+"天");//交强险
-                    textView8.setText(response.getUser_info().getUser_sedan_info().getMaintIime()+"天");//商业险
-                    textView9.setText(response.getUser_info().getUser_sedan_info().getAnnualTime()+"天");//保养
+                    textView6.setText(response.getUser_info().getUser_sedan_info().getCompTime() + "天");//保养
+                    textView7.setText(response.getUser_info().getUser_sedan_info().getCompTime() + "天");//交强险
+                    textView8.setText(response.getUser_info().getUser_sedan_info().getMaintIime() + "天");//商业险
+                    textView9.setText(response.getUser_info().getUser_sedan_info().getAnnualTime() + "天");//保养
                 }
-
 
 
             }
@@ -251,7 +252,9 @@ public class Fragment4 extends BaseFragment {
                 break;
             case R.id.iv_jinbi:
                 //积分
-                CommonUtil.gotoActivity(getActivity(), IntegralActivity.class);
+                Bundle bundle2 = new Bundle();
+                bundle2.putString("jifen", model.getUser_info().getUserBalance());
+                CommonUtil.gotoActivityWithData(getActivity(), IntegralActivity.class, bundle2, false);
                 break;
             case R.id.rl_xiaoxi:
                 //消息

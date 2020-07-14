@@ -44,7 +44,7 @@ public class Fragment4Model implements Serializable {
          */
 
         private String userId;
-        private double userBalance;
+        private String userBalance;
         private String yStoreId;
         private String userName;
         private String userAccount;
@@ -71,11 +71,11 @@ public class Fragment4Model implements Serializable {
             this.userId = userId;
         }
 
-        public double getUserBalance() {
+        public String getUserBalance() {
             return userBalance;
         }
 
-        public void setUserBalance(double userBalance) {
+        public void setUserBalance(String userBalance) {
             this.userBalance = userBalance;
         }
 

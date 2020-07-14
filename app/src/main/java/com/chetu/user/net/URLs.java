@@ -77,6 +77,15 @@ public class URLs {
     //商品详情
     public static final String ProductDetail= HOST+"/api/v1/public/get_goods_details";
     /**
+     * *******************************养车****************************************
+     * */
+    //保存草稿
+    public static final String SaveDraft = HOST+"/api/v1/user/draft_add";
+    //草稿列表
+    public static final String DraftList = HOST+"/api/v1/user/draft_list";
+    //删除草稿
+    public static final String DeleteDraft = HOST+"/api/v1/user/draft_del";
+    /**
      * *******************************门店****************************************
      * */
     public static final String Fragment3 = HOST+"/api/v1/public/get_store_list";
@@ -111,7 +120,7 @@ public class URLs {
     //版本说明
     public static final String Version = HOST+"/api/v1/h5/version";
     //积分列表
-    public static final String Integral = HOST+"/api/v1/user/get_user_integral_list";
+    public static final String Integral = HOST+"/api/v1/user/get_user_detailed_list";
     //意见反馈提交
     public static final String FeedBack = HOST+"/api/v1/public/increase_user_feedback";
     //我的订单
