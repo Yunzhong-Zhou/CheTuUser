@@ -51,10 +51,10 @@ public class SetUpActivity extends BaseActivity {
                 break;
             case R.id.linearLayout4:
                 //版本说明
+//                CommonUtil.gotoActivity(SetUpActivity.this, VersionActivity.class, false);
                 Bundle bundle1 = new Bundle();
                 bundle1.putString("url", URLs.HOST + "/single/h5/version?user_hash="+localUserInfo.getUserId());
                 CommonUtil.gotoActivityWithData(SetUpActivity.this, WebContentActivity.class, bundle1, false);
-//                CommonUtil.gotoActivity(SetUpActivity.this, VersionActivity.class, false);
                 break;
             case R.id.tv_out:
                 //退出

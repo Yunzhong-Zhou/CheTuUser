@@ -192,13 +192,13 @@ public class CarIllegalActivity extends BaseActivity {
             @Override
             public void onResponse(CarIllegalModel response) {
                 hideProgress();
-                showToast("提交成功，点击确认为您跳转查询结果", new View.OnClickListener() {
+                showToast("提交成功，请耐心等待查询结果", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         dialog.dismiss();
-                        Bundle bundle = new Bundle();
+                        /*Bundle bundle = new Bundle();
                         bundle.putString("url", URLs.HOST + "/single/h5/violation_closing?y_vio_regulat_id="+localUserInfo.getUserId());
-                        CommonUtil.gotoActivityWithData(CarIllegalActivity.this, WebContentActivity.class, bundle, false);
+                        CommonUtil.gotoActivityWithData(CarIllegalActivity.this, WebContentActivity.class, bundle, false);*/
                     }
                 });
 //                finish();
@@ -211,6 +211,12 @@ public class CarIllegalActivity extends BaseActivity {
     protected void updateView() {
         titleView.setTitle("违章查询");
         titleView.setBackground(R.color.background);
+        titleView.showRightTextview("查询历史", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CommonUtil.gotoActivity(CarIllegalActivity.this,CarIllegalListActivity.class);
+            }
+        });
     }
 
     @Override

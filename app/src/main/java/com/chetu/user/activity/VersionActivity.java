@@ -1,6 +1,7 @@
 package com.chetu.user.activity;
 
 import android.os.Bundle;
+import android.webkit.WebView;
 import android.widget.TextView;
 
 import com.chetu.user.R;
@@ -21,7 +22,7 @@ import okhttp3.Response;
  */
 public class VersionActivity extends BaseActivity {
     TextView textView;
-
+    WebView webView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,12 +41,20 @@ public class VersionActivity extends BaseActivity {
         textView = findViewByID_My(R.id.textView);
         textView.setText("版本不息 优化不止\nV" + CommonUtil.getVersionName(VersionActivity.this));
 
+        webView = findViewByID_My(R.id.webView);
+        webView.loadUrl(URLs.HOST + "/single/h5/version?user_hash="+localUserInfo.getUserId());//加载web资源
+        /*//适配屏幕
+        StringBuilder sb = new StringBuilder();
+        sb.append(getHtmlData(response.getInfo().getGDetails()));
+        //加载HTML代码
+        webView.loadDataWithBaseURL(null, sb.toString(), "text/html", "UTF-8", null);*/
+
     }
 
     @Override
     protected void initData() {
-        showProgress(true, getString(R.string.app_loading));
-        Request(params);//添加
+//        showProgress(true, getString(R.string.app_loading));
+//        Request(params);//添加
     }
 
     private void Request(Map<String, String> params) {
