@@ -440,17 +440,8 @@
                                 android:layout_height="0.5dp"
                                 android:background="@color/background" />
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:padding="13dp"
-                                android:text="提交时间:"
-                                android:textColor="@color/black3"
-                                android:textSize="14sp" />
-
                             <androidx.recyclerview.widget.RecyclerView
-                                android:id="@+id/recyclerView2"
+                                android:id="@+id/rv_jiance"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content" />
 
@@ -474,6 +465,7 @@
                                     android:textStyle="bold" />
 
                                 <TextView
+                                    android:id="@+id/tv_jiancenum"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="0项"
@@ -502,6 +494,7 @@
                                     android:textStyle="bold" />
 
                                 <TextView
+                                    android:id="@+id/tv_jiancemoney1"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="¥0"

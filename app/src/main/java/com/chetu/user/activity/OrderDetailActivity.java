@@ -3,7 +3,10 @@ package com.chetu.user.activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -19,6 +22,7 @@ import com.chetu.user.popupwindow.PhotoShowDialog;
 import com.chetu.user.utils.CommonUtil;
 import com.cy.cyflowlayoutlibrary.FlowLayout;
 import com.cy.cyflowlayoutlibrary.FlowLayoutAdapter;
+import com.cy.dialog.BaseDialog;
 import com.liaoinstan.springview.widget.SpringView;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
@@ -39,7 +43,7 @@ import okhttp3.Response;
  */
 public class OrderDetailActivity extends BaseActivity {
     int type = 1, g_state = 0;
-    String y_order_id = "", longitude = "", latitude = "";
+    String y_order_id = "";
     OrderDetailModel model;
 
     private LinearLayout linearLayout1, linearLayout2, linearLayout3, ll_fuwu, ll_jiance, ll_beizhu,
@@ -50,15 +54,17 @@ public class OrderDetailActivity extends BaseActivity {
     TextView tv_storename, tv_addr, tv_juli, tv_jiecheren, tv_wanchengtime, tv_carname, tv_carcontent,
             tv_beizhu, tv_servicenum, tv_goodsnum, tv_allmoney1,
             tv_servicemoney, tv_jiancemoney, tv_allmoney, tv_servicemoney2, tv_jiancemoney2, tv_allmoney2,
-            tv_dashang, tv_pinglun;
+            tv_dashang, tv_pinglun, tv_jiancenum, tv_jiancemoney1;
     FlowLayout flowLayout1;
     ImageView iv_storelogo, iv_carlogo;
 
-    RecyclerView rv_service, rv_other;
+    RecyclerView rv_service, rv_other, rv_jiance;
     List<OrderDetailModel.OrderServiceListBean> list_service = new ArrayList<>();
     CommonAdapter<OrderDetailModel.OrderServiceListBean> mAdapter_service;
     List<OrderDetailModel.VOrderGoodsListBean> list_other = new ArrayList<>();
     CommonAdapter<OrderDetailModel.VOrderGoodsListBean> mAdapter_other;
+    List<OrderDetailModel.TestingDetailsListBean> list_jiance = new ArrayList<>();
+    CommonAdapter<OrderDetailModel.TestingDetailsListBean> mAdapter_jiance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,12 +136,16 @@ public class OrderDetailActivity extends BaseActivity {
         tv_allmoney2 = findViewByID_My(R.id.tv_allmoney2);
         tv_dashang = findViewByID_My(R.id.tv_dashang);
         tv_pinglun = findViewByID_My(R.id.tv_pinglun);
+        tv_jiancenum = findViewByID_My(R.id.tv_jiancenum);
+        tv_jiancemoney1 = findViewByID_My(R.id.tv_jiancemoney1);
 
         flowLayout1 = findViewByID_My(R.id.flowLayout1);
         rv_service = findViewByID_My(R.id.rv_service);
         rv_service.setLayoutManager(new LinearLayoutManager(this));
         rv_other = findViewByID_My(R.id.rv_other);
         rv_other.setLayoutManager(new LinearLayoutManager(this));
+        rv_jiance = findViewByID_My(R.id.rv_jiance);
+        rv_jiance.setLayoutManager(new LinearLayoutManager(this));
 
     }
 
@@ -226,7 +236,29 @@ public class OrderDetailActivity extends BaseActivity {
                     tv_jiecheren.setVisibility(View.GONE);
                 }
                 //时间
-                tv_wanchengtime.setText("预约时间：" + model.getOrder_info().getAppoinTime());
+                switch (model.getOrder_info().getGState()) {
+                    case 0:
+                        tv_wanchengtime.setText("预约时间：" + model.getOrder_info().getAppoinTime());//预约时间
+                        break;
+                    case 1:
+                        tv_wanchengtime.setText("接车时间：" + model.getTechn_sedan_info().getCreateDate());//预约时间
+                        break;
+                    case 2:
+                        tv_wanchengtime.setText("分配时间：" + model.getTechn_sedan_info().getCreateDate());//预约时间
+                        break;
+                    case 3:
+                        tv_wanchengtime.setText("施工时间：" + model.getTechn_sedan_info().getCreateDate());//预约时间
+                        break;
+                    case 4:
+                        tv_wanchengtime.setText("完工时间：" + model.getTechn_sedan_info().getCreateDate());//预约时间
+                        break;
+                    case 5:
+                        tv_wanchengtime.setText("复检时间：" + model.getTechn_sedan_info().getCreateDate());//预约时间
+                        break;
+                    case 6:
+                        tv_wanchengtime.setText("提车时间：" + model.getTechn_sedan_info().getCreateDate());//预约时间
+                        break;
+                }
 
                 //打赏按钮
                 if (model.getTechn_sedan_info() != null && model.getTechn_sedan_info().getRewardMoney() > 0) {
@@ -352,7 +384,6 @@ public class OrderDetailActivity extends BaseActivity {
                 /**
                  * 其他商品
                  */
-
                 list_other = response.getV_order_goods_list();
                 if (list_other.size() > 0) {
                     ll_other.setVisibility(View.VISIBLE);
@@ -418,7 +449,86 @@ public class OrderDetailActivity extends BaseActivity {
                 /**
                  * 检测项目
                  */
+                if (model.getTesting_details_list() != null) {
+                    list_jiance = model.getTesting_details_list();
+                    tv_jiancenum.setText(list_jiance.size() + "项");
+                    tv_jiancemoney1.setText("¥" + model.getTesting_details_total_price());
+                    mAdapter_jiance = new CommonAdapter<OrderDetailModel.TestingDetailsListBean>(OrderDetailActivity.this, R.layout.item_orderdetail_jiance, list_jiance) {
+                        @Override
+                        protected void convert(ViewHolder holder, OrderDetailModel.TestingDetailsListBean jianceBean, int position) {
+                            holder.setText(R.id.tv_time, "提交时间:" + jianceBean.getCreateDate());
+                            holder.setText(R.id.tv_title, jianceBean.getVTitle());
+                            holder.setText(R.id.tv_money, jianceBean.getVPrice() + "");
+                            if (jianceBean.getIsReplace() == 0) {
+                                holder.setText(R.id.tv_type, "维修");
+                            } else {
+                                holder.setText(R.id.tv_type, "更换");
+                            }
+                            //横向图片
+//                        String[] strArr = model1.getGoods_info().getImgStr().split("\\|\\|");
+                            List<String> list_img = new ArrayList<>();
+                            for (String s : jianceBean.getImgArr()) {
+                                if (!s.equals("")) {
+                                    list_img.add(URLs.IMGHOST + s);
+                                }
+                            }
+                            RecyclerView rv = holder.getView(R.id.rv);
+                            LinearLayoutManager llm1 = new LinearLayoutManager(OrderDetailActivity.this);
+                            llm1.setOrientation(LinearLayoutManager.HORIZONTAL);// 设置 recyclerview 布局方式为横向布局
+                            rv.setLayoutManager(llm1);
+                            CommonAdapter<String> ca = new CommonAdapter<String>
+                                    (OrderDetailActivity.this, R.layout.item_img_80_80, list_img) {
+                                @Override
+                                protected void convert(ViewHolder holder, String model, int position) {
+                                    ImageView iv = holder.getView(R.id.iv);
+                                    Glide.with(OrderDetailActivity.this).load(model)
+                                            .centerCrop()
+//                            .apply(RequestOptions.bitmapTransform(new RoundedCorners(10)))
+                                            .placeholder(R.mipmap.loading)//加载站位图
+                                            .error(R.mipmap.zanwutupian)//加载失败
+                                            .into(iv);//加载图片
+                                }
+                            };
+                            ca.setOnItemClickListener(new OnItemClickListener() {
+                                @Override
+                                public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                                    PhotoShowDialog photoShowDialog = new PhotoShowDialog(OrderDetailActivity.this, list_img, i);
+                                    photoShowDialog.show();
+                                }
 
+                                @Override
+                                public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                                    return false;
+                                }
+                            });
+                            rv.setAdapter(ca);
+
+                            TextView tv_btn = holder.getView(R.id.tv_btn);
+                            if (jianceBean.getIsConfirm() == 0) {//待确认
+                                tv_btn.setText("确认报告");
+                                tv_btn.setBackgroundResource(R.drawable.yuanjiao_5_lanse);
+                                tv_btn.setTextColor(getResources().getColor(R.color.white));
+                                tv_btn.setClickable(true);
+                                tv_btn.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        Map<String, String> params = new HashMap<>();
+                                        params.put("u_token", localUserInfo.getToken());
+                                        params.put("y_testing_details_id", jianceBean.getYTestingDetailsId());
+                                        RequestConfirm(params);
+                                    }
+                                });
+                            } else {
+                                tv_btn.setText("已确认");
+                                tv_btn.setBackgroundResource(R.drawable.yuanjiaobiankuang_5_huise);
+                                tv_btn.setTextColor(getResources().getColor(R.color.black3));
+                                tv_btn.setClickable(false);
+                            }
+
+                        }
+                    };
+                    rv_jiance.setAdapter(mAdapter_jiance);
+                }
 
                 /**
                  * 统计
@@ -431,7 +541,6 @@ public class OrderDetailActivity extends BaseActivity {
                 tv_servicemoney2.setText("¥" + (model.getOrder_service_total_price() + model.getV_order_goods_total_price()));//商品和服务总价格
                 tv_jiancemoney2.setText("¥" + model.getTesting_total_price());//检测总价格
                 tv_allmoney2.setText("¥" + model.getOrder_price());//服务和商品总价格
-
 
             }
         });
@@ -479,7 +588,7 @@ public class OrderDetailActivity extends BaseActivity {
                 break;
             case R.id.iv_message:
                 String url = URLs.KFHOST + "/#/pages/chetu-kf/chetu-kf?token=" + localUserInfo.getToken() +
-                        "&kf_userHash=" + model.getOrder_info().getKf_user_info().getUserHash()+
+                        "&kf_userHash=" + model.getOrder_info().getKf_user_info().getUserHash() +
                         "&nickName=" + model.getOrder_info().getKf_user_info().getUserName() +
                         "&headerPic=" + URLs.IMGHOST + model.getOrder_info().getKf_user_info().getHeadPortrait();
                 Bundle bundle = new Bundle();
@@ -488,7 +597,41 @@ public class OrderDetailActivity extends BaseActivity {
                 break;
             case R.id.tv_dashang:
                 //打赏
+                BaseDialog dialog1 = new BaseDialog(OrderDetailActivity.this);
+                dialog1.contentView(R.layout.dialog_dashang)
+                        .layoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                                ViewGroup.LayoutParams.WRAP_CONTENT))
+                        .animType(BaseDialog.AnimInType.BOTTOM)
+                        .canceledOnTouchOutside(true)
+                        .gravity(Gravity.BOTTOM)
+                        .dimAmount(0.7f)
+                        .show();
 
+                EditText et_money = dialog1.findViewById(R.id.et_money);
+
+                ImageView ic_wechat = dialog1.findViewById(R.id.ic_wechat);
+                ImageView ic_ali = dialog1.findViewById(R.id.ic_ali);
+                dialog1.findViewById(R.id.ll_wechat).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ic_wechat.setImageResource(R.mipmap.ic_xuanzhong);
+                        ic_ali.setImageResource(R.mipmap.ic_weixuan);
+                    }
+                });
+                dialog1.findViewById(R.id.ll_ali).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ic_wechat.setImageResource(R.mipmap.ic_weixuan);
+                        ic_ali.setImageResource(R.mipmap.ic_xuanzhong);
+                    }
+                });
+                dialog1.findViewById(R.id.tv_confirm).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        CommonUtil.hideInput(OrderDetailActivity.this);
+                        dialog1.dismiss();
+                    }
+                });
                 break;
             case R.id.tv_pinglun:
                 //评论
@@ -607,4 +750,34 @@ public class OrderDetailActivity extends BaseActivity {
                 break;
         }
     }
+
+    /**
+     * 确认检测项目
+     *
+     * @param params
+     */
+    private void RequestConfirm(Map<String, String> params) {
+        OkhttpUtil.okHttpPost(URLs.ConfirmProject, params, headerMap, new CallBackUtil() {
+            @Override
+            public Object onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+                hideProgress();
+                if (!err.equals("")) {
+                    showToast(err);
+                }
+            }
+
+            @Override
+            public void onResponse(Object response) {
+                hideProgress();
+                myToast("确认成功");
+                requestServer();
+            }
+        });
+    }
+
 }

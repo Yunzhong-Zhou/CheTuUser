@@ -87,7 +87,6 @@ public class CarServiceActivity extends BaseActivity {
     CommonAdapter<ServiceListModel_All.ListBean> mAdapter_sv;
     List<ServiceListModel_All.ListBean> list_sv = new ArrayList<>();
     int i1 = 0, i2 = 0;
-    FlowLayoutAdapter<Fragment3Model.ListBean.StoreServiceListBean> flowLayoutAdapter1;
 
    /* //第一级
     List<ServiceListModel.ListBean> list_sv1 = new ArrayList<>();
@@ -103,6 +102,7 @@ public class CarServiceActivity extends BaseActivity {
     RecyclerView recyclerView2;
     List<Fragment3Model.ListBean> list2 = new ArrayList<>();
     CommonAdapter<Fragment3Model.ListBean> mAdapter2;
+    FlowLayoutAdapter<Fragment3Model.ListBean.StoreServiceListBean> flowLayoutAdapter1;
 
     //发布救援
     EditText editText1, editText2, editText3, editText4, editText5;

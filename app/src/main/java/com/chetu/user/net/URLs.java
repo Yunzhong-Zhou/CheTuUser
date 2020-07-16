@@ -159,6 +159,8 @@ public class URLs {
     public static final String DeleteCollect = HOST+"/api/v1/user/user_collection_del";
     //订单详情
     public static final String OrderDetail = HOST+"/api/v1/user/user_order_details";
+    //确认检测项目
+    public static final String ConfirmProject = HOST+"/api/v1/techn/techn_testing_details_confirme";
     //商家加盟
     public static final String AddMerchant = HOST+"/api/v1/user/user_apply_store_info";
     //商家加盟1
