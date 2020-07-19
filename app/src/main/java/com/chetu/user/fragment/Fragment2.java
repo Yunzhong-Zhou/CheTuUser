@@ -396,6 +396,7 @@ public class Fragment2 extends BaseFragment {
                 params.put("u_token", localUserInfo.getToken());
                 params.put("v_strs", v_strs);
                 RequestSave(params);
+
                 break;
             case R.id.tv_pipei:
                 //匹配商家
@@ -403,11 +404,16 @@ public class Fragment2 extends BaseFragment {
                 params1.put("u_token", localUserInfo.getToken());
                 params1.put("v_strs", v_strs);
                 RequestPiPei(params1);*/
+                i1 = 0;
+                ll_tab.setVisibility(View.GONE);
+                mAdapter_sv.notifyDataSetChanged();
                 service_name = v_strs;
                 requestServer();
                 tv_pipei.setClickable(false);
                 tv_pipei.setText("已匹配");
                 tv_pipei.setBackgroundResource(R.drawable.yuanjiao_5_heise);
+
+
                 break;
 
         }

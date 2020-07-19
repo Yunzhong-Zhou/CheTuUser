@@ -150,8 +150,8 @@ public class AddPingLunActivity extends BaseActivity {
         switch (v.getId()) {
             case R.id.tv_confirm:
                 //发表
-                showProgress(true, getString(R.string.app_loading1));
                 if (match1()) {
+                    showProgress(true, getString(R.string.app_loading1));
                     Map<String, String> params = new HashMap<>();
                     params.put("sn", "773EDB6D2715FACF9C93354CAC5B1A3372872DC4D5AC085867C7490E9984D33E");
                     RequestUpFile1(params, listFiles1, "picture");

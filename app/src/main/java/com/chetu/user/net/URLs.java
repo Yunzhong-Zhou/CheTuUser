@@ -32,6 +32,8 @@ public class URLs {
     public static final String Login = HOST+"/api/v1/user/landing";
     //一键登录
     public static final String Login1 = HOST+"/api/member/quick-login";
+    //绑定手机号
+    public static final String BindingPhone = HOST + "/api/v1/user/binding_phone";
     //图片上传
     public static final String UpFile = HOST+"/apiupload/picture";
     //热门搜索

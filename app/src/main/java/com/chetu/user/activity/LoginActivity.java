@@ -83,8 +83,8 @@ public class LoginActivity extends BaseActivity {
         setSwipeBackEnable(false); //主 activity 可以调用该方法，禁止滑动删除
 
         //注册微信api
-        api = WXAPIFactory.createWXAPI(this, "wx79d0350178a9ff3a", false);
-        api.registerApp("wx79d0350178a9ff3a");
+        api = WXAPIFactory.createWXAPI(this, "wx7ab80a19389dbb09", false);
+        api.registerApp("wx7ab80a19389dbb09");
     }
 
     @Override
@@ -112,7 +112,7 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void initData() {
         Map<String, String> params = new HashMap<>();
-        params.put("type","1");
+        params.put("type", "1");
         RequestUpgrade(params);//检查更新
 
         /*byte[] mBytes = null;
@@ -211,24 +211,31 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onResponse(LoginModel response) {
                 textView2.setClickable(true);
-                localUserInfo.setUserId(response.getUser_info().getUserHash());
                 //保存Token
                 localUserInfo.setToken(response.getUser_info().getUToken());
-                //保存电话号码
-                localUserInfo.setPhoneNumber(response.getUser_info().getUserPhone());
-                //保存是否认证
+                if (response.getUser_info().getUserPhone() != null && !response.getUser_info().getUserPhone().equals("0")) {
+                    localUserInfo.setUserId(response.getUser_info().getUserHash());
+                    //保存电话号码
+                    localUserInfo.setPhoneNumber(response.getUser_info().getUserPhone());
+                    //保存是否认证
 //                localUserInfo.setIsVerified(response.getIs_certification() + "");//1 认证 2 未认证
-                //保存昵称
-                localUserInfo.setNickname(response.getUser_info().getUserName());
-                //保存头像
-                localUserInfo.setUserImage(response.getUser_info().getHeadPortrait());
+                    //保存昵称
+                    localUserInfo.setNickname(response.getUser_info().getUserName());
+                    //保存头像
+                    localUserInfo.setUserImage(response.getUser_info().getHeadPortrait());
 
+                    hideProgress();
+                    CommonUtil.gotoActivity(LoginActivity.this, MainActivity.class, true);
+                } else {
+                    hideProgress();
 
-                hideProgress();
-                CommonUtil.gotoActivity(LoginActivity.this, MainActivity.class, true);
+                    CommonUtil.gotoActivity(LoginActivity.this, BindingPhoneActivity.class, false);
+                }
+
             }
         });
     }
+
     private void RequestCode(Map<String, String> params) {
         OkhttpUtil.okHttpPost(URLs.Code, params, headerMap, new CallBackUtil<CodeModel>() {
             @Override
@@ -298,6 +305,7 @@ public class LoginActivity extends BaseActivity {
             textView1.setText(millisUntilFinished / 1000 + getString(R.string.app_codethen));
         }
     }
+
     private void RequestUpgrade(Map<String, String> params) {
         OkhttpUtil.okHttpPost(URLs.Upgrade, params, headerMap, new CallBackUtil<UpgradeModel>() {
             @Override
@@ -507,13 +515,12 @@ public class LoginActivity extends BaseActivity {
         code = getIntent().getStringExtra("code");
         MyLogger.i(">>>>>>>" + code);
         if (code != null && !code.equals("")) {
-
-            this.showProgress(true, "正在获取微信登录参数，请稍候...");
+            this.showProgress(true, "正在使用微信登录，请稍候...");
             String url = "https://api.weixin.qq.com/sns/oauth2/access_token"
-                    + "?appid="+"wx79d0350178a9ff3a"
-                    +"&secret="+"77c539b9b3375eca54641a12b35b463b"
-                    +"&code="+code
-                    +"&grant_type=authorization_code";
+                    + "?appid=" + "wx7ab80a19389dbb09"
+                    + "&secret=" + "55b2941466adae7d56cfbbdf71978124"
+                    + "&code=" + code
+                    + "&grant_type=authorization_code";
             requestWeChat1(url);
 
             getIntent().removeExtra("code");
@@ -527,6 +534,7 @@ public class LoginActivity extends BaseActivity {
             RequestWeChatLogin(params);//微信登录*/
         }
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -534,44 +542,6 @@ public class LoginActivity extends BaseActivity {
        /* if (requestCode == REQUEST_CODE && resultCode == PermissionsActivity.PERMISSIONS_DENIED) {
             finish();
         }*/
-    }
-
-    //微信登录
-    private void RequestWeChatLogin(Map<String, String> params) {
-        /*OkHttpClientManager.postAsyn(LoginActivity.this, URLs.Login1, params, new OkHttpClientManager.ResultCallback<WeChatLoginModel>() {
-            @Override
-            public void onError(final Request request, String info, Exception e) {
-                hideProgress();
-                if (!info.equals("")) {
-                    myToast(info);
-                }
-            }
-
-            @Override
-            public void onResponse(final WeChatLoginModel response) {
-                MyLogger.i(">>>>>>>>>登录" + response);
-//                localUserInfo.setTime(System.currentTimeMillis() + "");
-                if (response.getThird_id().equals("0")) {//登录通过
-                    //保存Token
-                    localUserInfo.setToken(response.getLogin_data().getFresh_token());
-                    //保存电话号码
-                    localUserInfo.setPhoneNumber(response.getLogin_data().getMobile());
-                    //保存是否认证
-                    localUserInfo.setIsVerified(response.getLogin_data().getIs_certification() + "");//1 认证 2 未认证
-                    //保存昵称
-                    localUserInfo.setNickname(response.getLogin_data().getNickname());
-                    //保存环信ID
-                    localUserInfo.setHxid(response.getLogin_data().getHx_username());
-                } else {//未完善资料
-                    hideProgress();
-                    Bundle bundle = new Bundle();
-                    bundle.putString("third_id", response.getThird_id());
-                    CommonUtil.gotoActivityWithData(LoginActivity.this, RegisteredActivity.class, bundle, false);
-                }
-
-            }
-        }, false);*/
-
     }
 
     //获取微信数据1
@@ -651,15 +621,15 @@ public class LoginActivity extends BaseActivity {
                     nickname = jsonObject.getString("nickname");
                     headimgurl = jsonObject.getString("headimgurl");
 
-                    hideProgress();
-                    showProgress(true, "正在登录，请稍候...");
+//                    hideProgress();
+//                    showProgress(true, "正在登录，请稍候...");
                     Map<String, String> params = new HashMap<>();
                     params.put("user_phone", phonenum);
                     params.put("vcode", password);
                     params.put("t_token", openid);
                     params.put("head_portrait", headimgurl);
                     params.put("action", "2");//1为验证码登陆 2为第三方登陆
-                    RequestWeChatLogin(params);//微信登录
+                    RequestLogin(params);//微信登录
 
                 } catch (JSONException e) {
                     e.printStackTrace();

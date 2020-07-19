@@ -270,8 +270,8 @@ public class IntegralActivity extends BaseActivity {
             public void onResponse(PayModel response) {
                 hideProgress();
                 //微信
-                        /*IWXAPI api= WXAPIFactory.createWXAPI(RechargeActivity.this, "wx79d0350178a9ff3a",false);//填写自己的APPID
-                        api.registerApp("wx79d0350178a9ff3a");//填写自己的APPID，注册本身APP
+                        /*IWXAPI api= WXAPIFactory.createWXAPI(RechargeActivity.this, "wx7ab80a19389dbb09",false);//填写自己的APPID
+                        api.registerApp("wx7ab80a19389dbb09");//填写自己的APPID，注册本身APP
                         PayReq req = new PayReq();//PayReq就是订单信息对象
                         //给req对象赋值
                         req.appId = appid;//APPID
