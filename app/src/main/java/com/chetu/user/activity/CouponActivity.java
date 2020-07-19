@@ -2,6 +2,7 @@ package com.chetu.user.activity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.chetu.user.R;
@@ -124,7 +125,7 @@ public class CouponActivity extends BaseActivity {
                             tv_money.setText("¥" + model.getCMoney());
                             tv_title.setText(model.getCTitle());
                             tv_content.setText(model.getCMsg());
-
+                            LinearLayout ll_btn = holder.getView(R.id.ll_btn);
 
                             if (!model.getCreateDate().equals("") && !model.getCEndTime().equals("")) {
                                 String[] startTime = model.getCreateDate().split(" ");
@@ -134,7 +135,7 @@ public class CouponActivity extends BaseActivity {
                                     //判断是否过期
                                     if (CommonUtil.dataOne1(model.getCreateDate()) < CommonUtil.dataOne1(model.getCEndTime())) {//没过期
                                         //计算剩余天数
-                                        String s = CommonUtil.timedate2( CommonUtil.dataOne1(model.getCEndTime())-CommonUtil.dataOne1(model.getCreateDate()) );
+                                        String s = CommonUtil.timedate2(CommonUtil.dataOne1(model.getCEndTime()) - CommonUtil.dataOne1(model.getCreateDate()));
 
                                         tv_shiyong.setText("立即使用");
                                         tv_shiyong.setBackgroundResource(R.drawable.yuanjiaobiankuang_5_baise);
@@ -145,6 +146,16 @@ public class CouponActivity extends BaseActivity {
                                         tv_time.setTextColor(getResources().getColor(R.color.white));
                                         tv_content.setTextColor(getResources().getColor(R.color.white));
                                         tv_title.setTextColor(getResources().getColor(R.color.white));
+
+                                        ll_btn.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                Bundle bundle = new Bundle();
+                                                bundle.putString("y_user_coupon_id", model.getYUserCouponId());
+                                                CommonUtil.gotoActivityWithData(CouponActivity.this, CouponQRCodeActivity.class, bundle, false);
+                                            }
+                                        });
+
                                     } else {//已过期
                                         tv_shiyong.setText("已过期");
                                         tv_shiyong.setBackgroundResource(R.color.transparent);
@@ -173,7 +184,6 @@ public class CouponActivity extends BaseActivity {
                     mAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
                         @Override
                         public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
-
                         }
 
                         @Override

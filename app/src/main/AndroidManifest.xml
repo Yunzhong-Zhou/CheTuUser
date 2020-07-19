@@ -205,6 +205,9 @@
             android:name=".activity.CouponActivity"
             android:label="优惠券" />
         <activity
+            android:name=".activity.CouponQRCodeActivity"
+            android:label="二维码" />
+        <activity
             android:name=".activity.WaitingReleaseActivity"
             android:label="待发布" />
         <activity

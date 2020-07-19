@@ -238,7 +238,7 @@ public class IntegralActivity extends BaseActivity {
         });
         titleView.setBackground(R.color.blue);
 
-        titleView.showRightTextview("测试支付", R.color.white, new View.OnClickListener() {
+       /* titleView.showRightTextview("测试支付", R.color.white, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Map<String, String> params = new HashMap<>();
@@ -249,7 +249,7 @@ public class IntegralActivity extends BaseActivity {
                 params.put("u_token", localUserInfo.getToken());
                 RequestPay(params);
             }
-        });
+        });*/
 
     }
 

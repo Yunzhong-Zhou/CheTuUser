@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_btn"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="13dp"
@@ -11,9 +12,9 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:layout_marginRight="-13dp"
         android:background="@mipmap/bg_item_coupon1"
+        android:gravity="center"
         android:orientation="vertical">
 
         <LinearLayout
@@ -46,23 +47,24 @@
             android:id="@+id/tv_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
             android:text="有效日期：time（剩余0天）"
             android:textColor="@color/white"
-            android:layout_marginTop="4dp"
             android:textSize="11sp" />
 
     </LinearLayout>
+
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@mipmap/bg_item_coupon2"/>
+        android:background="@mipmap/bg_item_coupon2" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
         android:layout_marginLeft="-10dp"
         android:background="@mipmap/bg_item_coupon3"
+        android:gravity="center"
         android:orientation="vertical">
 
         <TextView
@@ -82,8 +84,8 @@
             android:id="@+id/tv_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="平台通用优惠券"
             android:layout_marginTop="10dp"
+            android:text="平台通用优惠券"
             android:textColor="@color/white"
             android:textSize="11sp" />
 

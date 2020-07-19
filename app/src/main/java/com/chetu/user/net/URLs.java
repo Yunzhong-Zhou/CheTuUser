@@ -129,6 +129,8 @@ public class URLs {
     public static final String MyOrder = HOST+"/api/v1/user/user_order_list";
     //优惠券
     public static final String Coupon = HOST+"/api/v1/user/user_coupon_list";
+    //优惠券二维码
+    public static final String Coupon_QRCode = HOST+"/api/v1/user/user_coupon_qrcode";
     //待发布
     public static final String WaitingRelease = HOST+"/api/v1/user/inquiry_demand_list";
     //删除询价

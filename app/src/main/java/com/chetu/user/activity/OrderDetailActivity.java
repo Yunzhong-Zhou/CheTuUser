@@ -1,8 +1,12 @@
 package com.chetu.user.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,19 +15,26 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.alipay.sdk.app.PayTask;
 import com.bumptech.glide.Glide;
 import com.chetu.user.R;
 import com.chetu.user.base.BaseActivity;
 import com.chetu.user.model.OrderDetailModel;
+import com.chetu.user.model.PayModel;
 import com.chetu.user.net.URLs;
 import com.chetu.user.okhttp.CallBackUtil;
 import com.chetu.user.okhttp.OkhttpUtil;
 import com.chetu.user.popupwindow.PhotoShowDialog;
 import com.chetu.user.utils.CommonUtil;
+import com.chetu.user.utils.MyLogger;
+import com.chetu.user.utils.alipay.PayResult;
 import com.cy.cyflowlayoutlibrary.FlowLayout;
 import com.cy.cyflowlayoutlibrary.FlowLayoutAdapter;
 import com.cy.dialog.BaseDialog;
 import com.liaoinstan.springview.widget.SpringView;
+import com.tencent.mm.opensdk.modelpay.PayReq;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
@@ -54,7 +65,7 @@ public class OrderDetailActivity extends BaseActivity {
     TextView tv_storename, tv_addr, tv_juli, tv_jiecheren, tv_wanchengtime, tv_carname, tv_carcontent,
             tv_beizhu, tv_servicenum, tv_goodsnum, tv_allmoney1,
             tv_servicemoney, tv_jiancemoney, tv_allmoney, tv_servicemoney2, tv_jiancemoney2, tv_allmoney2,
-            tv_dashang, tv_pinglun, tv_jiancenum, tv_jiancemoney1;
+            tv_fukuan, tv_dashang, tv_pinglun, tv_jiancenum, tv_jiancemoney1;
     FlowLayout flowLayout1;
     ImageView iv_storelogo, iv_carlogo;
 
@@ -65,6 +76,39 @@ public class OrderDetailActivity extends BaseActivity {
     CommonAdapter<OrderDetailModel.VOrderGoodsListBean> mAdapter_other;
     List<OrderDetailModel.TestingDetailsListBean> list_jiance = new ArrayList<>();
     CommonAdapter<OrderDetailModel.TestingDetailsListBean> mAdapter_jiance;
+
+    int payment = 2;//1为支付宝 2为微信支付 3为余额支付
+    private static final int SDK_PAY_FLAG = 1;
+    @SuppressLint("HandlerLeak")
+    private Handler mHandler = new Handler() {
+        @SuppressWarnings("unused")
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case SDK_PAY_FLAG: {
+                    @SuppressWarnings("unchecked")
+                    PayResult payResult = new PayResult((Map<String, String>) msg.obj);
+                    /**
+                     * 对于支付结果，请商户依赖服务端的异步通知结果。同步通知结果，仅作为支付结束的通知。
+                     */
+                    String resultInfo = payResult.getResult();// 同步返回需要验证的信息
+                    String resultStatus = payResult.getResultStatus();
+                    // 判断resultStatus 为9000则代表支付成功
+                    if (TextUtils.equals(resultStatus, "9000")) {
+                        // 该笔订单是否真实支付成功，需要依赖服务端的异步通知。
+                        MyLogger.i("支付成功" + payResult);
+                        showToast("支付成功");
+                    } else {
+                        // 该笔订单真实的支付结果，需要依赖服务端的异步通知。
+                        MyLogger.i("支付失败" + payResult);
+                        showToast("支付失败");
+                    }
+                    break;
+                }
+                default:
+                    break;
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,6 +178,7 @@ public class OrderDetailActivity extends BaseActivity {
         tv_servicemoney2 = findViewByID_My(R.id.tv_servicemoney2);
         tv_jiancemoney2 = findViewByID_My(R.id.tv_jiancemoney2);
         tv_allmoney2 = findViewByID_My(R.id.tv_allmoney2);
+        tv_fukuan = findViewByID_My(R.id.tv_fukuan);
         tv_dashang = findViewByID_My(R.id.tv_dashang);
         tv_pinglun = findViewByID_My(R.id.tv_pinglun);
         tv_jiancenum = findViewByID_My(R.id.tv_jiancenum);
@@ -258,6 +303,14 @@ public class OrderDetailActivity extends BaseActivity {
                     case 6:
                         tv_wanchengtime.setText("提车时间：" + model.getTechn_sedan_info().getCreateDate());//预约时间
                         break;
+                }
+                //付款按钮
+                if (model.getTechn_sedan_info() != null && model.getTechn_sedan_info().getIsPay() > 0) {
+                    tv_fukuan.setText("已付款");
+                    tv_fukuan.setClickable(false);
+                } else {
+                    tv_fukuan.setText("未付款");
+                    tv_fukuan.setClickable(true);
                 }
 
                 //打赏按钮
@@ -595,6 +648,20 @@ public class OrderDetailActivity extends BaseActivity {
                 bundle.putString("url", url);
                 CommonUtil.gotoActivityWithData(OrderDetailActivity.this, WebContentActivity.class, bundle, false);
                 break;
+            /*case R.id.tv_fukuan:
+                //付款
+                showToast("确认付款吗？", "确认", "取消", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                }, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+                break;*/
             case R.id.tv_dashang:
                 //打赏
                 BaseDialog dialog1 = new BaseDialog(OrderDetailActivity.this);
@@ -614,6 +681,7 @@ public class OrderDetailActivity extends BaseActivity {
                 dialog1.findViewById(R.id.ll_wechat).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        payment = 2;//1为支付宝 2为微信支付 3为余额支付
                         ic_wechat.setImageResource(R.mipmap.ic_xuanzhong);
                         ic_ali.setImageResource(R.mipmap.ic_weixuan);
                     }
@@ -621,6 +689,7 @@ public class OrderDetailActivity extends BaseActivity {
                 dialog1.findViewById(R.id.ll_ali).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        payment = 1;//1为支付宝 2为微信支付 3为余额支付
                         ic_wechat.setImageResource(R.mipmap.ic_weixuan);
                         ic_ali.setImageResource(R.mipmap.ic_xuanzhong);
                     }
@@ -628,8 +697,23 @@ public class OrderDetailActivity extends BaseActivity {
                 dialog1.findViewById(R.id.tv_confirm).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        CommonUtil.hideInput(OrderDetailActivity.this);
-                        dialog1.dismiss();
+                        if (!et_money.getText().toString().trim().equals("")) {
+                            CommonUtil.hideInput(OrderDetailActivity.this);
+                            dialog1.dismiss();
+                            //获取支付数据
+                            showProgress(true, "正在获取支付数据，请稍候...");
+                            Map<String, String> params = new HashMap<>();
+                            params.put("u_token", localUserInfo.getToken());
+                            params.put("payment", payment + "");
+                            params.put("i_classify", "1");//1 为打赏
+                            params.put("code_str", model.getTech_user_info().getUserHash());//技师会员 标识
+                            params.put("money", et_money.getText().toString().trim());
+                            params.put("y_techn_sedan_id", model.getOrder_info().getYTechnSedanId());
+                            RequestPay(params);
+                        } else {
+                            myToast("请输入打赏金额");
+                        }
+
                     }
                 });
                 break;
@@ -638,7 +722,6 @@ public class OrderDetailActivity extends BaseActivity {
                 Bundle bundle1 = new Bundle();
                 bundle1.putSerializable("OrderDetailModel", model);
                 CommonUtil.gotoActivityWithData(OrderDetailActivity.this, AddPingLunActivity.class, bundle1, false);
-
                 break;
         }
     }
@@ -709,6 +792,7 @@ public class OrderDetailActivity extends BaseActivity {
                 ll_heji1.setVisibility(View.GONE);
                 ll_heji2.setVisibility(View.VISIBLE);
                 ll_btn.setVisibility(View.VISIBLE);
+                tv_fukuan.setVisibility(View.GONE);
                 tv_dashang.setVisibility(View.VISIBLE);
                 tv_pinglun.setVisibility(View.GONE);
                 break;
@@ -718,6 +802,7 @@ public class OrderDetailActivity extends BaseActivity {
                 ll_heji1.setVisibility(View.GONE);
                 ll_heji2.setVisibility(View.VISIBLE);
                 ll_btn.setVisibility(View.VISIBLE);
+                tv_fukuan.setVisibility(View.GONE);
                 tv_dashang.setVisibility(View.VISIBLE);
                 tv_pinglun.setVisibility(View.GONE);
                 break;
@@ -727,6 +812,7 @@ public class OrderDetailActivity extends BaseActivity {
                 ll_heji1.setVisibility(View.GONE);
                 ll_heji2.setVisibility(View.VISIBLE);
                 ll_btn.setVisibility(View.VISIBLE);
+                tv_fukuan.setVisibility(View.GONE);
                 tv_dashang.setVisibility(View.VISIBLE);
                 tv_pinglun.setVisibility(View.GONE);
                 break;
@@ -736,6 +822,7 @@ public class OrderDetailActivity extends BaseActivity {
                 ll_heji1.setVisibility(View.GONE);
                 ll_heji2.setVisibility(View.VISIBLE);
                 ll_btn.setVisibility(View.VISIBLE);
+                tv_fukuan.setVisibility(View.VISIBLE);
                 tv_dashang.setVisibility(View.VISIBLE);
                 tv_pinglun.setVisibility(View.GONE);
                 break;
@@ -745,6 +832,7 @@ public class OrderDetailActivity extends BaseActivity {
                 ll_heji1.setVisibility(View.GONE);
                 ll_heji2.setVisibility(View.VISIBLE);
                 ll_btn.setVisibility(View.VISIBLE);
+                tv_fukuan.setVisibility(View.VISIBLE);
                 tv_dashang.setVisibility(View.VISIBLE);
                 tv_pinglun.setVisibility(View.VISIBLE);
                 break;
@@ -776,6 +864,62 @@ public class OrderDetailActivity extends BaseActivity {
                 hideProgress();
                 myToast("确认成功");
                 requestServer();
+            }
+        });
+    }
+
+    /**
+     * 获取支付数据
+     *
+     * @param params
+     */
+    private void RequestPay(Map<String, String> params) {
+        OkhttpUtil.okHttpPost(URLs.Pay, params, headerMap, new CallBackUtil<PayModel>() {
+            @Override
+            public PayModel onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+                hideProgress();
+                myToast(err);
+            }
+
+            @Override
+            public void onResponse(PayModel response) {
+                hideProgress();
+                if (payment == 2) {
+                    //微信
+                    IWXAPI api = WXAPIFactory.createWXAPI(OrderDetailActivity.this, "wx7ab80a19389dbb09", false);//填写自己的APPID
+                    api.registerApp("wx7ab80a19389dbb09");//填写自己的APPID，注册本身APP
+                    PayReq req = new PayReq();//PayReq就是订单信息对象
+                    //给req对象赋值
+                    req.appId = response.getWechat().getAppid();//APPID
+                    req.partnerId = response.getWechat().getPartnerid();//    商户号
+                    req.prepayId = response.getWechat().getPrepayid();//  预付款ID
+                    req.nonceStr = response.getWechat().getNoncestr();//随机数
+                    req.timeStamp = response.getWechat().getTimestamp();//时间戳
+                    req.packageValue = "Sign=WXPay";//固定值Sign=WXPay
+                    req.sign = response.getWechat().getSign();//签名
+                    api.sendReq(req);//将订单信息对象发送给微信服务器，即发送支付请求
+                } else {
+                    //弹出支付宝
+                    Runnable payRunnable = new Runnable() {
+                        @Override
+                        public void run() {
+                            PayTask alipay = new PayTask(OrderDetailActivity.this);
+                            Map<String, String> result = alipay.payV2(response.getOrderStr(), true);
+                            Message msg = new Message();
+                            msg.what = SDK_PAY_FLAG;
+                            msg.obj = result;
+                            mHandler.sendMessage(msg);
+                        }
+                    };
+                    // 必须异步调用
+                    Thread payThread = new Thread(payRunnable);
+                    payThread.start();
+                }
             }
         });
     }

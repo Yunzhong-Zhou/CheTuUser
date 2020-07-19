@@ -726,6 +726,21 @@
         android:paddingTop="8dp"
         android:paddingRight="13dp"
         android:paddingBottom="8dp">
+        <TextView
+            android:id="@+id/tv_fukuan"
+            android:onClick="onClick"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/yuanjiaobiankuang_5_hongse"
+            android:gravity="center"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="付款"
+            android:textStyle="bold"
+            android:textColor="@color/red"
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/tv_dashang"
