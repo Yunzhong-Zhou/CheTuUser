@@ -58,6 +58,11 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler{
 				bundle.putString("code", code);
 				CommonUtil.gotoActivityWithData(WXEntryActivity.this, LoginActivity.class,bundle,true);
 			}
+			//分享成功
+			if (resp.getType() == ConstantsAPI.COMMAND_SENDMESSAGE_TO_WX){
+				Toast.makeText(this, "微信分享成功", Toast.LENGTH_SHORT).show();
+				finish();
+			}
 
 			break;
 		case BaseResp.ErrCode.ERR_USER_CANCEL:
@@ -71,8 +76,18 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler{
 			CommonUtil.gotoActivity(WXEntryActivity.this, LoginActivity.class,true);
 			break;
 		default:
-			Toast.makeText(this, "微信登录失败", Toast.LENGTH_SHORT).show();
-			CommonUtil.gotoActivity(WXEntryActivity.this, LoginActivity.class,true);
+			// 错误返回
+			switch (resp.getType()) {
+				// 微信分享
+				case ConstantsAPI.COMMAND_SENDMESSAGE_TO_WX:
+					Toast.makeText(this, "微信分享失败", Toast.LENGTH_SHORT).show();
+					finish();
+					break;
+				default:
+					Toast.makeText(this, "微信登录失败", Toast.LENGTH_SHORT).show();
+					CommonUtil.gotoActivity(WXEntryActivity.this, LoginActivity.class,true);
+					break;
+			}
 			break;
 		}
 

@@ -35,6 +35,7 @@ import com.chetu.user.net.URLs;
 import com.chetu.user.okhttp.CallBackUtil;
 import com.chetu.user.okhttp.OkhttpUtil;
 import com.chetu.user.utils.CommonUtil;
+import com.chetu.user.wxapi.WxShareUtils;
 import com.liaoinstan.springview.widget.SpringView;
 
 import java.util.HashMap;
@@ -323,8 +324,7 @@ public class Fragment4 extends BaseFragment {
                 break;
             case R.id.linearLayout13:
                 //分享有礼
-//                CommonUtil.gotoActivity(getActivity(), .class);
-                Intent share_intent1 = new Intent();
+                /*Intent share_intent1 = new Intent();
                 share_intent1.setAction(Intent.ACTION_SEND);
 //                    share_intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 share_intent1.setType("text/plain");
@@ -333,7 +333,13 @@ public class Fragment4 extends BaseFragment {
                 share_intent1.putExtra(Intent.EXTRA_TEXT, "我发现一个很好用的APP" + "\n"
                         + "www.xxxxxx.com");
                 share_intent1 = Intent.createChooser(share_intent1, "分享");
-                startActivity(share_intent1);
+                startActivity(share_intent1);*/
+
+                WxShareUtils.shareWeb(getActivity(),
+                        "wx7ab80a19389dbb09",
+                        URLs.HOST+"/single/h5/register?user_hash=3B2372646663FDC7A81EA8E241CB7946AC74E4C0C9CFD31F750FEE2831528FF5",
+                        "车途，您的爱车管家","车途，您的爱车管家\n车途，您的爱车管家",null);
+
                 break;
             case R.id.linearLayout14:
                 //申请加盟
