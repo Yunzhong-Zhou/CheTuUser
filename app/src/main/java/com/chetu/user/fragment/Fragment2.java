@@ -200,6 +200,7 @@ public class Fragment2 extends BaseFragment {
 
     @Override
     protected void initView(View view) {
+
         findViewByID_My(R.id.headView).setPadding(0, (int) CommonUtil.getStatusBarHeight(getActivity()), 0, 0);
         //刷新
         setSpringViewMore(true);//不需要加载更多

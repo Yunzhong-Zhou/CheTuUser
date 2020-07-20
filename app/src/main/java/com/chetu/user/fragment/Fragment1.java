@@ -319,7 +319,7 @@ public class Fragment1 extends BaseFragment {
         // 在单次定位情况下，定位无论成功与否，都无需调用stopLocation()方法移除请求，定位sdk内部会移除
 
 //        if (localUserInfo.getCityname().equals("")) {
-//        mLocationClient.startLocation();
+        mLocationClient.startLocation();
 //        }
 
         requestServer();
@@ -337,19 +337,19 @@ public class Fragment1 extends BaseFragment {
         RequestService(params2, 0);
 
         //获取附近活动列表数据
-        if (!longitude.equals("")) {
-            page1 = 0;
-            Map<String, String> params1 = new HashMap<>();
-            params1.put("service_name", "");
-            params1.put("page", page1 + "");
-            params1.put("longitude", longitude);
-            params1.put("latitude", latitude);
-            params1.put("is_review", "1");
-            params1.put("is_index", "1");
-            RequestList1(params1);
-        } else {
-            mLocationClient.startLocation();
-        }
+//        if (!localUserInfo.getCityname().equals("")) {
+        page1 = 0;
+        Map<String, String> params1 = new HashMap<>();
+        params1.put("service_name", "");
+        params1.put("page", page1 + "");
+        params1.put("longitude", longitude);
+        params1.put("latitude", latitude);
+        params1.put("is_review", "1");
+        params1.put("is_index", "1");
+        RequestList1(params1);
+//        } else {
+//            mLocationClient.startLocation();
+//        }
 
         //获取口碑商家列表
         page2 = 0;
