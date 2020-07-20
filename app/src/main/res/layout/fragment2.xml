@@ -92,7 +92,7 @@
                 android:paddingTop="14dp"
                 android:paddingRight="10dp"
                 android:paddingBottom="14dp"
-                android:text="CarName"
+                android:text="点此选择车辆"
                 android:textColor="@color/black"
                 android:textSize="15sp" />
 
@@ -105,7 +105,7 @@
                 android:paddingTop="5dp"
                 android:paddingRight="9dp"
                 android:paddingBottom="5dp"
-                android:text="CarNumber"
+                android:text="点此选择车辆"
                 android:textColor="@color/black3"
                 android:textSize="11sp" />
 

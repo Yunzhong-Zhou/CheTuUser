@@ -60,6 +60,7 @@ import okhttp3.Call;
 import okhttp3.Response;
 
 import static android.app.Activity.RESULT_OK;
+import static com.chetu.user.activity.MainActivity.mBottomTabBar;
 
 
 /**
@@ -645,10 +646,18 @@ public class Fragment1 extends BaseFragment {
                                 //跳转保险查询
                                 CommonUtil.gotoActivity(getActivity(), CarInsuranceActivity.class);
                                 break;
+                            case 5:
+                                //跳转保险查询
+                                CommonUtil.gotoActivity(getActivity(), CarInsuranceActivity.class);
+                                break;
                             default:
-                                //跳转门店搜索
-                                bundle.putString("keys", list_tab.get(i).getTitle());
-                                CommonUtil.gotoActivityWithData(getActivity(), SearchActivity.class, bundle);
+                                //跳转养车页面
+                                MainActivity.item = 1;
+                                Fragment2.yServiceId = list_tab.get(i).getId();
+                                mBottomTabBar.setCurrentTab(MainActivity.item);
+                               /* bundle.putString("keys", list_tab.get(i).getTitle());
+                                CommonUtil.gotoActivityWithData(getActivity(), SearchActivity.class, bundle);*/
+
                                 break;
                         }
                     }
