@@ -60,10 +60,9 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler{
 			}
 			//分享成功
 			if (resp.getType() == ConstantsAPI.COMMAND_SENDMESSAGE_TO_WX){
-				Toast.makeText(this, "微信分享成功", Toast.LENGTH_SHORT).show();
+//				Toast.makeText(this, "微信分享成功", Toast.LENGTH_SHORT).show();
 				finish();
 			}
-
 			break;
 		case BaseResp.ErrCode.ERR_USER_CANCEL:
 			//用户取消
@@ -90,7 +89,6 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler{
 			}
 			break;
 		}
-
 
 	}
 }
