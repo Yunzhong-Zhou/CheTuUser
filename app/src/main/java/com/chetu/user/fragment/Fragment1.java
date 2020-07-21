@@ -303,6 +303,17 @@ public class Fragment1 extends BaseFragment {
                         params1.put("is_index", "1");
                         RequestList1(params1);
 
+                        //获取口碑商家列表
+                        page2 = 0;
+                        Map<String, String> params = new HashMap<>();
+                        params.put("service_name", "");
+                        params.put("page", page2 + "");
+                        params.put("longitude", longitude);
+                        params.put("latitude", longitude);
+                        params.put("is_review", "1");
+                        params.put("is_index", "1");
+                        RequestList2(params);
+
                     } else {
                         //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
                         MyLogger.e("定位失败：", "location Error, ErrCode:"
@@ -319,7 +330,7 @@ public class Fragment1 extends BaseFragment {
         // 在单次定位情况下，定位无论成功与否，都无需调用stopLocation()方法移除请求，定位sdk内部会移除
 
 //        if (localUserInfo.getCityname().equals("")) {
-        mLocationClient.startLocation();
+//        mLocationClient.startLocation();
 //        }
 
         requestServer();
@@ -337,30 +348,30 @@ public class Fragment1 extends BaseFragment {
         RequestService(params2, 0);
 
         //获取附近活动列表数据
-//        if (!localUserInfo.getCityname().equals("")) {
-        page1 = 0;
-        Map<String, String> params1 = new HashMap<>();
-        params1.put("service_name", "");
-        params1.put("page", page1 + "");
-        params1.put("longitude", longitude);
-        params1.put("latitude", latitude);
-        params1.put("is_review", "1");
-        params1.put("is_index", "1");
-        RequestList1(params1);
-//        } else {
-//            mLocationClient.startLocation();
-//        }
+        if (!localUserInfo.getCityname().equals("")) {
+            page1 = 0;
+            Map<String, String> params1 = new HashMap<>();
+            params1.put("service_name", "");
+            params1.put("page", page1 + "");
+            params1.put("longitude", longitude);
+            params1.put("latitude", latitude);
+            params1.put("is_review", "1");
+            params1.put("is_index", "1");
+            RequestList1(params1);
 
-        //获取口碑商家列表
-        page2 = 0;
-        Map<String, String> params = new HashMap<>();
-        params.put("service_name", "");
-        params.put("page", page2 + "");
-        params.put("longitude", "");
-        params.put("latitude", "");
-        params.put("is_review", "1");
-        params.put("is_index", "1");
-        RequestList2(params);
+            //获取口碑商家列表
+            page2 = 0;
+            Map<String, String> params = new HashMap<>();
+            params.put("service_name", "");
+            params.put("page", page2 + "");
+            params.put("longitude", longitude);
+            params.put("latitude", longitude);
+            params.put("is_review", "1");
+            params.put("is_index", "1");
+            RequestList2(params);
+        } else {
+            mLocationClient.startLocation();
+        }
 
     }
 

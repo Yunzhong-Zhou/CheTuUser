@@ -155,7 +155,10 @@ public class Fragment2 extends BaseFragment {
                         mAdapter_sv.notifyDataSetChanged();
                     }
                 }
-            }else {
+                if (i1 != 0){
+                    showSelectService();//显示选择的服务
+                }
+            } else {
                 //获取服务tab
                 HashMap<String, String> params2 = new HashMap<>();
                 params2.put("y_parent_id", "0");
@@ -187,8 +190,11 @@ public class Fragment2 extends BaseFragment {
                         mAdapter_sv.notifyDataSetChanged();
                     }
                 }
+                if (i1 != 0){
+                    showSelectService();//显示选择的服务
+                }
 
-            }else {
+            } else {
                 //获取服务tab
                 HashMap<String, String> params2 = new HashMap<>();
                 params2.put("y_parent_id", "0");
@@ -447,7 +453,6 @@ public class Fragment2 extends BaseFragment {
                 tv_pipei.setText("已匹配");
                 tv_pipei.setBackgroundResource(R.drawable.yuanjiao_5_heise);
 
-
                 break;
 
         }
@@ -462,19 +467,19 @@ public class Fragment2 extends BaseFragment {
     public void requestServer() {
         super.requestServer();
         this.showLoadingPage();
-        //        if (!longitude.equals("")) {
-        page = 0;
-        Map<String, String> params = new HashMap<>();
-        params.put("service_name", service_name);
-        params.put("page", page + "");
-        params.put("longitude", longitude);
-        params.put("latitude", latitude);
-        params.put("is_review", "1");
-        params.put("is_index", "0");//1为首页数据
-        Request(params);
-//        } else {
-//            mLocationClient.startLocation();
-//        }
+        if (!longitude.equals("0")) {
+            page = 0;
+            Map<String, String> params = new HashMap<>();
+            params.put("service_name", service_name);
+            params.put("page", page + "");
+            params.put("longitude", longitude);
+            params.put("latitude", latitude);
+            params.put("is_review", "1");
+            params.put("is_index", "0");//1为首页数据
+            Request(params);
+        } else {
+            mLocationClient.startLocation();
+        }
     }
 
     private void Request(Map<String, String> params) {
@@ -682,8 +687,14 @@ public class Fragment2 extends BaseFragment {
 
                         if (i1 == 0) {//热门
                             ll_tab.setVisibility(View.GONE);
+                            if (list.size() > 0) {
+                                showContentPage();
+                            }else {
+                                showEmptyPage();
+                            }
                             service_name = "";
                         } else {
+                            showContentPage();
                             ll_tab.setVisibility(View.VISIBLE);
                             service_name = list_sv.get(i1 - 1).getVName();
                             /**
@@ -776,10 +787,13 @@ public class Fragment2 extends BaseFragment {
                 mAdapter_sv.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
-
                         if (i != i1) {
                             i1 = i;
                             mAdapter_sv.notifyDataSetChanged();
+                            if (i1 != 0){
+                                showSelectService();//显示选择的服务
+                            }
+
                         }
                     }
 
@@ -807,6 +821,11 @@ public class Fragment2 extends BaseFragment {
     private void showSelectService() {
         v_strs = "";
         int count = 0;
+
+        //单独加一个一级
+        v_strs += list_sv.get(i1-1).getVName()+"||";
+        count++;
+
         for (ServiceListModel_All.ListBean bean1 : list_sv) {//第一级
             for (ServiceListModel_All.ListBean.VListBeanX bean2 : bean1.getV_list()) {//第二级
                 if (bean2.isIsgouxuan()) {
@@ -821,7 +840,9 @@ public class Fragment2 extends BaseFragment {
                 }
             }
         }
+
         MyLogger.i(">>>>>>" + v_strs + count);
+
         if (!v_strs.equals("")) {
             ll_xuanfu.setVisibility(View.VISIBLE);
             v_strs = v_strs.substring(0, v_strs.length() - 2);

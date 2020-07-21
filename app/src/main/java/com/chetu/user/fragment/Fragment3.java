@@ -333,19 +333,19 @@ public class Fragment3 extends BaseFragment {
     public void requestServer() {
         super.requestServer();
         this.showLoadingPage();
-//        if (!longitude.equals("")) {
-        page = 0;
-        Map<String, String> params = new HashMap<>();
-        params.put("service_name", service_name);
-        params.put("page", page + "");
-        params.put("longitude", longitude);
-        params.put("latitude", latitude);
-        params.put("is_review", is_review);
-        params.put("is_index", is_index);
-        Request(params);
-//        } else {
-//            mLocationClient.startLocation();
-//        }
+        if (!longitude.equals("0")) {
+            page = 0;
+            Map<String, String> params = new HashMap<>();
+            params.put("service_name", service_name);
+            params.put("page", page + "");
+            params.put("longitude", longitude);
+            params.put("latitude", latitude);
+            params.put("is_review", is_review);
+            params.put("is_index", is_index);
+            Request(params);
+        } else {
+            mLocationClient.startLocation();
+        }
 
     }
 
@@ -536,11 +536,11 @@ public class Fragment3 extends BaseFragment {
             public void onFailure(Call call, Exception e, String err) {
                 hideProgress();
 
-                if (type != 0){
+                if (type != 0) {
                     i2 = -1;
                     stringList2.clear();
                     showPopupWindow1(pop_view);
-                }else {
+                } else {
                     myToast(err);
                 }
 
