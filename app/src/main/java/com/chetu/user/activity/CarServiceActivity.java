@@ -11,6 +11,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationClient;
+import com.amap.api.location.AMapLocationClientOption;
+import com.amap.api.location.AMapLocationListener;
 import com.bumptech.glide.Glide;
 import com.chetu.user.R;
 import com.chetu.user.base.BaseActivity;
@@ -117,6 +121,10 @@ public class CarServiceActivity extends BaseActivity {
     int spanCount = 3;//一行显示张数
     ArrayList<File> listFiles = new ArrayList<>();
 
+    //定位
+    //声明AMapLocationClient类对象
+    private AMapLocationClient mLocationClient = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -198,6 +206,69 @@ public class CarServiceActivity extends BaseActivity {
         HashMap<String, String> params1 = new HashMap<>();
         params1.put("i_cy", "1");//1为普通保险 2为交强险
         RequestBaoXian(params1, 1);*/
+        //初始化定位
+        mLocationClient = new AMapLocationClient(this);
+        AMapLocationClientOption option = new AMapLocationClientOption();
+        //设置定位场景，目前支持三种场景（签到、出行、运动，默认无场景）
+        option.setLocationPurpose(AMapLocationClientOption.AMapLocationPurpose.Transport);
+
+        //设置定位模式为AMapLocationMode.Hight_Accuracy，高精度模式。AMapLocationMode.Battery_Saving，低功耗模式。AMapLocationMode.Device_Sensors，仅设备模式。
+        option.setLocationMode(AMapLocationClientOption.AMapLocationMode.Battery_Saving);
+        //获取一次定位结果：默认为false。
+        option.setOnceLocation(true);
+        //获取最近3s内精度最高的一次定位结果：
+        //设置setOnceLocationLatest(boolean b)接口为true，启动定位时SDK会返回最近3s内精度最高的一次定位结果。如果设置其为true，setOnceLocation(boolean b)接口也会被设置为true，反之不会，默认为false。
+        option.setOnceLocationLatest(true);
+        //设置定位间隔,单位毫秒,默认为2000ms，最低1000ms。
+        option.setInterval(5 * 1000);
+        //设置是否返回地址信息（默认返回地址信息）
+        option.setNeedAddress(true);
+        //设置是否允许模拟位置,默认为true，允许模拟位置
+        option.setMockEnable(true);
+        //单位是毫秒，默认30000毫秒，建议超时时间不要低于8000毫秒。
+        option.setHttpTimeOut(30000);
+        //是否开启定位缓存机制
+        option.setLocationCacheEnable(false);
+
+        mLocationClient.setLocationOption(option);
+
+        //设置定位回调监听
+        mLocationClient.setLocationListener(new AMapLocationListener() {
+            @Override
+            public void onLocationChanged(AMapLocation aMapLocation) {
+                if (aMapLocation != null) {
+                    if (aMapLocation.getErrorCode() == 0) {
+
+                        MyLogger.i("定位信息", "\n纬度：" + aMapLocation.getLatitude()
+                                + "\n经度:" + aMapLocation.getLongitude()
+                                + "\n地址:" + aMapLocation.getAddress());
+//                        register_addr = aMapLocation.getAddress();
+
+                        localUserInfo.setCityname(aMapLocation.getCity());
+                        localUserInfo.setLongitude(aMapLocation.getLongitude()+"");
+                        localUserInfo.setLatitude(aMapLocation.getLatitude() + "");
+
+                        editText3.setText(aMapLocation.getAddress() + "");
+
+
+                    } else {
+                        //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
+                        MyLogger.e("定位失败：", "location Error, ErrCode:"
+                                + aMapLocation.getErrorCode() + ", errInfo:"
+                                + aMapLocation.getErrorInfo());
+                        myToast("" + aMapLocation.getErrorInfo());
+                    }
+                }
+            }
+        });
+
+        //设置场景模式后最好调用一次stop，再调用start以保证场景模式生效
+//        mLocationClient.stopLocation();
+        // 在单次定位情况下，定位无论成功与否，都无需调用stopLocation()方法移除请求，定位sdk内部会移除
+
+//        if (localUserInfo.getCityname().equals("")) {
+        mLocationClient.startLocation();
+//        }
     }
 
     @Override

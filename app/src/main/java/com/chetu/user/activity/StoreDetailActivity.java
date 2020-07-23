@@ -1,5 +1,7 @@
 package com.chetu.user.activity;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -884,6 +886,30 @@ public class StoreDetailActivity extends BaseActivity {
     public void onClick(View v) {
         super.onClick(v);
         switch (v.getId()) {
+            case R.id.tv_phone:
+                //拨打电话
+                showToast("确认拨打 " + storeDetailModel.getInfo().getPhone() + " 吗？", "确认", "取消",
+                        new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialog.dismiss();
+                                //创建打电话的意图
+                                Intent intent = new Intent();
+                                //设置拨打电话的动作
+                                intent.setAction(Intent.ACTION_CALL);//直接拨出电话
+//                               intent.setAction(Intent.ACTION_DIAL);//只调用拨号界面，不拨出电话
+                                //设置拨打电话的号码
+                                intent.setData(Uri.parse("tel:" + storeDetailModel.getInfo().getPhone()));
+                                //开启打电话的意图
+                                startActivity(intent);
+                            }
+                        }, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialog.dismiss();
+                            }
+                        });
+                break;
             case R.id.iv_xihuan:
                 //收藏
                 isShouChange = !isShouChange;

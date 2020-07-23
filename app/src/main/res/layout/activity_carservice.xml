@@ -8,7 +8,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_weight="1">
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -127,14 +128,15 @@
                             android:id="@+id/recyclerView1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content" />
+
                         <TextView
                             android:id="@+id/tv_add"
-                            android:onClick="onClick"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="13dp"
                             android:background="#F5F5F5"
                             android:drawableRight="@mipmap/ic_add_blue"
+                            android:onClick="onClick"
                             android:paddingLeft="13dp"
                             android:paddingTop="14dp"
                             android:paddingRight="13dp"
@@ -388,70 +390,12 @@
                         android:id="@+id/loading_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
+
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/recyclerView2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content" />
                     </com.chetu.user.view.LoadingLayout>
-                </LinearLayout>
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
-                <!--底部按钮-->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="28dp"
-                    android:background="@color/white"
-                    android:orientation="horizontal">
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
-
-                    <TextView
-                        android:id="@+id/tv_upload1"
-                        android:layout_width="120dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginBottom="8dp"
-                        android:background="@drawable/yuanjiaobiankuang_5_lanse"
-                        android:gravity="center"
-                        android:onClick="onClick"
-                        android:padding="12dp"
-                        android:text="自选门店"
-                        android:textColor="@color/blue"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
-
-                    <TextView
-                        android:id="@+id/tv_upload2"
-                        android:layout_width="120dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginBottom="8dp"
-                        android:background="@drawable/yuanjiao_5_lanse"
-                        android:gravity="center"
-                        android:onClick="onClick"
-                        android:padding="12dp"
-                        android:text="发布"
-                        android:textColor="@color/white"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
-
                 </LinearLayout>
 
             </LinearLayout>
@@ -540,5 +484,54 @@
         </com.lijiankun24.shadowlayout.ShadowLayout>
 
     </RelativeLayout>
+    <!--底部按钮-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:paddingTop="13dp"
+        android:paddingBottom="13dp">
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tv_upload1"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/yuanjiaobiankuang_5_lanse"
+            android:gravity="center"
+            android:onClick="onClick"
+            android:padding="12dp"
+            android:text="自选门店"
+            android:textColor="@color/blue"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+
+        <TextView
+            android:id="@+id/tv_upload2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="13dp"
+            android:layout_marginRight="13dp"
+            android:background="@drawable/yuanjiao_5_lanse"
+            android:gravity="center"
+            android:onClick="onClick"
+            android:padding="12dp"
+            android:text="发布"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+
+    </LinearLayout>
 
 </LinearLayout>
