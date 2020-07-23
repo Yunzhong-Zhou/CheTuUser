@@ -58,7 +58,7 @@ public class Fragment4 extends BaseFragment {
             tv_xiaoxinum;
     LinearLayout linearLayout1, linearLayout2, linearLayout3, linearLayout4, linearLayout5, linearLayout6,
             linearLayout7, linearLayout8, linearLayout9, linearLayout10, linearLayout11, linearLayout12,
-            linearLayout13, linearLayout14, linearLayout15, linearLayout16, linearLayout17;
+            linearLayout13, linearLayout14, linearLayout15, linearLayout16, linearLayout17,linearLayout18;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -159,6 +159,7 @@ public class Fragment4 extends BaseFragment {
         linearLayout15 = findViewByID_My(R.id.linearLayout15);
         linearLayout16 = findViewByID_My(R.id.linearLayout16);
         linearLayout17 = findViewByID_My(R.id.linearLayout17);
+        linearLayout18 = findViewByID_My(R.id.linearLayout18);
 
         linearLayout1.setOnClickListener(this);
         linearLayout2.setOnClickListener(this);
@@ -177,6 +178,7 @@ public class Fragment4 extends BaseFragment {
         linearLayout15.setOnClickListener(this);
         linearLayout16.setOnClickListener(this);
         linearLayout17.setOnClickListener(this);
+        linearLayout18.setOnClickListener(this);
 
     }
 
@@ -355,6 +357,11 @@ public class Fragment4 extends BaseFragment {
                 Bundle bundle1 = new Bundle();
                 bundle1.putString("url", url1);
                 CommonUtil.gotoActivityWithData(getActivity(), WebContentActivity.class, bundle1, false);
+                break;
+
+            case R.id.linearLayout18:
+                //需求订单
+
                 break;
         }
     }

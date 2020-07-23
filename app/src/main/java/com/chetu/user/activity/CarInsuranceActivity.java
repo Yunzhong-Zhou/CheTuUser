@@ -351,6 +351,12 @@ public class CarInsuranceActivity extends BaseActivity {
     protected void updateView() {
         titleView.setTitle("车险");
         titleView.setBackground(R.color.background);
+        titleView.showRightTextview("询价列表", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     /**

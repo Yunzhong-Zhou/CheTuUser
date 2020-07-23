@@ -117,6 +117,9 @@
             android:name=".activity.CarIllegalActivity"
             android:label="违章查询" />
         <activity
+            android:name=".activity.CarIllegalListActivity"
+            android:label="违章查询列表" />
+        <activity
             android:name=".activity.ProductListActivity"
             android:label="商品列表" />
         <activity
