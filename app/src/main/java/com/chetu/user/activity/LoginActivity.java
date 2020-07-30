@@ -211,6 +211,8 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onResponse(LoginModel response) {
                 textView2.setClickable(true);
+                hideProgress();
+
                 //保存Token
                 localUserInfo.setToken(response.getUser_info().getUToken());
                 if (response.getUser_info().getUserPhone() != null && !response.getUser_info().getUserPhone().equals("0")) {
@@ -224,11 +226,8 @@ public class LoginActivity extends BaseActivity {
                     //保存头像
                     localUserInfo.setUserImage(response.getUser_info().getHeadPortrait());
 
-                    hideProgress();
                     CommonUtil.gotoActivity(LoginActivity.this, MainActivity.class, true);
                 } else {
-                    hideProgress();
-
                     CommonUtil.gotoActivity(LoginActivity.this, BindingPhoneActivity.class, false);
                 }
 
