@@ -128,77 +128,59 @@
             android:layout_height="wrap_content"
             android:background="@color/white" />
 
-        <com.liaoinstan.springview.widget.SpringView
-            android:id="@+id/springView"
+        <com.chetu.user.view.LoadingLayout
+            android:id="@+id/loading_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <androidx.core.widget.NestedScrollView
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fillViewport="true"
-                android:scrollbars="none">
+                android:layout_height="match_parent">
+
+                <com.liaoinstan.springview.widget.SpringView
+                    android:id="@+id/springView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:paddingBottom="10dp" />
+
+                </com.liaoinstan.springview.widget.SpringView>
 
                 <LinearLayout
+                    android:id="@+id/ll_tab"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:background="@color/background"
+                    android:orientation="horizontal">
 
-                    <LinearLayout
-                        android:id="@+id/ll_tab"
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_tab1"
+                        android:layout_width="100dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/white" />
+
+                    <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="300dp"
-                        android:background="@color/background"
-                        android:orientation="horizontal">
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@color/white">
 
                         <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/rv_tab1"
-                            android:layout_width="100dp"
-                            android:layout_height="match_parent"
-                            android:background="@color/white" />
-
-                        <RelativeLayout
+                            android:id="@+id/rv_tab2"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginTop="10dp"
-                            android:background="@color/white">
+                            android:layout_height="match_parent" />
+                    </RelativeLayout>
 
-                            <androidx.recyclerview.widget.RecyclerView
-                                android:id="@+id/rv_tab2"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent" />
-                        </RelativeLayout>
-
-                    </LinearLayout>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:paddingTop="14dp"
-                        android:paddingBottom="4dp"
-                        android:text="匹配门店"
-                        android:textColor="@color/black"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
-
-                    <com.chetu.user.view.LoadingLayout
-                        android:id="@+id/loading_layout"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/recyclerView"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:paddingBottom="100dp" />
-                    </com.chetu.user.view.LoadingLayout>
 
                 </LinearLayout>
+            </RelativeLayout>
+        </com.chetu.user.view.LoadingLayout>
 
-            </androidx.core.widget.NestedScrollView>
-        </com.liaoinstan.springview.widget.SpringView>
     </LinearLayout>
 
     <LinearLayout
@@ -208,12 +190,12 @@
         android:layout_alignParentBottom="true"
         android:layout_marginLeft="13dp"
         android:layout_marginTop="10dp"
+        android:visibility="gone"
         android:layout_marginRight="13dp"
         android:layout_marginBottom="10dp"
         android:background="@drawable/yuanjiao_10_baise"
         android:elevation="3dp"
-        android:orientation="vertical"
-        android:visibility="gone">
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -263,9 +245,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="已选："
+                android:textStyle="bold"
                 android:textColor="@color/black"
-                android:textSize="15sp"
-                android:textStyle="bold" />
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/tv_savecaogao"

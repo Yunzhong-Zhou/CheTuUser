@@ -181,6 +181,9 @@
             android:name=".activity.MyOrderActivity"
             android:label="我的订单" />
         <activity
+            android:name=".activity.XuQiuOrderActivity"
+            android:label="需求订单" />
+        <activity
             android:name=".activity.OrderDetailActivity"
             android:label="订单详情" />
         <activity

@@ -29,6 +29,7 @@ import com.chetu.user.activity.ServiceCenterActivity;
 import com.chetu.user.activity.SetUpActivity;
 import com.chetu.user.activity.WaitingReleaseActivity;
 import com.chetu.user.activity.WebContentActivity;
+import com.chetu.user.activity.XuQiuOrderActivity;
 import com.chetu.user.base.BaseFragment;
 import com.chetu.user.model.Fragment4Model;
 import com.chetu.user.net.URLs;
@@ -361,7 +362,7 @@ public class Fragment4 extends BaseFragment {
 
             case R.id.linearLayout18:
                 //需求订单
-
+                CommonUtil.gotoActivity(getActivity(), XuQiuOrderActivity.class);
                 break;
         }
     }

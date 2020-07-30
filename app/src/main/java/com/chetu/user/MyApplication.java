@@ -6,7 +6,6 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 
 import com.hjq.toast.ToastUtils;
-import com.mob.MobSDK;
 import com.tencent.bugly.crashreport.CrashReport;
 
 import androidx.multidex.MultiDex;
@@ -31,10 +30,6 @@ public class MyApplication extends Application {
 
         mContext = this;
         myApplication = this;
-        //推送初始化
-        MobSDK.init(getApplicationContext());
-        //控制用户隐私授权的结果
-        MobSDK.submitPolicyGrantResult(true, null);
 
         //腾讯bugly 异常上报初始化-建议在测试阶段建议设置成true，发布时设置为false。
         CrashReport.initCrashReport(getApplicationContext(), "5ee0dd5813", false);
@@ -59,6 +54,103 @@ public class MyApplication extends Application {
 
         //toast初始化
         ToastUtils.init(this);
+
+        /*//推送初始化
+        MobSDK.init(getApplicationContext());
+        //控制用户隐私授权的结果
+        MobSDK.submitPolicyGrantResult(true, null);
+        //防止多进程注册多次  可以在MainActivity或者其他页面注册MobPushReceiver
+        String processName = getProcessName(this);
+        if (getPackageName().equals(processName)) {
+            MobPush.addPushReceiver(new MobPushReceiver() {
+                @Override
+                public void onCustomMessageReceive(Context context, MobPushCustomMessage message) {
+                    //接收自定义消息(透传)
+                    MyLogger.i("接收自定义消息(透传)onCustomMessageReceive:" + message.toString());
+                }
+
+                @Override
+                public void onNotifyMessageReceive(Context context, MobPushNotifyMessage message) {
+                    //接收通知消息
+                    MyLogger.i("接收通知消息MobPush onNotifyMessageReceive:" + message.toString());
+
+                }
+
+                @Override
+                public void onNotifyMessageOpenedReceive(Context context, MobPushNotifyMessage message) {
+                    //接收通知消息被点击事件
+                    MyLogger.i("接收通知消息被点击事件MobPush onNotifyMessageOpenedReceive:" + message.toString());
+                    Message msg = new Message();
+//                msg.obj = "Click Message:" + message.toString();
+//                msg.obj = "Click Message:" + message.getTitle();
+//                msg.obj = "Click Message:" + message.getContent();
+                    switch (message.getExtrasMap().get("type")) {
+                        case "1":
+                            //网页
+                            msg.what = 1;
+                            msg.obj = message.getExtrasMap().get("url");
+                            break;
+                        case "2":
+                            //订单详情
+                            msg.what = 2;
+                            msg.obj = message.getExtrasMap().get("symbol");
+                            break;
+                    }
+                    handler.sendMessage(msg);
+                }
+
+                @Override
+                public void onTagsCallback(Context context, String[] tags, int operation, int errorCode) {
+                    //接收tags的增改删查操作
+                    MyLogger.i("接收tags的增改删查操作onTagsCallback:" + operation + "  " + errorCode);
+                }
+
+                @Override
+                public void onAliasCallback(Context context, String alias, int operation, int errorCode) {
+                    //接收alias的增改删查操作
+                    MyLogger.i("接收alias的增改删查操作onAliasCallback:" + alias + "  " + operation + "  " + errorCode);
+                }
+            });
+
+            handler = new Handler(new Handler.Callback() {
+                @Override
+                public boolean handleMessage(Message msg) {
+                    Bundle bundle = new Bundle();
+                    switch (msg.what) {
+                        case 1:
+                            //网页
+                            MyLogger.i(">>>>>>>>网页：" + msg.obj.toString());
+                            Intent i = new Intent(mContext, WebContentActivity.class);
+                            bundle.putString("url", msg.obj.toString());
+                            i.putExtras(bundle);
+                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            mContext.startActivity(i);
+                            break;
+                        case 2:
+                            //订单详情
+                            MyLogger.i(">>>>>>>>>symbol:" + msg.obj.toString());
+//                        Intent i2 = new Intent(context, PredictionDetailActivity_MPChart.class);
+                            Intent i2 = new Intent(mContext, PredictionDetailActivity.class);
+                            bundle.putString("symbol", msg.obj.toString());
+                            i2.putExtras(bundle);
+                            i2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            mContext.startActivity(i2);
+                            break;
+                        default:
+                            break;
+                    }
+
+                    //当其它dialog未关闭的时候，再次显示dialog，会造成其他dialog无法dismiss的现象，建议使用toast
+//			if(PushDeviceHelper.getInstance().isNotificationEnabled()) {
+//				Toast.makeText(MainActivity.this, "回调信息\n" + (String) msg.OBJ, Toast.LENGTH_SHORT).show();
+//			} else {//当做比通知栏后，toast是无法显示的
+//				new DialogShell(MainActivity.this).autoDismissDialog(0, "回调信息\n" + (String)msg.OBJ, 2);
+//			}
+
+                    return false;
+                }
+            });
+        }*/
 
         /**
          * 对于7.0以下，需要在Application创建的时候进行语言切换

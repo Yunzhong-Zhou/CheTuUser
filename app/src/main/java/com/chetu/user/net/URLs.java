@@ -52,6 +52,8 @@ public class URLs {
     public static final String ADDShop = HOST+"/api/v1/public/user_cart_add";
     //提交订单
     public static final String ADDOrder = HOST+"/api/v1/public/increase_order_service";
+    //提交询价
+    public static final String ADDXunJia = HOST+"/api/v1/user/user_cart_conversion_demand_increase";
     //支付
     public static final String Pay = HOST+"/api/v1/pay/online_payment";
     //评价列表
@@ -177,7 +179,10 @@ public class URLs {
     public static final String AddMerchant3 = HOST+"/api/v1/user/user_apply_store_three";
     //客服列表
     public static final String ServiceCenter = HOST+"/api/v1/user/get_kf_list";
-
+    //需求订单
+    public static final String XuQiuOrder = HOST+"/api/v1/public/user_cart_list";
+    //取消订单
+    public static final String DeleteOrder = HOST+"/api/v1/user/user_cart_store_del";
     /**拼接请求路径
      *@PARAM URI
      * @RETURN

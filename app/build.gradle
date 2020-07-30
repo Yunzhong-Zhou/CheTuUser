@@ -178,14 +178,14 @@ dependencies {
     implementation 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+'
 
 }
-apply plugin: 'com.mob.sdk'
+/*apply plugin: 'com.mob.sdk'
 MobSDK {
     appKey ""
     appSecret ""
     MobPush {
         bradge true//设置是否开启角标开关
         devInfo {
-            /*HUAWEI {
+            HUAWEI {
                 appId "101920333"
             }
             MEIZU {
@@ -198,18 +198,18 @@ MobSDK {
             }
             FCM {
                 iconRes "@mipmap/ic_launcher"
-            }*/
-            /*OPPO {
+            }
+            OPPO {
                 appKey "OPPO的appKey"
                 appSecret "OPPO的appSecret"
             }
             VIVO {
                 appId "VIVO的appId"
                 appKey  "VIVO的appSecret"
-            }*/
+            }
 
         }
     }
-}
+}*/
 
 //apply plugin: 'com.google.gms.google-services'//谷歌服务

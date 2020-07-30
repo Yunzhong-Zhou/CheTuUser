@@ -31,6 +31,7 @@ import okhttp3.Response;
 
 /**
  * Created by zyz on 2020/7/3.
+ * 确认订单
  */
 public class ConfirmOrderActivity extends BaseActivity {
     String y_user_sedan_id = "", y_store_id = "", longitude = "", latitude = "", appoin_time = "", is_pick = "1", is_delivery = "0";
@@ -628,7 +629,34 @@ public class ConfirmOrderActivity extends BaseActivity {
             }
         });
     }
+    /**
+     * 发布询价
+     * @param params
+     */
+    private void RequestAddXunJia(Map<String, String> params) {
+        OkhttpUtil.okHttpPost(URLs.ADDXunJia, params, headerMap, new CallBackUtil<Object>() {
+            @Override
+            public Object onParseResponse(Call call, Response response) {
+                return null;
+            }
 
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+                hideProgress();
+            }
+
+            @Override
+            public void onResponse(Object response) {
+                hideProgress();
+                showToast("发布询价成功", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+            }
+        });
+    }
     private boolean match() {
         if (isYuYue) {
             if (appoin_time.equals("")) {
@@ -637,7 +665,7 @@ public class ConfirmOrderActivity extends BaseActivity {
             }
         }
 
-        if (y_user_sedan_id.equals("")){
+        if (y_user_sedan_id.equals("")) {
             myToast("请选择车辆");
             return false;
         }
@@ -655,7 +683,30 @@ public class ConfirmOrderActivity extends BaseActivity {
             }
         });
         titleView.setBackground(R.color.blue);
+        titleView.showRightTextview("发布询价", R.color.white, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showToast("确认发布询价吗？", "确认", "取消", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                        showProgress(true, getString(R.string.app_loading1));
+                        Map<String, String> params = new HashMap<>();
+                        params.put("u_token", localUserInfo.getToken());
+                        params.put("y_store_id", y_store_id);
+                        params.put("y_user_sedan_id", y_user_sedan_id);
+                        RequestAddXunJia(params);
+                    }
+                }, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+            }
+        });
     }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
