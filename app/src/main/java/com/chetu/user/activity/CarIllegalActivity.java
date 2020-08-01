@@ -3,7 +3,9 @@ package com.chetu.user.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -11,16 +13,24 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.chetu.user.R;
 import com.chetu.user.base.BaseActivity;
-import com.chetu.user.model.BaoXianModel;
 import com.chetu.user.model.CarIllegalModel;
+import com.chetu.user.model.CheXingModel;
 import com.chetu.user.net.URLs;
 import com.chetu.user.okhttp.CallBackUtil;
 import com.chetu.user.okhttp.OkhttpUtil;
 import com.chetu.user.utils.CommonUtil;
+import com.cy.dialog.BaseDialog;
+import com.zhy.adapter.recyclerview.CommonAdapter;
+import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
+import com.zhy.adapter.recyclerview.base.ViewHolder;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -31,9 +41,12 @@ import okhttp3.Response;
 public class CarIllegalActivity extends BaseActivity {
     EditText editText1, editText2, editText3, editText4;
     ImageView imageView1, iv_gouxuan;
-    TextView tv_carname;
-    String y_user_sedan_id = "", license_plate = "", frame_no = "", engine_no = "", address = "";
+    TextView tv_carname, tv_chexing;
+    String y_user_sedan_id = "", license_plate = "", frame_no = "", engine_no = "", address = "", cartype = "";
     boolean isGouXuan = false;
+
+    List<CheXingModel.ListBean> list = new ArrayList<>();
+    int i1 = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,12 +66,13 @@ public class CarIllegalActivity extends BaseActivity {
         editText2 = findViewByID_My(R.id.editText2);
         editText3 = findViewByID_My(R.id.editText3);
         editText4 = findViewByID_My(R.id.editText4);
+        tv_chexing = findViewByID_My(R.id.tv_chexing);
 
         imageView1 = findViewByID_My(R.id.imageView1);
         iv_gouxuan = findViewByID_My(R.id.iv_gouxuan);
 
         tv_carname = findViewByID_My(R.id.tv_carname);
-        if (!localUserInfo.getCarname().equals("")){
+        if (!localUserInfo.getCarname().equals("")) {
             y_user_sedan_id = localUserInfo.getCarid();
             tv_carname.setText(localUserInfo.getCarname());
             editText1.setText(localUserInfo.getCarnum());
@@ -70,18 +84,18 @@ public class CarIllegalActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-
+        RequestCheXing(params);
     }
 
     /**
-     * 获取保险列表
+     * 获取车型列表
      *
      * @param params
      */
-    private void RequestBaoXian(Map<String, String> params, int type) {
-        OkhttpUtil.okHttpPost(URLs.BaoXian, params, headerMap, new CallBackUtil<BaoXianModel>() {
+    private void RequestCheXing(Map<String, String> params) {
+        OkhttpUtil.okHttpPost(URLs.CheXing, params, headerMap, new CallBackUtil<CheXingModel>() {
             @Override
-            public BaoXianModel onParseResponse(Call call, Response response) {
+            public CheXingModel onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -92,8 +106,9 @@ public class CarIllegalActivity extends BaseActivity {
             }
 
             @Override
-            public void onResponse(BaoXianModel response) {
+            public void onResponse(CheXingModel response) {
                 hideProgress();
+                list = response.getList();
 
             }
         });
@@ -111,6 +126,61 @@ public class CarIllegalActivity extends BaseActivity {
                 intent1.putExtras(bundle1);
                 startActivityForResult(intent1, 10001, bundle1);
                 break;
+            case R.id.tv_chexing:
+                BaseDialog dialog1 = new BaseDialog(CarIllegalActivity.this);
+                dialog1.contentView(R.layout.dialog_list)
+                        .layoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                                CommonUtil.dip2px(CarIllegalActivity.this,500)))
+                        .animType(BaseDialog.AnimInType.BOTTOM)
+                        .canceledOnTouchOutside(true)
+                        .gravity(Gravity.BOTTOM)
+                        .dimAmount(0.7f)
+                        .show();
+                TextView title = dialog1.findViewById(R.id.textView1);
+                title.setText("请选择车型");
+                RecyclerView rv = dialog1.findViewById(R.id.recyclerView);
+                rv.setLayoutManager(new LinearLayoutManager(CarIllegalActivity.this));
+
+                CommonAdapter<CheXingModel.ListBean> adapter = new CommonAdapter<CheXingModel.ListBean>
+                        (CarIllegalActivity.this, R.layout.item_dialog_list, list) {
+                    @Override
+                    protected void convert(ViewHolder holder, CheXingModel.ListBean model, int position) {
+                        TextView tv = holder.getView(R.id.textView);
+                        ImageView iv = holder.getView(R.id.imageView);
+                        tv.setText(model.getVName());
+                        if (position == i1) {
+                            tv.setTextColor(getResources().getColor(R.color.blue));
+                            iv.setImageResource(R.mipmap.ic_xuanzhong);
+                        } else {
+                            tv.setTextColor(getResources().getColor(R.color.black1));
+                            iv.setImageResource(R.mipmap.ic_weixuan);
+                        }
+                    }
+                };
+                adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                        i1 = i;
+                        adapter.notifyDataSetChanged();
+//                        dialog1.dismiss();
+                    }
+
+                    @Override
+                    public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                        return false;
+                    }
+                });
+                rv.setAdapter(adapter);
+                dialog1.findViewById(R.id.tv_confirm).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        cartype = list.get(i1).getVCode() + "";
+                        tv_chexing.setText(list.get(i1).getVName());
+                        dialog1.dismiss();
+                    }
+                });
+
+                break;
             case R.id.iv_gouxuan:
                 //勾选图片
                 isGouXuan = !isGouXuan;
@@ -124,7 +194,7 @@ public class CarIllegalActivity extends BaseActivity {
             case R.id.tv_tiaoli:
                 //《违章查缴服务》
                 Bundle bundle = new Bundle();
-                bundle.putString("url", URLs.HOST + "/single/h5/violation?user_hash="+localUserInfo.getUserId());
+                bundle.putString("url", URLs.HOST + "/single/h5/violation?user_hash=" + localUserInfo.getUserId());
                 CommonUtil.gotoActivityWithData(CarIllegalActivity.this, WebContentActivity.class, bundle, false);
                 break;
             case R.id.tv_upload:
@@ -138,6 +208,7 @@ public class CarIllegalActivity extends BaseActivity {
                     params.put("engine_no", engine_no);
                     params.put("address", address);
                     params.put("u_token", localUserInfo.getToken());
+                    params.put("cartype", cartype);
                     RequestUpData(params);
                 }
                 break;
@@ -165,8 +236,12 @@ public class CarIllegalActivity extends BaseActivity {
             return false;
         }
         address = editText4.getText().toString().trim();
-        if (TextUtils.isEmpty(address)) {
-            myToast("选择查询地点");
+        /*if (TextUtils.isEmpty(address)) {
+            myToast("请选择查询地点");
+            return false;
+        }*/
+        if (TextUtils.isEmpty(cartype)) {
+            myToast("请选择车型");
             return false;
         }
         if (!isGouXuan) {
@@ -214,7 +289,7 @@ public class CarIllegalActivity extends BaseActivity {
         titleView.showRightTextview("查询历史", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CommonUtil.gotoActivity(CarIllegalActivity.this,CarIllegalListActivity.class);
+                CommonUtil.gotoActivity(CarIllegalActivity.this, CarIllegalListActivity.class);
             }
         });
     }

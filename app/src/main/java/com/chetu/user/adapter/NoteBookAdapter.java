@@ -105,7 +105,8 @@ public class NoteBookAdapter extends GroupedRecyclerViewAdapter {
         holder.setText(R.id.tv_time, day + "\n" + time);
         holder.setText(R.id.tv_title, entity.getYTitle());
         holder.setText(R.id.tv_content, entity.getIMsg());
-        holder.setText(R.id.tv_moeny, "¥"+entity.getVMoney());
+//        holder.setText(R.id.tv_moeny, "¥"+entity.getVMoney());
+        holder.setText(R.id.tv_moeny, ""+entity.getYTag());
 
         //隐藏最后的竖线
         View view = holder.get(R.id.view);

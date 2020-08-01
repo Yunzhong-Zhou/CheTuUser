@@ -63,14 +63,14 @@ public class MyProfileActivity extends BaseActivity {
     //选择图片及上传
 //    ArrayList<String> listFileNames = new ArrayList<>();
     ArrayList<File> listFiles = new ArrayList<>();
-    ImageView imageView1, iv_nan, iv_nv;
+    ImageView imageView1, iv_nan, iv_nv, iv_gongli, iv_nongli;
     TextView textView, textView1, textView2;
     EditText editText1, editText2, editText3;
     private TimeCount time;
 
     TimePickerView pvTime1;
 
-    String user_phone = "", vcode = "", user_name = "", head_portrait = "", u_gender = "男", birthday = "";
+    String user_phone = "", vcode = "", user_name = "", head_portrait = "", u_gender = "男", birthday = "", lunar_calendar = "公历";
 
     //    Fragment4Model model;
     int i1 = -1;
@@ -113,6 +113,9 @@ public class MyProfileActivity extends BaseActivity {
 
         iv_nan = findViewByID_My(R.id.iv_nan);
         iv_nv = findViewByID_My(R.id.iv_nv);
+
+        iv_gongli = findViewByID_My(R.id.iv_gongli);
+        iv_nongli = findViewByID_My(R.id.iv_nongli);
 
         editText1.setText(localUserInfo.getNickname());
         editText2.setText(localUserInfo.getPhonenumber());
@@ -164,7 +167,6 @@ public class MyProfileActivity extends BaseActivity {
                 //手机
                 editText2.setText(response.getUser_info().getUserPhone());
                 //性别
-
                 if (response.getUser_info().getSetup_info().getU_gender() != null) {
                     if (response.getUser_info().getSetup_info().getU_gender().equals("男")) {
                         u_gender = "男";
@@ -177,6 +179,16 @@ public class MyProfileActivity extends BaseActivity {
                     }
                     //生日
                     birthday = response.getUser_info().getSetup_info().getBirthday();
+                    if (response.getUser_info().getSetup_info().getLunarCalendar() != null && response.getUser_info().getSetup_info().getLunarCalendar().equals("公历")) {
+                        lunar_calendar = "公历";
+                        iv_gongli.setImageResource(R.mipmap.ic_xuanzhong);
+                        iv_nongli.setImageResource(R.mipmap.ic_weixuan);
+                    } else {
+                        lunar_calendar = "农历";
+                        iv_gongli.setImageResource(R.mipmap.ic_weixuan);
+                        iv_nongli.setImageResource(R.mipmap.ic_xuanzhong);
+                    }
+
                     textView2.setText(response.getUser_info().getSetup_info().getBirthday());
                 }
             }
@@ -195,6 +207,7 @@ public class MyProfileActivity extends BaseActivity {
                     params.put("user_name", user_name);
                     params.put("u_gender", u_gender);
                     params.put("birthday", birthday);
+                    params.put("lunar_calendar", lunar_calendar);
                     params.put("user_phone", user_phone);
                     params.put("vcode", vcode);
                     params.put("head_portrait", head_portrait);
@@ -231,9 +244,27 @@ public class MyProfileActivity extends BaseActivity {
                 iv_nan.setImageResource(R.mipmap.ic_weixuan);
                 iv_nv.setImageResource(R.mipmap.ic_xuanzhong);
                 break;
+            case R.id.ll_gongli:
+                //公历
+                lunar_calendar = "公历";
+                iv_gongli.setImageResource(R.mipmap.ic_xuanzhong);
+                iv_nongli.setImageResource(R.mipmap.ic_weixuan);
+                break;
+            case R.id.ll_nongli:
+                //农历
+                lunar_calendar = "农历";
+                iv_gongli.setImageResource(R.mipmap.ic_weixuan);
+                iv_nongli.setImageResource(R.mipmap.ic_xuanzhong);
+
+                break;
             case R.id.textView2:
                 //年龄
-                setDate("请选择出生日期", textView2, textView2.getText().toString().trim());
+                if (lunar_calendar.equals("公历")) {
+                    setDate("请选择出生日期(公历)", textView2, textView2.getText().toString().trim(), false);
+                } else {
+                    setDate("请选择出生日期(农历)", textView2, textView2.getText().toString().trim(), true);
+                }
+
                 break;
         }
     }
@@ -384,7 +415,7 @@ public class MyProfileActivity extends BaseActivity {
     }
 
     //预约时间
-    private void setDate(String string, TextView textView, String date) {
+    private void setDate(String string, TextView textView, String date, boolean isNongLi) {
         //获取当前时间
         Calendar calendar = Calendar.getInstance();
         //年
@@ -435,6 +466,7 @@ public class MyProfileActivity extends BaseActivity {
                 .setTitleText(string)//标题文字
                 .setOutSideCancelable(true)//点击屏幕，点在控件外部范围时，是否取消显示
                 .isCyclic(false)//是否循环滚动
+                .setLunarCalendar(isNongLi)//农历开关
                 .setTitleColor(getResources().getColor(R.color.black2))//标题文字颜色
                 .setSubmitColor(getResources().getColor(R.color.blue))//确定按钮文字颜色
                 .setCancelColor(getResources().getColor(R.color.blue))//取消按钮文字颜色

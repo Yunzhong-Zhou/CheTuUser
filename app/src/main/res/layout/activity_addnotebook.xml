@@ -38,21 +38,15 @@
                 android:textSize="15sp" />
         </LinearLayout>
 
-        <LinearLayout
+        <com.cy.cyflowlayoutlibrary.FlowLayout
+            android:id="@+id/flowLayout"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:gravity="center_vertical"
+            android:layout_height="wrap_content"
+            android:paddingTop="0dp"
+            android:paddingBottom="10dp"
             android:visibility="gone"
-            android:orientation="horizontal">
-
-            <com.cy.cyflowlayoutlibrary.FlowLayout
-                android:id="@+id/flowLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:height_space="10dp"
-                app:width_space="10dp" />
-        </LinearLayout>
-
+            app:height_space="5dp"
+            app:width_space="5dp" />
     </LinearLayout>
 
     <LinearLayout
@@ -60,7 +54,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:background="@drawable/yuanjiao_10_baise"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="visible">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -97,8 +92,8 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:visibility="gone"
-            android:background="@color/xian" />
+            android:background="@color/xian"
+            android:visibility="gone" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -111,7 +106,7 @@
                 android:paddingLeft="13dp"
                 android:paddingTop="18dp"
                 android:paddingBottom="18dp"
-                android:text="价格"
+                android:text="标签"
                 android:textColor="@color/black" />
 
             <EditText
@@ -119,8 +114,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/transparent"
-                android:hint="输入金额"
-                android:inputType="numberDecimal"
+                android:hint="输入标签"
+                android:maxLength="8"
+                android:lines="1"
                 android:textColor="@color/black"
                 android:textColorHint="@color/grey"
                 android:textSize="15sp" />
@@ -133,6 +129,7 @@
         android:layout_marginTop="10dp"
         android:background="@drawable/yuanjiao_10_baise"
         android:orientation="vertical">
+
         <TextView
             android:layout_width="105dp"
             android:layout_height="wrap_content"
@@ -141,6 +138,7 @@
             android:paddingBottom="18dp"
             android:text="描述"
             android:textColor="@color/black" />
+
         <EditText
             android:id="@+id/editText3"
             android:layout_width="match_parent"

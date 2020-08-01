@@ -6,13 +6,13 @@ package com.chetu.user.net;
  */
 public class URLs {
     //测试地址
-    public static String IMGHOST = "http://img.leqi.cool/";//图片地址
-    public static String HOST = "http://120.24.110.237:1000";//接口地址
-    public static String KFHOST = "http://chat.leqi.cool";//客服地址
-    //正式地址
-   /* public static String IMGHOST = "http://img.leqi.cool/";//图片地址
-    public static String HOST = "http://120.24.110.237:1000";//接口地址
+    /*public static String IMGHOST = "http://img.leqi.cool/";//图片地址
+    public static String HOST = "http://app.leqi.cool";//接口地址
     public static String KFHOST = "http://chat.leqi.cool";//客服地址*/
+    //正式地址
+    public static String IMGHOST = "http://img.leqi.cool/";//图片地址
+    public static String HOST = "http://app.leqi.cool";//接口地址
+    public static String KFHOST = "http://chat.leqi.cool";//客服地址
 
 
     public static final String PROJECT_NAME = "";
@@ -72,8 +72,12 @@ public class URLs {
     public static final String Fragment1_Service = HOST+"/api/v1/public/get_inddex_data";
     //车险询价（发布）
     public static final String CarInsurance = HOST+"/api/v1/public/user_inquiry_add";
+    //车型
+    public static final String CheXing = HOST+"/api/v1/user/user_vio_regulat_type_list";
     //违章查询
     public static final String CarIllegal = HOST+"/api/v1/public/user_vio_regulat_add";
+    //违章查询-历史列表
+    public static final String CarIllegalList = HOST+"/api/v1/user/user_vio_regulat_list";
     //发布询价（发布）
     public static final String XunJia_Add = HOST+"/api/v1/user/user_inquiry_demand_increase";
     //车辆救援（发布）
@@ -153,6 +157,8 @@ public class URLs {
     public static final String AddNotebook = HOST+"/api/v1/user/user_notepad_increase";
     //记录列表
     public static final String Notebook = HOST+"/api/v1/user/user_notepad_list_page";
+    //记录列表标签
+    public static final String Notebook_tag = HOST+"/api/v1/user/user_notepad_tag_list";
     //修改车辆
     public static final String ChageCar = HOST+"/api/v1/user/user_sedan_edit";
     //删除车辆

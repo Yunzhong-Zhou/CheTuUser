@@ -38,6 +38,7 @@ public class Fragment3Model implements Serializable {
          * store_service_list : [{"id":"1024","yStoreServiceId":"692341585785913345","yStoreId":"692341585785913333","yState":1,"lineupSum":10,"isSheet":0,"yStateValue":"洗车","sPrice":100,"pictureStr":"/static/img/20200528151327.png||/static/img/20200528151327.png"}]
          */
         private boolean isgouxuan = false;
+        private List<String> storeserverMatchingList;
 
         public boolean isIsgouxuan() {
             return isgouxuan;
@@ -66,6 +67,7 @@ public class Fragment3Model implements Serializable {
         private String slogan;
         private int orderSum;
         private List<StoreServiceListBean> store_service_list;
+
 
         public String getSlogan() {
             return slogan;
@@ -209,6 +211,14 @@ public class Fragment3Model implements Serializable {
 
         public void setStore_service_list(List<StoreServiceListBean> store_service_list) {
             this.store_service_list = store_service_list;
+        }
+
+        public List<String> getStoreserverMatchingList() {
+            return storeserverMatchingList;
+        }
+
+        public void setStoreserverMatchingList(List<String> storeserverMatchingList) {
+            this.storeserverMatchingList = storeserverMatchingList;
         }
 
         public static class StoreServiceListBean {

@@ -7,6 +7,7 @@ import android.widget.EditText;
 
 import com.chetu.user.R;
 import com.chetu.user.base.BaseActivity;
+import com.chetu.user.model.NotebookTagModel;
 import com.chetu.user.net.URLs;
 import com.chetu.user.okhttp.CallBackUtil;
 import com.chetu.user.okhttp.OkhttpUtil;
@@ -23,7 +24,7 @@ import okhttp3.Response;
  */
 public class AddNotebookActivity extends BaseActivity {
     EditText editText1, editText2, editText3;
-    String y_title = "", i_msg = "", v_money = "";
+    String y_title = "", i_msg = "", y_tag = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,9 +49,32 @@ public class AddNotebookActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-
+        //获取标签列表
+        Map<String, String> params = new HashMap<>();
+        params.put("u_token", localUserInfo.getToken());
+        Request(params);
     }
+    private void Request(Map<String, String> params) {
+        OkhttpUtil.okHttpPost(URLs.Notebook_tag, params, headerMap, new CallBackUtil<NotebookTagModel>() {
+            @Override
+            public NotebookTagModel onParseResponse(Call call, Response response) {
+                return null;
+            }
 
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+//                hideProgress();
+//                showEmptyPage();
+//                myToast(err);
+            }
+
+            @Override
+            public void onResponse(NotebookTagModel response) {
+//                hideProgress();
+
+            }
+        });
+    }
     @Override
     public void onClick(View v) {
         super.onClick(v);
@@ -63,8 +87,8 @@ public class AddNotebookActivity extends BaseActivity {
                     params.put("u_token", localUserInfo.getToken());
                     params.put("y_title", y_title);
                     params.put("i_msg", i_msg);
-                    params.put("v_money", v_money);
-                    params.put("y_tag", "");
+//                    params.put("v_money", v_money);
+                    params.put("y_tag", y_tag);
                     RequestUpData(params);//添加
                 }
                 break;
@@ -102,9 +126,9 @@ public class AddNotebookActivity extends BaseActivity {
             myToast("请输入标题");
             return false;
         }
-        v_money = editText2.getText().toString().trim();
-        if (TextUtils.isEmpty(v_money)) {
-            myToast("请输入金额");
+        y_tag = editText2.getText().toString().trim();
+        if (TextUtils.isEmpty(y_tag)) {
+            myToast("请输入标签");
             return false;
         }
         i_msg = editText3.getText().toString().trim();

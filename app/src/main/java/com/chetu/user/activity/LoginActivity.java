@@ -187,6 +187,11 @@ public class LoginActivity extends BaseActivity {
                     iv_gouxuan.setImageResource(R.mipmap.ic_weixuan);
                 }
                 break;
+            case R.id.tv_tiaoli:
+                Bundle bundle = new Bundle();
+                bundle.putString("url", URLs.HOST + "/single/h5/register?user_hash="+localUserInfo.getUserId());
+                CommonUtil.gotoActivityWithData(LoginActivity.this, WebContentActivity.class, bundle, false);
+                break;
         }
     }
 

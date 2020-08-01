@@ -37,6 +37,10 @@ import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -156,6 +160,8 @@ public class Fragment2 extends BaseFragment {
                     }
                 }
                 showSelectService();//显示选择的服务
+
+                requestServer();
             } else {
                 //获取服务tab
                 HashMap<String, String> params2 = new HashMap<>();
@@ -190,13 +196,16 @@ public class Fragment2 extends BaseFragment {
                 }
                 showSelectService();//显示选择的服务
 
+                requestServer();
+
             } else {
                 //获取服务tab
                 HashMap<String, String> params2 = new HashMap<>();
                 params2.put("y_parent_id", "0");
                 RequestService(params2, 0);
             }
-//            requestServer();
+
+
         }
     }
 
@@ -440,9 +449,11 @@ public class Fragment2 extends BaseFragment {
                 params1.put("u_token", localUserInfo.getToken());
                 params1.put("v_strs", v_strs);
                 RequestPiPei(params1);*/
-                i1 = 0;
-                ll_tab.setVisibility(View.GONE);
-                mAdapter_sv.notifyDataSetChanged();
+
+//                i1 = 0;
+//                ll_tab.setVisibility(View.GONE);
+//                mAdapter_sv.notifyDataSetChanged();
+
                 service_name = v_strs;
                 requestServer();
                 tv_pipei.setClickable(false);
@@ -587,11 +598,33 @@ public class Fragment2 extends BaseFragment {
                     mAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
                         @Override
                         public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
-                            Bundle bundle = new Bundle();
-                            bundle.putString("id", list.get(i).getYStoreId());
-                            bundle.putString("longitude", longitude);
-                            bundle.putString("latitude", latitude);
-                            CommonUtil.gotoActivityWithData(getActivity(), StoreDetailActivity.class, bundle, false);
+                            JSONArray jsonArray = new JSONArray();
+                            for (String s : list.get(i).getStoreserverMatchingList()) {
+                                try {
+                                    JSONObject object1 = new JSONObject();
+                                    object1.put("y_store_service_id", s);
+                                    object1.put("is_service", "1");//1为服务  2为服务下边的商品 3为独立商品
+                                    object1.put("g_num", "1");
+                                    jsonArray.put(object1);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+                            if (jsonArray.length() > 0) {
+                                showProgress(true, "正在加入购物车，请稍候...");
+                                Map<String, String> params = new HashMap<>();
+                                params.put("u_token", localUserInfo.getToken());
+                                params.put("jsonstr", jsonArray.toString());
+                                RequestXiaDan(params, list.get(i).getYStoreId());
+                            } else {
+                                Bundle bundle = new Bundle();
+                                bundle.putString("id", list.get(i).getYStoreId());
+                                bundle.putString("longitude", longitude);
+                                bundle.putString("latitude", latitude);
+                                CommonUtil.gotoActivityWithData(getActivity(), StoreDetailActivity.class, bundle, false);
+                            }
+
                         }
 
                         @Override
@@ -809,20 +842,24 @@ public class Fragment2 extends BaseFragment {
         v_strs += list_sv.get(i1).getVName() + "||";
         count++;
 
+//        jsonArray = new JSONArray();
         for (ServiceListModel_All.ListBean bean1 : list_sv) {//第一级
             for (ServiceListModel_All.ListBean.VListBeanX bean2 : bean1.getV_list()) {//第二级
                 if (bean2.isIsgouxuan()) {
                     count++;
                     v_strs += bean2.getVName() + "||";
+
                 }
                 for (ServiceListModel_All.ListBean.VListBeanX.VListBean bean3 : bean2.getV_list()) {//第二级
                     if (bean3.isIsgouxuan()) {
                         count++;
                         v_strs += bean3.getVName() + "||";
+
                     }
                 }
             }
         }
+
 
         MyLogger.i(">>>>>>" + v_strs + count);
 
@@ -844,6 +881,36 @@ public class Fragment2 extends BaseFragment {
         } else {
             ll_xuanfu.setVisibility(View.GONE);
         }
+    }
+
+    /**
+     * 下单-添加购物车
+     *
+     * @param params
+     */
+    private void RequestXiaDan(Map<String, String> params, String id) {
+        OkhttpUtil.okHttpPost(URLs.ADDShop, params, headerMap, new CallBackUtil<Object>() {
+            @Override
+            public Object onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+                hideProgress();
+            }
+
+            @Override
+            public void onResponse(Object response) {
+                hideProgress();
+
+                Bundle bundle = new Bundle();
+                bundle.putString("id", id);
+                bundle.putString("longitude", longitude);
+                bundle.putString("latitude", latitude);
+                CommonUtil.gotoActivityWithData(getActivity(), StoreDetailActivity.class, bundle, false);
+            }
+        });
     }
 
     /**

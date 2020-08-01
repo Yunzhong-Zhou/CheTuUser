@@ -269,6 +269,15 @@ public class Fragment4Model implements Serializable {
 
             private String u_gender;
             private String birthday;
+            private String lunarCalendar;
+
+            public String getLunarCalendar() {
+                return lunarCalendar;
+            }
+
+            public void setLunarCalendar(String lunarCalendar) {
+                this.lunarCalendar = lunarCalendar;
+            }
 
             public String getU_gender() {
                 return u_gender;

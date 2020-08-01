@@ -1,5 +1,6 @@
 package com.chetu.user.activity;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -7,11 +8,16 @@ import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bigkoo.pickerview.builder.TimePickerBuilder;
+import com.bigkoo.pickerview.listener.OnTimeSelectListener;
+import com.bigkoo.pickerview.view.TimePickerView;
 import com.chetu.user.R;
 import com.chetu.user.base.BaseActivity;
 import com.chetu.user.model.BaoXianModel;
@@ -20,6 +26,7 @@ import com.chetu.user.model.CodeModel;
 import com.chetu.user.net.URLs;
 import com.chetu.user.okhttp.CallBackUtil;
 import com.chetu.user.okhttp.OkhttpUtil;
+import com.chetu.user.utils.CommonUtil;
 import com.cy.cyflowlayoutlibrary.FlowLayout;
 import com.cy.cyflowlayoutlibrary.FlowLayoutAdapter;
 import com.cy.dialog.BaseDialog;
@@ -28,6 +35,8 @@ import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,14 +51,16 @@ import okhttp3.Response;
  */
 public class AddCarActivity extends BaseActivity {
     String y_user_sedan_id = "", y_sedan_brand_id = "", user_phone = "", v_code = "", s_number = "",
-            y_report_police_id = "0", j_report_police_id = "0";
+            y_report_police_id = "0", j_report_police_id = "0", annual_review_time = "", com_insurance_time = "";
     private TimeCount time;
 
     int s_cy = 2, is_f = 2;//1为个人  2为公司  1为默认
-    TextView tv_pingpai, tv_chepai, tv_yanzhengma, tv_shangyexian, tv_jiaoqiangxian, tv_confirm;
+    TextView tv_pingpai, tv_chepai, tv_yanzhengma, tv_shangyexian, tv_jiaoqiangxian, tv_baoxiantime, tv_nianshentime, tv_confirm;
     EditText et_carnum, et_phone, et_code;
     LinearLayout ll_geren, ll_gongsi;
     ImageView iv_geren, iv_gongsi, iv_moren;
+
+    TimePickerView pvTime1;
 
     FlowLayoutAdapter<String> flowLayoutAdapter;
     List<String> stringList = new ArrayList<>();
@@ -83,6 +94,8 @@ public class AddCarActivity extends BaseActivity {
         iv_gongsi = findViewByID_My(R.id.iv_gongsi);
         iv_moren = findViewByID_My(R.id.iv_moren);
 
+        tv_baoxiantime = findViewByID_My(R.id.tv_baoxiantime);
+        tv_nianshentime = findViewByID_My(R.id.tv_nianshentime);
     }
 
     @Override
@@ -176,20 +189,20 @@ public class AddCarActivity extends BaseActivity {
                 String s2 = response.getInfo().getSNumber().substring(1);//提取第一个文字后面的文字
                 et_carnum.setText(s2);
                 //车辆归属
-                if (response.getInfo().getSCy() == 1){
+                if (response.getInfo().getSCy() == 1) {
                     s_cy = 1;
                     iv_geren.setImageResource(R.mipmap.ic_xuanzhong_yuan);
                     iv_gongsi.setImageResource(R.mipmap.ic_weixuan);
-                } else{
+                } else {
                     s_cy = 2;
                     iv_geren.setImageResource(R.mipmap.ic_weixuan);
                     iv_gongsi.setImageResource(R.mipmap.ic_xuanzhong_yuan);
                 }
                 //是否默认
-                if (response.getInfo().getIsF() == 1){
+                if (response.getInfo().getIsF() == 1) {
                     is_f = 1;
                     iv_moren.setImageResource(R.mipmap.ic_shi);
-                }else {
+                } else {
                     is_f = 2;
                     iv_moren.setImageResource(R.mipmap.ic_fou);
                 }
@@ -206,6 +219,10 @@ public class AddCarActivity extends BaseActivity {
                     tv_jiaoqiangxian.setText(response.getInfo().getJpoliceInfo().getVName());
                     j_report_police_id = response.getInfo().getJpoliceInfo().getYReportPoliceId();
                 }
+                //商业保险
+                tv_baoxiantime.setText(response.getInfo().getComInsuranceTime());
+                //年审时间
+                tv_nianshentime.setText(response.getInfo().getAnnualReviewTime());
 
                 tv_confirm.setText("确认修改");
 
@@ -325,6 +342,14 @@ public class AddCarActivity extends BaseActivity {
                     RequestBaoXian(params2, 2);
                 }
                 break;
+            case R.id.tv_baoxiantime:
+                //保险到期时间
+                setDate("请选择保险到期时间", tv_baoxiantime, tv_baoxiantime.getText().toString().trim());
+                break;
+            case R.id.tv_nianshentime:
+                //年审到期时间
+                setDate("请选择年审到期时间", tv_baoxiantime, tv_baoxiantime.getText().toString().trim());
+                break;
             case R.id.tv_confirm:
                 //提交
                 if (match()) {
@@ -338,11 +363,13 @@ public class AddCarActivity extends BaseActivity {
                     params.put("is_f", is_f + "");//1为默认
                     params.put("y_report_police_id", y_report_police_id);//保险公司id
                     params.put("j_report_police_id", j_report_police_id);//交强险公司id
+                    params.put("annual_review_time", annual_review_time);//年审到期时间
+                    params.put("com_insurance_time", com_insurance_time);//商业保险有效时间
                     params.put("u_token", localUserInfo.getToken());
                     if (!y_user_sedan_id.equals("")) {
                         params.put("y_user_sedan_id", y_user_sedan_id);
                         RequestChage(params);//修改
-                    }else {
+                    } else {
                         RequestUpData(params);//添加
                     }
 
@@ -367,6 +394,17 @@ public class AddCarActivity extends BaseActivity {
             myToast("请输入车牌号");
             return false;
         }
+        com_insurance_time = tv_baoxiantime.getText().toString().trim();
+        if (TextUtils.isEmpty(com_insurance_time)) {
+            myToast("请选择保险到期时间");
+            return false;
+        }
+        annual_review_time = tv_nianshentime.getText().toString().trim();
+        if (TextUtils.isEmpty(annual_review_time)) {
+            myToast("请选择年审到期时间");
+            return false;
+        }
+
         s_number = tv_chepai.getText().toString() + et_carnum.getText().toString().trim();
 
         return true;
@@ -428,6 +466,7 @@ public class AddCarActivity extends BaseActivity {
             }
         });
     }
+
     /**
      * 修改车辆
      *
@@ -606,6 +645,92 @@ public class AddCarActivity extends BaseActivity {
                 dialog1.dismiss();
             }
         });
+    }
+
+    //预约时间
+    private void setDate(String string, TextView textView, String date) {
+        //获取当前时间
+        Calendar calendar = Calendar.getInstance();
+        //年
+        int year = calendar.get(Calendar.YEAR);
+        //月
+        int month = calendar.get(Calendar.MONTH);
+        //日
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        //小时
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        //分钟
+        int minute = calendar.get(Calendar.MINUTE);
+        //秒
+        int second = calendar.get(Calendar.SECOND);
+
+        Calendar selectedDate = Calendar.getInstance();
+        Calendar startDate = Calendar.getInstance();
+        Calendar endDate = Calendar.getInstance();
+
+        if (!date.equals("")) {
+            String[] strArr = date.split("-");//拆分日期 得到年月日
+            selectedDate.set(Integer.valueOf(strArr[0]), Integer.valueOf(strArr[1]) - 1, Integer.valueOf(strArr[2]));
+        }
+
+        //正确设置方式 原因：注意事项有说明
+//        startDate.set(year, month, day);
+        startDate.set(2000, 1, 1);
+
+        //当前时间加3天
+//        calendar.add(Calendar.YEAR, 100);
+//        endDate.set(year, month, day);
+        endDate.set(2100, 11, 1);
+        /*endDate.set(calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH));*/
+
+
+        pvTime1 = new TimePickerBuilder(AddCarActivity.this, new OnTimeSelectListener() {
+            @Override
+            public void onTimeSelect(Date date, View v) {//选中事件回调
+                textView.setText(CommonUtil.getTime(date));
+            }
+        })
+                .setType(new boolean[]{true, true, true, false, false, false})// 默认全部显示
+                .setCancelText("取消")//取消按钮文字
+                .setSubmitText("确定")//确认按钮文字
+                .setContentTextSize(15)//滚轮文字大小
+                .setTitleSize(16)//标题文字大小
+                .setTitleText(string)//标题文字
+                .setOutSideCancelable(true)//点击屏幕，点在控件外部范围时，是否取消显示
+                .isCyclic(false)//是否循环滚动
+                .setTitleColor(getResources().getColor(R.color.black2))//标题文字颜色
+                .setSubmitColor(getResources().getColor(R.color.blue))//确定按钮文字颜色
+                .setCancelColor(getResources().getColor(R.color.blue))//取消按钮文字颜色
+                .setTitleBgColor(getResources().getColor(R.color.black5))//标题背景颜色 Night mode
+                .setBgColor(getResources().getColor(R.color.white))//滚轮背景颜色 Night mode
+                .setDate(selectedDate)// 如果不设置的话，默认是系统时间*/
+                .setRangDate(startDate, endDate)//起始终止年月日设定
+                .setLabel("年", "月", "日", "时", "分", "秒")//默认设置为年月日时分秒
+                .isCenterLabel(false) //是否只显示中间选中项的label文字，false则每项item全部都带有label。
+                .isDialog(true)//是否显示为对话框样式
+                .build();
+
+        Dialog mDialog = pvTime1.getDialog();
+        if (mDialog != null) {
+
+            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    Gravity.BOTTOM);
+            params.leftMargin = 0;
+            params.rightMargin = 0;
+            pvTime1.getDialogContainerLayout().setLayoutParams(params);
+
+            Window dialogWindow = mDialog.getWindow();
+            if (dialogWindow != null) {
+                dialogWindow.setWindowAnimations(com.bigkoo.pickerview.R.style.picker_view_slide_anim);//修改动画样式
+                dialogWindow.setGravity(Gravity.BOTTOM);//改成Bottom,底部显示
+                dialogWindow.setDimAmount(0.1f);
+            }
+        }
+        pvTime1.show();
     }
 
     @Override

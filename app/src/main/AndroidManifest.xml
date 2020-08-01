@@ -265,11 +265,11 @@
             android:launchMode="singleTop"
             android:exported="true"/>
         <!--查看mob推送日志-->
-        <meta-data
+        <!--<meta-data
             android:name="com.mob.mobpush.debugLevel"
-            android:value="4" />
+            android:value="4" />-->
         <!--配置华为-->
-        <receiver android:name="com.mob.pushsdk.plugins.huawei.PushHaiWeiRevicer">
+        <!--<receiver android:name="com.mob.pushsdk.plugins.huawei.PushHaiWeiRevicer">
             <intent-filter>
                 <action android:name="com.huawei.android.push.intent.REGISTRATION" />
                 <action android:name="com.huawei.android.push.intent.RECEIVE" />
@@ -277,7 +277,7 @@
                 <action android:name="com.huawei.intent.action.PUSH_STATE" />
                 <action android:name="com.huawei.intent.action.PUSH_DELAY_NOTIFY" />
             </intent-filter>
-        </receiver>
+        </receiver>-->
         <!--高德地图-->
         <service android:name="com.amap.api.location.APSService" />
         <!--开发者申请的key-->

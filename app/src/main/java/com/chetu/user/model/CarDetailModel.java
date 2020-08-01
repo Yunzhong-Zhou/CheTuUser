@@ -7,7 +7,7 @@ import java.io.Serializable;
  */
 public class CarDetailModel implements Serializable {
     /**
-     * info : {"id":"1075","yUserSedanId":"718473275394490368","userId":"714547022807433216","sName":"2019款 U5 LITE","sLogo":"/upload/head/716724076336381952.jpg","sCy":1,"isF":1,"isDel":0,"reportPoliceJson":"{\"createDate\":\"2020-04-15 08:44:18\",\"id\":1047,\"telephone\":\"400-2123-2211\",\"vName\":\"人寿保险公司\",\"vNameNature\":\"普通保险\",\"yReportPoliceId\":699902914180677632}","jReportPoliceJson":"{\"createDate\":\"2020-04-15 08:44:18\",\"id\":1047,\"telephone\":\"400-2123-2211\",\"vName\":\"人寿保险公司\",\"vNameNature\":\"普通保险\",\"yReportPoliceId\":699902914180677632}","brandJson":"{\"brandName\":\"爱驰\",\"groupName\":\"爱驰汽车\",\"id\":98435,\"parentId\":716704268614107136,\"sLogo\":\"/upload/head/716724076336381952.jpg\",\"sName\":\"2019款 U5 LITE\",\"seriesName\":\"爱驰U5\",\"ySedanBrandId\":716705230955216896}","userPhone":"18306043086","sNumber":"粤A12345","policeInfo":{"id":"1047","yReportPoliceId":"699902914180677632","vName":"人寿保险公司","vNameNature":"普通保险","telephone":"400-2123-2211","createDate":"2020-04-15 08:44:18"},"jpoliceInfo":{"id":"1047","yReportPoliceId":"699902914180677632","vName":"人寿保险公司","vNameNature":"普通保险","telephone":"400-2123-2211","createDate":"2020-04-15 08:44:18"},"brandInfo":{"id":"98435","ySedanBrandId":"716705230955216896","parentId":"716704268614107136","sName":"2019款 U5 LITE","sLogo":"/upload/head/716724076336381952.jpg","seriesName":"爱驰U5","groupName":"爱驰汽车","brandName":"爱驰"},"createDate":"2020-06-05 14:36:17"}
+     * info : {"id":"1088","yUserSedanId":"724585460164198400","userId":"714547022807433216","sName":"2016款 5.2T 设计师定制版","sLogo":"/upload/logo/716723976784576512.jpg","sCy":1,"isF":1,"isDel":0,"reportPoliceJson":"{\"createDate\":\"2020-04-15 08:44:18\",\"iCy\":1,\"id\":1047,\"telephone\":\"400-2123-2211\",\"vName\":\"人寿保险公司\",\"vNameNature\":\"普通保险\",\"yReportPoliceId\":699902914180677632}","jReportPoliceJson":"{\"createDate\":\"2020-04-15 08:44:18\",\"iCy\":1,\"id\":1047,\"telephone\":\"400-2123-2211\",\"vName\":\"人寿保险公司\",\"vNameNature\":\"普通保险\",\"yReportPoliceId\":699902914180677632}","brandJson":"{\"brandName\":\"阿斯顿・马丁\",\"groupName\":\"阿斯顿・马丁\",\"id\":87667,\"parentId\":716704210728517632,\"sLogo\":\"/upload/logo/716723976784576512.jpg\",\"sName\":\"2016款 5.2T 设计师定制版\",\"seriesName\":\"阿斯顿・马丁DB11\",\"vDispla\":\"4T\",\"vYear\":\"2015\",\"ySedanBrandId\":716704933323210752}","userPhone":"18306043086","sNumber":"粤A12345","policeInfo":{"id":"1047","yReportPoliceId":"699902914180677632","vName":"人寿保险公司","vNameNature":"普通保险","telephone":"400-2123-2211","createDate":"2020-04-15 08:44:18","iCy":1},"jpoliceInfo":{"id":"1047","yReportPoliceId":"699902914180677632","vName":"人寿保险公司","vNameNature":"普通保险","telephone":"400-2123-2211","createDate":"2020-04-15 08:44:18","iCy":1},"brandInfo":{"id":"87667","ySedanBrandId":"716704933323210752","parentId":"716704210728517632","sName":"2016款 5.2T 设计师定制版","sLogo":"/upload/logo/716723976784576512.jpg","seriesName":"阿斯顿・马丁DB11","groupName":"阿斯顿・马丁","brandName":"阿斯顿・马丁","vYear":"2015","vDispla":"4T"},"compInsuranceTime":"2022-07-14","comInsuranceTime":"2023-07-14","annualReviewTime":"2021-07-14","createDate":"2020-06-22 11:23:55"}
      */
 
     private InfoBean info;
@@ -22,23 +22,26 @@ public class CarDetailModel implements Serializable {
 
     public static class InfoBean {
         /**
-         * id : 1075
-         * yUserSedanId : 718473275394490368
+         * id : 1088
+         * yUserSedanId : 724585460164198400
          * userId : 714547022807433216
-         * sName : 2019款 U5 LITE
-         * sLogo : /upload/head/716724076336381952.jpg
+         * sName : 2016款 5.2T 设计师定制版
+         * sLogo : /upload/logo/716723976784576512.jpg
          * sCy : 1
          * isF : 1
          * isDel : 0
-         * reportPoliceJson : {"createDate":"2020-04-15 08:44:18","id":1047,"telephone":"400-2123-2211","vName":"人寿保险公司","vNameNature":"普通保险","yReportPoliceId":699902914180677632}
-         * jReportPoliceJson : {"createDate":"2020-04-15 08:44:18","id":1047,"telephone":"400-2123-2211","vName":"人寿保险公司","vNameNature":"普通保险","yReportPoliceId":699902914180677632}
-         * brandJson : {"brandName":"爱驰","groupName":"爱驰汽车","id":98435,"parentId":716704268614107136,"sLogo":"/upload/head/716724076336381952.jpg","sName":"2019款 U5 LITE","seriesName":"爱驰U5","ySedanBrandId":716705230955216896}
+         * reportPoliceJson : {"createDate":"2020-04-15 08:44:18","iCy":1,"id":1047,"telephone":"400-2123-2211","vName":"人寿保险公司","vNameNature":"普通保险","yReportPoliceId":699902914180677632}
+         * jReportPoliceJson : {"createDate":"2020-04-15 08:44:18","iCy":1,"id":1047,"telephone":"400-2123-2211","vName":"人寿保险公司","vNameNature":"普通保险","yReportPoliceId":699902914180677632}
+         * brandJson : {"brandName":"阿斯顿・马丁","groupName":"阿斯顿・马丁","id":87667,"parentId":716704210728517632,"sLogo":"/upload/logo/716723976784576512.jpg","sName":"2016款 5.2T 设计师定制版","seriesName":"阿斯顿・马丁DB11","vDispla":"4T","vYear":"2015","ySedanBrandId":716704933323210752}
          * userPhone : 18306043086
          * sNumber : 粤A12345
-         * policeInfo : {"id":"1047","yReportPoliceId":"699902914180677632","vName":"人寿保险公司","vNameNature":"普通保险","telephone":"400-2123-2211","createDate":"2020-04-15 08:44:18"}
-         * jpoliceInfo : {"id":"1047","yReportPoliceId":"699902914180677632","vName":"人寿保险公司","vNameNature":"普通保险","telephone":"400-2123-2211","createDate":"2020-04-15 08:44:18"}
-         * brandInfo : {"id":"98435","ySedanBrandId":"716705230955216896","parentId":"716704268614107136","sName":"2019款 U5 LITE","sLogo":"/upload/head/716724076336381952.jpg","seriesName":"爱驰U5","groupName":"爱驰汽车","brandName":"爱驰"}
-         * createDate : 2020-06-05 14:36:17
+         * policeInfo : {"id":"1047","yReportPoliceId":"699902914180677632","vName":"人寿保险公司","vNameNature":"普通保险","telephone":"400-2123-2211","createDate":"2020-04-15 08:44:18","iCy":1}
+         * jpoliceInfo : {"id":"1047","yReportPoliceId":"699902914180677632","vName":"人寿保险公司","vNameNature":"普通保险","telephone":"400-2123-2211","createDate":"2020-04-15 08:44:18","iCy":1}
+         * brandInfo : {"id":"87667","ySedanBrandId":"716704933323210752","parentId":"716704210728517632","sName":"2016款 5.2T 设计师定制版","sLogo":"/upload/logo/716723976784576512.jpg","seriesName":"阿斯顿・马丁DB11","groupName":"阿斯顿・马丁","brandName":"阿斯顿・马丁","vYear":"2015","vDispla":"4T"}
+         * compInsuranceTime : 2022-07-14
+         * comInsuranceTime : 2023-07-14
+         * annualReviewTime : 2021-07-14
+         * createDate : 2020-06-22 11:23:55
          */
 
         private String id;
@@ -57,6 +60,9 @@ public class CarDetailModel implements Serializable {
         private PoliceInfoBean policeInfo;
         private JpoliceInfoBean jpoliceInfo;
         private BrandInfoBean brandInfo;
+        private String compInsuranceTime;
+        private String comInsuranceTime;
+        private String annualReviewTime;
         private String createDate;
 
         public String getId() {
@@ -187,6 +193,30 @@ public class CarDetailModel implements Serializable {
             this.brandInfo = brandInfo;
         }
 
+        public String getCompInsuranceTime() {
+            return compInsuranceTime;
+        }
+
+        public void setCompInsuranceTime(String compInsuranceTime) {
+            this.compInsuranceTime = compInsuranceTime;
+        }
+
+        public String getComInsuranceTime() {
+            return comInsuranceTime;
+        }
+
+        public void setComInsuranceTime(String comInsuranceTime) {
+            this.comInsuranceTime = comInsuranceTime;
+        }
+
+        public String getAnnualReviewTime() {
+            return annualReviewTime;
+        }
+
+        public void setAnnualReviewTime(String annualReviewTime) {
+            this.annualReviewTime = annualReviewTime;
+        }
+
         public String getCreateDate() {
             return createDate;
         }
@@ -203,6 +233,7 @@ public class CarDetailModel implements Serializable {
              * vNameNature : 普通保险
              * telephone : 400-2123-2211
              * createDate : 2020-04-15 08:44:18
+             * iCy : 1
              */
 
             private String id;
@@ -211,6 +242,7 @@ public class CarDetailModel implements Serializable {
             private String vNameNature;
             private String telephone;
             private String createDate;
+            private int iCy;
 
             public String getId() {
                 return id;
@@ -258,6 +290,14 @@ public class CarDetailModel implements Serializable {
 
             public void setCreateDate(String createDate) {
                 this.createDate = createDate;
+            }
+
+            public int getICy() {
+                return iCy;
+            }
+
+            public void setICy(int iCy) {
+                this.iCy = iCy;
             }
         }
 
@@ -269,6 +309,7 @@ public class CarDetailModel implements Serializable {
              * vNameNature : 普通保险
              * telephone : 400-2123-2211
              * createDate : 2020-04-15 08:44:18
+             * iCy : 1
              */
 
             private String id;
@@ -277,6 +318,7 @@ public class CarDetailModel implements Serializable {
             private String vNameNature;
             private String telephone;
             private String createDate;
+            private int iCy;
 
             public String getId() {
                 return id;
@@ -325,18 +367,28 @@ public class CarDetailModel implements Serializable {
             public void setCreateDate(String createDate) {
                 this.createDate = createDate;
             }
+
+            public int getICy() {
+                return iCy;
+            }
+
+            public void setICy(int iCy) {
+                this.iCy = iCy;
+            }
         }
 
         public static class BrandInfoBean {
             /**
-             * id : 98435
-             * ySedanBrandId : 716705230955216896
-             * parentId : 716704268614107136
-             * sName : 2019款 U5 LITE
-             * sLogo : /upload/head/716724076336381952.jpg
-             * seriesName : 爱驰U5
-             * groupName : 爱驰汽车
-             * brandName : 爱驰
+             * id : 87667
+             * ySedanBrandId : 716704933323210752
+             * parentId : 716704210728517632
+             * sName : 2016款 5.2T 设计师定制版
+             * sLogo : /upload/logo/716723976784576512.jpg
+             * seriesName : 阿斯顿・马丁DB11
+             * groupName : 阿斯顿・马丁
+             * brandName : 阿斯顿・马丁
+             * vYear : 2015
+             * vDispla : 4T
              */
 
             private String id;
@@ -347,6 +399,8 @@ public class CarDetailModel implements Serializable {
             private String seriesName;
             private String groupName;
             private String brandName;
+            private String vYear;
+            private String vDispla;
 
             public String getId() {
                 return id;
@@ -410,6 +464,22 @@ public class CarDetailModel implements Serializable {
 
             public void setBrandName(String brandName) {
                 this.brandName = brandName;
+            }
+
+            public String getVYear() {
+                return vYear;
+            }
+
+            public void setVYear(String vYear) {
+                this.vYear = vYear;
+            }
+
+            public String getVDispla() {
+                return vDispla;
+            }
+
+            public void setVDispla(String vDispla) {
+                this.vDispla = vDispla;
             }
         }
     }
