@@ -1,12 +1,20 @@
 package com.chetu.user.activity;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bigkoo.pickerview.builder.TimePickerBuilder;
+import com.bigkoo.pickerview.listener.OnTimeSelectListener;
+import com.bigkoo.pickerview.view.TimePickerView;
 import com.bumptech.glide.Glide;
 import com.chetu.user.R;
 import com.chetu.user.base.BaseActivity;
@@ -20,6 +28,8 @@ import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,7 +44,8 @@ import okhttp3.Response;
  * 确认订单
  */
 public class ConfirmOrderActivity extends BaseActivity {
-    String y_user_sedan_id = "", y_store_id = "", longitude = "", latitude = "", appoin_time = "", is_pick = "1", is_delivery = "0";
+    String y_user_sedan_id = "", y_store_id = "", longitude = "", latitude = "", appoin_time = "",
+            is_pick = "1", is_delivery = "0", delivery_time = "", delivery_address = "";
     //车辆信息
     ImageView imageView1;
     TextView tv_carname, tv_carnum, tv_cardetail, tv_name, tv_phone;
@@ -52,9 +63,10 @@ public class ConfirmOrderActivity extends BaseActivity {
     CommonAdapter<ConfirmOrderModel.GoodsCartListBean> mAdapter_other;
 
     //接车到店、送车到家
-    LinearLayout ll_jiechedaodian, ll_songchedaojia;
+    LinearLayout ll_jiechedaodian, ll_songchedaojia, ll_jiechetime, ll_jiecheaddr;
     ImageView iv_jiechedaodian, iv_songchedaojia;
-
+    TextView tv_jiechetime, tv_jiecheaddr;
+    TimePickerView pvTime1;
     //下单
     boolean isYuYue = false;
     TextView tv_time, tv_money, tv_yuyuedaodian, tv_daodianshigong;
@@ -126,6 +138,11 @@ public class ConfirmOrderActivity extends BaseActivity {
         ll_songchedaojia = findViewByID_My(R.id.ll_songchedaojia);
         iv_jiechedaodian = findViewByID_My(R.id.iv_jiechedaodian);
         iv_songchedaojia = findViewByID_My(R.id.iv_songchedaojia);
+
+        ll_jiechetime = findViewByID_My(R.id.ll_jiechetime);
+        ll_jiecheaddr = findViewByID_My(R.id.ll_jiecheaddr);
+        tv_jiechetime = findViewByID_My(R.id.tv_jiechetime);
+        tv_jiecheaddr = findViewByID_My(R.id.tv_jiecheaddr);
 
         //订单列表
         recyclerView = findViewByID_My(R.id.recyclerView);
@@ -494,6 +511,14 @@ public class ConfirmOrderActivity extends BaseActivity {
                 intent1.putExtras(bundle1);
                 startActivityForResult(intent1, 10001, bundle1);
                 break;
+            case R.id.ll_store:
+                //选择店铺
+                Intent intent3 = new Intent(ConfirmOrderActivity.this, XuQiuOrderActivity.class);
+                Bundle bundle3 = new Bundle();
+                bundle3.putInt("type", 10003);
+                intent3.putExtras(bundle3);
+                startActivityForResult(intent3, 10003, bundle3);
+                break;
             case R.id.tv_addother:
                 //添加其他商品
                 Bundle bundle = new Bundle();
@@ -506,11 +531,28 @@ public class ConfirmOrderActivity extends BaseActivity {
                 if (is_pick.equals("1")) {
                     is_pick = "0";
                     iv_jiechedaodian.setImageResource(R.mipmap.ic_weixuan);
+
+                    ll_jiechetime.setVisibility(View.GONE);
+                    ll_jiecheaddr.setVisibility(View.GONE);
                 } else {
                     is_pick = "1";
                     iv_jiechedaodian.setImageResource(R.mipmap.ic_xuanzhong);
+
+                    ll_jiechetime.setVisibility(View.VISIBLE);
+                    ll_jiecheaddr.setVisibility(View.VISIBLE);
                 }
                 break;
+            case R.id.ll_jiechetime:
+            case R.id.tv_jiechetime:
+                //接车时间
+                setDate1("请选择接车时间", tv_jiechetime, tv_jiechetime.getText().toString().trim());
+                break;
+            case R.id.ll_jiecheaddr:
+            case R.id.tv_jiecheaddr:
+                //接车地址
+
+                break;
+
             case R.id.ll_songchedaojia:
                 //送车到家
                 if (is_delivery.equals("1")) {
@@ -629,8 +671,10 @@ public class ConfirmOrderActivity extends BaseActivity {
             }
         });
     }
+
     /**
      * 发布询价
+     *
      * @param params
      */
     private void RequestAddXunJia(Map<String, String> params) {
@@ -657,6 +701,7 @@ public class ConfirmOrderActivity extends BaseActivity {
             }
         });
     }
+
     private boolean match() {
         if (isYuYue) {
             if (appoin_time.equals("")) {
@@ -668,6 +713,22 @@ public class ConfirmOrderActivity extends BaseActivity {
         if (y_user_sedan_id.equals("")) {
             myToast("请选择车辆");
             return false;
+        }
+
+        if (is_pick.equals("1")) {
+            delivery_time = tv_jiechetime.getText().toString().trim();
+            if (delivery_time.equals("")) {
+                myToast("请选择接车时间");
+                return false;
+            }
+            delivery_address = tv_jiecheaddr.getText().toString().trim();
+            if (delivery_address.equals("")) {
+                myToast("请选择接车地址");
+                return false;
+            }
+        } else {
+            delivery_time = "";
+            delivery_address = "";
         }
         return true;
     }
@@ -733,7 +794,104 @@ public class ConfirmOrderActivity extends BaseActivity {
                     tv_time.setText(appoin_time);
                 }
                 break;
+            case 10003:
+                //选择店铺
+                if (data != null) {
+                    Bundle bundle3 = data.getExtras();
+                    y_store_id = bundle3.getString("y_store_id");
+                    longitude = bundle3.getString("longitude");
+                    latitude = bundle3.getString("latitude");
+                    requestServer();
+                }
+                break;
         }
 
+    }
+
+    private void setDate1(String string, TextView textView, String date) {
+        //获取当前时间
+        Calendar calendar = Calendar.getInstance();
+        //年
+        int year = calendar.get(Calendar.YEAR);
+        //月
+        int month = calendar.get(Calendar.MONTH);
+        //日
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        //小时
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        //分钟
+        int minute = calendar.get(Calendar.MINUTE);
+        //秒
+        int second = calendar.get(Calendar.SECOND);
+
+        Calendar selectedDate = Calendar.getInstance();
+        Calendar startDate = Calendar.getInstance();
+        Calendar endDate = Calendar.getInstance();
+
+        if (!date.equals("")) {
+            String[] strArr1 = date.split(" ");//拆分空格把日期和时间分开
+            String[] strArr2 = strArr1[0].split("-");//拆分日期 得到年月日
+            String[] strArr3 = strArr1[1].split(":");//拆分日期 得到年月日
+            selectedDate.set(Integer.valueOf(strArr2[0]), Integer.valueOf(strArr2[1]) - 1, Integer.valueOf(strArr2[2]),
+                    Integer.valueOf(strArr3[0]), Integer.valueOf(strArr3[1]));
+        }
+
+        //正确设置方式 原因：注意事项有说明
+        startDate.set(year, month, day);
+//        startDate.set(1900, 0, 1);
+
+        //当前时间加3天
+//        calendar.add(Calendar.YEAR, 100);
+        endDate.set(2100, 11, 1);
+        /*endDate.set(calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH));*/
+
+
+        pvTime1 = new TimePickerBuilder(ConfirmOrderActivity.this, new OnTimeSelectListener() {
+            @Override
+            public void onTimeSelect(Date date, View v) {//选中事件回调
+                textView.setText(CommonUtil.getTime1(date));
+            }
+        })
+                .setType(new boolean[]{true, true, true, true, true, false})// 默认全部显示
+                .setCancelText("取消")//取消按钮文字
+                .setSubmitText("确定")//确认按钮文字
+                .setContentTextSize(15)//滚轮文字大小
+                .setTitleSize(16)//标题文字大小
+                .setTitleText(string)//标题文字
+                .setOutSideCancelable(true)//点击屏幕，点在控件外部范围时，是否取消显示
+                .isCyclic(false)//是否循环滚动
+                .setTitleColor(getResources().getColor(R.color.black2))//标题文字颜色
+                .setSubmitColor(getResources().getColor(R.color.blue))//确定按钮文字颜色
+                .setCancelColor(getResources().getColor(R.color.blue))//取消按钮文字颜色
+                .setTitleBgColor(getResources().getColor(R.color.black5))//标题背景颜色 Night mode
+                .setBgColor(getResources().getColor(R.color.white))//滚轮背景颜色 Night mode
+                .setDate(selectedDate)// 如果不设置的话，默认是系统时间*/
+                .setRangDate(startDate, endDate)//起始终止年月日设定
+                .setLabel("年", "月", "日", "时", "分", "秒")//默认设置为年月日时分秒
+                .isCenterLabel(false) //是否只显示中间选中项的label文字，false则每项item全部都带有label。
+                .isDialog(true)//是否显示为对话框样式
+                .build();
+
+        Dialog mDialog = pvTime1.getDialog();
+        if (mDialog != null) {
+
+            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    Gravity.BOTTOM);
+            params.leftMargin = 0;
+            params.rightMargin = 0;
+            pvTime1.getDialogContainerLayout().setLayoutParams(params);
+
+            Window dialogWindow = mDialog.getWindow();
+            if (dialogWindow != null) {
+                dialogWindow.setWindowAnimations(com.bigkoo.pickerview.R.style.picker_view_slide_anim);//修改动画样式
+                dialogWindow.setGravity(Gravity.BOTTOM);//改成Bottom,底部显示
+                dialogWindow.setDimAmount(0.1f);
+            }
+        }
+        pvTime1.show();
     }
 }

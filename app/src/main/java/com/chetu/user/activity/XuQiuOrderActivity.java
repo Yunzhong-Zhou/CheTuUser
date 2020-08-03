@@ -1,5 +1,6 @@
 package com.chetu.user.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -35,6 +36,7 @@ import okhttp3.Response;
  * 需求订单
  */
 public class XuQiuOrderActivity extends BaseActivity {
+    int type = 0;
     int page = 0;
     private RecyclerView recyclerView;
     List<XuQiuOrderModel.ListBean> list = new ArrayList<>();
@@ -83,6 +85,7 @@ public class XuQiuOrderActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+        type = getIntent().getIntExtra("type",0);
         requestServer();
     }
 
@@ -250,12 +253,25 @@ public class XuQiuOrderActivity extends BaseActivity {
                     mAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
                         @Override
                         public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
-                            Bundle bundle2 = new Bundle();
+                            if (type == 10003){
+                                //保存
+                                Intent resultIntent = new Intent();
+                                Bundle bundle = new Bundle();
+                                bundle.putString("y_store_id", list.get(i).getYStoreId());
+                                bundle.putString("longitude",  localUserInfo.getLongitude());
+                                bundle.putString("latitude",localUserInfo.getLatitude());
+                                resultIntent.putExtras(bundle);
+                                XuQiuOrderActivity.this.setResult(RESULT_OK, resultIntent);
+                                finish();
+                            }else {
+                                Bundle bundle2 = new Bundle();
 //                bundle2.putSerializable("XuanZeFuWuModel", (Serializable) list_xuanze);
-                            bundle2.putString("y_store_id", list.get(i).getYStoreId());
-                            bundle2.putString("longitude", localUserInfo.getLongitude());
-                            bundle2.putString("latitude", localUserInfo.getLatitude());
-                            CommonUtil.gotoActivityWithData(XuQiuOrderActivity.this, ConfirmOrderActivity.class, bundle2, false);
+                                bundle2.putString("y_store_id", list.get(i).getYStoreId());
+                                bundle2.putString("longitude", localUserInfo.getLongitude());
+                                bundle2.putString("latitude", localUserInfo.getLatitude());
+                                CommonUtil.gotoActivityWithData(XuQiuOrderActivity.this, ConfirmOrderActivity.class, bundle2, false);
+                            }
+
                         }
 
                         @Override

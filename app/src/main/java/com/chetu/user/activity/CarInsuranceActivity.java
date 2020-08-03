@@ -21,6 +21,7 @@ import com.chetu.user.model.UpFileModel;
 import com.chetu.user.net.URLs;
 import com.chetu.user.okhttp.CallBackUtil;
 import com.chetu.user.okhttp.OkhttpUtil;
+import com.chetu.user.utils.CommonUtil;
 import com.chetu.user.utils.MyChooseImages;
 import com.chetu.user.utils.MyLogger;
 import com.zhy.adapter.recyclerview.CommonAdapter;
@@ -354,7 +355,7 @@ public class CarInsuranceActivity extends BaseActivity {
         titleView.showRightTextview("询价列表", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                CommonUtil.gotoActivity(CarInsuranceActivity.this, CarInsuranceListActivity.class, false);
             }
         });
     }

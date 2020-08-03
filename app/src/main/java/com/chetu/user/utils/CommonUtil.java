@@ -556,6 +556,11 @@ public class CommonUtil {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         return format.format(date);
     }
+    public static String getTime1(Date date) {//可根据需要自行截取数据显示
+        Log.d("getTime()", "choice date millis: " + date.getTime());
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        return format.format(date);
+    }
 
     /**
      * 调此方法输入所要转换的时间输入例如（"2014-06-14 16-09-00"）返回时间戳
@@ -580,6 +585,7 @@ public class CommonUtil {
         }
         return times;
     }
+
 
     public static long dataOne1(String time) {
         SimpleDateFormat sdr = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

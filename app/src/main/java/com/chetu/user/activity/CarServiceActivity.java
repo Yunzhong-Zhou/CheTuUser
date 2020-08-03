@@ -111,7 +111,7 @@ public class CarServiceActivity extends BaseActivity {
     //发布救援
     EditText editText1, editText2, editText3, editText4, editText5;
     String y_store_id = "", full_name = "", telephone = "", address = "", m_type = "",
-            car_condition = "", car_img = "";
+            car_condition = "", car_img = "", longitude = "", latitude = "";
     /**
      * 选择图片
      */
@@ -172,7 +172,7 @@ public class CarServiceActivity extends BaseActivity {
         tv_carnum = findViewByID_My(R.id.tv_carnum);
         tv_cardetail = findViewByID_My(R.id.tv_cardetail);
 
-        if (!localUserInfo.getCarname().equals("")){
+        if (!localUserInfo.getCarname().equals("")) {
             y_user_sedan_id = localUserInfo.getCarid();
             tv_carname.setText(localUserInfo.getCarname());
             tv_carnum.setText(localUserInfo.getCarnum());
@@ -245,10 +245,13 @@ public class CarServiceActivity extends BaseActivity {
 //                        register_addr = aMapLocation.getAddress();
 
                         localUserInfo.setCityname(aMapLocation.getCity());
-                        localUserInfo.setLongitude(aMapLocation.getLongitude()+"");
+                        localUserInfo.setLongitude(aMapLocation.getLongitude() + "");
                         localUserInfo.setLatitude(aMapLocation.getLatitude() + "");
 
                         editText3.setText(aMapLocation.getAddress() + "");
+
+                        longitude = aMapLocation.getLatitude() + "";
+                        latitude = aMapLocation.getLatitude() + "";
 
 
                     } else {
@@ -593,6 +596,8 @@ public class CarServiceActivity extends BaseActivity {
                     params.put("m_type", m_type);
                     params.put("car_condition", car_condition);
                     params.put("car_img", car_img);
+                    params.put("longitude", longitude);
+                    params.put("latitude", latitude);
                     RequestUpData2(params);
                 }
             }
@@ -637,7 +642,7 @@ public class CarServiceActivity extends BaseActivity {
                 myToast("请选择门店");
                 return false;
             }
-        }else {
+        } else {
             y_store_id_str = "";
         }
 

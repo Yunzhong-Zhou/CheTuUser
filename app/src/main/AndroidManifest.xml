@@ -108,8 +108,11 @@
             android:name=".activity.CarInsuranceActivity"
             android:label="车险查询" />
         <activity
+            android:name=".activity.CarInsuranceListActivity"
+            android:label="车险查询列表" />
+        <activity
             android:name=".activity.CarServiceActivity"
-            android:label="维修保养查询" />
+            android:label="维修保养询价-发布救援" />
         <activity
             android:name=".activity.AddXunJiaActivity"
             android:label="添加询价项目" />

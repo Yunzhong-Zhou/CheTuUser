@@ -4,10 +4,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
 import com.chetu.user.R;
 import com.chetu.user.base.BaseActivity;
-import com.chetu.user.model.CarIllegalListModel;
+import com.chetu.user.model.CarInsuranceListModel;
 import com.chetu.user.net.URLs;
 import com.chetu.user.okhttp.CallBackUtil;
 import com.chetu.user.okhttp.OkhttpUtil;
@@ -29,13 +28,13 @@ import okhttp3.Response;
 
 /**
  * Created by Mr.X on 2020/7/14.
- * 查询记录
+ * 车险查询记录
  */
-public class CarIllegalListActivity extends BaseActivity {
+public class CarInsuranceListActivity extends BaseActivity {
     int page = 0;
     private RecyclerView recyclerView;
-    List<CarIllegalListModel.ListBean> list = new ArrayList<>();
-    CommonAdapter<CarIllegalListModel.ListBean> mAdapter;
+    List<CarInsuranceListModel.ListBean> list = new ArrayList<>();
+    CommonAdapter<CarInsuranceListModel.ListBean> mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,9 +94,9 @@ public class CarIllegalListActivity extends BaseActivity {
     }
 
     private void Request(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.CarIllegalList, params, headerMap, new CallBackUtil<CarIllegalListModel>() {
+        OkhttpUtil.okHttpPost(URLs.CarInsuranceList, params, headerMap, new CallBackUtil<CarInsuranceListModel>() {
             @Override
-            public CarIllegalListModel onParseResponse(Call call, Response response) {
+            public CarInsuranceListModel onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -109,28 +108,28 @@ public class CarIllegalListActivity extends BaseActivity {
             }
 
             @Override
-            public void onResponse(CarIllegalListModel response) {
+            public void onResponse(CarInsuranceListModel response) {
                 hideProgress();
                 list = response.getList();
                 if (list.size() > 0) {
                     showContentPage();
-                    mAdapter = new CommonAdapter<CarIllegalListModel.ListBean>
-                            (CarIllegalListActivity.this, R.layout.item_carillegallist, list) {
+                    mAdapter = new CommonAdapter<CarInsuranceListModel.ListBean>
+                            (CarInsuranceListActivity.this, R.layout.item_carillegallist, list) {
                         @Override
-                        protected void convert(ViewHolder holder, CarIllegalListModel.ListBean model, int position) {
+                        protected void convert(ViewHolder holder, CarInsuranceListModel.ListBean model, int position) {
                             ImageView iv_carlogo = holder.getView(R.id.iv_carlogo);
-                            Glide.with(CarIllegalListActivity.this)
+                           /* Glide.with(CarInsuranceListActivity.this)
                                     .load(URLs.IMGHOST + model.getUser_sedan_info().getSLogo())
                                     .centerCrop()
                                     .placeholder(R.mipmap.loading)//加载站位图
                                     .error(R.mipmap.zanwutupian)//加载失败
-                                    .into(iv_carlogo);//加载图片
-                            holder.setText(R.id.tv_carname, model.getUser_sedan_info().getSName());
+                                    .into(iv_carlogo);//加载图片*/
+                            holder.setText(R.id.tv_carname, model.getFullName());
 //                            holder.setText(R.id.tv_carnum, model.getUser_sedan_info().getSNumber());
                             holder.setText(R.id.tv_carnum, model.getLicensePlate());
 
                             holder.setText(R.id.tv_time, model.getCreateDate());
-//                            holder.setText(R.id.tv_addr, model.getAddress());
+                            holder.setText(R.id.tv_addr, model.getVInsureCity());
 
                         }
                     };
@@ -138,8 +137,8 @@ public class CarIllegalListActivity extends BaseActivity {
                         @Override
                         public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
                             Bundle bundle = new Bundle();
-                            bundle.putString("url", URLs.HOST + "/single/h5/violation_closing?y_vio_regulat_id=" +list.get(i).getYVioRegulatId());
-                            CommonUtil.gotoActivityWithData(CarIllegalListActivity.this, WebContentActivity.class, bundle, false);
+                            bundle.putString("url", URLs.HOST + "/single/h5/violation_closing?y_vio_regulat_id=" + list.get(i).getYInquiryId());
+                            CommonUtil.gotoActivityWithData(CarInsuranceListActivity.this, WebContentActivity.class, bundle, false);
                         }
 
                         @Override
@@ -156,9 +155,9 @@ public class CarIllegalListActivity extends BaseActivity {
     }
 
     private void RequestMore(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.CarIllegalList, params, headerMap, new CallBackUtil<CarIllegalListModel>() {
+        OkhttpUtil.okHttpPost(URLs.CarInsuranceList, params, headerMap, new CallBackUtil<CarInsuranceListModel>() {
             @Override
-            public CarIllegalListModel onParseResponse(Call call, Response response) {
+            public CarInsuranceListModel onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -170,9 +169,9 @@ public class CarIllegalListActivity extends BaseActivity {
             }
 
             @Override
-            public void onResponse(CarIllegalListModel response) {
+            public void onResponse(CarInsuranceListModel response) {
                 hideProgress();
-                List<CarIllegalListModel.ListBean> list1 = new ArrayList<>();
+                List<CarInsuranceListModel.ListBean> list1 = new ArrayList<>();
                 list1 = response.getList();
                 if (list1.size() == 0) {
                     page--;
@@ -187,7 +186,7 @@ public class CarIllegalListActivity extends BaseActivity {
 
     @Override
     protected void updateView() {
-        titleView.setTitle("查询记录");
+        titleView.setTitle("车险询价列表");
         titleView.setBackground(R.color.background);
     }
 }

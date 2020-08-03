@@ -72,6 +72,8 @@ public class URLs {
     public static final String Fragment1_Service = HOST+"/api/v1/public/get_inddex_data";
     //车险询价（发布）
     public static final String CarInsurance = HOST+"/api/v1/public/user_inquiry_add";
+    //车险询价-查询列表
+    public static final String CarInsuranceList = HOST+"/api/v1/user/user_inquiry_list";
     //车型
     public static final String CheXing = HOST+"/api/v1/user/user_vio_regulat_type_list";
     //违章查询
