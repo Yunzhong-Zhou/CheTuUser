@@ -522,6 +522,14 @@ public class CarServiceActivity extends BaseActivity {
                 intent1.putExtras(bundle1);
                 startActivityForResult(intent1, 10001, bundle1);
                 break;
+            case R.id.editText3:
+                //选择地址
+                Intent intent3 = new Intent(CarServiceActivity.this, SelectAddressActivity.class);
+                Bundle bundle3 = new Bundle();
+                bundle3.putInt("type", 10003);
+                intent3.putExtras(bundle3);
+                startActivityForResult(intent3, 10003, bundle3);
+                break;
             case R.id.tv_add:
                 //添加询价项目
                 Intent intent2 = new Intent(CarServiceActivity.this, AddXunJiaActivity.class);
@@ -808,7 +816,16 @@ public class CarServiceActivity extends BaseActivity {
 
                 }
                 break;
-
+            case 10003:
+                //选择地址
+                if (data != null) {
+                    Bundle bundle3 = data.getExtras();
+//                    editText3 = bundle3.getString("addr");
+                    editText3.setText(bundle3.getString("addr"));
+                   /* tv_carnum.setText(bundle1.getString("carnum"));
+                    tv_cardetail.setText(bundle1.getString("cardetail"));*/
+                }
+                break;
         }
 
     }

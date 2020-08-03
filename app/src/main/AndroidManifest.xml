@@ -98,6 +98,10 @@
             android:label="选择地址"
             android:theme="@style/DefaultCityPickerTheme"/>
         <activity
+            android:name=".activity.SelectCityActivity"
+            android:label="选择城市"
+            android:theme="@style/DefaultCityPickerTheme"/>
+        <activity
             android:name=".activity.SearchActivity"
             android:label="搜索" />
         <activity
