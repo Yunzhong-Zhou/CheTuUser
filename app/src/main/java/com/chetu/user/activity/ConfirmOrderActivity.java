@@ -550,7 +550,11 @@ public class ConfirmOrderActivity extends BaseActivity {
             case R.id.ll_jiecheaddr:
             case R.id.tv_jiecheaddr:
                 //接车地址
-
+                Intent intent4 = new Intent(ConfirmOrderActivity.this, SelectAddressActivity.class);
+                Bundle bundle4 = new Bundle();
+                bundle4.putInt("type", 10004);
+                intent4.putExtras(bundle4);
+                startActivityForResult(intent4, 10004, bundle4);
                 break;
 
             case R.id.ll_songchedaojia:
@@ -802,6 +806,15 @@ public class ConfirmOrderActivity extends BaseActivity {
                     longitude = bundle3.getString("longitude");
                     latitude = bundle3.getString("latitude");
                     requestServer();
+                }
+                break;
+            case 10004:
+                //选择地址
+                if (data != null) {
+                    Bundle bundle3 = data.getExtras();
+                    longitude = bundle3.getString("lng");
+                    latitude = bundle3.getString("lat");
+                    tv_jiecheaddr.setText(bundle3.getString("addr"));
                 }
                 break;
         }

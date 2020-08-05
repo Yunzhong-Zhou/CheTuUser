@@ -90,6 +90,13 @@ public class SelectAddressActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_selectaddress);
+        mImmersionBar.reset()
+                .statusBarColor(R.color.blue)
+                .fitsSystemWindows(true)  //使用该属性,必须指定状态栏颜色
+                .keyboardEnable(true)  //解决软键盘与底部输入框冲突问题
+//                .statusBarDarkFont(true, 0.2f) //原理：如果当前设备支持状态栏字体变色，会设置状态栏字体为黑色，如果当前设备不支持状态栏字体变色，会使当前状态栏加上透明度，否则不执行透明度
+                .init();
+
         //初始化地图
         mMapView = (MapView) findViewById(R.id.route_map);
         mMapView.onCreate(savedInstanceState);// 此方法必须重写
@@ -310,7 +317,7 @@ public class SelectAddressActivity extends BaseActivity {
                 RegeocodeQuery query = new RegeocodeQuery(point, 200, GeocodeSearch.AMAP);
                 geocoderSearch.getFromLocationAsyn(query);
                 LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());//构造一个位置
-                aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18));//设置地图放大级别
+                aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17));//设置地图放大级别
 //                }
 
             }
@@ -592,7 +599,8 @@ public class SelectAddressActivity extends BaseActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                switch (type) {
+                addMarker(1, s1, s2, point);
+                /*switch (type) {
                     case 10001:
                         //起点
                         addMarker(1, s1, s2, point);
@@ -605,7 +613,8 @@ public class SelectAddressActivity extends BaseActivity {
                         //途经点
                         addMarker(3, s1, s2, point);
                         break;
-                }
+
+                }*/
 
 
             }

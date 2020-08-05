@@ -82,6 +82,7 @@
             android:background="@mipmap/bg_myorder_tab2_0"
             android:gravity="center"
             android:paddingTop="8dp"
+            android:visibility="gone"
             android:paddingBottom="8dp"
             android:layout_marginLeft="-4dp"
             android:layout_marginRight="-4dp"
