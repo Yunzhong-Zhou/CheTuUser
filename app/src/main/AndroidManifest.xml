@@ -96,11 +96,14 @@
         <activity
             android:name=".activity.SelectAddressActivity"
             android:label="选择地址"
-            android:theme="@style/DefaultCityPickerTheme"/>
+            android:theme="@style/DefaultCityPickerTheme" />
         <activity
             android:name=".activity.SelectCityActivity"
             android:label="选择城市"
-            android:theme="@style/DefaultCityPickerTheme"/>
+            android:theme="@style/DefaultCityPickerTheme" />
+        <activity
+            android:name=".activity.MapNavigationActivity"
+            android:label="导航" />
         <activity
             android:name=".activity.SearchActivity"
             android:label="搜索" />
@@ -268,9 +271,10 @@
                 <data android:scheme="wx7ab80a19389dbb09" />
             </intent-filter>
         </activity>
-        <activity android:name=".wxapi.WXEntryActivity"
-            android:launchMode="singleTop"
-            android:exported="true"/>
+        <activity
+            android:name=".wxapi.WXEntryActivity"
+            android:exported="true"
+            android:launchMode="singleTop" />
         <!--查看mob推送日志-->
         <!--<meta-data
             android:name="com.mob.mobpush.debugLevel"

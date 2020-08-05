@@ -910,6 +910,15 @@ public class StoreDetailActivity extends BaseActivity {
                             }
                         });
                 break;
+            case R.id.tv_addr:
+                //导航
+                Bundle bundle_m = new Bundle();
+                bundle_m.putDouble("startlat", Double.valueOf(latitude));
+                bundle_m.putDouble("startlng", Double.valueOf(longitude));
+                bundle_m.putDouble("endlat", Double.valueOf(storeDetailModel.getInfo().getLatitude()));
+                bundle_m.putDouble("endlng", Double.valueOf(storeDetailModel.getInfo().getLongitude()));
+                CommonUtil.gotoActivityWithData(StoreDetailActivity.this, MapNavigationActivity.class, bundle_m, false);
+                break;
             case R.id.iv_xihuan:
                 //收藏
                 isShouChange = !isShouChange;

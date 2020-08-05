@@ -300,18 +300,18 @@ public class SelectAddressActivity extends BaseActivity {
 //                longititude = location.getLongitude();
 
                 //根据首页传入的地址进行展示地图
-                MyLogger.i(">>>>>>" + getIntent().getStringExtra("city"));
+                /*MyLogger.i(">>>>>>" + getIntent().getStringExtra("city"));
                 if (!getIntent().getStringExtra("city").equals("")) {
                     getLatlon(getIntent().getStringExtra("city"));
-                } else {
-                    //获取位置信息
-                    point = new LatLonPoint(location.getLatitude(), location.getLongitude());
-                    // 第一个参数表示一个Latlng，第二参数表示范围多少米，第三个参数表示是火系坐标系还是GPS原生坐标系
-                    RegeocodeQuery query = new RegeocodeQuery(point, 200, GeocodeSearch.AMAP);
-                    geocoderSearch.getFromLocationAsyn(query);
-                    LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());//构造一个位置
-                    aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16));//设置地图放大级别
-                }
+                } else {*/
+                //获取位置信息
+                point = new LatLonPoint(location.getLatitude(), location.getLongitude());
+                // 第一个参数表示一个Latlng，第二参数表示范围多少米，第三个参数表示是火系坐标系还是GPS原生坐标系
+                RegeocodeQuery query = new RegeocodeQuery(point, 200, GeocodeSearch.AMAP);
+                geocoderSearch.getFromLocationAsyn(query);
+                LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());//构造一个位置
+                aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18));//设置地图放大级别
+//                }
 
             }
         });
