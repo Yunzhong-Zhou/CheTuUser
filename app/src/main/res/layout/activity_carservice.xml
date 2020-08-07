@@ -298,11 +298,13 @@
                             android:textSize="15sp" />-->
                         <EditText
                             android:id="@+id/editText4"
+                            android:onClick="onClick"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@color/transparent"
                             android:drawableRight="@mipmap/ic_next_black"
                             android:hint="选择救援类型"
+                            android:focusable="false"
                             android:paddingTop="15dp"
                             android:paddingRight="10dp"
                             android:paddingBottom="15dp"

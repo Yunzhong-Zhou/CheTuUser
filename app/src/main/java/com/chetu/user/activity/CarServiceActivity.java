@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -32,6 +34,7 @@ import com.chetu.user.view.pictureselector.GlideEngine;
 import com.chetu.user.view.pictureselector.GridImageAdapter;
 import com.cy.cyflowlayoutlibrary.FlowLayout;
 import com.cy.cyflowlayoutlibrary.FlowLayoutAdapter;
+import com.cy.dialog.BaseDialog;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
@@ -530,6 +533,66 @@ public class CarServiceActivity extends BaseActivity {
                 intent3.putExtras(bundle3);
                 startActivityForResult(intent3, 10003, bundle3);
                 break;
+            case R.id.editText4:
+                //类型
+                List<String> arrayList = new ArrayList<>();
+                arrayList.add("搭电");
+                arrayList.add("换胎");
+                arrayList.add("拖车");
+                arrayList.add("送油");
+                arrayList.add("故障");
+                BaseDialog dialog1 = new BaseDialog(CarServiceActivity.this);
+                dialog1.contentView(R.layout.dialog_list)
+                        .layoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                                ViewGroup.LayoutParams.WRAP_CONTENT))
+                        .animType(BaseDialog.AnimInType.BOTTOM)
+                        .canceledOnTouchOutside(true)
+                        .gravity(Gravity.BOTTOM)
+                        .dimAmount(0.7f)
+                        .show();
+                TextView title = dialog1.findViewById(R.id.textView1);
+                title.setText("请选择救援类型");
+                RecyclerView rv = dialog1.findViewById(R.id.recyclerView);
+                rv.setLayoutManager(new LinearLayoutManager(CarServiceActivity.this));
+
+                CommonAdapter<String> adapter = new CommonAdapter<String>
+                        (CarServiceActivity.this, R.layout.item_dialog_list, arrayList) {
+                    @Override
+                    protected void convert(ViewHolder holder, String model, int position) {
+                        TextView tv = holder.getView(R.id.textView);
+                        ImageView iv = holder.getView(R.id.imageView);
+                        tv.setText(model);
+                        if (position == i2) {
+                            tv.setTextColor(getResources().getColor(R.color.blue));
+                            iv.setImageResource(R.mipmap.ic_xuanzhong);
+                        } else {
+                            tv.setTextColor(getResources().getColor(R.color.black1));
+                            iv.setImageResource(R.mipmap.ic_weixuan);
+                        }
+                    }
+                };
+                adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                        i2 = i;
+                        adapter.notifyDataSetChanged();
+//                        dialog1.dismiss();
+                    }
+
+                    @Override
+                    public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                        return false;
+                    }
+                });
+                rv.setAdapter(adapter);
+                dialog1.findViewById(R.id.tv_confirm).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        editText4.setText(arrayList.get(i2));
+                        dialog1.dismiss();
+                    }
+                });
+                break;
             case R.id.tv_add:
                 //添加询价项目
                 Intent intent2 = new Intent(CarServiceActivity.this, AddXunJiaActivity.class);
@@ -701,10 +764,10 @@ public class CarServiceActivity extends BaseActivity {
             return false;
         }
         m_type = editText4.getText().toString().trim();
-       /* if (TextUtils.isEmpty(m_type)) {
-            myToast("请输入救援类型");
+        if (TextUtils.isEmpty(m_type)) {
+            myToast("请选择救援类型");
             return false;
-        }*/
+        }
         car_condition = editText5.getText().toString().trim();
         /*if (TextUtils.isEmpty(car_condition)) {
             myToast("请输入您当前的情况");

@@ -257,7 +257,6 @@
             android:name=".activity.ServiceCenterActivity"
             android:label="客服中心" />
 
-
         <!--微信支付回调-->
         <activity
             android:name=".wxapi.WXPayEntryActivity"
