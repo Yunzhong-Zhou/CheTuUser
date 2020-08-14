@@ -348,7 +348,7 @@ public class AddCarActivity extends BaseActivity {
                 break;
             case R.id.tv_nianshentime:
                 //年审到期时间
-                setDate("请选择年审到期时间", tv_baoxiantime, tv_baoxiantime.getText().toString().trim());
+                setDate("请选择年审到期时间", tv_nianshentime, tv_nianshentime.getText().toString().trim());
                 break;
             case R.id.tv_confirm:
                 //提交

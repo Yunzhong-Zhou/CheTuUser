@@ -29,7 +29,7 @@ import okhttp3.Response;
 
 /**
  * Created by Mr.X on 2020/7/14.
- * 查询记录
+ * 违章查询记录
  */
 public class CarIllegalListActivity extends BaseActivity {
     int page = 0;

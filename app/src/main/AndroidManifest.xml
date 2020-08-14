@@ -151,6 +151,9 @@
             android:name=".activity.ConfirmOrderActivity"
             android:label="确认订单" />
         <activity
+            android:name=".activity.SelectStore_ServiceActivity"
+            android:label="选择门店" />
+        <activity
             android:name=".activity.SelectGoodsActivity"
             android:label="选择商品" />
         <activity

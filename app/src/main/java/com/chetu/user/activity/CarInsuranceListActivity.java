@@ -137,7 +137,7 @@ public class CarInsuranceListActivity extends BaseActivity {
                         @Override
                         public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
                             Bundle bundle = new Bundle();
-                            bundle.putString("url", URLs.HOST + "/single/h5/violation_closing?y_vio_regulat_id=" + list.get(i).getYInquiryId());
+                            bundle.putString("url", URLs.HOST + "/single/h5/inquiry_info?y_inquiry_id=" + list.get(i).getYInquiryId());
                             CommonUtil.gotoActivityWithData(CarInsuranceListActivity.this, WebContentActivity.class, bundle, false);
                         }
 

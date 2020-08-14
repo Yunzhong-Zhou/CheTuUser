@@ -44,6 +44,7 @@ import okhttp3.Response;
  * 确认订单
  */
 public class ConfirmOrderActivity extends BaseActivity {
+    ConfirmOrderModel confirmOrderModel;
     String y_user_sedan_id = "", y_store_id = "", longitude = "", latitude = "", appoin_time = "",
             is_pick = "1", is_delivery = "0", delivery_time = "", delivery_address = "";
     //车辆信息
@@ -70,6 +71,7 @@ public class ConfirmOrderActivity extends BaseActivity {
     //下单
     boolean isYuYue = false;
     TextView tv_time, tv_money, tv_yuyuedaodian, tv_daodianshigong;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -206,6 +208,8 @@ public class ConfirmOrderActivity extends BaseActivity {
             public void onResponse(ConfirmOrderModel response) {
                 hideProgress();
                 showContentPage();
+                confirmOrderModel = response;
+
                 Glide.with(ConfirmOrderActivity.this)
                         .load(URLs.IMGHOST + response.getStore_info().getPicture())
                         .centerCrop()
@@ -513,11 +517,17 @@ public class ConfirmOrderActivity extends BaseActivity {
                 break;
             case R.id.ll_store:
                 //选择店铺
-                Intent intent3 = new Intent(ConfirmOrderActivity.this, XuQiuOrderActivity.class);
+               /* Intent intent3 = new Intent(ConfirmOrderActivity.this, XuQiuOrderActivity.class);
                 Bundle bundle3 = new Bundle();
                 bundle3.putInt("type", 10003);
                 intent3.putExtras(bundle3);
-                startActivityForResult(intent3, 10003, bundle3);
+                startActivityForResult(intent3, 10003, bundle3);*/
+                Intent intent3 = new Intent(ConfirmOrderActivity.this, SelectStore_ServiceActivity.class);
+                Bundle bundle3 = new Bundle();
+                bundle3.putInt("type", 10003);
+                bundle3.putSerializable("ConfirmOrderModel", confirmOrderModel);
+                intent3.putExtras(bundle3);
+                startActivityForResult(intent3, 10003);
                 break;
             case R.id.tv_addother:
                 //添加其他商品
@@ -706,6 +716,32 @@ public class ConfirmOrderActivity extends BaseActivity {
         });
     }
 
+    /**
+     * 改变门店
+     *
+     * @param params
+     */
+    private void RequestChangeStore(Map<String, String> params, String new_y_store_id) {
+        OkhttpUtil.okHttpPost(URLs.ChangeStore, params, headerMap, new CallBackUtil<Object>() {
+            @Override
+            public Object onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+                hideProgress();
+            }
+
+            @Override
+            public void onResponse(Object response) {
+                hideProgress();
+                y_store_id = new_y_store_id;
+                requestServer();
+            }
+        });
+    }
+
     private boolean match() {
         if (isYuYue) {
             if (appoin_time.equals("")) {
@@ -802,10 +838,17 @@ public class ConfirmOrderActivity extends BaseActivity {
                 //选择店铺
                 if (data != null) {
                     Bundle bundle3 = data.getExtras();
-                    y_store_id = bundle3.getString("y_store_id");
-                    longitude = bundle3.getString("longitude");
-                    latitude = bundle3.getString("latitude");
-                    requestServer();
+//                    y_store_id = bundle3.getString("y_store_id");
+                   /* longitude = bundle3.getString("longitude");
+                    latitude = bundle3.getString("latitude");*/
+//                    requestServer();
+                    showProgress(true, getString(R.string.app_loading1));
+                    Map<String, String> params = new HashMap<>();
+                    params.put("u_token", localUserInfo.getToken());
+                    params.put("old_y_store_id", y_store_id);
+                    params.put("new_y_store_id", bundle3.getString("y_store_id"));
+                    RequestChangeStore(params, bundle3.getString("y_store_id"));
+
                 }
                 break;
             case 10004:

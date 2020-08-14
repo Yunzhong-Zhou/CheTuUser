@@ -54,6 +54,8 @@ public class URLs {
     public static final String ADDOrder = HOST+"/api/v1/public/increase_order_service";
     //提交询价
     public static final String ADDXunJia = HOST+"/api/v1/user/user_cart_conversion_demand_increase";
+    //改变门店
+    public static final String ChangeStore = HOST+"/api/v1/public/user_cart_store_id";
     //支付
     public static final String Pay = HOST+"/api/v1/pay/online_payment";
     //评价列表

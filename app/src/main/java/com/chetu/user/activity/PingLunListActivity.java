@@ -1,8 +1,10 @@
 package com.chetu.user.activity;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.RatingBar;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.chetu.user.R;
@@ -124,6 +126,14 @@ public class PingLunListActivity extends BaseActivity {
                             holder.setText(R.id.tv_name, model.getUser_info().getUserName());
                             holder.setText(R.id.tv_time, model.getCreateDate());
                             holder.setText(R.id.tv_content, model.getYMsg());
+                            TextView tv_huifu = holder.getView(R.id.tv_huifu);
+                            if (model.getReply_List().size() >0){
+                                tv_huifu.setVisibility(View.VISIBLE);
+                                tv_huifu.setText("门店回复："+model.getReply_List().get(0).getReplyMsg());
+                            }else {
+                                tv_huifu.setVisibility(View.GONE);
+                            }
+
                             RatingBar ratingbar = holder.getView(R.id.ratingbar);
                             ratingbar.setRating(Float.valueOf(model.getStarC()));
                             ImageView iv = holder.getView(R.id.iv);

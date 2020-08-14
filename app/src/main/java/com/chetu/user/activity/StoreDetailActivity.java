@@ -483,6 +483,8 @@ public class StoreDetailActivity extends BaseActivity {
                     if (mDatas.size() >= 4) {
                         break;
                     }
+
+
 //                    if (!bean.getUser_info().getHeadPortrait().trim().equals("")) {
                     mDatas.add(URLs.IMGHOST + bean.getUser_info().getHeadPortrait());
 //                    }
@@ -553,6 +555,13 @@ public class StoreDetailActivity extends BaseActivity {
                         holder.setText(R.id.tv_name, model.getUser_info().getUserName());
                         holder.setText(R.id.tv_time, model.getCreateDate());
                         holder.setText(R.id.tv_content, model.getYMsg());
+                        TextView tv_huifu = holder.getView(R.id.tv_huifu);
+                        if (model.getReply_List().size() >0){
+                            tv_huifu.setVisibility(View.VISIBLE);
+                            tv_huifu.setText("门店回复："+model.getReply_List().get(0).getReplyMsg());
+                        }else {
+                            tv_huifu.setVisibility(View.GONE);
+                        }
                         RatingBar ratingbar = holder.getView(R.id.ratingbar);
                         ratingbar.setRating(Float.valueOf(model.getStarC()));
                         ImageView iv = holder.getView(R.id.iv);

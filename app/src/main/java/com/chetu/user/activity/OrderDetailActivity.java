@@ -62,7 +62,7 @@ public class OrderDetailActivity extends BaseActivity {
     private TextView textView1, textView2, textView3;
     private View view1, view2, view3;
 
-    TextView tv_storename, tv_addr, tv_juli, tv_jiecheren, tv_wanchengtime, tv_carname, tv_carcontent,
+    TextView tv_storename, tv_addr, tv_juli, tv_jiecheren, tv_wanchengtime, tv_yujiwanchengtime, tv_carname, tv_carcontent,
             tv_beizhu, tv_servicenum, tv_goodsnum, tv_allmoney1,
             tv_servicemoney, tv_jiancemoney, tv_allmoney, tv_servicemoney2, tv_jiancemoney2, tv_allmoney2,
             tv_fukuan, tv_dashang, tv_pinglun, tv_jiancenum, tv_jiancemoney1;
@@ -164,6 +164,7 @@ public class OrderDetailActivity extends BaseActivity {
         tv_juli = findViewByID_My(R.id.tv_juli);
         tv_jiecheren = findViewByID_My(R.id.tv_jiecheren);
         tv_wanchengtime = findViewByID_My(R.id.tv_wanchengtime);
+        tv_yujiwanchengtime = findViewByID_My(R.id.tv_yujiwanchengtime);
         tv_carname = findViewByID_My(R.id.tv_carname);
         tv_carcontent = findViewByID_My(R.id.tv_carcontent);
         iv_storelogo = findViewByID_My(R.id.iv_storelogo);
@@ -284,24 +285,32 @@ public class OrderDetailActivity extends BaseActivity {
                 switch (model.getOrder_info().getGState()) {
                     case 0:
                         tv_wanchengtime.setText("预约时间：" + model.getOrder_info().getAppoinTime());//预约时间
+                        tv_yujiwanchengtime.setVisibility(View.GONE);
                         break;
                     case 1:
                         tv_wanchengtime.setText("接车时间：" + model.getTechn_sedan_info().getCreateDate());//预约时间
+                        tv_yujiwanchengtime.setVisibility(View.GONE);
                         break;
                     case 2:
                         tv_wanchengtime.setText("分配时间：" + model.getTechn_sedan_info().getCreateDate());//预约时间
+                        tv_yujiwanchengtime.setVisibility(View.GONE);
                         break;
                     case 3:
                         tv_wanchengtime.setText("施工时间：" + model.getTechn_sedan_info().getCreateDate());//预约时间
+                        tv_yujiwanchengtime.setVisibility(View.VISIBLE);
+                        tv_yujiwanchengtime.setText("预计完成时间：" + model.getTechn_sedan_info().getEstimateTime());
                         break;
                     case 4:
                         tv_wanchengtime.setText("完工时间：" + model.getTechn_sedan_info().getCreateDate());//预约时间
+                        tv_yujiwanchengtime.setVisibility(View.GONE);
                         break;
                     case 5:
                         tv_wanchengtime.setText("复检时间：" + model.getTechn_sedan_info().getCreateDate());//预约时间
+                        tv_yujiwanchengtime.setVisibility(View.GONE);
                         break;
                     case 6:
                         tv_wanchengtime.setText("提车时间：" + model.getTechn_sedan_info().getCreateDate());//预约时间
+                        tv_yujiwanchengtime.setVisibility(View.GONE);
                         break;
                 }
                 //付款按钮
