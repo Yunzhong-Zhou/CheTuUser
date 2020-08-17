@@ -35,8 +35,17 @@ public class ServiceListModel_All implements Serializable {
         private String vName;
         private String vImg;
         private int isIndex;
+        private int isSheet;
         private String createDate;
         private List<VListBeanX> v_list;
+
+        public int getIsSheet() {
+            return isSheet;
+        }
+
+        public void setIsSheet(int isSheet) {
+            this.isSheet = isSheet;
+        }
 
         public String getId() {
             return id;

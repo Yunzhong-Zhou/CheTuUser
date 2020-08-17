@@ -55,6 +55,12 @@ public class XuQiuOrderActivity extends BaseActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        requestServer();
+    }
+
+    @Override
     protected void initView() {
         //刷新
         setSpringViewMore(false);//不需要加载更多
@@ -85,8 +91,8 @@ public class XuQiuOrderActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        type = getIntent().getIntExtra("type",0);
-        requestServer();
+        type = getIntent().getIntExtra("type", 0);
+//        requestServer();
     }
 
     @Override
@@ -253,17 +259,17 @@ public class XuQiuOrderActivity extends BaseActivity {
                     mAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
                         @Override
                         public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
-                            if (type == 10003){
+                            if (type == 10003) {
                                 //保存
                                 Intent resultIntent = new Intent();
                                 Bundle bundle = new Bundle();
                                 bundle.putString("y_store_id", list.get(i).getYStoreId());
-                                bundle.putString("longitude",  localUserInfo.getLongitude());
-                                bundle.putString("latitude",localUserInfo.getLatitude());
+                                bundle.putString("longitude", localUserInfo.getLongitude());
+                                bundle.putString("latitude", localUserInfo.getLatitude());
                                 resultIntent.putExtras(bundle);
                                 XuQiuOrderActivity.this.setResult(RESULT_OK, resultIntent);
                                 finish();
-                            }else {
+                            } else {
                                 Bundle bundle2 = new Bundle();
 //                bundle2.putSerializable("XuanZeFuWuModel", (Serializable) list_xuanze);
                                 bundle2.putString("y_store_id", list.get(i).getYStoreId());
