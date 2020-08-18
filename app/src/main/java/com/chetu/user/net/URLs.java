@@ -93,12 +93,15 @@ public class URLs {
     /**
      * *******************************养车****************************************
      * */
+    //保养banner
+    public static final String Fragment2_Banner = HOST+"/api/v1/public/maintain_banner";
     //保存草稿
     public static final String SaveDraft = HOST+"/api/v1/user/draft_add";
     //草稿列表
     public static final String DraftList = HOST+"/api/v1/user/draft_list";
     //删除草稿
     public static final String DeleteDraft = HOST+"/api/v1/user/draft_del";
+
     /**
      * *******************************门店****************************************
      * */

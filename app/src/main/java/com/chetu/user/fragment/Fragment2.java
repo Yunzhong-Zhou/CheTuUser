@@ -22,17 +22,23 @@ import com.chetu.user.activity.MainActivity;
 import com.chetu.user.activity.MyGarageActivity;
 import com.chetu.user.activity.SearchActivity;
 import com.chetu.user.activity.StoreDetailActivity;
+import com.chetu.user.adapter.CircleImageAdapter;
 import com.chetu.user.base.BaseFragment;
+import com.chetu.user.model.Fragment2BannerModel;
 import com.chetu.user.model.Fragment3Model;
 import com.chetu.user.model.ServiceListModel_All;
 import com.chetu.user.net.URLs;
 import com.chetu.user.okhttp.CallBackUtil;
 import com.chetu.user.okhttp.OkhttpUtil;
+import com.chetu.user.popupwindow.PhotoShowDialog;
 import com.chetu.user.utils.CommonUtil;
 import com.chetu.user.utils.MyLogger;
 import com.cy.cyflowlayoutlibrary.FlowLayout;
 import com.cy.cyflowlayoutlibrary.FlowLayoutAdapter;
 import com.liaoinstan.springview.widget.SpringView;
+import com.youth.banner.Banner;
+import com.youth.banner.indicator.CircleIndicator;
+import com.youth.banner.listener.OnBannerListener;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
@@ -65,6 +71,8 @@ public class Fragment2 extends BaseFragment {
     int page = 0;
     String longitude = "", latitude = "", service_name = "";
 
+    Banner banner;
+    List<String> images = new ArrayList<>();
     /**
      * 门店
      */
@@ -85,7 +93,7 @@ public class Fragment2 extends BaseFragment {
     RecyclerView recyclerView_sv;
     CommonAdapter<ServiceListModel_All.ListBean> mAdapter_sv;
     List<ServiceListModel_All.ListBean> list_sv = new ArrayList<>();
-    int i1 = 0;
+    int i1 = -1;
 
     /**
      * 服务tab
@@ -161,7 +169,17 @@ public class Fragment2 extends BaseFragment {
                         .into(iv_carlogo);//加载图片
             }
             MyLogger.i(">>>>>>>选择的服务id" + yServiceId);
-            if (list_sv.size() > 0) {
+            if (yServiceId.equals("")) {
+                i1 = -1;
+                ll_tab.setVisibility(View.GONE);
+            }
+            //获取服务tab
+            HashMap<String, String> params2 = new HashMap<>();
+            params2.put("y_parent_id", "0");
+            RequestService(params2, 0);
+            showSelectService();//显示选择的服务
+
+            /*if (list_sv.size() > 0) {
                 for (int i = 0; i < list_sv.size(); i++) {//循环判断传入的id 与列表id是否一致
                     if (yServiceId.equals(list_sv.get(i).getYServiceId())) {//如一致，保存该下标，设置选中状态
                         i1 = i;
@@ -177,7 +195,6 @@ public class Fragment2 extends BaseFragment {
                         }
                     }
                 }
-
                 showSelectService();//显示选择的服务
 
                 requestServer();
@@ -186,7 +203,7 @@ public class Fragment2 extends BaseFragment {
                 HashMap<String, String> params2 = new HashMap<>();
                 params2.put("y_parent_id", "0");
                 RequestService(params2, 0);
-            }
+            }*/
             /*requestServer();
             tv_addr.setText(localUserInfo.getCityname());*/
         }
@@ -203,8 +220,19 @@ public class Fragment2 extends BaseFragment {
                         .centerCrop()
                         .into(iv_carlogo);//加载图片
             }
+
             MyLogger.i(">>>>>>>选择的服务id" + yServiceId);
-            if (list_sv.size() > 0) {
+            if (yServiceId.equals("")) {
+                i1 = -1;
+                ll_tab.setVisibility(View.GONE);
+            }
+            //获取服务tab
+            HashMap<String, String> params2 = new HashMap<>();
+            params2.put("y_parent_id", "0");
+            RequestService(params2, 0);
+            showSelectService();//显示选择的服务
+
+            /*if (list_sv.size() > 0) {
                 for (int i = 0; i < list_sv.size(); i++) {
                     if (yServiceId.equals(list_sv.get(i).getYServiceId())) {
                         i1 = i;
@@ -229,7 +257,7 @@ public class Fragment2 extends BaseFragment {
                 HashMap<String, String> params2 = new HashMap<>();
                 params2.put("y_parent_id", "0");
                 RequestService(params2, 0);
-            }
+            }*/
 
 
         }
@@ -268,7 +296,7 @@ public class Fragment2 extends BaseFragment {
                 RequestMore(params);
             }
         });
-
+        banner = findViewByID_My(R.id.banner);
         recyclerView = findViewByID_My(R.id.recyclerView);
         LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLinearLayoutManager);
@@ -449,6 +477,10 @@ public class Fragment2 extends BaseFragment {
         params2.put("y_parent_id", "0");
         RequestService(params2, 0);*/
 
+        //获取banner
+        HashMap<String, String> params2 = new HashMap<>();
+//        params2.put("y_parent_id", "0");
+        RequestBanner(params2);
         requestServer();
     }
 
@@ -789,6 +821,21 @@ public class Fragment2 extends BaseFragment {
             public void onResponse(ServiceListModel_All response) {
                 hideProgress();
                 list_sv = response.getList();
+                for (int i = 0; i < list_sv.size(); i++) {
+                    if (yServiceId.equals(list_sv.get(i).getYServiceId())) {
+                        i1 = i;
+                        yServiceId = "";
+                        mAdapter_sv.notifyDataSetChanged();
+
+                        if (list_sv.get(i).getIsSheet() == 1) {//是喷漆
+                            ll_tab.setVisibility(View.GONE);
+                            ll_penqi.setVisibility(View.VISIBLE);
+                        } else {
+                            ll_tab.setVisibility(View.VISIBLE);
+                            ll_penqi.setVisibility(View.GONE);
+                        }
+                    }
+                }
                 /**
                  * 第一级
                  */
@@ -811,123 +858,126 @@ public class Fragment2 extends BaseFragment {
                         /**
                          * 第二级
                          */
-                        list_tab1 = list_sv.get(i1).getV_list();
 
-                        if (list_tab1.size() == 0) {
-                            //第二级没有数据-隐藏第三级
-                            rv_tab2.setVisibility(View.INVISIBLE);
-                        } else {
-                            rv_tab2.setVisibility(View.VISIBLE);
-                        }
-                        ca_tab1 = new CommonAdapter<ServiceListModel_All.ListBean.VListBeanX>
-                                (getActivity(), R.layout.item_fragment2_sv_tab1, list_tab1) {
-                            @Override
-                            protected void convert(ViewHolder holder, ServiceListModel_All.ListBean.VListBeanX listBean, int item) {
-                                holder.setText(R.id.textView, listBean.getVName());
-                                ImageView imageView = holder.getView(R.id.imageView);
-                                if (listBean.isIsgouxuan()) {
-                                    imageView.setImageResource(R.mipmap.ic_yixuan_juxing);
-                                } else {
-                                    imageView.setImageResource(R.mipmap.ic_weixuan_juxing);
-                                }
+                        if (i1 >= 0) {
+                            list_tab1 = list_sv.get(i1).getV_list();
+
+                            if (list_tab1.size() == 0) {
+                                //第二级没有数据-隐藏第三级
+                                rv_tab2.setVisibility(View.INVISIBLE);
+                            } else {
+                                rv_tab2.setVisibility(View.VISIBLE);
                             }
-                        };
-                        ca_tab1.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int item) {
+                            ca_tab1 = new CommonAdapter<ServiceListModel_All.ListBean.VListBeanX>
+                                    (getActivity(), R.layout.item_fragment2_sv_tab1, list_tab1) {
+                                @Override
+                                protected void convert(ViewHolder holder, ServiceListModel_All.ListBean.VListBeanX listBean, int item) {
+                                    holder.setText(R.id.textView, listBean.getVName());
+                                    ImageView imageView = holder.getView(R.id.imageView);
+                                    if (listBean.isIsgouxuan()) {
+                                        imageView.setImageResource(R.mipmap.ic_yixuan_juxing);
+                                    } else {
+                                        imageView.setImageResource(R.mipmap.ic_weixuan_juxing);
+                                    }
+                                }
+                            };
+                            ca_tab1.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int item) {
 
-                                /**
-                                 * 第三级
-                                 */
-                                list_tab2 = list_tab1.get(item).getV_list();
+                                    /**
+                                     * 第三级
+                                     */
+                                    list_tab2 = list_tab1.get(item).getV_list();
 //                                        ca_tab2.notifyDataSetChanged();
-                                ca_tab2 = new CommonAdapter<ServiceListModel_All.ListBean.VListBeanX.VListBean>
-                                        (getActivity(), R.layout.item_fragment2_sv_tab2, list_tab2) {
-                                    @Override
-                                    protected void convert(ViewHolder holder, ServiceListModel_All.ListBean.VListBeanX.VListBean listBean, int item) {
-                                        holder.setText(R.id.textView, listBean.getVName());
-                                        TextView tianjia = holder.getView(R.id.tianjia);
-                                        if (listBean.isIsgouxuan()) {
-                                            tianjia.setTextColor(getResources().getColor(R.color.black3));
-                                            tianjia.setText("已添加");
-                                        } else {
-                                            tianjia.setTextColor(getResources().getColor(R.color.blue));
-                                            tianjia.setText("添加");
+                                    ca_tab2 = new CommonAdapter<ServiceListModel_All.ListBean.VListBeanX.VListBean>
+                                            (getActivity(), R.layout.item_fragment2_sv_tab2, list_tab2) {
+                                        @Override
+                                        protected void convert(ViewHolder holder, ServiceListModel_All.ListBean.VListBeanX.VListBean listBean, int item) {
+                                            holder.setText(R.id.textView, listBean.getVName());
+                                            TextView tianjia = holder.getView(R.id.tianjia);
+                                            if (listBean.isIsgouxuan()) {
+                                                tianjia.setTextColor(getResources().getColor(R.color.black3));
+                                                tianjia.setText("已添加");
+                                            } else {
+                                                tianjia.setTextColor(getResources().getColor(R.color.blue));
+                                                tianjia.setText("添加");
+                                            }
                                         }
-                                    }
-                                };
-                                ca_tab2.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
-                                    @Override
-                                    public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
-                                        if (!list_tab2.get(i).isIsgouxuan())
-                                            list_tab2.get(i).setIsgouxuan(true);
-                                        else
-                                            list_tab2.get(i).setIsgouxuan(false);
+                                    };
+                                    ca_tab2.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+                                        @Override
+                                        public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                                            if (!list_tab2.get(i).isIsgouxuan())
+                                                list_tab2.get(i).setIsgouxuan(true);
+                                            else
+                                                list_tab2.get(i).setIsgouxuan(false);
 
-                                        showSelectService();//显示选择的服务
-                                        ca_tab2.notifyDataSetChanged();
-                                    }
+                                            showSelectService();//显示选择的服务
+                                            ca_tab2.notifyDataSetChanged();
+                                        }
 
-                                    @Override
-                                    public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
-                                        return false;
-                                    }
-                                });
-                                rv_tab2.setAdapter(ca_tab2);
+                                        @Override
+                                        public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                                            return false;
+                                        }
+                                    });
+                                    rv_tab2.setAdapter(ca_tab2);
 
-                                //选择
-                                if (!list_tab1.get(item).isIsgouxuan())
-                                    list_tab1.get(item).setIsgouxuan(true);
-                                else list_tab1.get(item).setIsgouxuan(false);
+                                    //选择
+                                    if (!list_tab1.get(item).isIsgouxuan())
+                                        list_tab1.get(item).setIsgouxuan(true);
+                                    else list_tab1.get(item).setIsgouxuan(false);
 
-                                showSelectService();//显示选择的服务
+                                    showSelectService();//显示选择的服务
 
-                                ca_tab1.notifyDataSetChanged();
-                            }
-
-                            @Override
-                            public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
-                                return false;
-                            }
-                        });
-                        rv_tab1.setAdapter(ca_tab1);
-
-                        //喷漆
-                        ca_penqi = new CommonAdapter<ServiceListModel_All.ListBean.VListBeanX>
-                                (getActivity(), R.layout.item_fragment2_penqi, list_tab1) {
-                            @Override
-                            protected void convert(ViewHolder holder, ServiceListModel_All.ListBean.VListBeanX listBean, int item) {
-                                TextView textView = holder.getView(R.id.textView);
-                                textView.setText(listBean.getVName());
-                                if (listBean.isIsgouxuan()) {
-                                    textView.setBackgroundResource(R.drawable.yuanjiao_5_lanse);
-                                    textView.setTextColor(getResources().getColor(R.color.white));
-                                } else {
-                                    textView.setBackgroundResource(R.drawable.yuanjiaobiankuang_5_huise);
-                                    textView.setTextColor(getResources().getColor(R.color.black));
+                                    ca_tab1.notifyDataSetChanged();
                                 }
-                            }
-                        };
-                        ca_penqi.setOnItemClickListener(new OnItemClickListener() {
-                            @Override
-                            public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int item) {
-                                //选择
-                                if (!list_tab1.get(item).isIsgouxuan())
-                                    list_tab1.get(item).setIsgouxuan(true);
-                                else list_tab1.get(item).setIsgouxuan(false);
+
+                                @Override
+                                public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                                    return false;
+                                }
+                            });
+                            rv_tab1.setAdapter(ca_tab1);
+
+                            //喷漆
+                            ca_penqi = new CommonAdapter<ServiceListModel_All.ListBean.VListBeanX>
+                                    (getActivity(), R.layout.item_fragment2_penqi, list_tab1) {
+                                @Override
+                                protected void convert(ViewHolder holder, ServiceListModel_All.ListBean.VListBeanX listBean, int item) {
+                                    TextView textView = holder.getView(R.id.textView);
+                                    textView.setText(listBean.getVName());
+                                    if (listBean.isIsgouxuan()) {
+                                        textView.setBackgroundResource(R.drawable.yuanjiao_5_lanse);
+                                        textView.setTextColor(getResources().getColor(R.color.white));
+                                    } else {
+                                        textView.setBackgroundResource(R.drawable.yuanjiaobiankuang_5_huise);
+                                        textView.setTextColor(getResources().getColor(R.color.black));
+                                    }
+                                }
+                            };
+                            ca_penqi.setOnItemClickListener(new OnItemClickListener() {
+                                @Override
+                                public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int item) {
+                                    //选择
+                                    if (!list_tab1.get(item).isIsgouxuan())
+                                        list_tab1.get(item).setIsgouxuan(true);
+                                    else list_tab1.get(item).setIsgouxuan(false);
 
 
-                                showSelectService();//显示选择的服务
+                                    showSelectService();//显示选择的服务
 
-                                ca_penqi.notifyDataSetChanged();
-                            }
+                                    ca_penqi.notifyDataSetChanged();
+                                }
 
-                            @Override
-                            public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
-                                return false;
-                            }
-                        });
-                        rv_penqi.setAdapter(ca_penqi);
+                                @Override
+                                public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                                    return false;
+                                }
+                            });
+                            rv_penqi.setAdapter(ca_penqi);
+                        }
                     }
 
                 };
@@ -956,22 +1006,6 @@ public class Fragment2 extends BaseFragment {
                 });
                 recyclerView_sv.setAdapter(mAdapter_sv);
 
-                for (int i = 0; i < list_sv.size(); i++) {
-                    if (yServiceId.equals(list_sv.get(i).getYServiceId())) {
-                        i1 = i;
-                        yServiceId = "";
-                        mAdapter_sv.notifyDataSetChanged();
-
-                        if (list_sv.get(i).getIsSheet() == 1) {//是喷漆
-                            ll_tab.setVisibility(View.GONE);
-                            ll_penqi.setVisibility(View.VISIBLE);
-                        } else {
-                            ll_tab.setVisibility(View.VISIBLE);
-                            ll_penqi.setVisibility(View.GONE);
-                        }
-                    }
-                }
-
             }
         });
     }
@@ -980,60 +1014,65 @@ public class Fragment2 extends BaseFragment {
      * 显示选择的服务
      */
     private void showSelectService() {
-        v_strs = "";
-        int count = 0;
-        //单独加一个一级
-        v_strs += list_sv.get(i1).getVName() + "||";
-        count++;
-
-        if (list_sv.get(i1).getIsSheet() == 1) {//是喷漆
+        if (i1 >= 0) {
+            v_strs = "";
+            int count = 0;
+            //单独加一个一级
+            v_strs += list_sv.get(i1).getVName() + "||";
             count++;
-            if (isleft) {
-                v_strs += "喷漆||";
-            } else {
+
+            if (list_sv.get(i1).getIsSheet() == 1) {//是喷漆
                 count++;
-                v_strs += "喷漆||钣金||";
-            }
-        }
-//        jsonArray = new JSONArray();
-        for (ServiceListModel_All.ListBean bean1 : list_sv) {//第一级
-            for (ServiceListModel_All.ListBean.VListBeanX bean2 : bean1.getV_list()) {//第二级
-                if (bean2.isIsgouxuan()) {
+                if (isleft) {
+                    v_strs += "喷漆||";
+                } else {
                     count++;
-                    v_strs += bean2.getVName() + "||";
+                    v_strs += "喷漆||钣金||";
                 }
-
-                for (ServiceListModel_All.ListBean.VListBeanX.VListBean bean3 : bean2.getV_list()) {//第二级
-                    if (bean3.isIsgouxuan()) {
+            }
+//        jsonArray = new JSONArray();
+            for (ServiceListModel_All.ListBean bean1 : list_sv) {//第一级
+                for (ServiceListModel_All.ListBean.VListBeanX bean2 : bean1.getV_list()) {//第二级
+                    if (bean2.isIsgouxuan()) {
                         count++;
-                        v_strs += bean3.getVName() + "||";
+                        v_strs += bean2.getVName() + "||";
+                    }
 
+                    for (ServiceListModel_All.ListBean.VListBeanX.VListBean bean3 : bean2.getV_list()) {//第二级
+                        if (bean3.isIsgouxuan()) {
+                            count++;
+                            v_strs += bean3.getVName() + "||";
+
+                        }
                     }
                 }
             }
-        }
 
 
-        MyLogger.i(">>>>>>" + v_strs + count);
+            MyLogger.i(">>>>>>" + v_strs + count);
 
-        if (!v_strs.equals("")) {
-            ll_xuanfu.setVisibility(View.VISIBLE);
-            v_strs = v_strs.substring(0, v_strs.length() - 2);
-            tv_tabs.setText(v_strs);
-            tv_yixuan.setText("已选：" + count + "项");
+            if (!v_strs.equals("")) {
+                ll_xuanfu.setVisibility(View.VISIBLE);
+                v_strs = v_strs.substring(0, v_strs.length() - 2);
+                tv_tabs.setText(v_strs);
+                tv_yixuan.setText("已选：" + count + "项");
 
-            if (service_name.equals(v_strs)) {
-                tv_pipei.setClickable(false);
-                tv_pipei.setText("已匹配");
-                tv_pipei.setBackgroundResource(R.drawable.yuanjiao_5_heise);
+                if (service_name.equals(v_strs)) {
+                    tv_pipei.setClickable(false);
+                    tv_pipei.setText("已匹配");
+                    tv_pipei.setBackgroundResource(R.drawable.yuanjiao_5_heise);
+                } else {
+                    tv_pipei.setClickable(true);
+                    tv_pipei.setText("匹配商家");
+                    tv_pipei.setBackgroundResource(R.drawable.yuanjiao_5_lanse);
+                }
             } else {
-                tv_pipei.setClickable(true);
-                tv_pipei.setText("匹配商家");
-                tv_pipei.setBackgroundResource(R.drawable.yuanjiao_5_lanse);
+                ll_xuanfu.setVisibility(View.GONE);
             }
         } else {
             ll_xuanfu.setVisibility(View.GONE);
         }
+
     }
 
     /**
@@ -1106,6 +1145,55 @@ public class Fragment2 extends BaseFragment {
                 ca_tab1.notifyDataSetChanged();
                 ca_tab2.notifyDataSetChanged();
                 showSelectService();
+            }
+        });
+    }
+
+    /**
+     * 获取banner
+     *
+     * @param params
+     */
+    private void RequestBanner(HashMap<String, String> params) {
+        OkhttpUtil.okHttpPost(URLs.Fragment2_Banner, params, headerMap, new CallBackUtil<Fragment2BannerModel>() {
+            @Override
+            public Fragment2BannerModel onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+//                myToast(err);
+            }
+
+            @Override
+            public void onResponse(Fragment2BannerModel response) {
+                //banner
+                /*images.add("http://file02.16sucai.com/d/file/2014/0825/dcb017b51479798f6c60b7b9bd340728.jpg");
+                images.add("http://file02.16sucai.com/d/file/2014/0825/dcb017b51479798f6c60b7b9bd340728.jpg");
+                images.add("http://file02.16sucai.com/d/file/2014/0825/dcb017b51479798f6c60b7b9bd340728.jpg");
+                images.add("http://file02.16sucai.com/d/file/2014/0825/dcb017b51479798f6c60b7b9bd340728.jpg");*/
+                images.clear();
+                /*for (int i = 0; i < response.getBanner_list().size(); i++) {
+                    images.add(URLs.IMGHOST + response.getBanner_list().get(i).getImgurl());
+                }*/
+                images.add(URLs.IMGHOST + response.getImg());
+                banner.addBannerLifecycleObserver(getActivity())//添加生命周期观察者
+                        .setDelayTime(3000)//设置轮播时间
+                        .setBannerGalleryEffect(10, 10)//为banner添加画廊效果
+                        .setAdapter(new CircleImageAdapter(images))
+                        .setIndicator(new CircleIndicator(getActivity()))
+                        .start();
+                banner.setOnBannerListener(new OnBannerListener() {
+                    @Override
+                    public void OnBannerClick(Object data, int position) {
+                /*Bundle bundle = new Bundle();
+                bundle.putInt("type", response.getBanner().get(position).getType());
+                CommonUtil.gotoActivityWithData(JiFenShangChengActivity.this, JiFenLieBiaoActivity.class, bundle, false);*/
+                        PhotoShowDialog photoShowDialog = new PhotoShowDialog(getActivity(), images, position);
+                        photoShowDialog.show();
+                    }
+                });
             }
         });
     }
