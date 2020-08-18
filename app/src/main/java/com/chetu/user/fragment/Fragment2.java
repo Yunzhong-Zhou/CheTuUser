@@ -177,7 +177,6 @@ public class Fragment2 extends BaseFragment {
             HashMap<String, String> params2 = new HashMap<>();
             params2.put("y_parent_id", "0");
             RequestService(params2, 0);
-            showSelectService();//显示选择的服务
 
             /*if (list_sv.size() > 0) {
                 for (int i = 0; i < list_sv.size(); i++) {//循环判断传入的id 与列表id是否一致
@@ -764,6 +763,7 @@ public class Fragment2 extends BaseFragment {
                 } else {
                     showEmptyPage();
                 }
+
             }
         });
     }
@@ -825,7 +825,7 @@ public class Fragment2 extends BaseFragment {
                     if (yServiceId.equals(list_sv.get(i).getYServiceId())) {
                         i1 = i;
                         yServiceId = "";
-                        mAdapter_sv.notifyDataSetChanged();
+//                        mAdapter_sv.notifyDataSetChanged();
 
                         if (list_sv.get(i).getIsSheet() == 1) {//是喷漆
                             ll_tab.setVisibility(View.GONE);
@@ -1006,6 +1006,7 @@ public class Fragment2 extends BaseFragment {
                 });
                 recyclerView_sv.setAdapter(mAdapter_sv);
 
+                showSelectService();//显示选择的服务
             }
         });
     }
