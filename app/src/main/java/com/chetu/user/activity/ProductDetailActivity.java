@@ -2,6 +2,7 @@ package com.chetu.user.activity;
 
 import android.content.Intent;
 import android.graphics.Paint;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -75,7 +76,7 @@ public class ProductDetailActivity extends BaseActivity {
     Banner banner;
     TextView banner_indicator;
     ArrayList<String> images = new ArrayList<>();
-    TextView head1_tv1, head1_tv2, head1_tv3, head1_tv4, head1_tv5, head1_pinglun;
+    TextView head1_tv1, head1_tv2, head1_tv3, head1_tv4, head1_tv5, head1_pinglun, tv_phone, tv_addr, tv_juli;
 
     LoadingLayout loading_layout1;
     SpringView springView1;
@@ -136,6 +137,10 @@ public class ProductDetailActivity extends BaseActivity {
         head1_tv4 = View1.findViewById(R.id.head1_tv4);
         head1_tv5 = View1.findViewById(R.id.head1_tv5);
         head1_tv5.setText("数量" + g_num);
+
+        tv_phone = View1.findViewById(R.id.tv_phone);
+        tv_addr = View1.findViewById(R.id.tv_addr);
+        tv_juli = View1.findViewById(R.id.tv_juli);
 
         iv_xihuan = View1.findViewById(R.id.iv_xihuan);
 
@@ -398,6 +403,10 @@ public class ProductDetailActivity extends BaseActivity {
                     isShouChange = false;
                     iv_xihuan.setImageResource(R.mipmap.ic_xin_weixuan);
                 }
+
+                tv_phone.setText(response.getStore_info().getPhone());//店铺电话
+                tv_addr.setText(response.getStore_info().getAddress());//店铺地址
+//                tv_juli.setText("距离" + response.getInfo().getDistance() + "m");//距离
                 /**
                  * 第二页-详情
                  */
@@ -632,6 +641,39 @@ public class ProductDetailActivity extends BaseActivity {
         switch (v.getId()) {
             case R.id.left_btn:
                 finish();
+                break;
+            case R.id.tv_phone:
+                //拨打电话
+                showToast("确认拨打 " + model.getStore_info().getPhone() + " 吗？", "确认", "取消",
+                        new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialog.dismiss();
+                                //创建打电话的意图
+                                Intent intent = new Intent();
+                                //设置拨打电话的动作
+                                intent.setAction(Intent.ACTION_CALL);//直接拨出电话
+//                               intent.setAction(Intent.ACTION_DIAL);//只调用拨号界面，不拨出电话
+                                //设置拨打电话的号码
+                                intent.setData(Uri.parse("tel:" + model.getStore_info().getPhone()));
+                                //开启打电话的意图
+                                startActivity(intent);
+                            }
+                        }, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialog.dismiss();
+                            }
+                        });
+                break;
+            case R.id.tv_addr:
+                //导航
+                Bundle bundle_m = new Bundle();
+                bundle_m.putDouble("startlat", Double.valueOf(localUserInfo.getLatitude()));
+                bundle_m.putDouble("startlng", Double.valueOf(localUserInfo.getLongitude()));
+                bundle_m.putDouble("endlat", Double.valueOf(model.getStore_info().getLatitude()));
+                bundle_m.putDouble("endlng", Double.valueOf(model.getStore_info().getLongitude()));
+                CommonUtil.gotoActivityWithData(ProductDetailActivity.this, MapNavigationActivity.class, bundle_m, false);
                 break;
             case R.id.iv_xihuan:
                 //收藏

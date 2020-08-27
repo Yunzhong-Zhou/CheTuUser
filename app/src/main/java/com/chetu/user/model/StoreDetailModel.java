@@ -96,12 +96,21 @@ public class StoreDetailModel implements Serializable {
         private String charactStr;
         private String pictureStr;
         private String slogan;
+        private String busHours;
         private int orderSum;
         private int isIndex;
         private int isCollection;
         private ColleInfoBean colle_info;
         private List<String> pictureArr;
         private List<String> charactArr;
+
+        public String getBusHours() {
+            return busHours;
+        }
+
+        public void setBusHours(String busHours) {
+            this.busHours = busHours;
+        }
 
         public String getId() {
             return id;

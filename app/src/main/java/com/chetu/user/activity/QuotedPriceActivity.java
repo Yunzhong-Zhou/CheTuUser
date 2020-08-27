@@ -149,5 +149,11 @@ public class QuotedPriceActivity extends BaseActivity {
     protected void updateView() {
         titleView.setTitle("报价详情");
         titleView.setBackground(R.color.background);
+        titleView.showRightTextview("一键下单", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 }

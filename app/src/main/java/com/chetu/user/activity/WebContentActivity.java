@@ -70,11 +70,16 @@ public class WebContentActivity extends BaseActivity {
         webView.getSettings().setUseWideViewPort(true);//设置此属性，可任意比例缩放。大视图模式
         webView.getSettings().setLoadWithOverviewMode(true);//和setUseWideViewPort(true)一起解决网页自适应问题
         webView.getSettings().setAppCacheEnabled(true);//是否使用缓存
+        webView.getSettings().setDatabaseEnabled(true);
         webView.getSettings().setDomStorageEnabled(true);//DOM Storage
+        webView.getSettings().setDatabasePath(WebContentActivity.this.getApplicationContext().getCacheDir().getAbsolutePath());
         webView.getSettings().setAllowFileAccess(true);// 设置可以访问文件
         webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
         // webSettings.setDatabaseEnabled(true);
         webView.getSettings().setGeolocationEnabled(true);
+
+
+
 
 //        webView.getSettings().setUserAgentString("User-Agent:Android");//设置用户代理，一般不用
         //页面打开

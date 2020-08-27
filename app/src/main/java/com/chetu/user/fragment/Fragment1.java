@@ -707,10 +707,7 @@ public class Fragment1 extends BaseFragment {
                 break;
             case R.id.rl_xiaoxi:
                 //消息
-                String url = URLs.KFHOST + "/#/pages/chetu-kf/chetu-kf?token=" + localUserInfo.getToken() +
-                        "&kf_userHash=" + localUserInfo.getKfuserhash() +
-                        "&nickName=" + localUserInfo.getKfname() +
-                        "&headerPic=" + localUserInfo.getKfhead();
+
                 /*WebUtilsConfig config1 =
                         new WebUtilsConfig()
                                 .setTitleBackgroundColor(R.color.colorPrimary)//设置标题栏背景色
@@ -728,6 +725,15 @@ public class Fragment1 extends BaseFragment {
                                 .setStateBarTextColorDark(true)//设置状态栏文字颜色是否是暗色，如果你设置了标题栏背景颜色为白色，这里需要设置true，否则状态栏看不到文案了
                                 .setTitleLineColor(R.color.app_title_color);//设置标题栏下面的分割线的颜色
                 OpenWebActivity.openWebView(getActivity(), url, config1);*/
+
+                /*String url = URLs.KFHOST + "/#/pages/chetu-kf/chetu-kf?token=" + localUserInfo.getToken() +
+                        "&kf_userHash=" + localUserInfo.getKfuserhash() +
+                        "&nickName=" + localUserInfo.getKfname() +
+                        "&headerPic=" + localUserInfo.getKfhead();
+                Bundle bundle = new Bundle();
+                bundle.putString("url", url);
+                CommonUtil.gotoActivityWithData(getActivity(), WebContentActivity.class, bundle, false);*/
+                String url = URLs.KFHOST + "/#/pages/chetu-kf/chat_list?token=" + localUserInfo.getToken();
                 Bundle bundle = new Bundle();
                 bundle.putString("url", url);
                 CommonUtil.gotoActivityWithData(getActivity(), WebContentActivity.class, bundle, false);

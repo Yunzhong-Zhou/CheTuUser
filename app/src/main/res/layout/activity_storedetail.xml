@@ -53,7 +53,7 @@
                         android:text="营业时间"
                         android:textColor="@color/white"
                         android:textSize="12sp"
-                        android:visibility="gone" />
+                        android:visibility="visible" />
 
                     <View
                         android:layout_width="0dp"

@@ -297,7 +297,7 @@ public class StoreDetailActivity extends BaseActivity {
                 });
 
                 //店铺信息
-//                tv_time.setText("营业时间：" + );
+                tv_time.setText("营业时间：" + response.getInfo().getBusHours());
                 tv_name.setText(response.getInfo().getVName());//店铺名字
                 tv_dengji.setText(response.getInfo().getVLevel());//店铺等级
                 tv_phone.setText(response.getInfo().getPhone());//店铺电话
@@ -433,6 +433,10 @@ public class StoreDetailActivity extends BaseActivity {
                 mAdapter_jishi.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                        String url = URLs.HOST + "/single/h5/techndetails?user_hash=" + list_jishi.get(i).getUserHash();
+                        Bundle bundle = new Bundle();
+                        bundle.putString("url", url);
+                        CommonUtil.gotoActivityWithData(StoreDetailActivity.this, WebContentActivity.class, bundle, false);
                     }
 
                     @Override
@@ -556,10 +560,10 @@ public class StoreDetailActivity extends BaseActivity {
                         holder.setText(R.id.tv_time, model.getCreateDate());
                         holder.setText(R.id.tv_content, model.getYMsg());
                         TextView tv_huifu = holder.getView(R.id.tv_huifu);
-                        if (model.getReply_List().size() >0){
+                        if (model.getReply_List().size() > 0) {
                             tv_huifu.setVisibility(View.VISIBLE);
-                            tv_huifu.setText("门店回复："+model.getReply_List().get(0).getReplyMsg());
-                        }else {
+                            tv_huifu.setText("门店回复：" + model.getReply_List().get(0).getReplyMsg());
+                        } else {
                             tv_huifu.setVisibility(View.GONE);
                         }
                         RatingBar ratingbar = holder.getView(R.id.ratingbar);

@@ -262,10 +262,15 @@ public class Fragment4 extends BaseFragment {
                 break;
             case R.id.rl_xiaoxi:
                 //消息
-                String url = URLs.KFHOST + "/#/pages/chetu-kf/chetu-kf?token=" + localUserInfo.getToken() +
+                /*String url = URLs.KFHOST + "/#/pages/chetu-kf/chetu-kf?token=" + localUserInfo.getToken() +
                         "&kf_userHash=" + localUserInfo.getKfuserhash() +
                         "&nickName=" + localUserInfo.getKfname() +
                         "&headerPic=" + localUserInfo.getKfhead();
+                Bundle bundle = new Bundle();
+                bundle.putString("url", url);
+                CommonUtil.gotoActivityWithData(getActivity(), WebContentActivity.class, bundle, false);*/
+
+                String url = URLs.KFHOST + "/#/pages/chetu-kf/chat_list?token=" + localUserInfo.getToken();
                 Bundle bundle = new Bundle();
                 bundle.putString("url", url);
                 CommonUtil.gotoActivityWithData(getActivity(), WebContentActivity.class, bundle, false);

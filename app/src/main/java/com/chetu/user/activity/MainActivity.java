@@ -130,6 +130,10 @@ public class MainActivity extends BaseActivity {
 
         FanPermissionUtils.with(MainActivity.this)
                 //添加所有你需要申请的权限
+                //.permission(Permission.REQUEST_INSTALL_PACKAGES)// 申请安装包权限
+                //.permission(Permission.SYSTEM_ALERT_WINDOW)// 申请悬浮窗权限
+                //.permission(Permission.NOTIFICATION_SERVICE) // 申请通知栏权限
+                //.permission(Permission.WRITE_SETTINGS)  // 申请系统设置权限
                 .addPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)//写入
                 .addPermissions(Manifest.permission.READ_EXTERNAL_STORAGE)//读取
                 .addPermissions(Manifest.permission.ACCESS_COARSE_LOCATION)//定位

@@ -182,7 +182,8 @@ public class AddXunJiaActivity extends BaseActivity {
         public void onAddPicClick() {
             // 进入相册
             PictureSelector.create(AddXunJiaActivity.this)
-                    .openGallery(PictureMimeType.ofImage())// 全部.PictureMimeType.ofAll()、图片.ofImage()、视频.ofVideo()、音频.ofAudio()
+                    .openCamera(PictureMimeType.ofImage())//打开相机
+//                    .openGallery(PictureMimeType.ofImage())// 全部.PictureMimeType.ofAll()、图片.ofImage()、视频.ofVideo()、音频.ofAudio()
                     .imageEngine(GlideEngine.createGlideEngine())// 外部传入图片加载引擎，必传项
                     .theme(R.style.picture_default_style)// 主题样式设置 具体参考 values/styles   用法：R.style.picture.white.style v2.3.3后 建议使用setPictureStyle()动态方式
                     .isWeChatStyle(false)// 是否开启微信图片选择风格

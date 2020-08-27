@@ -27,6 +27,7 @@ import com.chetu.user.model.UpFileModel;
 import com.chetu.user.net.URLs;
 import com.chetu.user.okhttp.CallBackUtil;
 import com.chetu.user.okhttp.OkhttpUtil;
+import com.chetu.user.utils.CommonUtil;
 import com.chetu.user.utils.MyLogger;
 import com.chetu.user.view.pictureselector.FullyGridLayoutManager;
 import com.chetu.user.view.pictureselector.GlideCacheEngine;
@@ -85,8 +86,8 @@ public class CarServiceActivity extends BaseActivity {
     List<AddXunJiaModel> list1 = new ArrayList<>();
 
     //发布询价
-    String service_name = "", y_service_id_str = "", y_store_id_str = "", v_list_str = "";
-
+    String service_name = "", y_service_id_str = "", y_store_id_str = "", v_list_str = "", v_msg = "";
+    EditText et_qingkuang;
     /**
      * 服务内容
      */
@@ -185,6 +186,7 @@ public class CarServiceActivity extends BaseActivity {
                     .into(iv_carlogo);//加载图片
         }
 
+        et_qingkuang = findViewByID_My(R.id.et_qingkuang);
 
         recyclerView2 = findViewByID_My(R.id.recyclerView2);
         recyclerView2.setLayoutManager(new LinearLayoutManager(CarServiceActivity.this));
@@ -646,6 +648,7 @@ public class CarServiceActivity extends BaseActivity {
                 params.put("y_store_id_str", y_store_id_str);
                 params.put("v_list_str", v_list_str);
                 params.put("is_ok", "1");//1是发布 0保存
+                params.put("v_msg", v_msg);
                 RequestUpData1(params, 1);
             }
         } else {
@@ -722,6 +725,12 @@ public class CarServiceActivity extends BaseActivity {
         /*if (v_list_str.equals("")){
             myToast("请添加项目");
         }*/
+
+        v_msg = et_qingkuang.getText().toString().trim();
+        if (TextUtils.isEmpty(v_msg)) {
+            myToast("请输入情况说明");
+            return false;
+        }
         return true;
     }
 
@@ -841,6 +850,13 @@ public class CarServiceActivity extends BaseActivity {
                 }
             }
         });
+
+        titleView.showRightTextview("询价记录", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CommonUtil.gotoActivity(CarServiceActivity.this, WaitingReleaseActivity.class);
+            }
+        });
     }
 
     @Override
@@ -889,6 +905,19 @@ public class CarServiceActivity extends BaseActivity {
                     tv_cardetail.setText(bundle1.getString("cardetail"));*/
                 }
                 break;
+           /* case PictureConfig.REQUEST_CAMERA:
+                // onResult Callback
+                List<LocalMedia> selectList = PictureSelector.obtainMultipleResult(data);
+                listFiles.clear();
+                for (LocalMedia media : selectList) {
+                    MyLogger.i(">>>>>>压缩地址：" + media.getCompressPath());
+                    File file = new File(media.getCompressPath());
+                    listFiles.add(file);
+                    // TODO 可以通过PictureSelectorExternalUtils.getExifInterface();方法获取一些额外的资源信息，如旋转角度、经纬度等信息
+
+                }
+                break;*/
+
         }
 
     }
@@ -1098,7 +1127,8 @@ public class CarServiceActivity extends BaseActivity {
         public void onAddPicClick() {
             // 进入相册
             PictureSelector.create(CarServiceActivity.this)
-                    .openGallery(PictureMimeType.ofImage())// 全部.PictureMimeType.ofAll()、图片.ofImage()、视频.ofVideo()、音频.ofAudio()
+//                    .openCamera(PictureMimeType.ofImage())//打开相机
+                    .openGallery(PictureMimeType.ofImage())//进入相册 全部.PictureMimeType.ofAll()、图片.ofImage()、视频.ofVideo()、音频.ofAudio()
                     .imageEngine(GlideEngine.createGlideEngine())// 外部传入图片加载引擎，必传项
                     .theme(R.style.picture_default_style)// 主题样式设置 具体参考 values/styles   用法：R.style.picture.white.style v2.3.3后 建议使用setPictureStyle()动态方式
                     .isWeChatStyle(false)// 是否开启微信图片选择风格

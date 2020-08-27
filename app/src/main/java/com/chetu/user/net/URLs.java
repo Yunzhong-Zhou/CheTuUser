@@ -86,6 +86,8 @@ public class URLs {
     public static final String XunJia_Add = HOST+"/api/v1/user/user_inquiry_demand_increase";
     //车辆救援（发布）
     public static final String CarJiuYuan = HOST+"/api/v1/public/user_rescue_add";
+    //商品分类
+    public static final String ProductList_FenLei = HOST+"/api/v1/public/get_classify_list";
     //商品列表
     public static final String ProductList = HOST+"/api/v1/public/get_goods_list";
     //商品详情
