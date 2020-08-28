@@ -297,6 +297,77 @@
                             android:layout_height="wrap_content" />
 
                     </LinearLayout>
+                    <!--预约到店-->
+                    <LinearLayout
+                        android:id="@+id/ll_yuyuedaodian"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="13dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="13dp"
+                        android:background="@drawable/yuanjiao_10_baise"
+                        android:gravity="center_vertical"
+                        android:onClick="onClick"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:paddingLeft="10dp"
+                            android:paddingTop="16dp"
+                            android:paddingRight="10dp"
+                            android:paddingBottom="16dp"
+                            android:text="预约到店" />
+
+                        <ImageView
+                            android:id="@+id/iv_yuyuedaodian"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="13dp"
+                            android:src="@mipmap/ic_weixuan" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_yuyuetime"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="13dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="13dp"
+                        android:background="@drawable/yuanjiao_10_baise"
+                        android:gravity="center_vertical"
+                        android:onClick="onClick"
+                        android:visibility="gone"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="10dp"
+                            android:paddingTop="16dp"
+                            android:paddingRight="10dp"
+                            android:paddingBottom="16dp"
+                            android:text="预约时间" />
+
+                        <TextView
+                            android:id="@+id/tv_yuyuetime"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/transparent"
+                            android:drawableRight="@mipmap/ic_next_black"
+                            android:gravity="center_vertical"
+                            android:hint="请选择预约到店时间"
+                            android:inputType="phone"
+                            android:onClick="onClick"
+                            android:paddingTop="14dp"
+                            android:paddingRight="10dp"
+                            android:paddingBottom="14dp"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/grey"
+                            android:textSize="15sp" />
+                    </LinearLayout>
                     <!--接车到店-->
                     <LinearLayout
                         android:id="@+id/ll_jiechedaodian"
@@ -406,6 +477,7 @@
                             android:textColorHint="@color/grey"
                             android:textSize="15sp" />
                     </LinearLayout>
+
                     <!--送车到家-->
                     <LinearLayout
                         android:id="@+id/ll_songchedaojia"
@@ -458,6 +530,7 @@
             android:background="@drawable/yuanjiao_10_huise1_top"
             android:gravity="center"
             android:onClick="onClick"
+            android:visibility="gone"
             android:padding="10dp"
             android:text="预约到店需要选择预约时间哦!"
             android:textColor="@color/red"
@@ -499,6 +572,7 @@
                 android:onClick="onClick"
                 android:paddingTop="12dp"
                 android:paddingBottom="12dp"
+                android:visibility="gone"
                 android:text="预约到店"
                 android:textColor="@color/blue"
                 android:textSize="15sp" />
@@ -510,12 +584,12 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginRight="13dp"
                 android:layout_marginBottom="5dp"
-                android:background="@drawable/yuanjiao_5_lanse_right"
+                android:background="@drawable/yuanjiao_5_lanse"
                 android:gravity="center"
                 android:onClick="onClick"
                 android:paddingTop="12dp"
                 android:paddingBottom="12dp"
-                android:text="到店施工"
+                android:text="提交订单"
                 android:textColor="@color/white"
                 android:textSize="15sp" />
 

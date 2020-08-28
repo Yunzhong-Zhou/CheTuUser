@@ -64,9 +64,9 @@ public class ConfirmOrderActivity extends BaseActivity {
     CommonAdapter<ConfirmOrderModel.GoodsCartListBean> mAdapter_other;
 
     //接车到店、送车到家
-    LinearLayout ll_jiechedaodian, ll_songchedaojia, ll_jiechetime, ll_jiecheaddr;
-    ImageView iv_jiechedaodian, iv_songchedaojia;
-    TextView tv_jiechetime, tv_jiecheaddr;
+    LinearLayout ll_jiechedaodian, ll_yuyuedaodian, ll_songchedaojia, ll_jiechetime, ll_jiecheaddr, ll_yuyuetime;
+    ImageView iv_jiechedaodian, iv_yuyuedaodian, iv_songchedaojia;
+    TextView tv_jiechetime, tv_yuyuetime, tv_jiecheaddr;
     TimePickerView pvTime1;
     //下单
     boolean isYuYue = false;
@@ -137,14 +137,19 @@ public class ConfirmOrderActivity extends BaseActivity {
 
         //接车到店、送车到家
         ll_jiechedaodian = findViewByID_My(R.id.ll_jiechedaodian);
+        ll_yuyuedaodian = findViewByID_My(R.id.ll_yuyuedaodian);
         ll_songchedaojia = findViewByID_My(R.id.ll_songchedaojia);
         iv_jiechedaodian = findViewByID_My(R.id.iv_jiechedaodian);
+        iv_yuyuedaodian = findViewByID_My(R.id.iv_yuyuedaodian);
         iv_songchedaojia = findViewByID_My(R.id.iv_songchedaojia);
 
         ll_jiechetime = findViewByID_My(R.id.ll_jiechetime);
+        tv_yuyuetime = findViewByID_My(R.id.tv_yuyuetime);
         ll_jiecheaddr = findViewByID_My(R.id.ll_jiecheaddr);
         tv_jiechetime = findViewByID_My(R.id.tv_jiechetime);
         tv_jiecheaddr = findViewByID_My(R.id.tv_jiecheaddr);
+
+        ll_yuyuetime = findViewByID_My(R.id.ll_yuyuetime);
 
         //订单列表
         recyclerView = findViewByID_My(R.id.recyclerView);
@@ -552,6 +557,7 @@ public class ConfirmOrderActivity extends BaseActivity {
                     ll_jiecheaddr.setVisibility(View.VISIBLE);
                 }
                 break;
+
             case R.id.ll_jiechetime:
             case R.id.tv_jiechetime:
                 //接车时间
@@ -578,7 +584,20 @@ public class ConfirmOrderActivity extends BaseActivity {
                 }
                 break;
 
+            case R.id.ll_yuyuedaodian:
+                //预约时间
+                isYuYue = !isYuYue;
+                if (isYuYue) {
+                    ll_yuyuetime.setVisibility(View.VISIBLE);
+                    iv_yuyuedaodian.setImageResource(R.mipmap.ic_xuanzhong);
+                } else {
+                    ll_yuyuetime.setVisibility(View.GONE);
+                    iv_yuyuedaodian.setImageResource(R.mipmap.ic_weixuan);
+                }
+                break;
             case R.id.tv_time:
+            case R.id.ll_yuyuetime:
+            case R.id.tv_yuyuetime:
                 //预约时间
                 Intent intent2 = new Intent(ConfirmOrderActivity.this, SelectTimeActivity.class);
                 Bundle bundle2 = new Bundle();
@@ -589,7 +608,7 @@ public class ConfirmOrderActivity extends BaseActivity {
                 break;
             case R.id.tv_yuyuedaodian:
                 //预约到店
-                isYuYue = true;
+                /*isYuYue = true;
                 tv_yuyuedaodian.setBackgroundResource(R.drawable.yuanjiao_5_lanse_left);
                 tv_yuyuedaodian.setTextColor(getResources().getColor(R.color.white));
                 tv_daodianshigong.setBackgroundResource(R.drawable.yuanjiaobiankuang_5_lanse_right);
@@ -617,15 +636,15 @@ public class ConfirmOrderActivity extends BaseActivity {
                             dialog.dismiss();
                         }
                     });
-                }
+                }*/
                 break;
             case R.id.tv_daodianshigong:
                 //到店施工
-                isYuYue = false;
-                tv_yuyuedaodian.setBackgroundResource(R.drawable.yuanjiaobiankuang_5_lanse_left);
-                tv_yuyuedaodian.setTextColor(getResources().getColor(R.color.blue));
-                tv_daodianshigong.setBackgroundResource(R.drawable.yuanjiao_5_lanse_right);
-                tv_daodianshigong.setTextColor(getResources().getColor(R.color.white));
+//                isYuYue = false;
+//                tv_yuyuedaodian.setBackgroundResource(R.drawable.yuanjiaobiankuang_5_lanse_left);
+//                tv_yuyuedaodian.setTextColor(getResources().getColor(R.color.blue));
+//                tv_daodianshigong.setBackgroundResource(R.drawable.yuanjiao_5_lanse_right);
+//                tv_daodianshigong.setTextColor(getResources().getColor(R.color.white));
                 if (match()) {
                     showToast("确认提交订单吗？", "确认", "取消", new View.OnClickListener() {
                         @Override
@@ -638,7 +657,11 @@ public class ConfirmOrderActivity extends BaseActivity {
                             params.put("longitude", longitude);
                             params.put("latitude", latitude);
                             params.put("y_user_sedan_id", y_user_sedan_id);
-                            params.put("appoin_time", "");
+                            if (isYuYue){
+                                params.put("appoin_time", appoin_time);
+                            }else {
+                                params.put("appoin_time", "");
+                            }
                             params.put("is_pick", is_pick);
                             params.put("is_delivery", is_delivery);
                             RequestAdd(params);
