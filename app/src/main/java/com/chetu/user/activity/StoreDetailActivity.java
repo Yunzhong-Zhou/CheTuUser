@@ -352,7 +352,6 @@ public class StoreDetailActivity extends BaseActivity {
                         params.put("parent_id", list_tab.get(i).getYStoreServiceId());
                         RequestService(params, list_tab.get(i).getYStateValue()
                                 , list_tab.get(i).getIsSheet());
-
                     }
 
                     @Override
@@ -664,6 +663,7 @@ public class StoreDetailActivity extends BaseActivity {
      *
      * @param params
      */
+    int item_service = 0;
     private void RequestService(HashMap<String, String> params, String title, int type) {
         OkhttpUtil.okHttpPost(URLs.ServiceList_Store, params, headerMap, new CallBackUtil<ServiceListModel_Store>() {
             @Override
@@ -679,11 +679,12 @@ public class StoreDetailActivity extends BaseActivity {
             @Override
             public void onResponse(ServiceListModel_Store response) {
 //                hideProgress();
+                item_service = 0;
                 switch (type) {
                     case 0:
                         //弹窗列表
                         BaseDialog dialog1 = new BaseDialog(StoreDetailActivity.this);
-                        dialog1.contentView(R.layout.dialog_list_sv)
+                        dialog1.contentView(R.layout.dialog_list_sv2)
                                 .layoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                                         ViewGroup.LayoutParams.WRAP_CONTENT))
                                 .animType(BaseDialog.AnimInType.BOTTOM)
@@ -693,17 +694,21 @@ public class StoreDetailActivity extends BaseActivity {
                                 .show();
                         TextView textView1 = dialog1.findViewById(R.id.textView1);
                         textView1.setText(title);
-                        RecyclerView rv = dialog1.findViewById(R.id.recyclerView);
-                        rv.setLayoutManager(new LinearLayoutManager(StoreDetailActivity.this));
 
-                        CommonAdapter<ServiceListModel_Store.ListBean> adapter = new CommonAdapter<ServiceListModel_Store.ListBean>
+                        //列表1
+                        RecyclerView rv1 = dialog1.findViewById(R.id.recyclerView1);
+                        rv1.setLayoutManager(new LinearLayoutManager(StoreDetailActivity.this));
+                        //列表2
+                        RecyclerView rv2 = dialog1.findViewById(R.id.recyclerView2);
+                        rv2.setLayoutManager(new LinearLayoutManager(StoreDetailActivity.this));
+
+                        CommonAdapter<ServiceListModel_Store.ListBean> adapter1 = new CommonAdapter<ServiceListModel_Store.ListBean>
                                 (StoreDetailActivity.this, R.layout.item_dialog_list, response.getList()) {
                             @Override
                             protected void convert(ViewHolder holder, ServiceListModel_Store.ListBean model, int position) {
                                 TextView tv = holder.getView(R.id.textView);
                                 ImageView iv = holder.getView(R.id.imageView);
                                 tv.setText(model.getYStateValue());
-
 
                                 tv.setTextColor(getResources().getColor(R.color.black1));
                                 iv.setImageResource(R.mipmap.ic_weixuan);
@@ -713,11 +718,71 @@ public class StoreDetailActivity extends BaseActivity {
                                         iv.setImageResource(R.mipmap.ic_xuanzhong);
                                     }
                                 }
+
+                                //如果有2级列表
+                                if (item_service == position){
+                                    if (model.getClist().size() > 0) {
+                                        rv2.setVisibility(View.VISIBLE);
+                                        CommonAdapter<ServiceListModel_Store.ListBean.ClistBean> adapter2 = new CommonAdapter<ServiceListModel_Store.ListBean.ClistBean>
+                                                (StoreDetailActivity.this, R.layout.item_dialog_list, model.getClist()) {
+                                            @Override
+                                            protected void convert(ViewHolder holder, ServiceListModel_Store.ListBean.ClistBean model, int position) {
+                                                TextView tv = holder.getView(R.id.textView);
+                                                ImageView iv = holder.getView(R.id.imageView);
+                                                tv.setText(model.getYStateValue());
+
+                                                tv.setTextColor(getResources().getColor(R.color.black1));
+                                                iv.setImageResource(R.mipmap.ic_weixuan);
+                                                for (XuanZeFuWuModel s : list_xuanze) {
+                                                    if (s.getId().equals(model.getYStoreServiceId())) {
+                                                        tv.setTextColor(getResources().getColor(R.color.blue));
+                                                        iv.setImageResource(R.mipmap.ic_xuanzhong);
+                                                    }
+                                                }
+
+                                            }
+                                        };
+                                        adapter2.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+                                            @Override
+                                            public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                                                boolean isCunZai = false;
+                                                for (int j = 0; j < list_xuanze.size(); j++) {
+                                                    if (list_xuanze.get(j).getId().equals(model.getClist().get(i).getYStoreServiceId())) {
+                                                        //有这个值-移除
+                                                        isCunZai = true;
+                                                        list_xuanze.remove(j);
+                                                    }
+                                                }
+
+                                                if (isCunZai == false) {
+                                                    list_xuanze.add(new XuanZeFuWuModel(model.getClist().get(i).getYStoreServiceId(),
+                                                            model.getClist().get(i).getYStateValue(), model.getClist().get(i).getSPrice()));
+                                                }
+
+                                                adapter2.notifyDataSetChanged();
+
+                                                showUI();
+                                            }
+
+                                            @Override
+                                            public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                                                return false;
+                                            }
+                                        });
+                                        rv2.setAdapter(adapter2);
+
+                                    } else {
+                                        rv2.setVisibility(View.GONE);
+                                    }
+                                }
+
                             }
                         };
-                        adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+                        adapter1.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
                             @Override
                             public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                                item_service = i;
+
                                 boolean isCunZai = false;
                                 for (int j = 0; j < list_xuanze.size(); j++) {
                                     if (list_xuanze.get(j).getId().equals(response.getList().get(i).getYStoreServiceId())) {
@@ -732,7 +797,7 @@ public class StoreDetailActivity extends BaseActivity {
                                             response.getList().get(i).getYStateValue(), response.getList().get(i).getSPrice()));
                                 }
 
-                                adapter.notifyDataSetChanged();
+                                adapter1.notifyDataSetChanged();
 
                                 showUI();
 //                        dialog1.dismiss();
@@ -743,7 +808,9 @@ public class StoreDetailActivity extends BaseActivity {
                                 return false;
                             }
                         });
-                        rv.setAdapter(adapter);
+                        rv1.setAdapter(adapter1);
+
+
                         dialog1.findViewById(R.id.tv_confirm).setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -756,6 +823,7 @@ public class StoreDetailActivity extends BaseActivity {
                                 dialog1.dismiss();
                             }
                         });
+
                         break;
                     case 1:
                         //钣喷弹窗

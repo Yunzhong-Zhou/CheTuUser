@@ -87,10 +87,10 @@ public class Fragment2_1 extends BaseFragment {
      */
     LinearLayout ll_tab;
     RecyclerView rv_tab1, rv_tab2;
-    CommonAdapter<ServiceListModel_All.ListBean.VListBeanX> ca_tab1;
-    List<ServiceListModel_All.ListBean.VListBeanX> list_tab1 = new ArrayList<>();
-    CommonAdapter<ServiceListModel_All.ListBean.VListBeanX.VListBean> ca_tab2;
-    List<ServiceListModel_All.ListBean.VListBeanX.VListBean> list_tab2 = new ArrayList<>();
+    CommonAdapter<ServiceListModel_All.ListBean.VListBeanXX> ca_tab1;
+    List<ServiceListModel_All.ListBean.VListBeanXX> list_tab1 = new ArrayList<>();
+    CommonAdapter<ServiceListModel_All.ListBean.VListBeanXX.VListBeanX> ca_tab2;
+    List<ServiceListModel_All.ListBean.VListBeanXX.VListBeanX> list_tab2 = new ArrayList<>();
 
     /**
      * 悬浮窗
@@ -708,10 +708,10 @@ public class Fragment2_1 extends BaseFragment {
                             } else {
                                 rv_tab2.setVisibility(View.VISIBLE);
                             }
-                            ca_tab1 = new CommonAdapter<ServiceListModel_All.ListBean.VListBeanX>
+                            ca_tab1 = new CommonAdapter<ServiceListModel_All.ListBean.VListBeanXX>
                                     (getActivity(), R.layout.item_fragment2_sv_tab1, list_tab1) {
                                 @Override
-                                protected void convert(ViewHolder holder, ServiceListModel_All.ListBean.VListBeanX listBean, int item) {
+                                protected void convert(ViewHolder holder, ServiceListModel_All.ListBean.VListBeanXX listBean, int item) {
                                     holder.setText(R.id.textView, listBean.getVName());
                                     ImageView imageView = holder.getView(R.id.imageView);
                                     if (listBean.isIsgouxuan()) {
@@ -730,10 +730,10 @@ public class Fragment2_1 extends BaseFragment {
                                      */
                                     list_tab2 = list_tab1.get(item).getV_list();
 //                                        ca_tab2.notifyDataSetChanged();
-                                    ca_tab2 = new CommonAdapter<ServiceListModel_All.ListBean.VListBeanX.VListBean>
+                                    ca_tab2 = new CommonAdapter<ServiceListModel_All.ListBean.VListBeanXX.VListBeanX>
                                             (getActivity(), R.layout.item_fragment2_sv_tab2, list_tab2) {
                                         @Override
-                                        protected void convert(ViewHolder holder, ServiceListModel_All.ListBean.VListBeanX.VListBean listBean, int item) {
+                                        protected void convert(ViewHolder holder, ServiceListModel_All.ListBean.VListBeanXX.VListBeanX listBean, int item) {
                                             holder.setText(R.id.textView, listBean.getVName());
                                             TextView tianjia = holder.getView(R.id.tianjia);
                                             if (listBean.isIsgouxuan()) {
@@ -827,12 +827,12 @@ public class Fragment2_1 extends BaseFragment {
         count++;
 
         for (ServiceListModel_All.ListBean bean1 : list_sv) {//第一级
-            for (ServiceListModel_All.ListBean.VListBeanX bean2 : bean1.getV_list()) {//第二级
+            for (ServiceListModel_All.ListBean.VListBeanXX bean2 : bean1.getV_list()) {//第二级
                 if (bean2.isIsgouxuan()) {
                     count++;
                     v_strs += bean2.getVName() + "||";
                 }
-                for (ServiceListModel_All.ListBean.VListBeanX.VListBean bean3 : bean2.getV_list()) {//第二级
+                for (ServiceListModel_All.ListBean.VListBeanXX.VListBeanX bean3 : bean2.getV_list()) {//第二级
                     if (bean3.isIsgouxuan()) {
                         count++;
                         v_strs += bean3.getVName() + "||";
@@ -888,11 +888,11 @@ public class Fragment2_1 extends BaseFragment {
                 hideProgress();
                 myToast("保存成功");
                 for (ServiceListModel_All.ListBean bean1 : list_sv) {//第一级
-                    for (ServiceListModel_All.ListBean.VListBeanX bean2 : bean1.getV_list()) {//第二级
+                    for (ServiceListModel_All.ListBean.VListBeanXX bean2 : bean1.getV_list()) {//第二级
                         if (bean2.isIsgouxuan()) {
                             bean2.setIsgouxuan(false);
                         }
-                        for (ServiceListModel_All.ListBean.VListBeanX.VListBean bean3 : bean2.getV_list()) {//第二级
+                        for (ServiceListModel_All.ListBean.VListBeanXX.VListBeanX bean3 : bean2.getV_list()) {//第二级
                             if (bean3.isIsgouxuan()) {
                                 bean3.setIsgouxuan(false);
                             }
