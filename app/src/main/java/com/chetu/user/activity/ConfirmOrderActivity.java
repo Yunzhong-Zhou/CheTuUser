@@ -855,6 +855,7 @@ public class ConfirmOrderActivity extends BaseActivity {
                     Bundle bundle2 = data.getExtras();
                     appoin_time = bundle2.getString("appoin_time");
                     tv_time.setText(appoin_time);
+                    tv_yuyuetime.setText(appoin_time);
                 }
                 break;
             case 10003:

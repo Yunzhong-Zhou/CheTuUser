@@ -712,8 +712,10 @@ public class StoreDetailActivity extends BaseActivity {
 
                                 tv.setTextColor(getResources().getColor(R.color.black1));
                                 iv.setImageResource(R.mipmap.ic_weixuan);
+                                boolean isGouXuan = false;
                                 for (XuanZeFuWuModel s : list_xuanze) {
                                     if (s.getId().equals(model.getYStoreServiceId())) {
+                                        isGouXuan = true;
                                         tv.setTextColor(getResources().getColor(R.color.blue));
                                         iv.setImageResource(R.mipmap.ic_xuanzhong);
                                     }
@@ -721,7 +723,7 @@ public class StoreDetailActivity extends BaseActivity {
 
                                 //如果有2级列表
                                 if (item_service == position){
-                                    if (model.getClist().size() > 0) {
+                                    if (model.getClist().size() > 0 && isGouXuan) {
                                         rv2.setVisibility(View.VISIBLE);
                                         CommonAdapter<ServiceListModel_Store.ListBean.ClistBean> adapter2 = new CommonAdapter<ServiceListModel_Store.ListBean.ClistBean>
                                                 (StoreDetailActivity.this, R.layout.item_dialog_list, model.getClist()) {

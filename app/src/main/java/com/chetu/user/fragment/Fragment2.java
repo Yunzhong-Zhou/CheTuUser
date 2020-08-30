@@ -916,7 +916,7 @@ public class Fragment2 extends BaseFragment {
                                             //如果有4级列表
                                             if (item_service4 == item) {
                                                 list_tab3 = listBean.getV_list();
-                                                if (list_tab3.size() > 0) {
+                                                if (list_tab3.size() > 0 && listBean.isIsgouxuan()) {
                                                     rv_tab3.setVisibility(View.VISIBLE);
                                                     ca_tab3 = new CommonAdapter<ServiceListModel_All.ListBean.VListBeanXX.VListBeanX.VListBean>
                                                             (getActivity(), R.layout.item_fragment2_sv_tab2, list_tab3) {
@@ -941,7 +941,6 @@ public class Fragment2 extends BaseFragment {
                                                                 list_tab3.get(i).setIsgouxuan(true);
                                                             else
                                                                 list_tab3.get(i).setIsgouxuan(false);
-
 
                                                             showSelectService();//显示选择的服务
                                                             ca_tab3.notifyDataSetChanged();
@@ -972,6 +971,7 @@ public class Fragment2 extends BaseFragment {
                                             else
                                                 list_tab2.get(i).setIsgouxuan(false);
 
+                                            rv_tab3.setVisibility(View.GONE);//先隐藏
 
                                             showSelectService();//显示选择的服务
                                             ca_tab2.notifyDataSetChanged();
@@ -990,6 +990,8 @@ public class Fragment2 extends BaseFragment {
                                     else list_tab1.get(item).setIsgouxuan(false);
 
                                     showSelectService();//显示选择的服务
+
+                                    rv_tab3.setVisibility(View.GONE);//先隐藏
 
                                     ca_tab1.notifyDataSetChanged();
                                 }

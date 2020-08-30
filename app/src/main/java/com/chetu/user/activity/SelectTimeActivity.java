@@ -53,7 +53,7 @@ public class SelectTimeActivity extends BaseActivity {
         rv_day.setLayoutManager(new LinearLayoutManager(this));
 
         rv_time = findViewByID_My(R.id.rv_time);
-        rv_time.setLayoutManager(new GridLayoutManager(this, 4));
+        rv_time.setLayoutManager(new GridLayoutManager(this, 2));
     }
 
     @Override
