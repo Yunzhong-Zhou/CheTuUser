@@ -432,7 +432,7 @@ public class StoreDetailActivity extends BaseActivity {
                 mAdapter_jishi.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
-                        String url = URLs.HOST + "/single/h5/techndetails?user_hash=" + list_jishi.get(i).getUserHash();
+                        String url = "http://wap.leqi.cool/techndetails??user_hash=" + list_jishi.get(i).getUserHash();
                         Bundle bundle = new Bundle();
                         bundle.putString("url", url);
                         CommonUtil.gotoActivityWithData(StoreDetailActivity.this, WebContentActivity.class, bundle, false);

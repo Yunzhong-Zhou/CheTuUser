@@ -727,10 +727,10 @@ public class CarServiceActivity extends BaseActivity {
         }*/
 
         v_msg = et_qingkuang.getText().toString().trim();
-        if (TextUtils.isEmpty(v_msg)) {
+        /*if (TextUtils.isEmpty(v_msg)) {
             myToast("请输入情况说明");
             return false;
-        }
+        }*/
         return true;
     }
 
@@ -772,6 +772,10 @@ public class CarServiceActivity extends BaseActivity {
             myToast("请输入地址");
             return false;
         }
+        /*if (TextUtils.isEmpty(latitude)) {
+            myToast("请打开定位");
+            return false;
+        }*/
         m_type = editText4.getText().toString().trim();
         if (TextUtils.isEmpty(m_type)) {
             myToast("请选择救援类型");

@@ -302,6 +302,7 @@
                                 android:gravity="center"
                                 android:padding="8dp"
                                 android:text="全车喷漆"
+                                android:layout_marginBottom="15dp"
                                 android:textColor="@color/black"
                                 android:textSize="15sp" />
 
@@ -318,6 +319,7 @@
                                 android:gravity="center"
                                 android:padding="10dp"
                                 android:text="匹配门店"
+                                android:visibility="gone"
                                 android:textColor="@color/white"
                                 android:textSize="15sp" />
 

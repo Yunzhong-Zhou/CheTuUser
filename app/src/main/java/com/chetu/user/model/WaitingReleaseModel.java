@@ -499,7 +499,7 @@ public class WaitingReleaseModel implements Serializable {
                 private int isService;
                 private String storeJson;
                 private String userJson;
-                private double vPrice;
+                private String vPrice;
                 private StoreInfoBean store_info;
 
                 public String getYInquiryDemandProjectOfferId() {
@@ -558,11 +558,11 @@ public class WaitingReleaseModel implements Serializable {
                     this.userJson = userJson;
                 }
 
-                public double getVPrice() {
+                public String getVPrice() {
                     return vPrice;
                 }
 
-                public void setVPrice(double vPrice) {
+                public void setVPrice(String vPrice) {
                     this.vPrice = vPrice;
                 }
 

@@ -126,7 +126,7 @@ public class AddCarPopupWindow extends PopupWindow {
         tv_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (page == 4) {
+                if (page >= 2) {
                     /*showProgress(true, mContext.getString(R.string.app_loading1));
                     Map<String, String> params = new HashMap<>();
                     params.put("y_sedan_brand_id", y_sedan_brand_id);
@@ -178,6 +178,7 @@ public class AddCarPopupWindow extends PopupWindow {
                 params.put("u_token", LocalUserInfo.getInstance(mContext).getToken());
                 Request1(params);
                 xinghao1 = list.get(i).getSName();
+                y_sedan_brand_id = list.get(i).getYSedanBrandId();
             }
 
             @Override
@@ -249,6 +250,7 @@ public class AddCarPopupWindow extends PopupWindow {
                                 params.put("u_token", LocalUserInfo.getInstance(mContext).getToken());
                                 Request1(params);
                                 xinghao2 = response.getList().get(i).getSName();
+                                y_sedan_brand_id = response.getList().get(i).getYSedanBrandId();
                             }
 
                             @Override

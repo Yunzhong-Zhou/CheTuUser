@@ -101,7 +101,7 @@ public class MyGarageActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        type = getIntent().getIntExtra("type",0);
+        type = getIntent().getIntExtra("type", 0);
     }
 
     @Override
@@ -147,8 +147,16 @@ public class MyGarageActivity extends BaseActivity {
 //                            .error(R.mipmap.headimg)//加载失败
                                     .into(imageView1);//加载图片
 
-                            holder.setText(R.id.tv_carname, model.getBrandInfo().getGroupName()
-                                    + "-" + model.getBrandInfo().getSeriesName());//车品牌
+
+                            /*if (model.getBrandInfo().getGroupName() != null && model.getBrandInfo().getSeriesName() != null){
+                                holder.setText(R.id.tv_carname, model.getBrandInfo().getGroupName()
+                                        + "-" + model.getBrandInfo().getSeriesName());//车品牌
+                            }else {
+                                holder.setText(R.id.tv_carname, model.getBrandInfo().getBrandName());//车品牌
+                            }*/
+
+                            holder.setText(R.id.tv_carname, model.getSName());//车品牌
+
                             holder.setText(R.id.tv_carnum, model.getSNumber());//车牌
                             holder.setText(R.id.tv_cardetail, model.getBrandInfo().getSName());//具体型号
                             //是否默认
@@ -214,10 +222,12 @@ public class MyGarageActivity extends BaseActivity {
                             holder.getView(R.id.linearLayout1).setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    if (type == 10001){
+                                    if (type == 10001) {
                                         //保存
-                                        localUserInfo.setCarname(model.getBrandInfo().getGroupName()
-                                                + "-" + model.getBrandInfo().getSeriesName());
+                                       /* localUserInfo.setCarname(model.getBrandInfo().getGroupName()
+                                                + "-" + model.getBrandInfo().getSeriesName());*/
+//                                        localUserInfo.setCarname(model.getSName());
+                                        localUserInfo.setCarname(model.getBrandInfo().getBrandName());
                                         localUserInfo.setCarnum(model.getSNumber());
                                         localUserInfo.setCardetail(model.getBrandInfo().getSName());
                                         localUserInfo.setCarid(model.getYUserSedanId());
@@ -226,8 +236,10 @@ public class MyGarageActivity extends BaseActivity {
 
                                         Intent resultIntent = new Intent();
                                         Bundle bundle = new Bundle();
-                                        bundle.putString("carname", model.getBrandInfo().getGroupName()
-                                                + "-" + model.getBrandInfo().getSeriesName());
+                                        /*bundle.putString("carname", model.getBrandInfo().getGroupName()
+                                                + "-" + model.getBrandInfo().getSeriesName());*/
+//                                        bundle.putString("carname", model.getSName());
+                                        bundle.putString("carname", model.getBrandInfo().getBrandName());
                                         bundle.putString("carnum", model.getSNumber());
                                         bundle.putString("cardetail", model.getBrandInfo().getSName());
                                         bundle.putString("car_id", model.getYUserSedanId());

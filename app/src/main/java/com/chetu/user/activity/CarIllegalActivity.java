@@ -74,7 +74,7 @@ public class CarIllegalActivity extends BaseActivity {
         tv_carname = findViewByID_My(R.id.tv_carname);
         if (!localUserInfo.getCarname().equals("")) {
             y_user_sedan_id = localUserInfo.getCarid();
-            tv_carname.setText(localUserInfo.getCarname());
+            tv_carname.setText(localUserInfo.getCarname() + "\n" + localUserInfo.getCardetail());
             editText1.setText(localUserInfo.getCarnum());
             Glide.with(this).load(URLs.IMGHOST + localUserInfo.getCarlogo())
                     .centerCrop()
@@ -130,7 +130,7 @@ public class CarIllegalActivity extends BaseActivity {
                 BaseDialog dialog1 = new BaseDialog(CarIllegalActivity.this);
                 dialog1.contentView(R.layout.dialog_list)
                         .layoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                                CommonUtil.dip2px(CarIllegalActivity.this,500)))
+                                CommonUtil.dip2px(CarIllegalActivity.this, 500)))
                         .animType(BaseDialog.AnimInType.BOTTOM)
                         .canceledOnTouchOutside(true)
                         .gravity(Gravity.BOTTOM)

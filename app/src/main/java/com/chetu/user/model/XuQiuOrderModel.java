@@ -27,7 +27,7 @@ public class XuQiuOrderModel implements Serializable {
 
         private String yStoreId;
         private StoreInfoBean store_info;
-        private double vPrice;
+        private String vPrice;
         private List<ServiceListBean> service_list;
 
         public String getYStoreId() {
@@ -46,11 +46,11 @@ public class XuQiuOrderModel implements Serializable {
             this.store_info = store_info;
         }
 
-        public double getVPrice() {
+        public String getVPrice() {
             return vPrice;
         }
 
-        public void setVPrice(double vPrice) {
+        public void setVPrice(String vPrice) {
             this.vPrice = vPrice;
         }
 
@@ -278,7 +278,7 @@ public class XuQiuOrderModel implements Serializable {
             private String yGoodsId;
             private StoreServiceInfoBean store_service_info;
             private String createDate;
-            private double vPrice;
+            private String vPrice;
             private int gNum;
             private String levelStr;
             private List<GoodsCartListBean> goods_cart_list;
@@ -371,11 +371,11 @@ public class XuQiuOrderModel implements Serializable {
                 this.createDate = createDate;
             }
 
-            public double getVPrice() {
+            public String getVPrice() {
                 return vPrice;
             }
 
-            public void setVPrice(double vPrice) {
+            public void setVPrice(String vPrice) {
                 this.vPrice = vPrice;
             }
 
@@ -424,7 +424,7 @@ public class XuQiuOrderModel implements Serializable {
                 private int lineupSum;
                 private int isSheet;
                 private String yStateValue;
-                private double sPrice;
+                private String sPrice;
                 private String pictureStr;
                 private String parentId;
 
@@ -484,11 +484,11 @@ public class XuQiuOrderModel implements Serializable {
                     this.yStateValue = yStateValue;
                 }
 
-                public double getSPrice() {
+                public String getSPrice() {
                     return sPrice;
                 }
 
-                public void setSPrice(double sPrice) {
+                public void setSPrice(String sPrice) {
                     this.sPrice = sPrice;
                 }
 
@@ -541,7 +541,7 @@ public class XuQiuOrderModel implements Serializable {
                 private String goodsValue;
                 private GoodsInfoBean goods_info;
                 private String createDate;
-                private double vPrice;
+                private String vPrice;
                 private int gNum;
 
                 public String getId() {
@@ -648,11 +648,11 @@ public class XuQiuOrderModel implements Serializable {
                     this.createDate = createDate;
                 }
 
-                public double getVPrice() {
+                public String getVPrice() {
                     return vPrice;
                 }
 
-                public void setVPrice(double vPrice) {
+                public void setVPrice(String vPrice) {
                     this.vPrice = vPrice;
                 }
 
@@ -690,8 +690,8 @@ public class XuQiuOrderModel implements Serializable {
                     private String yStoreId;
                     private String gName;
                     private String gDesc;
-                    private double gPrice;
-                    private double orPrice;
+                    private String gPrice;
+                    private String orPrice;
                     private String imgStr;
                     private String gImg;
                     private int gState;
@@ -749,19 +749,19 @@ public class XuQiuOrderModel implements Serializable {
                         this.gDesc = gDesc;
                     }
 
-                    public double getGPrice() {
+                    public String getGPrice() {
                         return gPrice;
                     }
 
-                    public void setGPrice(double gPrice) {
+                    public void setGPrice(String gPrice) {
                         this.gPrice = gPrice;
                     }
 
-                    public double getOrPrice() {
+                    public String getOrPrice() {
                         return orPrice;
                     }
 
-                    public void setOrPrice(double orPrice) {
+                    public void setOrPrice(String orPrice) {
                         this.orPrice = orPrice;
                     }
 

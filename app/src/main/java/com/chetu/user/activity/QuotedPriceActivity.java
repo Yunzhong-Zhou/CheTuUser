@@ -128,7 +128,7 @@ public class QuotedPriceActivity extends BaseActivity {
                         @Override
                         protected void convert(ViewHolder holder, WaitingReleaseModel.ListBean.ProjectListBean.OfferListBean model, int position) {
                             holder.setText(R.id.title, model.getStore_info().getVName());
-                            holder.setText(R.id.money, "¥" + model.getVPrice());
+                            holder.setText(R.id.money, ""+model.getVPrice());
                         }
                     };
                     rv_baojia.setAdapter(mAdapter_baojia);
