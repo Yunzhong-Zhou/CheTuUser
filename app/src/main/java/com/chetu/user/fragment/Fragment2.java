@@ -1245,7 +1245,7 @@ public class Fragment2 extends BaseFragment {
             v_strs += list_sv.get(i1).getVName() + "||";
             count++;
 
-            if (list_sv.get(i1).getIsSheet() == 1) {//是喷漆
+            /*if (list_sv.get(i1).getIsSheet() == 1) {//是喷漆
                 count++;
                 if (isleft) {
                     v_strs += "喷漆||";
@@ -1253,9 +1253,19 @@ public class Fragment2 extends BaseFragment {
                     count++;
                     v_strs += "喷漆||钣金||";
                 }
-            }
+            }*/
         } else {
             ll_xuanfu.setVisibility(View.GONE);
+        }
+
+        if (ll_penqi.getVisibility()== View.VISIBLE){//是喷漆
+            count++;
+            if (isleft) {
+                v_strs += "喷漆||";
+            } else {
+                count++;
+                v_strs += "喷漆||钣金||";
+            }
         }
 //        jsonArray = new JSONArray();
         for (ServiceListModel_All.ListBean bean1 : list_sv) {//第一级
