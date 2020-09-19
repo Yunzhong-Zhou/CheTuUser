@@ -291,7 +291,8 @@
                             <androidx.recyclerview.widget.RecyclerView
                                 android:id="@+id/rv_penqi"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content" />
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="15dp"/>
 
                             <TextView
                                 android:id="@+id/tv_quancepenqi"
@@ -302,6 +303,7 @@
                                 android:gravity="center"
                                 android:padding="8dp"
                                 android:text="全车喷漆"
+                                android:visibility="gone"
                                 android:layout_marginBottom="15dp"
                                 android:textColor="@color/black"
                                 android:textSize="15sp" />
@@ -425,27 +427,47 @@
 
             <TextView
                 android:id="@+id/tv_savecaogao"
-                android:layout_width="85dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/yuanjiao_5_heise"
                 android:gravity="center"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
-                android:text="添加订单"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:text="添加草稿"
                 android:textColor="@color/white"
                 android:textSize="15sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tv_pipei"
-                android:layout_width="85dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:background="@drawable/yuanjiao_5_lanse"
                 android:gravity="center"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
-                android:text="匹配商家"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:text="确认"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/tv_xiugai"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:background="@drawable/yuanjiao_5_lanse"
+                android:gravity="center"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:text="修改"
+                android:visibility="gone"
                 android:textColor="@color/white"
                 android:textSize="15sp"
                 android:textStyle="bold" />

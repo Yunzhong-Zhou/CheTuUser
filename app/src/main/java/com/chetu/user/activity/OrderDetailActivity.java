@@ -376,6 +376,22 @@ public class OrderDetailActivity extends BaseActivity {
                         holder.setText(R.id.servicename, bean.getServiceStr());
                         holder.setText(R.id.servicemoney, "¥" + bean.getGPrice());
                         holder.setText(R.id.serviceallmoney, "¥" + bean.getOrder_service_price());
+                        //状态
+                        TextView zhuangtai = holder.getView(R.id.zhuangtai);
+                        switch (bean.getGState()) {
+                            case 1://施工中
+                                zhuangtai.setText("施工中");
+                                break;
+                            case 2://已完成
+                                zhuangtai.setText("已完成");
+                                break;
+                            case 3://已检查
+                                zhuangtai.setText("已复检");
+                                break;
+                            default:
+                                zhuangtai.setText("未施工");
+                                break;
+                        }
                         //商品列表
                         RecyclerView rv_s = holder.getView(R.id.rv_s);
                         LinearLayoutManager llm1 = new LinearLayoutManager(OrderDetailActivity.this);

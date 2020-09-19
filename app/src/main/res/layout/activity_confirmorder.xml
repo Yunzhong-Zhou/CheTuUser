@@ -29,7 +29,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:paddingBottom="20dp">
 
                     <!--车辆信息-->
                     <LinearLayout
@@ -486,7 +487,6 @@
                         android:layout_marginLeft="13dp"
                         android:layout_marginTop="10dp"
                         android:layout_marginRight="13dp"
-                        android:layout_marginBottom="20dp"
                         android:background="@drawable/yuanjiao_10_baise"
                         android:gravity="center_vertical"
                         android:onClick="onClick"
@@ -509,6 +509,45 @@
                             android:padding="13dp"
                             android:src="@mipmap/ic_weixuan" />
 
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/ll_songcheaddr"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="13dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="13dp"
+                        android:background="@drawable/yuanjiao_10_baise"
+                        android:gravity="center_vertical"
+                        android:onClick="onClick"
+                        android:visibility="gone"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="10dp"
+                            android:paddingTop="16dp"
+                            android:paddingRight="10dp"
+                            android:paddingBottom="16dp"
+                            android:text="送车地点" />
+
+                        <TextView
+                            android:id="@+id/tv_songcheaddr"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/transparent"
+                            android:drawableRight="@mipmap/ic_next_black"
+                            android:gravity="center_vertical"
+                            android:hint="请选择送车地址"
+                            android:inputType="phone"
+                            android:onClick="onClick"
+                            android:paddingTop="14dp"
+                            android:paddingRight="10dp"
+                            android:paddingBottom="14dp"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/grey"
+                            android:textSize="15sp" />
                     </LinearLayout>
 
                 </LinearLayout>

@@ -76,7 +76,7 @@ public class ProductDetailActivity extends BaseActivity {
     Banner banner;
     TextView banner_indicator;
     ArrayList<String> images = new ArrayList<>();
-    TextView head1_tv1, head1_tv2, head1_tv3, head1_tv4, head1_tv5, head1_pinglun, tv_phone, tv_addr, tv_juli;
+    TextView head1_tv1, head1_tv2, head1_tv3, head1_tv4, head1_tv5, head1_pinglun,tv_storename, tv_phone, tv_addr, tv_juli;
 
     LoadingLayout loading_layout1;
     SpringView springView1;
@@ -138,6 +138,7 @@ public class ProductDetailActivity extends BaseActivity {
         head1_tv5 = View1.findViewById(R.id.head1_tv5);
         head1_tv5.setText("数量" + g_num);
 
+        tv_storename = View1.findViewById(R.id.tv_storename);
         tv_phone = View1.findViewById(R.id.tv_phone);
         tv_addr = View1.findViewById(R.id.tv_addr);
         tv_juli = View1.findViewById(R.id.tv_juli);
@@ -404,6 +405,7 @@ public class ProductDetailActivity extends BaseActivity {
                     iv_xihuan.setImageResource(R.mipmap.ic_xin_weixuan);
                 }
 
+                tv_storename.setText(response.getStore_info().getVName());//店铺名称
                 tv_phone.setText(response.getStore_info().getPhone());//店铺电话
                 tv_addr.setText(response.getStore_info().getAddress());//店铺地址
 //                tv_juli.setText("距离" + response.getInfo().getDistance() + "m");//距离

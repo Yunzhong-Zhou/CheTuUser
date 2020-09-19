@@ -46,7 +46,7 @@ import okhttp3.Response;
 public class ConfirmOrderActivity extends BaseActivity {
     ConfirmOrderModel confirmOrderModel;
     String y_user_sedan_id = "", y_store_id = "", longitude = "", latitude = "", appoin_time = "",
-            is_pick = "1", is_delivery = "0", delivery_time = "", delivery_address = "";
+            is_pick = "1", is_delivery = "0", delivery_time = "", delivery_address = "", send_address = "";
     //车辆信息
     ImageView imageView1;
     TextView tv_carname, tv_carnum, tv_cardetail, tv_name, tv_phone;
@@ -64,9 +64,9 @@ public class ConfirmOrderActivity extends BaseActivity {
     CommonAdapter<ConfirmOrderModel.GoodsCartListBean> mAdapter_other;
 
     //接车到店、送车到家
-    LinearLayout ll_jiechedaodian, ll_yuyuedaodian, ll_songchedaojia, ll_jiechetime, ll_jiecheaddr, ll_yuyuetime;
+    LinearLayout ll_jiechedaodian, ll_yuyuedaodian, ll_songchedaojia, ll_songcheaddr, ll_jiechetime, ll_jiecheaddr, ll_yuyuetime;
     ImageView iv_jiechedaodian, iv_yuyuedaodian, iv_songchedaojia;
-    TextView tv_jiechetime, tv_yuyuetime, tv_jiecheaddr;
+    TextView tv_jiechetime, tv_yuyuetime, tv_jiecheaddr, tv_songcheaddr;
     TimePickerView pvTime1;
     //下单
     boolean isYuYue = false;
@@ -142,12 +142,14 @@ public class ConfirmOrderActivity extends BaseActivity {
         iv_jiechedaodian = findViewByID_My(R.id.iv_jiechedaodian);
         iv_yuyuedaodian = findViewByID_My(R.id.iv_yuyuedaodian);
         iv_songchedaojia = findViewByID_My(R.id.iv_songchedaojia);
+        ll_songcheaddr = findViewByID_My(R.id.ll_songcheaddr);
 
         ll_jiechetime = findViewByID_My(R.id.ll_jiechetime);
         tv_yuyuetime = findViewByID_My(R.id.tv_yuyuetime);
         ll_jiecheaddr = findViewByID_My(R.id.ll_jiecheaddr);
         tv_jiechetime = findViewByID_My(R.id.tv_jiechetime);
         tv_jiecheaddr = findViewByID_My(R.id.tv_jiecheaddr);
+        tv_songcheaddr = findViewByID_My(R.id.tv_songcheaddr);
 
         ll_yuyuetime = findViewByID_My(R.id.ll_yuyuetime);
 
@@ -578,12 +580,24 @@ public class ConfirmOrderActivity extends BaseActivity {
                 if (is_delivery.equals("1")) {
                     is_delivery = "0";
                     iv_songchedaojia.setImageResource(R.mipmap.ic_weixuan);
+
+                    ll_songcheaddr.setVisibility(View.GONE);
                 } else {
                     is_delivery = "1";
                     iv_songchedaojia.setImageResource(R.mipmap.ic_xuanzhong);
+
+                    ll_songcheaddr.setVisibility(View.VISIBLE);
                 }
                 break;
-
+            case R.id.ll_songcheaddr:
+            case R.id.tv_songcheaddr:
+                //接车地址
+                Intent intent5 = new Intent(ConfirmOrderActivity.this, SelectAddressActivity.class);
+                Bundle bundle5 = new Bundle();
+                bundle5.putInt("type", 10005);
+                intent5.putExtras(bundle5);
+                startActivityForResult(intent5, 10005, bundle5);
+                break;
             case R.id.ll_yuyuedaodian:
                 //预约时间
                 isYuYue = !isYuYue;
@@ -657,13 +671,17 @@ public class ConfirmOrderActivity extends BaseActivity {
                             params.put("longitude", longitude);
                             params.put("latitude", latitude);
                             params.put("y_user_sedan_id", y_user_sedan_id);
-                            if (isYuYue){
+                            if (isYuYue) {
                                 params.put("appoin_time", appoin_time);
-                            }else {
+                            } else {
                                 params.put("appoin_time", "");
                             }
                             params.put("is_pick", is_pick);
                             params.put("is_delivery", is_delivery);
+
+                            params.put("delivery_time", delivery_time);
+                            params.put("delivery_address", delivery_address);
+                            params.put("send_address", send_address);
                             RequestAdd(params);
                         }
                     }, new View.OnClickListener() {
@@ -793,6 +811,16 @@ public class ConfirmOrderActivity extends BaseActivity {
             delivery_time = "";
             delivery_address = "";
         }
+
+        if (is_delivery.equals("1")) {
+            send_address = tv_songcheaddr.getText().toString().trim();
+            if (send_address.equals("")) {
+                myToast("请选择送车地址");
+                return false;
+            }
+        } else {
+            send_address = "";
+        }
         return true;
     }
 
@@ -882,6 +910,15 @@ public class ConfirmOrderActivity extends BaseActivity {
                     longitude = bundle3.getString("lng");
                     latitude = bundle3.getString("lat");
                     tv_jiecheaddr.setText(bundle3.getString("addr"));
+                }
+                break;
+            case 10005:
+                //选择地址
+                if (data != null) {
+                    Bundle bundle3 = data.getExtras();
+//                    longitude = bundle3.getString("lng");
+//                    latitude = bundle3.getString("lat");
+                    tv_songcheaddr.setText(bundle3.getString("addr"));
                 }
                 break;
         }

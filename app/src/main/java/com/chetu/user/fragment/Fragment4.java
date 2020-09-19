@@ -59,7 +59,7 @@ public class Fragment4 extends BaseFragment {
             tv_xiaoxinum;
     LinearLayout linearLayout1, linearLayout2, linearLayout3, linearLayout4, linearLayout5, linearLayout6,
             linearLayout7, linearLayout8, linearLayout9, linearLayout10, linearLayout11, linearLayout12,
-            linearLayout13, linearLayout14, linearLayout15, linearLayout16, linearLayout17,linearLayout18;
+            linearLayout13, linearLayout14, linearLayout15, linearLayout16, linearLayout17, linearLayout18;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -230,6 +230,14 @@ public class Fragment4 extends BaseFragment {
                     textView7.setText(response.getUser_info().getUser_sedan_info().getCompTime() + "天");//交强险
                     textView8.setText(response.getUser_info().getUser_sedan_info().getMaintIime() + "天");//商业险
                     textView9.setText(response.getUser_info().getUser_sedan_info().getAnnualTime() + "天");//保养
+
+                    if (response.getUser_info().getUser_sedan_info().getCompTime() <= response.getUser_info().getUser_sedan_info().getMaintIime()) {
+                        linearLayout4.setVisibility(View.VISIBLE);
+                        linearLayout5.setVisibility(View.GONE);
+                    }else {
+                        linearLayout4.setVisibility(View.GONE);
+                        linearLayout5.setVisibility(View.VISIBLE);
+                    }
                 }
 
 
@@ -345,8 +353,8 @@ public class Fragment4 extends BaseFragment {
 
                 WxShareUtils.shareWeb(getActivity(),
                         "wx7ab80a19389dbb09",
-                        URLs.HOST+"/single/h5/register?user_hash=3B2372646663FDC7A81EA8E241CB7946AC74E4C0C9CFD31F750FEE2831528FF5",
-                        "车途，您的爱车管家","车途，您的爱车管家\n车途，您的爱车管家",null);
+                        URLs.HOST + "/single/h5/register?user_hash=3B2372646663FDC7A81EA8E241CB7946AC74E4C0C9CFD31F750FEE2831528FF5",
+                        "车途，您的爱车管家", "车途，您的爱车管家\n车途，您的爱车管家", null);
 
                 break;
             case R.id.linearLayout14:

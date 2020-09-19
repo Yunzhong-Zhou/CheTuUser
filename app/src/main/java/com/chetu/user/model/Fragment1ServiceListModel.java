@@ -113,7 +113,7 @@ public class Fragment1ServiceListModel {
     public static class IndexCustomListBean {
         /**
          * id : 170
-         * yPhotoId : 692341585785913346
+         * yPhotoId : 692341585785913347
          * yServiceId : 692341585785913344
          * category : 2
          * msg : 汽车用品
@@ -191,9 +191,10 @@ public class Fragment1ServiceListModel {
          * id : 1017
          * yServiceId : 692341585785913344
          * yParentId : 0
-         * vName : 汽车美容
+         * vName : 洗车美容
          * vImg : /upload/index/index1.png
          * isIndex : 1
+         * isSheet : 0
          * createDate : 2020-03-25 11:58:17
          */
 
@@ -203,6 +204,7 @@ public class Fragment1ServiceListModel {
         private String vName;
         private String vImg;
         private int isIndex;
+        private int isSheet;
         private String createDate;
 
         public String getId() {
@@ -251,6 +253,14 @@ public class Fragment1ServiceListModel {
 
         public void setIsIndex(int isIndex) {
             this.isIndex = isIndex;
+        }
+
+        public int getIsSheet() {
+            return isSheet;
+        }
+
+        public void setIsSheet(int isSheet) {
+            this.isSheet = isSheet;
         }
 
         public String getCreateDate() {

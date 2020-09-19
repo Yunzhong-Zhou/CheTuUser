@@ -5,8 +5,10 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -86,7 +88,7 @@ public class CarServiceActivity extends BaseActivity {
     List<AddXunJiaModel> list1 = new ArrayList<>();
 
     //发布询价
-    String service_name = "", y_service_id_str = "", y_store_id_str = "", v_list_str = "", v_msg = "";
+    String service_name = "", y_service_id_str = "", y_service_id_msg = "", y_store_id_str = "", v_list_str = "", v_msg = "";
     EditText et_qingkuang;
     /**
      * 服务内容
@@ -338,17 +340,59 @@ public class CarServiceActivity extends BaseActivity {
                                 rv.setVisibility(View.VISIBLE);
                             }
 
+
                             CommonAdapter<ServiceListModel_All.ListBean.VListBeanXX> ca = new CommonAdapter<ServiceListModel_All.ListBean.VListBeanXX>
                                     (CarServiceActivity.this, R.layout.item_carservice_sv_child, model.getV_list()) {
                                 @Override
                                 protected void convert(ViewHolder holder, ServiceListModel_All.ListBean.VListBeanXX listBean, int item) {
                                     holder.setText(R.id.textView, listBean.getVName());
+
+                                    EditText et_content = holder.getView(R.id.et_content);
+                                    et_content.setText(listBean.getContent());
+
                                     ImageView imageView = holder.getView(R.id.imageView);
                                     if (listBean.isIsgouxuan()) {
                                         imageView.setImageResource(R.mipmap.ic_xuanzhong);
+                                        et_content.setVisibility(View.VISIBLE);
                                     } else {
                                         imageView.setImageResource(R.mipmap.ic_weixuan);
+                                        et_content.setVisibility(View.GONE);
                                     }
+
+                                    //提交
+                                    et_content.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                                        @Override
+                                        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                                            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                                                if (!et_content.getText().toString().trim().equals("")) {
+                                                    listBean.setContent(et_content.getText().toString().trim());
+                                                } else {
+                                                    myToast("请输入项目说明");
+                                                }
+                                            }
+                                            return true;
+                                        }
+                                    });
+                                    /*et_content.addTextChangedListener(new TextWatcher() {
+                                        @Override
+                                        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                                        }
+
+                                        @Override
+                                        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                                        }
+
+                                        @Override
+                                        public void afterTextChanged(Editable editable) {
+                                            if (!et_content.getText().toString().trim().equals("")) {
+                                                listBean.setContent(et_content.getText().toString().trim());
+                                                MyLogger.i(">>>>>>>" + listBean.getContent());
+                                            }
+                                        }
+                                    });*/
+
                                 }
                             };
                             ca.setOnItemClickListener(new OnItemClickListener() {
@@ -645,6 +689,7 @@ public class CarServiceActivity extends BaseActivity {
                 params.put("y_user_sedan_id", y_user_sedan_id);
                 params.put("service_name", service_name);
                 params.put("y_service_id_str", y_service_id_str);
+                params.put("y_service_id_msg", y_service_id_msg);
                 params.put("y_store_id_str", y_store_id_str);
                 params.put("v_list_str", v_list_str);
                 params.put("is_ok", "1");//1是发布 0保存
@@ -689,6 +734,13 @@ public class CarServiceActivity extends BaseActivity {
                 if (vListBean.isIsgouxuan()) {
                     service_name += vListBean.getVName() + "/";
                     y_service_id_str += vListBean.getYServiceId() + ",";
+
+                    if (!vListBean.getContent().equals("")) {
+                        y_service_id_msg += vListBean.getContent() + "||";
+                    } else {
+                        y_service_id_msg += "#" + "||";
+                    }
+
                 }
             }
         }
@@ -697,6 +749,10 @@ public class CarServiceActivity extends BaseActivity {
             MyLogger.i(">>>>>>>>服务名称：" + service_name);
             y_service_id_str = y_service_id_str.substring(0, y_service_id_str.length() - 1);
             MyLogger.i(">>>>>>>>服务ID：" + y_service_id_str);
+
+            y_service_id_msg = y_service_id_msg.substring(0, y_service_id_msg.length() - 2);
+            MyLogger.i(">>>>>>>>服务ID描述：" + y_service_id_str);
+
         } else {
             myToast("请选择服务");
             return false;
@@ -837,6 +893,7 @@ public class CarServiceActivity extends BaseActivity {
                             params.put("y_user_sedan_id", y_user_sedan_id);
                             params.put("service_name", service_name);
                             params.put("y_service_id_str", y_service_id_str);
+                            params.put("y_service_id_msg", y_service_id_msg);
                             params.put("y_store_id_str", y_store_id_str);
                             params.put("v_list_str", v_list_str);
                             params.put("is_ok", "0");//1是发布 0保存

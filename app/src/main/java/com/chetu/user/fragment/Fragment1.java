@@ -620,10 +620,10 @@ public class Fragment1 extends BaseFragment {
                 //tab
                 list_tab.clear();
                 for (Fragment1ServiceListModel.IndexCustomListBean bean : response.getIndex_custom_list()) {
-                    list_tab.add(new Fragment1TabModel(bean.getYServiceId(), bean.getCategory(), bean.getMsg(), bean.getImgurl()));
+                    list_tab.add(new Fragment1TabModel(bean.getYServiceId(), bean.getCategory(), bean.getMsg(), bean.getImgurl(),0));
                 }
                 for (Fragment1ServiceListModel.IndexServiceListBean bean : response.getIndex_service_list()) {
-                    list_tab.add(new Fragment1TabModel(bean.getYServiceId(), -1, bean.getVName(), bean.getVImg()));
+                    list_tab.add(new Fragment1TabModel(bean.getYServiceId(), -1, bean.getVName(), bean.getVImg(),bean.getIsSheet()));
                 }
                 mAdapter_tab = new CommonAdapter<Fragment1TabModel>
                         (getActivity(), R.layout.item_fragment1_tab, list_tab) {
@@ -665,6 +665,7 @@ public class Fragment1 extends BaseFragment {
                                 //跳转养车页面
                                 MainActivity.item = 1;
                                 Fragment2.yServiceId = list_tab.get(i).getId();
+                                Fragment2.isSheet = list_tab.get(i).getIsSheet();
                                 mBottomTabBar.setCurrentTab(MainActivity.item);
                                /* bundle.putString("keys", list_tab.get(i).getTitle());
                                 CommonUtil.gotoActivityWithData(getActivity(), SearchActivity.class, bundle);*/
