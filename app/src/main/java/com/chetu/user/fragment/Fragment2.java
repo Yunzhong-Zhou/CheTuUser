@@ -904,6 +904,18 @@ public class Fragment2 extends BaseFragment {
         list_tab3.clear();
         rv_tab2.setVisibility(View.INVISIBLE);
         rv_tab3.setVisibility(View.GONE);
+        if (mAdapter_sv!=null){
+            mAdapter_sv.notifyDataSetChanged();
+        }
+        if (ca_tab1!=null){
+            ca_tab1.notifyDataSetChanged();
+        }
+        if (ca_tab2!=null){
+            ca_tab2.notifyDataSetChanged();
+        }
+        if (ca_tab3!=null){
+            ca_tab3.notifyDataSetChanged();
+        }
 
         OkhttpUtil.okHttpPost(URLs.ServiceList_all, params, headerMap, new CallBackUtil<ServiceListModel_All>() {
             @Override
