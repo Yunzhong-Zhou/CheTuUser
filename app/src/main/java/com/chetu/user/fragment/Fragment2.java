@@ -17,6 +17,7 @@ import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.bumptech.glide.Glide;
 import com.chetu.user.R;
+import com.chetu.user.activity.ConfirmOrderActivity;
 import com.chetu.user.activity.DraftActivity;
 import com.chetu.user.activity.MainActivity;
 import com.chetu.user.activity.MyGarageActivity;
@@ -164,7 +165,7 @@ public class Fragment2 extends BaseFragment {
     public void onResume() {
         super.onResume();
         if (MainActivity.item == 1) {
-            if (!localUserInfo.getCarname().equals("")) {
+           /* if (!localUserInfo.getCarname().equals("")) {
 //                y_user_sedan_id = localUserInfo.getCarid();
                 tv_carname.setText(localUserInfo.getCarname());
                 tv_carnum.setText(localUserInfo.getCarnum());
@@ -185,7 +186,7 @@ public class Fragment2 extends BaseFragment {
             }
             RequestService(params2, 0);
 
-            requestServer();
+            requestServer();*/
 
             /*if (list_sv.size() > 0) {
                 for (int i = 0; i < list_sv.size(); i++) {//循环判断传入的id 与列表id是否一致
@@ -490,10 +491,18 @@ public class Fragment2 extends BaseFragment {
 //            mLocationClient.startLocation();
 //        }
 
-        /*//获取服务tab
-        HashMap<String, String> params2 = new HashMap<>();
-        params2.put("y_parent_id", "0");
-        RequestService(params2, 0);*/
+        //选择的车辆
+        if (!localUserInfo.getCarname().equals("")) {
+            tv_carname.setText(localUserInfo.getCarname());
+            tv_carnum.setText(localUserInfo.getCarnum());
+            Glide.with(getActivity()).load(URLs.IMGHOST + localUserInfo.getCarlogo())
+                    .centerCrop()
+                    .into(iv_carlogo);//加载图片
+        }
+        //获取服务tab
+        HashMap<String, String> params1 = new HashMap<>();
+        params1.put("y_parent_id", "0");
+        RequestService(params1, 0);
 
         //获取banner
         HashMap<String, String> params2 = new HashMap<>();
@@ -1363,10 +1372,12 @@ public class Fragment2 extends BaseFragment {
                 hideProgress();
                 myToast("下单成功");
                 Bundle bundle = new Bundle();
-                bundle.putString("id", id);
+//                bundle.putString("id", id);
                 bundle.putString("longitude", longitude);
                 bundle.putString("latitude", latitude);
-                CommonUtil.gotoActivityWithData(getActivity(), StoreDetailActivity.class, bundle, false);
+//                CommonUtil.gotoActivityWithData(getActivity(), StoreDetailActivity.class, bundle, false);
+                bundle.putString("y_store_id", id);
+                CommonUtil.gotoActivityWithData(getActivity(), ConfirmOrderActivity.class, bundle, false);
             }
         });
     }

@@ -3,6 +3,7 @@ package com.chetu.user.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.chetu.user.R;
 import com.chetu.user.base.BaseActivity;
@@ -106,28 +107,64 @@ public class DraftActivity extends BaseActivity {
                             (DraftActivity.this, R.layout.item_draft, list) {
                         @Override
                         protected void convert(ViewHolder holder, DraftListModel.ListBean model, int position) {
-                            holder.setText(R.id.tv_tabs,model.getVStrs());
+                            holder.setText(R.id.tv_tabs, model.getVStrs());
                             String[] strArr = model.getVStrs().split("\\|\\|");
-                            holder.setText(R.id.tv_yixuan,"已选："+strArr.length+"项");
+                            holder.setText(R.id.tv_yixuan, "已选：" + strArr.length + "项");
+
+                            List<String> arrList = new ArrayList<>();
+                            for (String s : strArr) {
+                                arrList.add(s);
+                            }
+                            RecyclerView rv = holder.getView(R.id.rv);
+                            rv.setLayoutManager(new LinearLayoutManager(DraftActivity.this));
+                            CommonAdapter<String> ca = new CommonAdapter<String>
+                                    (DraftActivity.this, R.layout.item_draft_item, arrList) {
+                                @Override
+                                protected void convert(ViewHolder holder, String s, int i) {
+                                    holder.setText(R.id.title, s);
+                                    /*holder.getView(R.id.delete).setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            arrList.remove(i);
+                                            ca.notifyDataSetChanged();
+                                        }
+                                    });*/
+                                }
+                            };
+                            rv.setAdapter(ca);
+
+                            ImageView iv_tab = holder.getView(R.id.iv_tab);
+                            iv_tab.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    if (rv.getVisibility() == View.VISIBLE){
+                                        rv.setVisibility(View.GONE);
+                                        iv_tab.setImageResource(R.mipmap.ic_next_black);
+                                    }else {
+                                        rv.setVisibility(View.VISIBLE);
+                                        iv_tab.setImageResource(R.mipmap.ic_down_black);
+                                    }
+                                }
+                            });
 
                             holder.getView(R.id.tv_delete).setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     //删除
-                                    showToast("确认删除该草稿吗？", "取消", "确认", new View.OnClickListener() {
+                                    showToast("确认删除该草稿吗？", "确认", "取消", new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
                                             dialog.dismiss();
+                                            showProgress(true, "正在删除，请稍候...");
+                                            Map<String, String> params = new HashMap<>();
+                                            params.put("u_token", localUserInfo.getToken());
+                                            params.put("y_draft_id", model.getYDraftId());
+                                            RequestDelete(params);
                                         }
                                     }, new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
                                             dialog.dismiss();
-                                            showProgress(true,"正在删除，请稍候...");
-                                            Map<String, String> params = new HashMap<>();
-                                            params.put("u_token", localUserInfo.getToken());
-                                            params.put("y_draft_id", model.getYDraftId());
-                                            RequestDelete(params);
                                         }
                                     });
 
@@ -150,7 +187,7 @@ public class DraftActivity extends BaseActivity {
                     mAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
                         @Override
                         public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
-
+                            finish();
                         }
 
                         @Override
@@ -168,6 +205,7 @@ public class DraftActivity extends BaseActivity {
 
     /**
      * 删除草稿
+     *
      * @param params
      */
     private void RequestDelete(Map<String, String> params) {
