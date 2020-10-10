@@ -187,6 +187,12 @@ public class DraftActivity extends BaseActivity {
                     mAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
                         @Override
                         public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                            Intent resultIntent = new Intent();
+                            Bundle bundle = new Bundle();
+                            bundle.putString("msg", list.get(i).getVStrs());
+                            bundle.putString("y_draft_id", list.get(i).getYDraftId());
+                            resultIntent.putExtras(bundle);
+                            DraftActivity.this.setResult(RESULT_OK, resultIntent);
                             finish();
                         }
 

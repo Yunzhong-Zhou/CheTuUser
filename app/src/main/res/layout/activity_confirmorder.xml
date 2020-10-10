@@ -549,6 +549,23 @@
                             android:textColorHint="@color/grey"
                             android:textSize="15sp" />
                     </LinearLayout>
+                    <EditText
+                        android:id="@+id/et_beizhu"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="13dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="13dp"
+                        android:background="@drawable/yuanjiao_10_baise"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="16dp"
+                        android:paddingRight="10dp"
+                        android:paddingBottom="16dp"
+                        android:minLines="3"
+                        android:gravity="top"
+                        android:hint="请输入订单备注"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/grey"/>
 
                 </LinearLayout>
             </androidx.core.widget.NestedScrollView>

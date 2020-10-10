@@ -6,6 +6,16 @@ import java.util.List;
  * Created by zyz on 2020/6/13.
  */
 public class Fragment1ServiceListModel {
+    private String daiban;
+
+    public String getDaiban() {
+        return daiban;
+    }
+
+    public void setDaiban(String daiban) {
+        this.daiban = daiban;
+    }
+
     private List<BannerListBean> banner_list;
     private List<IndexCustomListBean> index_custom_list;
     private List<IndexServiceListBean> index_service_list;

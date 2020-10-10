@@ -81,7 +81,7 @@ public class Fragment2 extends BaseFragment {
     CommonAdapter<Fragment3Model.ListBean> mAdapter;
     int store_item = -1;
 
-    TextView tv_caogao;
+    TextView tv_caogao,tv_pipeimendian;
 
     //车辆信息
     LinearLayout ll_car;
@@ -94,7 +94,7 @@ public class Fragment2 extends BaseFragment {
     RecyclerView recyclerView_sv;
     CommonAdapter<ServiceListModel_All.ListBean> mAdapter_sv;
     List<ServiceListModel_All.ListBean> list_sv = new ArrayList<>();
-    int i1 = -1;
+    int i1 = 0;
 
     /**
      * 服务tab
@@ -112,7 +112,7 @@ public class Fragment2 extends BaseFragment {
     /**
      * 悬浮窗
      */
-    String v_strs = "";
+    String v_strs = "", y_draft_id = "0";
     LinearLayout ll_xuanfu;
     TextView tv_tabs, tv_yixuan, tv_savecaogao, tv_pipei, tv_xiugai;
     boolean isXiuGai = true;
@@ -184,6 +184,7 @@ public class Fragment2 extends BaseFragment {
             } else {
                 params2.put("parent_id", yServiceId);
             }
+            params2.put("msg", msg);
             RequestService(params2, 0);
 
             requestServer();*/
@@ -232,16 +233,18 @@ public class Fragment2 extends BaseFragment {
 
             MyLogger.i(">>>>>>>选择的服务id" + yServiceId + ">>>>>是否为喷漆" + isSheet);
 
+            y_draft_id = "0";//清空草稿的id
 
             //获取服务tab
             HashMap<String, String> params2 = new HashMap<>();
             if (yServiceId.equals("")) {
-                i1 = -1;
+                i1 = 0;
                 ll_tab.setVisibility(View.GONE);
-                params2.put("y_parent_id", "0");
+                params2.put("parent_id", "0");
             } else {
                 params2.put("parent_id", yServiceId);
             }
+            params2.put("keys", "");
             RequestService(params2, 0);
             showSelectService();//显示选择的服务
 
@@ -324,6 +327,8 @@ public class Fragment2 extends BaseFragment {
         rl_search.setOnClickListener(this);
         et_search = findViewByID_My(R.id.et_search);
         et_search.setOnClickListener(this);
+
+        tv_pipeimendian = findViewByID_My(R.id.tv_pipeimendian);
         /*et_addr.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -501,7 +506,8 @@ public class Fragment2 extends BaseFragment {
         }
         //获取服务tab
         HashMap<String, String> params1 = new HashMap<>();
-        params1.put("y_parent_id", "0");
+        params1.put("parent_id", "0");
+        params1.put("keys", "");
         RequestService(params1, 0);
 
         //获取banner
@@ -525,7 +531,12 @@ public class Fragment2 extends BaseFragment {
                 break;
             case R.id.tv_caogao:
                 //草稿
-                CommonUtil.gotoActivity(getActivity(), DraftActivity.class);
+//                CommonUtil.gotoActivity(getActivity(), DraftActivity.class);
+                Intent intent2 = new Intent(getActivity(), DraftActivity.class);
+                Bundle bundle2 = new Bundle();
+                bundle2.putInt("type", 10002);
+                intent2.putExtras(bundle2);
+                startActivityForResult(intent2, 10002, bundle2);
                 break;
             case R.id.ll_car:
                 //选择车辆
@@ -538,10 +549,12 @@ public class Fragment2 extends BaseFragment {
 
             case R.id.tv_savecaogao:
                 //保存草稿
+                MyLogger.i(">>>>>>>"+y_draft_id);
                 showProgress(true, "正在保存，请稍候...");
                 Map<String, String> params = new HashMap<>();
                 params.put("u_token", localUserInfo.getToken());
                 params.put("v_strs", v_strs);
+                params.put("y_draft_id", y_draft_id);
                 RequestSave(params);
 
                 break;
@@ -843,6 +856,7 @@ public class Fragment2 extends BaseFragment {
                                 bundle.putString("id", list.get(i).getYStoreId());
                                 bundle.putString("longitude", longitude);
                                 bundle.putString("latitude", latitude);
+                                bundle.putString("keys", v_strs);
                                 CommonUtil.gotoActivityWithData(getActivity(), StoreDetailActivity.class, bundle, false);
                             }
 
@@ -904,7 +918,7 @@ public class Fragment2 extends BaseFragment {
     private void RequestService(HashMap<String, String> params, int type) {
         //初始化数据
         service_name = "";
-        i1 = -1;
+        i1 = 0;
         isXiuGai = true;
         yServiceId = "";
         list_sv.clear();
@@ -913,16 +927,16 @@ public class Fragment2 extends BaseFragment {
         list_tab3.clear();
         rv_tab2.setVisibility(View.INVISIBLE);
         rv_tab3.setVisibility(View.GONE);
-        if (mAdapter_sv!=null){
+        if (mAdapter_sv != null) {
             mAdapter_sv.notifyDataSetChanged();
         }
-        if (ca_tab1!=null){
+        if (ca_tab1 != null) {
             ca_tab1.notifyDataSetChanged();
         }
-        if (ca_tab2!=null){
+        if (ca_tab2 != null) {
             ca_tab2.notifyDataSetChanged();
         }
-        if (ca_tab3!=null){
+        if (ca_tab3 != null) {
             ca_tab3.notifyDataSetChanged();
         }
 
@@ -957,12 +971,13 @@ public class Fragment2 extends BaseFragment {
                         }
                     }
                 }*/
-                if (isSheet == 1) {//是喷漆
 
+                if (isSheet == 1) {//是喷漆
                     ll_tab.setVisibility(View.GONE);
                     ll_penqi.setVisibility(View.VISIBLE);
                     recyclerView_sv.setVisibility(View.GONE);
                     isSheet = 0;
+                    tv_pipeimendian.setVisibility(View.GONE);
 
                     //喷漆
                     ca_penqi1 = new CommonAdapter<ServiceListModel_All.ListBean>
@@ -1010,6 +1025,7 @@ public class Fragment2 extends BaseFragment {
                     else ll_tab.setVisibility(View.GONE);
                     ll_penqi.setVisibility(View.GONE);
                     recyclerView_sv.setVisibility(View.VISIBLE);
+                    tv_pipeimendian.setVisibility(View.VISIBLE);
                 }
 
 
@@ -1023,10 +1039,20 @@ public class Fragment2 extends BaseFragment {
 //                        holder.setText(R.id.tv_tab, model.getVName());
                         TextView tv_tab = holder.getView(R.id.tv_tab);
                         tv_tab.setText(model.getVName());
-                        if (i1 == position) {
+
+                        if (model.isIsgouxuan()){//如果已勾选
+//                            i1 = position;
                             tv_tab.setTextColor(getResources().getColor(R.color.blue));
-                        } else {
+                        }else {
                             tv_tab.setTextColor(getResources().getColor(R.color.black));
+                        }
+
+                        if (i1 == position) {
+//                            tv_tab.setBackgroundResource(R.drawable.yuanjiaobiankuang_5_lanse);
+                            holder.getView(R.id.view_tab).setVisibility(View.VISIBLE);
+                        } else {
+                            holder.getView(R.id.view_tab).setVisibility(View.INVISIBLE);
+//                            tv_tab.setBackgroundResource(R.color.transparent);
                         }
 
                         showContentPage();
@@ -1227,19 +1253,24 @@ public class Fragment2 extends BaseFragment {
                     @Override
                     public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
                         if (isXiuGai) {
-                            if (i != i1) {
-                                i1 = i;
-                                mAdapter_sv.notifyDataSetChanged();
-                                showSelectService();//显示选择的服务
-                            }
+                            if (!list_sv.get(i).isIsgouxuan())
+                                list_sv.get(i).setIsgouxuan(true);
+                            else list_sv.get(i).setIsgouxuan(false);
 
                             if (list_sv.get(i).getIsSheet() == 1) {//是喷漆
                                 ll_tab.setVisibility(View.GONE);
                                 ll_penqi.setVisibility(View.VISIBLE);
+                                tv_pipeimendian.setVisibility(View.GONE);
                             } else {
                                 ll_tab.setVisibility(View.VISIBLE);
                                 ll_penqi.setVisibility(View.GONE);
+                                tv_pipeimendian.setVisibility(View.VISIBLE);
                             }
+
+
+                            i1 = i;
+                            mAdapter_sv.notifyDataSetChanged();
+                            showSelectService();//显示选择的服务
                         }
                     }
 
@@ -1261,12 +1292,12 @@ public class Fragment2 extends BaseFragment {
     private void showSelectService() {
         v_strs = "";
         int count = 0;
-        if (i1 >= 0) {
+        /*if (i1 >= 0) {
             //单独加一个一级
             v_strs += list_sv.get(i1).getVName() + "||";
             count++;
 
-            /*if (list_sv.get(i1).getIsSheet() == 1) {//是喷漆
+            *//*if (list_sv.get(i1).getIsSheet() == 1) {//是喷漆
                 count++;
                 if (isleft) {
                     v_strs += "喷漆||";
@@ -1274,12 +1305,12 @@ public class Fragment2 extends BaseFragment {
                     count++;
                     v_strs += "喷漆||钣金||";
                 }
-            }*/
+            }*//*
         } else {
             ll_xuanfu.setVisibility(View.GONE);
-        }
+        }*/
 
-        if (ll_penqi.getVisibility()== View.VISIBLE){//是喷漆
+        if (ll_penqi.getVisibility() == View.VISIBLE) {//是喷漆
             count++;
             if (isleft) {
                 v_strs += "喷漆||";
@@ -1288,6 +1319,7 @@ public class Fragment2 extends BaseFragment {
                 v_strs += "喷漆||钣金||";
             }
         }
+
 //        jsonArray = new JSONArray();
         for (ServiceListModel_All.ListBean bean1 : list_sv) {//第一级
             if (bean1.isIsgouxuan()) {
@@ -1407,6 +1439,9 @@ public class Fragment2 extends BaseFragment {
                 hideProgress();
                 myToast("保存成功");
                 for (ServiceListModel_All.ListBean bean1 : list_sv) {//第一级
+                    if (bean1.isIsgouxuan()) {
+                        bean1.setIsgouxuan(false);
+                    }
                     for (ServiceListModel_All.ListBean.VListBeanXX bean2 : bean1.getV_list()) {//第二级
                         if (bean2.isIsgouxuan()) {
                             bean2.setIsgouxuan(false);
@@ -1415,7 +1450,6 @@ public class Fragment2 extends BaseFragment {
                             if (bean3.isIsgouxuan()) {
                                 bean3.setIsgouxuan(false);
                             }
-
                             for (ServiceListModel_All.ListBean.VListBeanXX.VListBeanX.VListBean bean4 : bean3.getV_list()) {//第四级
                                 if (bean4.isIsgouxuan()) {
                                     bean4.setIsgouxuan(false);
@@ -1425,9 +1459,18 @@ public class Fragment2 extends BaseFragment {
                         }
                     }
                 }
-                mAdapter_sv.notifyDataSetChanged();
-                ca_tab1.notifyDataSetChanged();
-                ca_tab2.notifyDataSetChanged();
+                if (mAdapter_sv != null) {
+                    mAdapter_sv.notifyDataSetChanged();
+                }
+                if (ca_tab1 != null) {
+                    ca_tab1.notifyDataSetChanged();
+                }
+                if (ca_tab2 != null) {
+                    ca_tab2.notifyDataSetChanged();
+                }
+                if (ca_tab3 != null) {
+                    ca_tab3.notifyDataSetChanged();
+                }
                 showSelectService();
             }
         });
@@ -1496,6 +1539,18 @@ public class Fragment2 extends BaseFragment {
                     Glide.with(getActivity()).load(URLs.IMGHOST + bundle1.getString("carlogo"))
                             .centerCrop()
                             .into(iv_carlogo);//加载图片
+                }
+                break;
+            case 10002:
+                //选择的草稿
+                if (data != null) {
+                    Bundle bundle2 = data.getExtras();
+                    String msg = bundle2.getString("msg");
+                    y_draft_id = bundle2.getString("y_draft_id");
+                    HashMap<String, String> params1 = new HashMap<>();
+                    params1.put("parent_id", "0");
+                    params1.put("keys", msg);
+                    RequestService(params1, 0);
                 }
                 break;
         }

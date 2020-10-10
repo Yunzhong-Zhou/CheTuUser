@@ -436,8 +436,14 @@ public class MyProfileActivity extends BaseActivity {
         Calendar endDate = Calendar.getInstance();
 
         if (!date.equals("")) {
-            String[] strArr = date.split("-");//拆分日期 得到年月日
-            selectedDate.set(Integer.valueOf(strArr[0]), Integer.valueOf(strArr[1]) - 1, Integer.valueOf(strArr[2]));
+            try {
+                String[] strArr = date.split("-");//拆分日期 得到年月日
+                selectedDate.set(Integer.valueOf(strArr[0]), Integer.valueOf(strArr[1]) - 1, Integer.valueOf(strArr[2]));
+            } catch (IllegalStateException e) {
+                // Only fullscreen activities can request orientation
+                e.printStackTrace();
+            }
+
         }
 
         //正确设置方式 原因：注意事项有说明

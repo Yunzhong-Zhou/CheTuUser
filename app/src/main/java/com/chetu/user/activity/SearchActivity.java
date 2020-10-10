@@ -275,6 +275,7 @@ public class SearchActivity extends BaseActivity {
                             bundle.putString("id", response.getList().get(i).getYStoreId());
                             bundle.putString("longitude", localUserInfo.getLongitude());
                             bundle.putString("latitude", localUserInfo.getLatitude());
+                            bundle.putString("keys", "");
                             CommonUtil.gotoActivityWithData(SearchActivity.this, StoreDetailActivity.class, bundle, false);
                         }
 

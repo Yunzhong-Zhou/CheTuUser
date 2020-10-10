@@ -378,6 +378,7 @@ public class FootprintActivity extends BaseActivity {
                             bundle.putString("id", list2.get(i).getStore_info().getYStoreId());
                             bundle.putString("longitude", localUserInfo.getLongitude());
                             bundle.putString("latitude", localUserInfo.getLatitude());
+                            bundle.putString("keys", "");
                             CommonUtil.gotoActivityWithData(FootprintActivity.this, StoreDetailActivity.class, bundle, false);
                         }
 

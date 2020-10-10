@@ -330,6 +330,7 @@
                     </LinearLayout>
 
                     <TextView
+                        android:id="@+id/tv_pipeimendian"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
@@ -435,7 +436,7 @@
                 android:paddingBottom="8dp"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
-                android:text="添加草稿"
+                android:text="保存"
                 android:textColor="@color/white"
                 android:textSize="15sp"
                 android:textStyle="bold" />

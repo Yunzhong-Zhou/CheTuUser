@@ -11,6 +11,8 @@ import com.chetu.user.net.URLs;
 import com.chetu.user.okhttp.CallBackUtil;
 import com.chetu.user.okhttp.OkhttpUtil;
 import com.chetu.user.utils.CommonUtil;
+import com.donkingliang.groupedadapter.adapter.GroupedRecyclerViewAdapter;
+import com.donkingliang.groupedadapter.holder.BaseViewHolder;
 import com.liaoinstan.springview.widget.SpringView;
 
 import java.util.ArrayList;
@@ -31,7 +33,7 @@ public class NotebookActivity extends BaseActivity {
     int page = 0;
     private RecyclerView recyclerView;
     List<NotebookModel.ListBeanX> list = new ArrayList<>();
-//    CommonAdapter<NotebookModel.ListBeanX> mAdapter;
+    //    CommonAdapter<NotebookModel.ListBeanX> mAdapter;
     NoteBookAdapter mAdapter;
 
     @Override
@@ -93,7 +95,7 @@ public class NotebookActivity extends BaseActivity {
         Request(params);
     }
 
-//    String year_temp = "";
+    //    String year_temp = "";
     private void Request(Map<String, String> params) {
         OkhttpUtil.okHttpPost(URLs.Notebook, params, headerMap, new CallBackUtil<NotebookModel>() {
             @Override
@@ -114,9 +116,19 @@ public class NotebookActivity extends BaseActivity {
                 list = response.getList();
                 if (list.size() > 0) {
                     showContentPage();
-                    mAdapter = new NoteBookAdapter(NotebookActivity.this,list);
+                    mAdapter = new NoteBookAdapter(NotebookActivity.this, list);
                     recyclerView.setAdapter(mAdapter);
-
+                    mAdapter.setOnChildClickListener(new GroupedRecyclerViewAdapter.OnChildClickListener() {
+                        @Override
+                        public void onChildClick(GroupedRecyclerViewAdapter adapter, BaseViewHolder holder, int groupPosition, int childPosition) {
+                            Bundle bundle = new Bundle();
+                            bundle.putString("y_user_notepad_id", response.getList().get(groupPosition).getList().get(childPosition).getYUserNotepadId());
+                            bundle.putString("y_title", response.getList().get(groupPosition).getList().get(childPosition).getYTitle());
+                            bundle.putString("i_msg", response.getList().get(groupPosition).getList().get(childPosition).getIMsg());
+                            bundle.putString("y_tag", response.getList().get(groupPosition).getList().get(childPosition).getYTag());
+                            CommonUtil.gotoActivityWithData(NotebookActivity.this, AddNotebookActivity.class, bundle, false);
+                        }
+                    });
                     /*mAdapter = new CommonAdapter<NotebookModel.ListBean>
                             (NotebookActivity.this, R.layout.item_notebook, list) {
                         @Override
@@ -209,7 +221,12 @@ public class NotebookActivity extends BaseActivity {
         titleView.setRightBtn(R.mipmap.ic_add_blue, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CommonUtil.gotoActivity(NotebookActivity.this, AddNotebookActivity.class, false);
+                Bundle bundle = new Bundle();
+                bundle.putString("y_user_notepad_id", "0");
+                bundle.putString("y_title", "");
+                bundle.putString("i_msg", "");
+                bundle.putString("y_tag", "");
+                CommonUtil.gotoActivityWithData(NotebookActivity.this, AddNotebookActivity.class, bundle, false);
             }
         });
     }

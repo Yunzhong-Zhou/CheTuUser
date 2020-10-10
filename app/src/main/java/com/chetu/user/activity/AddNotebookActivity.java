@@ -24,7 +24,7 @@ import okhttp3.Response;
  */
 public class AddNotebookActivity extends BaseActivity {
     EditText editText1, editText2, editText3;
-    String y_title = "", i_msg = "", y_tag = "";
+    String y_user_notepad_id = "", y_title = "", i_msg = "", y_tag = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,11 +49,20 @@ public class AddNotebookActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+        y_user_notepad_id = getIntent().getStringExtra("y_user_notepad_id");
+        y_title = getIntent().getStringExtra("y_title");
+        editText1.setText(y_title);
+        i_msg = getIntent().getStringExtra("i_msg");
+        editText3.setText(i_msg);
+        y_tag = getIntent().getStringExtra("y_tag");
+        editText2.setText(y_tag);
+
         //获取标签列表
         Map<String, String> params = new HashMap<>();
         params.put("u_token", localUserInfo.getToken());
         Request(params);
     }
+
     private void Request(Map<String, String> params) {
         OkhttpUtil.okHttpPost(URLs.Notebook_tag, params, headerMap, new CallBackUtil<NotebookTagModel>() {
             @Override
@@ -75,6 +84,7 @@ public class AddNotebookActivity extends BaseActivity {
             }
         });
     }
+
     @Override
     public void onClick(View v) {
         super.onClick(v);
@@ -87,13 +97,14 @@ public class AddNotebookActivity extends BaseActivity {
                     params.put("u_token", localUserInfo.getToken());
                     params.put("y_title", y_title);
                     params.put("i_msg", i_msg);
-//                    params.put("v_money", v_money);
+                    params.put("y_user_notepad_id", y_user_notepad_id);
                     params.put("y_tag", y_tag);
                     RequestUpData(params);//添加
                 }
                 break;
         }
     }
+
     /**
      * 添加记录
      *
@@ -120,6 +131,7 @@ public class AddNotebookActivity extends BaseActivity {
             }
         });
     }
+
     private boolean match() {
         y_title = editText1.getText().toString().trim();
         if (TextUtils.isEmpty(y_title)) {

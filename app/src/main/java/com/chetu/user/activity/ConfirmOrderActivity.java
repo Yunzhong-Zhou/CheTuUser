@@ -7,6 +7,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -72,7 +73,7 @@ public class ConfirmOrderActivity extends BaseActivity {
     boolean isYuYue = false;
     TextView tv_time, tv_money, tv_yuyuedaodian, tv_daodianshigong;
 
-
+    EditText  et_beizhu;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -166,6 +167,8 @@ public class ConfirmOrderActivity extends BaseActivity {
         tv_money = findViewByID_My(R.id.tv_money);
         tv_yuyuedaodian = findViewByID_My(R.id.tv_yuyuedaodian);
         tv_daodianshigong = findViewByID_My(R.id.tv_daodianshigong);
+
+        et_beizhu = findViewByID_My(R.id.et_beizhu);
 
     }
 
@@ -604,6 +607,13 @@ public class ConfirmOrderActivity extends BaseActivity {
                 if (isYuYue) {
                     ll_yuyuetime.setVisibility(View.VISIBLE);
                     iv_yuyuedaodian.setImageResource(R.mipmap.ic_xuanzhong);
+
+                    Intent intent2 = new Intent(ConfirmOrderActivity.this, SelectTimeActivity.class);
+                    Bundle bundle2 = new Bundle();
+                    bundle2.putInt("type", 10002);
+                    bundle2.putString("y_store_id", y_store_id);
+                    intent2.putExtras(bundle2);
+                    startActivityForResult(intent2, 10002, bundle2);
                 } else {
                     ll_yuyuetime.setVisibility(View.GONE);
                     iv_yuyuedaodian.setImageResource(R.mipmap.ic_weixuan);
@@ -682,6 +692,8 @@ public class ConfirmOrderActivity extends BaseActivity {
                             params.put("delivery_time", delivery_time);
                             params.put("delivery_address", delivery_address);
                             params.put("send_address", send_address);
+
+                            params.put("c_msg",et_beizhu.getText().toString().trim());
                             RequestAdd(params);
                         }
                     }, new View.OnClickListener() {

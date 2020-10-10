@@ -7,6 +7,7 @@ import java.util.List;
  * Created by zyz on 2020/6/9.
  */
 public class StoreDetailModel implements Serializable {
+
     /**
      * store_tech_list : [{"id":"0","userId":"0","userBalance":0,"userName":"","userIntegral":"0","yStoreId":"692341585785913344","userHash":"7E5194837D4B3BBE125C07F8FA16ED0A","headPortrait":"/upload/timg.jpg","createDate":"2020-05-29 15:03:05","techJson":" {\"star\":\"4\",\"working\":\"1\"}","tech_info":{"star":4,"working":1}},{"id":"0","userId":"0","userBalance":0,"userName":"","userIntegral":"0","yStoreId":"692341585785913344","userHash":"B52CF117B3218C7AD48568134544695C","headPortrait":"/upload/timg.jpg","createDate":"2020-05-31 14:25:16","techJson":" {\"star\":\"4\",\"working\":\"1\"}","tech_info":{"star":4,"working":1}},{"id":"0","userId":"0","userBalance":0,"userName":"","userIntegral":"0","yStoreId":"692341585785913344","userHash":"5F71987EBBC44C9ADCB4578D1ED034A4","headPortrait":"/upload/timg.jpg","createDate":"2020-06-06 10:34:31","techJson":"{\"star\":0,\"working\":1}","tech_info":{"star":0,"working":1}},{"id":"0","userId":"0","userBalance":0,"userName":"","userIntegral":"0","yStoreId":"692341585785913344","userHash":"9523B35869B893EDC7529DF626CA6B04","headPortrait":"/upload/head/719242188466159616.jpg","createDate":"2020-06-07 17:31:40","techJson":"{\"star\":0,\"working\":1}","tech_info":{"star":0,"working":1}},{"id":"0","userId":"0","userBalance":0,"userName":"周锶俊","userIntegral":"0","yStoreId":"692341585785913344","userHash":"504F04C880F2A74235E7CA1801A56461","headPortrait":"/upload/2020-06-13/20200613091533_407285.png","createDate":"2020-06-10 23:19:09","techJson":"{\"star\":0,\"working\":1}","tech_info":{"star":0,"working":1}},{"id":"0","userId":"0","userBalance":0,"userName":"","userIntegral":"0","yStoreId":"692341585785913344","userHash":"018CEC7943E6A744F4701ADEC73EE8CA","headPortrait":" ","createDate":"2020-06-18 13:55:53","techJson":"{\"star\":0,\"working\":1}","tech_info":{"star":0,"working":1}}]
      * store_service_list : [{"id":"1023","yStoreServiceId":"692341585785913344","yStoreId":"692341585785913344","yState":1,"lineupSum":10,"isSheet":0,"yStateValue":"维修","sPrice":100,"pictureStr":"/static/img/20200528151327.png"}]
@@ -21,6 +22,7 @@ public class StoreDetailModel implements Serializable {
      */
 
     private KfUserInfoBean kf_user_info;
+    private List<IsServiceListBean> is_service_list;
 
     public InfoBean getInfo() {
         return info;
@@ -52,6 +54,14 @@ public class StoreDetailModel implements Serializable {
 
     public void setKf_user_info(KfUserInfoBean kf_user_info) {
         this.kf_user_info = kf_user_info;
+    }
+
+    public List<IsServiceListBean> getIs_service_list() {
+        return is_service_list;
+    }
+
+    public void setIs_service_list(List<IsServiceListBean> is_service_list) {
+        this.is_service_list = is_service_list;
     }
 
     public static class InfoBean implements Serializable{
@@ -736,6 +746,122 @@ public class StoreDetailModel implements Serializable {
 
         public void setIsKf(int isKf) {
             this.isKf = isKf;
+        }
+    }
+
+    public static class IsServiceListBean {
+        /**
+         * id : 1049
+         * yStoreServiceId : 692341585785913359
+         * yStoreId : 692341585785913344
+         * isgouxuan : false
+         * yState : 1
+         * lineupSum : 10
+         * isSheet : 1
+         * yStateValue : 普洗3级
+         * sPrice : 100
+         * pictureStr : /upload/2020-06-02/20200602102222_621580.png
+         * parentId : 692341585785913352
+         */
+
+        private String id;
+        private String yStoreServiceId;
+        private String yStoreId;
+        private boolean isgouxuan;
+        private int yState;
+        private int lineupSum;
+        private int isSheet;
+        private String yStateValue;
+        private int sPrice;
+        private String pictureStr;
+        private String parentId;
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getYStoreServiceId() {
+            return yStoreServiceId;
+        }
+
+        public void setYStoreServiceId(String yStoreServiceId) {
+            this.yStoreServiceId = yStoreServiceId;
+        }
+
+        public String getYStoreId() {
+            return yStoreId;
+        }
+
+        public void setYStoreId(String yStoreId) {
+            this.yStoreId = yStoreId;
+        }
+
+        public boolean isIsgouxuan() {
+            return isgouxuan;
+        }
+
+        public void setIsgouxuan(boolean isgouxuan) {
+            this.isgouxuan = isgouxuan;
+        }
+
+        public int getYState() {
+            return yState;
+        }
+
+        public void setYState(int yState) {
+            this.yState = yState;
+        }
+
+        public int getLineupSum() {
+            return lineupSum;
+        }
+
+        public void setLineupSum(int lineupSum) {
+            this.lineupSum = lineupSum;
+        }
+
+        public int getIsSheet() {
+            return isSheet;
+        }
+
+        public void setIsSheet(int isSheet) {
+            this.isSheet = isSheet;
+        }
+
+        public String getYStateValue() {
+            return yStateValue;
+        }
+
+        public void setYStateValue(String yStateValue) {
+            this.yStateValue = yStateValue;
+        }
+
+        public int getSPrice() {
+            return sPrice;
+        }
+
+        public void setSPrice(int sPrice) {
+            this.sPrice = sPrice;
+        }
+
+        public String getPictureStr() {
+            return pictureStr;
+        }
+
+        public void setPictureStr(String pictureStr) {
+            this.pictureStr = pictureStr;
+        }
+
+        public String getParentId() {
+            return parentId;
+        }
+
+        public void setParentId(String parentId) {
+            this.parentId = parentId;
         }
     }
 }

@@ -95,7 +95,7 @@ public class Fragment1 extends BaseFragment {
 
     //车辆信息
     LinearLayout ll_car;
-    TextView tv_carname, tv_carnum;
+    TextView tv_carname, tv_carnum,tv_daiban;
     ImageView iv_carlogo;
 
     //定位
@@ -174,6 +174,10 @@ public class Fragment1 extends BaseFragment {
         springView.setListener(new SpringView.OnFreshListener() {
             @Override
             public void onRefresh() {
+                //获取服务项目和banner
+                HashMap<String, String> params2 = new HashMap<>();
+                params2.put("y_parent_id", "0");
+                RequestService(params2, 0);
                 //获取附近活动列表数据
                 page1 = 0;
                 Map<String, String> params1 = new HashMap<>();
@@ -237,6 +241,7 @@ public class Fragment1 extends BaseFragment {
         tv_carname = findViewByID_My(R.id.tv_carname);
         tv_carnum = findViewByID_My(R.id.tv_carnum);
         iv_carlogo = findViewByID_My(R.id.iv_carlogo);
+        tv_daiban = findViewByID_My(R.id.tv_daiban);
     }
 
     @Override
@@ -423,6 +428,7 @@ public class Fragment1 extends BaseFragment {
                         bundle.putString("id", list1.get(i).getYStoreId());
                         bundle.putString("longitude", longitude);
                         bundle.putString("latitude", latitude);
+                        bundle.putString("keys", "");
                         CommonUtil.gotoActivityWithData(getActivity(), StoreDetailActivity.class, bundle, false);
                     }
 
@@ -596,6 +602,7 @@ public class Fragment1 extends BaseFragment {
                 images.add("http://file02.16sucai.com/d/file/2014/0825/dcb017b51479798f6c60b7b9bd340728.jpg");
                 images.add("http://file02.16sucai.com/d/file/2014/0825/dcb017b51479798f6c60b7b9bd340728.jpg");
                 images.add("http://file02.16sucai.com/d/file/2014/0825/dcb017b51479798f6c60b7b9bd340728.jpg");*/
+                tv_daiban.setText(response.getDaiban());
                 images.clear();
                 for (int i = 0; i < response.getBanner_list().size(); i++) {
                     images.add(URLs.IMGHOST + response.getBanner_list().get(i).getImgurl());

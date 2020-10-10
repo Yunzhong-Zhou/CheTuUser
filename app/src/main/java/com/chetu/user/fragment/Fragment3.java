@@ -408,6 +408,7 @@ public class Fragment3 extends BaseFragment {
                                                 bundle.putString("id", model.getYStoreId());
                                                 bundle.putString("longitude", longitude);
                                                 bundle.putString("latitude", latitude);
+                                                bundle.putString("keys", "");
                                                 CommonUtil.gotoActivityWithData(getActivity(), StoreDetailActivity.class, bundle, false);
                                             }
 
@@ -449,6 +450,7 @@ public class Fragment3 extends BaseFragment {
                                                 bundle.putString("id", model.getYStoreId());
                                                 bundle.putString("longitude", longitude);
                                                 bundle.putString("latitude", latitude);
+                                                bundle.putString("keys", "");
                                                 CommonUtil.gotoActivityWithData(getActivity(), StoreDetailActivity.class, bundle, false);
                                             }
 
@@ -472,6 +474,7 @@ public class Fragment3 extends BaseFragment {
                             bundle.putString("id", list.get(i).getYStoreId());
                             bundle.putString("longitude", longitude);
                             bundle.putString("latitude", latitude);
+                            bundle.putString("keys", "");
                             CommonUtil.gotoActivityWithData(getActivity(), StoreDetailActivity.class, bundle, false);
                         }
 

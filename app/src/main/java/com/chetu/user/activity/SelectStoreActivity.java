@@ -324,6 +324,7 @@ public class SelectStoreActivity extends BaseActivity {
                                 bundle.putString("id", response.getList().get(i).getYStoreId());
                                 bundle.putString("longitude", localUserInfo.getLongitude());
                                 bundle.putString("latitude", localUserInfo.getLatitude());
+                                bundle.putString("keys", service_name);
                                 CommonUtil.gotoActivityWithData(SelectStoreActivity.this, StoreDetailActivity.class, bundle, false);
                             }
                         }

@@ -25,6 +25,7 @@ import com.chetu.user.okhttp.CallBackUtil;
 import com.chetu.user.okhttp.OkhttpUtil;
 import com.chetu.user.popupwindow.PhotoShowDialog;
 import com.chetu.user.utils.CommonUtil;
+import com.chetu.user.utils.MyLogger;
 import com.chetu.user.view.DiscussionAvatarView.DiscussionAvatarView;
 import com.cy.cyflowlayoutlibrary.FlowLayout;
 import com.cy.cyflowlayoutlibrary.FlowLayoutAdapter;
@@ -59,7 +60,7 @@ import okhttp3.Response;
  */
 public class StoreDetailActivity extends BaseActivity {
     int page = 0;
-    String y_store_id = "", longitude = "", latitude = "";
+    String y_store_id = "", longitude = "", latitude = "", keys = "";
 
     //banner
     Banner banner;
@@ -128,6 +129,7 @@ public class StoreDetailActivity extends BaseActivity {
                 params.put("longitude", longitude);
                 params.put("latitude", latitude);
                 params.put("y_store_id", y_store_id);
+                params.put("keys", keys);
                 Request(params);
             }
 
@@ -194,6 +196,14 @@ public class StoreDetailActivity extends BaseActivity {
         longitude = getIntent().getStringExtra("longitude");
         latitude = getIntent().getStringExtra("latitude");
 
+        keys = getIntent().getStringExtra("keys");
+        if (!keys.equals("")) {
+            keys = keys.replace("||", "|");
+            MyLogger.i(">>>>>>>>" + keys);
+        }else {
+            keys = "0";
+        }
+
         requestServer();
     }
 
@@ -209,6 +219,7 @@ public class StoreDetailActivity extends BaseActivity {
         params.put("longitude", longitude);
         params.put("latitude", latitude);
         params.put("y_store_id", y_store_id);
+        params.put("keys", keys);
         Request(params);
 
         //获取提问
@@ -350,6 +361,7 @@ public class StoreDetailActivity extends BaseActivity {
                         HashMap<String, String> params = new HashMap<>();
                         params.put("y_store_id", list_tab.get(i).getYStoreId());
                         params.put("parent_id", list_tab.get(i).getYStoreServiceId());
+                        params.put("keys", keys);
                         RequestService(params, list_tab.get(i).getYStateValue()
                                 , list_tab.get(i).getIsSheet());
                     }
@@ -444,6 +456,13 @@ public class StoreDetailActivity extends BaseActivity {
                     }
                 });
                 rv_jishi.setAdapter(mAdapter_jishi);
+
+                for (int i = 0; i < response.getIs_service_list().size(); i++) {
+                    list_xuanze.add(new XuanZeFuWuModel(response.getIs_service_list().get(i).getYStoreServiceId(),
+                            response.getIs_service_list().get(i).getYStateValue(), response.getIs_service_list().get(i).getSPrice()));
+                }
+
+                showUI();
             }
         });
 
@@ -664,6 +683,7 @@ public class StoreDetailActivity extends BaseActivity {
      * @param params
      */
     int item_service = 0;
+
     private void RequestService(HashMap<String, String> params, String title, int type) {
         OkhttpUtil.okHttpPost(URLs.ServiceList_Store, params, headerMap, new CallBackUtil<ServiceListModel_Store>() {
             @Override
@@ -722,7 +742,7 @@ public class StoreDetailActivity extends BaseActivity {
                                 }
 
                                 //如果有2级列表
-                                if (item_service == position){
+                                if (item_service == position) {
                                     if (model.getClist().size() > 0 && isGouXuan) {
                                         rv2.setVisibility(View.VISIBLE);
                                         CommonAdapter<ServiceListModel_Store.ListBean.ClistBean> adapter2 = new CommonAdapter<ServiceListModel_Store.ListBean.ClistBean>

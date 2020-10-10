@@ -288,7 +288,8 @@ public class CarServiceActivity extends BaseActivity {
         showProgress(true, getString(R.string.app_loading));
         //获取服务项目
         HashMap<String, String> params2 = new HashMap<>();
-//        params2.put("y_parent_id", "0");
+        params2.put("parent_id", "0");
+        params2.put("keys", "");
         RequestService(params2, 0);
 
         //获取商家列表
@@ -398,6 +399,7 @@ public class CarServiceActivity extends BaseActivity {
                             ca.setOnItemClickListener(new OnItemClickListener() {
                                 @Override
                                 public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+
                                     if (!model.getV_list().get(i).isIsgouxuan())
                                         model.getV_list().get(i).setIsgouxuan(true);
                                     else model.getV_list().get(i).setIsgouxuan(false);
@@ -422,6 +424,9 @@ public class CarServiceActivity extends BaseActivity {
                     public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
                         if (i != i1) {
                             i1 = i;
+                            mAdapter_sv.notifyDataSetChanged();
+                        }else {
+                            i1 = -1;
                             mAdapter_sv.notifyDataSetChanged();
                         }
 
