@@ -24,6 +24,7 @@ import com.chetu.user.activity.CarInsuranceActivity;
 import com.chetu.user.activity.CarServiceActivity;
 import com.chetu.user.activity.MainActivity;
 import com.chetu.user.activity.MyGarageActivity;
+import com.chetu.user.activity.ProductDetailActivity;
 import com.chetu.user.activity.ProductListActivity;
 import com.chetu.user.activity.SearchActivity;
 import com.chetu.user.activity.StoreDetailActivity;
@@ -33,6 +34,7 @@ import com.chetu.user.base.BaseFragment;
 import com.chetu.user.model.Fragment1ServiceListModel;
 import com.chetu.user.model.Fragment1TabModel;
 import com.chetu.user.model.Fragment3Model;
+import com.chetu.user.model.ProductListModel;
 import com.chetu.user.net.URLs;
 import com.chetu.user.okhttp.CallBackUtil;
 import com.chetu.user.okhttp.OkhttpUtil;
@@ -83,8 +85,9 @@ public class Fragment1 extends BaseFragment {
     TextView tv_xiaoxinum, tv_more1, tv_more2;
 
     RecyclerView recyclerView1;
-    List<Fragment3Model.ListBean> list1 = new ArrayList<>();
-    CommonAdapter<Fragment3Model.ListBean> mAdapter1;
+    List<ProductListModel.ListBean> list1 = new ArrayList<>();
+    CommonAdapter<ProductListModel.ListBean> mAdapter1;
+
     RecyclerView recyclerView2;
     List<Fragment3Model.ListBean> list2 = new ArrayList<>();
     CommonAdapter<Fragment3Model.ListBean> mAdapter2;
@@ -181,12 +184,10 @@ public class Fragment1 extends BaseFragment {
                 //获取附近活动列表数据
                 page1 = 0;
                 Map<String, String> params1 = new HashMap<>();
-                params1.put("service_name", "");
+                params1.put("keyws", "");
                 params1.put("page", page1 + "");
-                params1.put("longitude", longitude);
-                params1.put("latitude", latitude);
-                params1.put("is_review", "1");
-                params1.put("is_index", "1");
+                params1.put("y_classify_id", "0");
+                params1.put("v_sort", "1");
                 RequestList1(params1);
 
                 //获取口碑商家列表
@@ -298,15 +299,13 @@ public class Fragment1 extends BaseFragment {
                         tv_addr.setText(aMapLocation.getCity() + "");
 
 
-                        page1 = 0;
+                        /*page1 = 0;
                         Map<String, String> params1 = new HashMap<>();
-                        params1.put("service_name", "");
+                        params1.put("keyws", "");
                         params1.put("page", page1 + "");
-                        params1.put("longitude", longitude);
-                        params1.put("latitude", latitude);
-                        params1.put("is_review", "1");
-                        params1.put("is_index", "1");
-                        RequestList1(params1);
+                        params1.put("y_classify_id", "0");
+                        params1.put("v_sort", "1");
+                        RequestList1(params1);*/
 
                         //获取口碑商家列表
                         page2 = 0;
@@ -356,12 +355,10 @@ public class Fragment1 extends BaseFragment {
         if (!localUserInfo.getCityname().equals("")) {
             page1 = 0;
             Map<String, String> params1 = new HashMap<>();
-            params1.put("service_name", "");
+            params1.put("keyws", "");
             params1.put("page", page1 + "");
-            params1.put("longitude", longitude);
-            params1.put("latitude", latitude);
-            params1.put("is_review", "1");
-            params1.put("is_index", "1");
+            params1.put("y_classify_id", "0");
+            params1.put("v_sort", "1");
             RequestList1(params1);
 
             //获取口碑商家列表
@@ -386,9 +383,9 @@ public class Fragment1 extends BaseFragment {
      * @param params
      */
     private void RequestList1(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.Fragment3, params, headerMap, new CallBackUtil<Fragment3Model>() {
+        OkhttpUtil.okHttpPost(URLs.ProductList, params, headerMap, new CallBackUtil<ProductListModel>() {
             @Override
-            public Fragment3Model onParseResponse(Call call, Response response) {
+            public ProductListModel onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -400,36 +397,59 @@ public class Fragment1 extends BaseFragment {
             }
 
             @Override
-            public void onResponse(Fragment3Model response) {
+            public void onResponse(ProductListModel response) {
                 hideProgress();
                 list1 = response.getList();
-                mAdapter1 = new CommonAdapter<Fragment3Model.ListBean>
-                        (getActivity(), R.layout.item_fragment1_gridview1, list1) {
+                mAdapter1 = new CommonAdapter<ProductListModel.ListBean>
+                        (getActivity(), R.layout.item_productlist, list1) {
                     @Override
-                    protected void convert(ViewHolder holder, Fragment3Model.ListBean model, int position) {
-                        ImageView imageView1 = holder.getView(R.id.imageView1);
+                    protected void convert(ViewHolder holder, ProductListModel.ListBean model, int position) {
+                        /*ImageView imageView1 = holder.getView(R.id.imageView1);
                         Glide.with(getActivity())
-                                .load(URLs.IMGHOST + model.getPicture())
+                                .load(URLs.IMGHOST +model.getGImg())
                                 .centerCrop()
                                 .apply(RequestOptions.bitmapTransform(new RoundedCorners(10)))
                                 .placeholder(R.mipmap.loading)//加载站位图
                                 .error(R.mipmap.zanwutupian)//加载失败
                                 .into(imageView1);//加载图片
-                        holder.setText(R.id.textView1, model.getVLevel());//等级
-                        holder.setText(R.id.textView2, model.getVName());//店名
-                        holder.setText(R.id.textView3, model.getSlogan());//活动
-                        holder.setText(R.id.textView4, model.getAddress());//地址
+                        holder.setText(R.id.textView1, model.get);//等级
+                        holder.setText(R.id.textView2, model.getGName());//店名
+                        holder.setText(R.id.textView3, model.get);//活动
+                        holder.setText(R.id.textView4, model.get);//地址*/
+                        //logo
+                        ImageView imageView = holder.getView(R.id.imageView);
+                        Glide.with(getActivity()).load(URLs.IMGHOST + model.getGImg())
+                                .centerCrop()
+                                .apply(RequestOptions.bitmapTransform(new
+                                        RoundedCorners(CommonUtil.dip2px(getActivity(), 5))))
+                                .placeholder(R.mipmap.loading)//加载站位图
+                                .error(R.mipmap.zanwutupian)//加载失败
+                                .into(imageView);//加载图片
+
+                        holder.setText(R.id.textView1, model.getGName());
+                        holder.setText(R.id.textView2, model.getGPrice() + "");
+                            /*TextView textView3 = holder.getView(R.id.textView3);
+                            textView3.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    //购买
+
+                                }
+                            });*/
                     }
                 };
                 mAdapter1.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
-                        Bundle bundle = new Bundle();
+                        /*Bundle bundle = new Bundle();
                         bundle.putString("id", list1.get(i).getYStoreId());
                         bundle.putString("longitude", longitude);
                         bundle.putString("latitude", latitude);
                         bundle.putString("keys", "");
-                        CommonUtil.gotoActivityWithData(getActivity(), StoreDetailActivity.class, bundle, false);
+                        CommonUtil.gotoActivityWithData(getActivity(), StoreDetailActivity.class, bundle, false);*/
+                        Bundle bundle = new Bundle();
+                        bundle.putString("y_goods_id", list1.get(i).getYGoodsId());
+                        CommonUtil.gotoActivityWithData(getActivity(), ProductDetailActivity.class, bundle, false);
                     }
 
                     @Override
@@ -449,9 +469,9 @@ public class Fragment1 extends BaseFragment {
     }
 
     private void RequestListMore1(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.Fragment3, params, headerMap, new CallBackUtil<Fragment3Model>() {
+        OkhttpUtil.okHttpPost(URLs.ProductList, params, headerMap, new CallBackUtil<ProductListModel>() {
             @Override
-            public Fragment3Model onParseResponse(Call call, Response response) {
+            public ProductListModel onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -464,9 +484,9 @@ public class Fragment1 extends BaseFragment {
             }
 
             @Override
-            public void onResponse(Fragment3Model response) {
+            public void onResponse(ProductListModel response) {
                 hideProgress();
-                List<Fragment3Model.ListBean> list_1 = new ArrayList<>();
+                List<ProductListModel.ListBean> list_1 = new ArrayList<>();
                 list_1 = response.getList();
                 if (list_1.size() == 0) {
                     page1--;
@@ -765,12 +785,10 @@ public class Fragment1 extends BaseFragment {
                 showProgress(true, getString(R.string.app_loading4));
                 page1++;
                 Map<String, String> params1 = new HashMap<>();
-                params1.put("service_name", "");
+                params1.put("keyws", "");
                 params1.put("page", page1 + "");
-                params1.put("longitude", longitude);
-                params1.put("latitude", latitude);
-                params1.put("is_review", "1");
-                params1.put("is_index", "1");
+                params1.put("y_classify_id", "0");
+                params1.put("v_sort", "1");
                 RequestListMore1(params1);
                 break;
             case R.id.tv_more2:
