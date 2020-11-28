@@ -27,8 +27,6 @@ import com.chetu.user.net.URLs;
 import com.chetu.user.okhttp.CallBackUtil;
 import com.chetu.user.okhttp.OkhttpUtil;
 import com.chetu.user.utils.CommonUtil;
-import com.cy.cyflowlayoutlibrary.FlowLayout;
-import com.cy.cyflowlayoutlibrary.FlowLayoutAdapter;
 import com.cy.dialog.BaseDialog;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
@@ -41,6 +39,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import okhttp3.Call;
@@ -62,9 +61,10 @@ public class AddCarActivity extends BaseActivity {
 
     TimePickerView pvTime1;
 
-    FlowLayoutAdapter<String> flowLayoutAdapter;
-    List<String> stringList = new ArrayList<>();
-    int i = 19;
+    //    FlowLayoutAdapter<String> flowLayoutAdapter;
+    List<String> provinceList = new ArrayList<>();
+    List<String> abcList = new ArrayList<>();
+    int i_province = 4;
 
     //保险数据
     List<BaoXianModel.ListBean> list_sy = new ArrayList<>();
@@ -85,8 +85,11 @@ public class AddCarActivity extends BaseActivity {
         tv_shangyexian = findViewByID_My(R.id.tv_shangyexian);
         tv_jiaoqiangxian = findViewByID_My(R.id.tv_jiaoqiangxian);
         tv_confirm = findViewByID_My(R.id.tv_confirm);
+
         et_carnum = findViewByID_My(R.id.et_carnum);
+
         et_phone = findViewByID_My(R.id.et_phone);
+        et_phone.setText(localUserInfo.getPhonenumber());
         et_code = findViewByID_My(R.id.et_code);
         ll_geren = findViewByID_My(R.id.ll_geren);
         ll_gongsi = findViewByID_My(R.id.ll_gongsi);
@@ -96,42 +99,23 @@ public class AddCarActivity extends BaseActivity {
 
         tv_baoxiantime = findViewByID_My(R.id.tv_baoxiantime);
         tv_nianshentime = findViewByID_My(R.id.tv_nianshentime);
+
+
     }
 
     @Override
     protected void initData() {
         time = new TimeCount(60000, 1000);//构造CountDownTimer对象
-        stringList.add("川");
-        stringList.add("京");
-        stringList.add("津");
-        stringList.add("冀");
-        stringList.add("晋");
-        stringList.add("蒙");
-        stringList.add("辽");
-        stringList.add("吉");
-        stringList.add("黑");
-        stringList.add("沪");
-        stringList.add("苏");
-        stringList.add("浙");
-        stringList.add("皖");
-        stringList.add("闽");
-        stringList.add("赣");
-        stringList.add("鲁");
-        stringList.add("豫");
-        stringList.add("鄂");
-        stringList.add("湘");
-        stringList.add("粤");
-        stringList.add("桂");
-        stringList.add("琼");
-        stringList.add("渝");
-        stringList.add("贵");
-        stringList.add("云");
-        stringList.add("藏");
-        stringList.add("陕");
-        stringList.add("甘");
-        stringList.add("青");
-        stringList.add("宁");
-        stringList.add("新");
+
+        String[] province = getResources().getStringArray(R.array.province);
+        for (String s : province) {
+            provinceList.add(s);
+        }
+        String[] nums = getResources().getStringArray(R.array.nums);
+        for (String s : nums) {
+            abcList.add(s);
+        }
+
 
         y_user_sedan_id = getIntent().getStringExtra("y_user_sedan_id");
         if (!y_user_sedan_id.equals("")) {
@@ -178,12 +162,14 @@ public class AddCarActivity extends BaseActivity {
                         response.getInfo().getBrandInfo().getGroupName() +
                         response.getInfo().getBrandInfo().getSeriesName() +
                         response.getInfo().getBrandInfo().getSName());
+                /*tv_pingpai.setText(response.getInfo().getSName() + "\n" +
+                        response.getInfo().getBrandInfo().getSName());*/
                 //车牌号
                 String s1 = response.getInfo().getSNumber().substring(0, 1);//提取第一个文字
                 tv_chepai.setText(s1);
-                for (int j = 0; j < stringList.size(); j++) {
-                    if (s1.equals(stringList.get(j))) {
-                        i = j;
+                for (int j = 0; j < provinceList.size(); j++) {
+                    if (s1.equals(provinceList.get(j))) {
+                        i_province = j;
                     }
                 }
                 String s2 = response.getInfo().getSNumber().substring(1);//提取第一个文字后面的文字
@@ -222,7 +208,7 @@ public class AddCarActivity extends BaseActivity {
                 //商业保险
                 tv_baoxiantime.setText(response.getInfo().getComInsuranceTime());
                 //年审时间
-                tv_nianshentime.setText(response.getInfo().getAnnualReviewTime());
+                tv_nianshentime.setText(response.getInfo().getMaintainTime());
 
                 tv_confirm.setText("确认修改");
 
@@ -251,10 +237,69 @@ public class AddCarActivity extends BaseActivity {
                         .animType(BaseDialog.AnimInType.BOTTOM)
                         .canceledOnTouchOutside(true)
                         .gravity(Gravity.BOTTOM)
-                        .dimAmount(0.8f)
+                        .dimAmount(0.5f)
                         .show();
+                RecyclerView rv_carnum = dialog.findViewById(R.id.rv_carnum);
+                rv_carnum.setLayoutManager(new GridLayoutManager(this, 10));
+                CommonAdapter<String> adapter = new CommonAdapter<String>
+                        (AddCarActivity.this, R.layout.item_flowlayout_chepai, provinceList) {
+                    @Override
+                    protected void convert(ViewHolder holder, String model, int position) {
+                        TextView tv = holder.getView(R.id.tv);
+                        tv.setText(model);
+
+                        if (i_province == position)
+                            tv.setTextColor(getResources().getColor(R.color.blue));
+                        else
+                            tv.setTextColor(getResources().getColor(R.color.black));
+
+                    }
+                };
+                adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int position) {
+                        i_province = position;
+
+                        tv_chepai.setText(provinceList.get(position));
+//                        flowLayoutAdapter.notifyDataSetChanged();
+//                        dialog.dismiss();
+                        CommonAdapter<String> adapter_abc = new CommonAdapter<String>
+                                (AddCarActivity.this, R.layout.item_flowlayout_chepai, abcList) {
+                            @Override
+                            protected void convert(ViewHolder holder, String model, int position) {
+                                TextView tv = holder.getView(R.id.tv);
+                                tv.setText(model);
+                            }
+                        };
+                        adapter_abc.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                                if (i == abcList.size() - 1) {
+                                    rv_carnum.setAdapter(adapter);
+                                } else {
+                                    tv_chepai.setText(provinceList.get(position) + abcList.get(i));
+                                    dialog.dismiss();
+                                }
+
+                            }
+
+                            @Override
+                            public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                                return false;
+                            }
+                        });
+                        rv_carnum.setAdapter(adapter_abc);
+
+                    }
+
+                    @Override
+                    public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                        return false;
+                    }
+                });
+                rv_carnum.setAdapter(adapter);
                 //标签
-                flowLayoutAdapter = new FlowLayoutAdapter<String>(stringList) {
+                /*flowLayoutAdapter = new FlowLayoutAdapter<String>(stringList) {
                     @Override
                     public void bindDataToView(FlowLayoutAdapter.ViewHolder holder, int position, String bean) {
 //                                holder.setText(R.id.tv,bean);
@@ -283,7 +328,56 @@ public class AddCarActivity extends BaseActivity {
                         return R.layout.item_flowlayout_chepai;
                     }
                 };
-                ((FlowLayout) dialog.findViewById(R.id.flowLayout)).setAdapter(flowLayoutAdapter);
+                ((FlowLayout) dialog.findViewById(R.id.flowLayout)).setAdapter(flowLayoutAdapter);*/
+                break;
+            case R.id.et_carnum:
+                //绑定车牌
+                dialog.contentView(R.layout.dialog_chepai)
+                        .layoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                                ViewGroup.LayoutParams.WRAP_CONTENT))
+                        .animType(BaseDialog.AnimInType.BOTTOM)
+                        .canceledOnTouchOutside(true)
+                        .gravity(Gravity.BOTTOM)
+                        .dimAmount(0.5f)
+                        .show();
+                RecyclerView rv_carnum1 = dialog.findViewById(R.id.rv_carnum);
+                rv_carnum1.setLayoutManager(new GridLayoutManager(this, 10));
+                CommonAdapter<String> adapter_abc = new CommonAdapter<String>
+                        (AddCarActivity.this, R.layout.item_flowlayout_chepai, abcList) {
+                    @Override
+                    protected void convert(ViewHolder holder, String model, int position) {
+                        TextView tv = holder.getView(R.id.tv);
+                        tv.setText(model);
+                    }
+                };
+                adapter_abc.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                        String s = et_carnum.getText().toString().trim();
+                        if (i == abcList.size() - 1) {
+                            if (s.length() > 0) {
+                                s = s.substring(0, s.length() - 1);
+                            }
+                            et_carnum.setText(s);
+                        } else {
+                            et_carnum.setText(s + abcList.get(i));
+                        }
+                        if (et_carnum.getText().toString().trim().length() == 6) {
+                            et_carnum.setTextColor(getResources().getColor(R.color.green));
+                            dialog.dismiss();
+                        }else {
+                            et_carnum.setTextColor(getResources().getColor(R.color.black));
+                        }
+
+                    }
+
+                    @Override
+                    public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                        return false;
+                    }
+                });
+                rv_carnum1.setAdapter(adapter_abc);
+
                 break;
             case R.id.ll_geren:
                 //个人

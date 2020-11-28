@@ -33,9 +33,9 @@ import okhttp3.Response;
  */
 public class WaitingReleaseActivity extends BaseActivity {
     int type = 1, is_ok = 2;// 0、待发布  1、已发布  2、全部
-    LinearLayout linearLayout1, linearLayout2, linearLayout3;
-    TextView textView1, textView2, textView3;
-    View view1, view2, view3;
+    LinearLayout linearLayout1, linearLayout2, linearLayout3, linearLayout4;
+    TextView textView1, textView2, textView3, textView4;
+    View view1, view2, view3, view4;
     int page = 0;
     private RecyclerView recyclerView;
     List<WaitingReleaseModel.ListBean> list = new ArrayList<>();
@@ -55,11 +55,16 @@ public class WaitingReleaseActivity extends BaseActivity {
             @Override
             public void onRefresh() {
                 page = 0;
-                Map<String, String> params = new HashMap<>();
-                params.put("page", page + "");
-                params.put("is_ok", is_ok + "");
-                params.put("u_token", localUserInfo.getToken());
-                Request(params);
+                if (type ==4){
+
+                }else {
+
+                    Map<String, String> params = new HashMap<>();
+                    params.put("page", page + "");
+                    params.put("is_ok", is_ok + "");
+                    params.put("u_token", localUserInfo.getToken());
+                    Request(params);
+                }
             }
 
             @Override
@@ -80,9 +85,12 @@ public class WaitingReleaseActivity extends BaseActivity {
         textView1 = findViewByID_My(R.id.textView1);
         textView2 = findViewByID_My(R.id.textView2);
         textView3 = findViewByID_My(R.id.textView3);
+        textView4 = findViewByID_My(R.id.textView4);
+
         view1 = findViewByID_My(R.id.view1);
         view2 = findViewByID_My(R.id.view2);
         view3 = findViewByID_My(R.id.view3);
+        view4 = findViewByID_My(R.id.view4);
     }
 
     @Override
@@ -95,11 +103,15 @@ public class WaitingReleaseActivity extends BaseActivity {
         super.requestServer();
         this.showLoadingPage();
         page = 0;
-        Map<String, String> params = new HashMap<>();
-        params.put("page", page + "");
-        params.put("is_ok", is_ok + "");
-        params.put("u_token", localUserInfo.getToken());
-        Request(params);
+        if (type ==4){
+
+        }else {
+            Map<String, String> params = new HashMap<>();
+            params.put("page", page + "");
+            params.put("is_ok", is_ok + "");
+            params.put("u_token", localUserInfo.getToken());
+            Request(params);
+        }
     }
 
     private void Request(Map<String, String> params) {
@@ -280,6 +292,7 @@ public class WaitingReleaseActivity extends BaseActivity {
         });
     }
 
+
     /**
      * 发布
      *
@@ -330,6 +343,12 @@ public class WaitingReleaseActivity extends BaseActivity {
                 is_ok = 1;
                 changeUI();
                 break;
+            case R.id.linearLayout4:
+                //已发布
+                type = 4;
+                is_ok = 4;
+                changeUI();
+                break;
         }
     }
 
@@ -339,18 +358,28 @@ public class WaitingReleaseActivity extends BaseActivity {
                 view1.setVisibility(View.VISIBLE);
                 view2.setVisibility(View.INVISIBLE);
                 view3.setVisibility(View.INVISIBLE);
+                view4.setVisibility(View.INVISIBLE);
                 requestServer();
                 break;
             case 2:
                 view1.setVisibility(View.INVISIBLE);
                 view2.setVisibility(View.VISIBLE);
                 view3.setVisibility(View.INVISIBLE);
+                view4.setVisibility(View.INVISIBLE);
                 requestServer();
                 break;
             case 3:
                 view1.setVisibility(View.INVISIBLE);
                 view2.setVisibility(View.INVISIBLE);
                 view3.setVisibility(View.VISIBLE);
+                view4.setVisibility(View.INVISIBLE);
+                requestServer();
+                break;
+            case 4:
+                view1.setVisibility(View.INVISIBLE);
+                view2.setVisibility(View.INVISIBLE);
+                view3.setVisibility(View.INVISIBLE);
+                view4.setVisibility(View.VISIBLE);
                 requestServer();
                 break;
         }
@@ -358,6 +387,6 @@ public class WaitingReleaseActivity extends BaseActivity {
 
     @Override
     protected void updateView() {
-        titleView.setTitle("待发布");
+        titleView.setTitle("询价订单");
     }
 }

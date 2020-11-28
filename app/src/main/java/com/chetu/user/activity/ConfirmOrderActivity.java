@@ -47,7 +47,7 @@ import okhttp3.Response;
 public class ConfirmOrderActivity extends BaseActivity {
     ConfirmOrderModel confirmOrderModel;
     String y_user_sedan_id = "", y_store_id = "", longitude = "", latitude = "", appoin_time = "",
-            is_pick = "1", is_delivery = "0", delivery_time = "", delivery_address = "", send_address = "";
+            is_pick = "0", is_delivery = "0", delivery_time = "", delivery_address = "", send_address = "";
     //车辆信息
     ImageView imageView1;
     TextView tv_carname, tv_carnum, tv_cardetail, tv_name, tv_phone;
@@ -65,8 +65,8 @@ public class ConfirmOrderActivity extends BaseActivity {
     CommonAdapter<ConfirmOrderModel.GoodsCartListBean> mAdapter_other;
 
     //接车到店、送车到家
-    LinearLayout ll_jiechedaodian, ll_yuyuedaodian, ll_songchedaojia, ll_songcheaddr, ll_jiechetime, ll_jiecheaddr, ll_yuyuetime;
-    ImageView iv_jiechedaodian, iv_yuyuedaodian, iv_songchedaojia;
+    LinearLayout ll_jiechedaodian, ll_yuyuedaodian, ll_songchedaojia, ll_songcheaddr, ll_jiechetime, ll_jiecheaddr, ll_yuyuetime,ll_daodianpaidui;
+    ImageView iv_jiechedaodian, iv_yuyuedaodian, iv_songchedaojia,iv_daodianpaidui;
     TextView tv_jiechetime, tv_yuyuetime, tv_jiecheaddr, tv_songcheaddr;
     TimePickerView pvTime1;
     //下单
@@ -74,6 +74,7 @@ public class ConfirmOrderActivity extends BaseActivity {
     TextView tv_time, tv_money, tv_yuyuedaodian, tv_daodianshigong;
 
     EditText  et_beizhu;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -137,6 +138,8 @@ public class ConfirmOrderActivity extends BaseActivity {
         tv_juli = findViewByID_My(R.id.tv_juli);
 
         //接车到店、送车到家
+        ll_daodianpaidui = findViewByID_My(R.id.ll_daodianpaidui);
+        iv_daodianpaidui = findViewByID_My(R.id.iv_daodianpaidui);
         ll_jiechedaodian = findViewByID_My(R.id.ll_jiechedaodian);
         ll_yuyuedaodian = findViewByID_My(R.id.ll_yuyuedaodian);
         ll_songchedaojia = findViewByID_My(R.id.ll_songchedaojia);
@@ -502,13 +505,15 @@ public class ConfirmOrderActivity extends BaseActivity {
             @Override
             public void onResponse(Object response) {
                 hideProgress();
-                showToast("删除成功", new View.OnClickListener() {
+                /*showToast("删除成功", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         dialog.dismiss();
                         requestServer();
                     }
-                });
+                });*/
+                myToast("删除成功");
+                requestServer();
             }
         });
     }
@@ -552,13 +557,13 @@ public class ConfirmOrderActivity extends BaseActivity {
                     is_pick = "0";
                     iv_jiechedaodian.setImageResource(R.mipmap.ic_weixuan);
 
-                    ll_jiechetime.setVisibility(View.GONE);
+//                    ll_jiechetime.setVisibility(View.GONE);
                     ll_jiecheaddr.setVisibility(View.GONE);
                 } else {
                     is_pick = "1";
                     iv_jiechedaodian.setImageResource(R.mipmap.ic_xuanzhong);
 
-                    ll_jiechetime.setVisibility(View.VISIBLE);
+//                    ll_jiechetime.setVisibility(View.VISIBLE);
                     ll_jiecheaddr.setVisibility(View.VISIBLE);
                 }
                 break;
@@ -602,11 +607,24 @@ public class ConfirmOrderActivity extends BaseActivity {
                 startActivityForResult(intent5, 10005, bundle5);
                 break;
             case R.id.ll_yuyuedaodian:
-                //预约时间
+                //预约到店
                 isYuYue = !isYuYue;
                 if (isYuYue) {
+                    iv_daodianpaidui.setImageResource(R.mipmap.ic_weixuan);
+
                     ll_yuyuetime.setVisibility(View.VISIBLE);
                     iv_yuyuedaodian.setImageResource(R.mipmap.ic_xuanzhong);
+
+                    is_pick = "0";
+                    iv_jiechedaodian.setImageResource(R.mipmap.ic_weixuan);
+                    ll_jiechedaodian.setVisibility(View.VISIBLE);
+//                    ll_jiechetime.setVisibility(View.VISIBLE);
+                    ll_jiecheaddr.setVisibility(View.GONE);
+
+                    is_delivery = "0";
+                    iv_songchedaojia.setImageResource(R.mipmap.ic_weixuan);
+                    ll_songchedaojia.setVisibility(View.VISIBLE);
+                    ll_songcheaddr.setVisibility(View.GONE);
 
                     Intent intent2 = new Intent(ConfirmOrderActivity.this, SelectTimeActivity.class);
                     Bundle bundle2 = new Bundle();
@@ -614,10 +632,42 @@ public class ConfirmOrderActivity extends BaseActivity {
                     bundle2.putString("y_store_id", y_store_id);
                     intent2.putExtras(bundle2);
                     startActivityForResult(intent2, 10002, bundle2);
+
+
                 } else {
+                    iv_daodianpaidui.setImageResource(R.mipmap.ic_xuanzhong);
+
                     ll_yuyuetime.setVisibility(View.GONE);
                     iv_yuyuedaodian.setImageResource(R.mipmap.ic_weixuan);
+
+                    is_pick = "0";
+                    ll_jiechedaodian.setVisibility(View.GONE);
+//                    ll_jiechetime.setVisibility(View.GONE);
+                    ll_jiecheaddr.setVisibility(View.GONE);
+
+                    is_delivery = "0";
+                    ll_songchedaojia.setVisibility(View.GONE);
+                    ll_songcheaddr.setVisibility(View.GONE);
                 }
+
+                break;
+            case R.id.ll_daodianpaidui:
+                //到店排队
+                iv_daodianpaidui.setImageResource(R.mipmap.ic_xuanzhong);
+
+                isYuYue = false;
+                ll_yuyuetime.setVisibility(View.GONE);
+                iv_yuyuedaodian.setImageResource(R.mipmap.ic_weixuan);
+
+                is_pick = "0";
+                ll_jiechedaodian.setVisibility(View.GONE);
+//                ll_jiechetime.setVisibility(View.GONE);
+                ll_jiecheaddr.setVisibility(View.GONE);
+
+                is_delivery = "0";
+                ll_songchedaojia.setVisibility(View.GONE);
+                ll_songcheaddr.setVisibility(View.GONE);
+
                 break;
             case R.id.tv_time:
             case R.id.ll_yuyuetime:
@@ -683,15 +733,23 @@ public class ConfirmOrderActivity extends BaseActivity {
                             params.put("y_user_sedan_id", y_user_sedan_id);
                             if (isYuYue) {
                                 params.put("appoin_time", appoin_time);
+
+                                params.put("is_pick", is_pick);
+                                params.put("is_delivery", is_delivery);
+
+                                params.put("delivery_time", delivery_time);
+                                params.put("delivery_address", delivery_address);
+                                params.put("send_address", send_address);
                             } else {
                                 params.put("appoin_time", "");
-                            }
-                            params.put("is_pick", is_pick);
-                            params.put("is_delivery", is_delivery);
 
-                            params.put("delivery_time", delivery_time);
-                            params.put("delivery_address", delivery_address);
-                            params.put("send_address", send_address);
+                                params.put("is_pick", "0");
+                                params.put("is_delivery", "0");
+
+                                params.put("delivery_time", "");
+                                params.put("delivery_address", "");
+                                params.put("send_address", "");
+                            }
 
                             params.put("c_msg",et_beizhu.getText().toString().trim());
                             RequestAdd(params);
@@ -732,7 +790,9 @@ public class ConfirmOrderActivity extends BaseActivity {
                     @Override
                     public void onClick(View v) {
                         dialog.dismiss();
-                        finish();
+
+//                        finish();
+                        CommonUtil.gotoActivityWithFinishOtherAll(ConfirmOrderActivity.this, MainActivity.class, true);
                     }
                 });
             }
@@ -809,9 +869,10 @@ public class ConfirmOrderActivity extends BaseActivity {
         }
 
         if (is_pick.equals("1")) {
-            delivery_time = tv_jiechetime.getText().toString().trim();
+            delivery_time = appoin_time;
+//            delivery_time = tv_jiechetime.getText().toString().trim();
             if (delivery_time.equals("")) {
-                myToast("请选择接车时间");
+                myToast("请选择预约时间");
                 return false;
             }
             delivery_address = tv_jiecheaddr.getText().toString().trim();

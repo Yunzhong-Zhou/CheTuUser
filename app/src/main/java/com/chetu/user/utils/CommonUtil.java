@@ -65,6 +65,7 @@ public class CommonUtil {
                                     Class<?> targetActivity) {
         Intent intent = new Intent();
         intent.setClass(curActivity, targetActivity);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         curActivity.startActivity(intent);
 //		curActivity.overridePendingTransition(R.anim.slide_left_in,
 //				R.anim.slide_left_out);

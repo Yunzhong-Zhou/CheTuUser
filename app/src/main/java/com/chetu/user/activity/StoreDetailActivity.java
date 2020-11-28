@@ -60,7 +60,7 @@ import okhttp3.Response;
  */
 public class StoreDetailActivity extends BaseActivity {
     int page = 0;
-    String y_store_id = "", longitude = "", latitude = "", keys = "";
+    String y_store_id = "", longitude = "", latitude = "", keys = "0";
 
     //banner
     Banner banner;
@@ -81,8 +81,8 @@ public class StoreDetailActivity extends BaseActivity {
 
     //门店特色
     RecyclerView rv_tese;
-    List<String> list_tese = new ArrayList<>();
-    CommonAdapter<String> mAdapter_tese;
+    List<StoreDetailModel.GoodsListBean> list_tese = new ArrayList<>();
+    CommonAdapter<StoreDetailModel.GoodsListBean> mAdapter_tese;
     //门店技师
     RecyclerView rv_jishi;
     List<StoreDetailModel.StoreTechListBean> list_jishi = new ArrayList<>();
@@ -115,6 +115,12 @@ public class StoreDetailActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_storedetail);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        requestServer();
     }
 
     @Override
@@ -200,11 +206,9 @@ public class StoreDetailActivity extends BaseActivity {
         if (!keys.equals("")) {
             keys = keys.replace("||", "|");
             MyLogger.i(">>>>>>>>" + keys);
-        }else {
+        } else {
             keys = "0";
         }
-
-        requestServer();
     }
 
     @Override
@@ -373,30 +377,33 @@ public class StoreDetailActivity extends BaseActivity {
                 });
                 rv_tab.setAdapter(mAdapter_tab);
                 //门店特色
-                list_tese = response.getInfo().getCharactArr();
-                ArrayList<String> images = new ArrayList<>();
+                list_tese = response.getGoods_list();
+                /*ArrayList<String> images = new ArrayList<>();
                 for (String s : list_tese) {
                     images.add(URLs.IMGHOST + s);
-                }
-                mAdapter_tese = new CommonAdapter<String>
-                        (StoreDetailActivity.this, R.layout.item_img_m_110, images) {
+                }*/
+                mAdapter_tese = new CommonAdapter<StoreDetailModel.GoodsListBean>
+                        (StoreDetailActivity.this, R.layout.item_storedetail_tese, list_tese) {
                     @Override
-                    protected void convert(ViewHolder holder, String model, int position) {
+                    protected void convert(ViewHolder holder, StoreDetailModel.GoodsListBean model, int position) {
                         ImageView iv = holder.getView(R.id.iv);
                         Glide.with(StoreDetailActivity.this)
-                                .load(model)
+                                .load(URLs.IMGHOST + model.getgImg())
                                 .centerCrop()
                                 .placeholder(R.mipmap.loading)//加载站位图
                                 .error(R.mipmap.zanwutupian)//加载失败
                                 .into(iv);//加载图片
+                        holder.setText(R.id.tv, model.getGName());
                     }
                 };
                 mAdapter_tese.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
-
-                        PhotoShowDialog photoShowDialog = new PhotoShowDialog(StoreDetailActivity.this, images, i);
-                        photoShowDialog.show();
+                        Bundle bundle = new Bundle();
+                        bundle.putString("url", list_tese.get(i).getGDetails());
+                        CommonUtil.gotoActivityWithData(StoreDetailActivity.this, WebHTMLContentActivity.class, bundle, false);
+                        /*PhotoShowDialog photoShowDialog = new PhotoShowDialog(StoreDetailActivity.this, images, i);
+                        photoShowDialog.show();*/
                     }
 
                     @Override
@@ -425,7 +432,7 @@ public class StoreDetailActivity extends BaseActivity {
 
                         holder.setText(R.id.tv_time, "入驻时间：" + model.getCreateDate());
                         TextView tv_zhuangtai = holder.getView(R.id.tv_zhuangtai);
-                        switch (model.getTech_info().getWorking()) {//1为空闲 2为休假  3为忙碌
+                        switch (model.getTech_info().getWorking()) {//1为空闲 2为休假  3为忙碌 4为施工中
                             case 1:
                                 tv_zhuangtai.setText("休息中");
                                 tv_zhuangtai.setBackgroundResource(R.drawable.yuanjiao_5_lanse_right);
@@ -437,6 +444,14 @@ public class StoreDetailActivity extends BaseActivity {
                             case 3:
                                 tv_zhuangtai.setText("忙碌中");
                                 tv_zhuangtai.setBackgroundResource(R.drawable.yuanjiao_5_hongse_right);
+                                break;
+                            case 4:
+                                tv_zhuangtai.setText("施工中");
+                                tv_zhuangtai.setBackgroundResource(R.drawable.yuanjiao_5_hongse_right);
+                                break;
+                            default:
+                                tv_zhuangtai.setText("无状态");
+                                tv_zhuangtai.setBackgroundResource(R.drawable.yuanjiao_5_lanse_right);
                                 break;
                         }
                     }
@@ -457,6 +472,8 @@ public class StoreDetailActivity extends BaseActivity {
                 });
                 rv_jishi.setAdapter(mAdapter_jishi);
 
+
+                list_xuanze.clear();
                 for (int i = 0; i < response.getIs_service_list().size(); i++) {
                     list_xuanze.add(new XuanZeFuWuModel(response.getIs_service_list().get(i).getYStoreServiceId(),
                             response.getIs_service_list().get(i).getYStateValue(), response.getIs_service_list().get(i).getSPrice()));
@@ -989,6 +1006,17 @@ public class StoreDetailActivity extends BaseActivity {
     public void onClick(View v) {
         super.onClick(v);
         switch (v.getId()) {
+            case R.id.tv_message:
+            case R.id.tv_message_1:
+                //客服
+                String url = URLs.KFHOST + "/#/pages/chetu-kf/chetu-kf?token=" + localUserInfo.getToken() +
+                        "&kf_userHash=" + storeDetailModel.getKf_user_info().getUserHash() +
+                        "&nickName=" + storeDetailModel.getKf_user_info().getUserName() +
+                        "&headerPic=" + URLs.IMGHOST + storeDetailModel.getKf_user_info().getHeadPortrait();
+                Bundle bundle = new Bundle();
+                bundle.putString("url", url);
+                CommonUtil.gotoActivityWithData(StoreDetailActivity.this, WebContentActivity.class, bundle, false);
+                break;
             case R.id.tv_phone:
                 //拨打电话
                 showToast("确认拨打 " + storeDetailModel.getInfo().getPhone() + " 吗？", "确认", "取消",
@@ -1049,9 +1077,9 @@ public class StoreDetailActivity extends BaseActivity {
                 break;
             case R.id.ll_tiwen_more:
                 //提问更多
-                Bundle bundle = new Bundle();
-                bundle.putString("y_store_id", y_store_id);
-                CommonUtil.gotoActivityWithData(StoreDetailActivity.this, TiWenListActivity.class, bundle, false);
+                Bundle bundle3 = new Bundle();
+                bundle3.putString("y_store_id", y_store_id);
+                CommonUtil.gotoActivityWithData(StoreDetailActivity.this, TiWenListActivity.class, bundle3, false);
                 break;
             case R.id.ll_pinglun_more:
                 //获取店铺评论
@@ -1111,6 +1139,7 @@ public class StoreDetailActivity extends BaseActivity {
             @Override
             public void onResponse(Object response) {
                 hideProgress();
+                keys = "0";
                 Bundle bundle2 = new Bundle();
 //                bundle2.putSerializable("XuanZeFuWuModel", (Serializable) list_xuanze);
                 bundle2.putString("y_store_id", y_store_id);
@@ -1176,12 +1205,20 @@ public class StoreDetailActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 String url = URLs.KFHOST + "/#/pages/chetu-kf/chetu-kf?token=" + localUserInfo.getToken() +
+                        "&kf_userHash=" + localUserInfo.getKfuserhash() +
+                        "&nickName=" + localUserInfo.getKfname() +
+                        "&headerPic=" + localUserInfo.getKfhead();
+                Bundle bundle = new Bundle();
+                bundle.putString("url", url);
+                CommonUtil.gotoActivityWithData(StoreDetailActivity.this, WebContentActivity.class, bundle, false);
+                /*String url = URLs.KFHOST + "/#/pages/chetu-kf/chetu-kf?token=" + localUserInfo.getToken() +
                         "&kf_userHash=" + storeDetailModel.getKf_user_info().getUserHash() +
                         "&nickName=" + storeDetailModel.getKf_user_info().getUserName() +
                         "&headerPic=" + URLs.IMGHOST + storeDetailModel.getKf_user_info().getHeadPortrait();
                 Bundle bundle = new Bundle();
                 bundle.putString("url", url);
-                CommonUtil.gotoActivityWithData(StoreDetailActivity.this, WebContentActivity.class, bundle, false);
+                CommonUtil.gotoActivityWithData(StoreDetailActivity.this, WebContentActivity.class, bundle, false);*/
+
             }
         });
     }

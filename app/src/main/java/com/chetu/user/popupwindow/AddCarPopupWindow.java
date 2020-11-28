@@ -58,13 +58,15 @@ public class AddCarPopupWindow extends PopupWindow {
 
     private ProgressDialog pd;
 
-    public AddCarPopupWindow(Context mContext, List<AddCarModelBean.ListBean> list, String logo, String brand) {
+    public AddCarPopupWindow(Context mContext, List<AddCarModelBean.ListBean> list,String id, String logo, String brand) {
         this.view = LayoutInflater.from(mContext).inflate(R.layout.pop_addcar, null);
 
         this.mContext = mContext;
         this.list = list;
         this.logo = logo;
         this.pingpai = brand;
+
+        y_sedan_brand_id = id;
         xinghao = "";
 
         initView(view);
@@ -126,7 +128,18 @@ public class AddCarPopupWindow extends PopupWindow {
         tv_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (page >= 2) {
+                if (page == 1) {
+                    /*showProgress(true, mContext.getString(R.string.app_loading1));
+                    Map<String, String> params = new HashMap<>();
+                    params.put("y_sedan_brand_id", y_sedan_brand_id);
+                    params.put("s_number", "");//车牌
+                    params.put("s_cy", "2");//1为个人  2为公司
+                    params.put("u_token", LocalUserInfo.getInstance(mContext).getToken());
+                    RequestUpData(params);*/
+                    xinghao = pingpai;
+
+                    dismiss();
+                } else if (page > 1) {
                     /*showProgress(true, mContext.getString(R.string.app_loading1));
                     Map<String, String> params = new HashMap<>();
                     params.put("y_sedan_brand_id", y_sedan_brand_id);

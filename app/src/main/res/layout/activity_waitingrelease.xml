@@ -16,6 +16,7 @@
             android:layout_weight="1"
             android:gravity="center_horizontal"
             android:onClick="onClick"
+            android:visibility="gone"
             android:orientation="vertical">
 
             <TextView
@@ -83,6 +84,32 @@
 
             <View
                 android:id="@+id/view3"
+                android:layout_width="35dp"
+                android:layout_height="2dp"
+                android:background="@drawable/yuanjiao_3_lanse"
+                android:visibility="invisible" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/linearLayout4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:onClick="onClick"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="7dp"
+                android:paddingBottom="7dp"
+                android:text="救援订单"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+            <View
+                android:id="@+id/view4"
                 android:layout_width="35dp"
                 android:layout_height="2dp"
                 android:background="@drawable/yuanjiao_3_lanse"

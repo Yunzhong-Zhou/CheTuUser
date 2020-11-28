@@ -30,13 +30,14 @@
             android:layout_height="wrap_content"
             android:paddingLeft="14dp"
             android:paddingTop="14dp"
-            android:paddingRight="8dp"
+            android:paddingRight="14dp"
             android:paddingBottom="14dp"
             android:src="@mipmap/ic_fragment5_2" />
 
         <RelativeLayout
             android:id="@+id/rl_xiaoxi"
             android:layout_width="40dp"
+            android:visibility="visible"
             android:layout_height="wrap_content">
 
             <ImageView
@@ -245,6 +246,7 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:onClick="onClick"
+                        android:visibility="gone"
                         android:orientation="vertical"
                         android:paddingTop="20dp"
                         android:paddingBottom="20dp">
@@ -500,7 +502,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10dp"
                             android:layout_weight="1"
-                            android:text="待发布"
+                            android:text="询价订单"
                             android:textColor="@color/black"
                             android:textSize="15sp" />
 

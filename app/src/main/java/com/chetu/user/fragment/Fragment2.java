@@ -23,6 +23,7 @@ import com.chetu.user.activity.MainActivity;
 import com.chetu.user.activity.MyGarageActivity;
 import com.chetu.user.activity.SearchActivity;
 import com.chetu.user.activity.StoreDetailActivity;
+import com.chetu.user.activity.WebContentActivity;
 import com.chetu.user.adapter.CircleImageAdapter;
 import com.chetu.user.base.BaseFragment;
 import com.chetu.user.model.Fragment2BannerModel;
@@ -65,7 +66,8 @@ import okhttp3.Response;
 public class Fragment2 extends BaseFragment {
     public static String yServiceId = "";
     public static int isSheet = 0;//是否喷漆
-    RelativeLayout rl_search;
+    RelativeLayout rl_search,rl_xiaoxi;
+    TextView tv_xiaoxinum;
     EditText et_search;
 
     int page = 0;
@@ -115,7 +117,9 @@ public class Fragment2 extends BaseFragment {
     String v_strs = "", y_draft_id = "0";
     LinearLayout ll_xuanfu;
     TextView tv_tabs, tv_yixuan, tv_savecaogao, tv_pipei, tv_xiugai;
-    boolean isXiuGai = true;
+    boolean isXiuGai = true,isShowList = false;
+    RecyclerView rv_tabs;
+    CommonAdapter<String> ca_tabs;
     /**
      * 喷漆
      */
@@ -328,6 +332,10 @@ public class Fragment2 extends BaseFragment {
         et_search = findViewByID_My(R.id.et_search);
         et_search.setOnClickListener(this);
 
+        rl_xiaoxi = findViewByID_My(R.id.rl_xiaoxi);
+        rl_xiaoxi.setOnClickListener(this);
+        tv_xiaoxinum = findViewByID_My(R.id.tv_xiaoxinum);
+
         tv_pipeimendian = findViewByID_My(R.id.tv_pipeimendian);
         /*et_addr.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -391,6 +399,7 @@ public class Fragment2 extends BaseFragment {
         //悬浮窗
         ll_xuanfu = findViewByID_My(R.id.ll_xuanfu);
         tv_tabs = findViewByID_My(R.id.tv_tabs);
+        tv_tabs.setOnClickListener(this);
         tv_yixuan = findViewByID_My(R.id.tv_yixuan);
         tv_savecaogao = findViewByID_My(R.id.tv_savecaogao);
         tv_savecaogao.setOnClickListener(this);
@@ -398,6 +407,8 @@ public class Fragment2 extends BaseFragment {
         tv_pipei.setOnClickListener(this);
         tv_xiugai = findViewByID_My(R.id.tv_xiugai);
         tv_xiugai.setOnClickListener(this);
+        rv_tabs= findViewByID_My(R.id.rv_tabs);
+        rv_tabs.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         //喷漆
         ll_penqi_left = findViewByID_My(R.id.ll_penqi_left);
@@ -538,6 +549,13 @@ public class Fragment2 extends BaseFragment {
                 intent2.putExtras(bundle2);
                 startActivityForResult(intent2, 10002, bundle2);
                 break;
+            case R.id.rl_xiaoxi:
+                //消息
+                String url = URLs.KFHOST + "/#/pages/chetu-kf/chat_list?token=" + localUserInfo.getToken();
+                Bundle bundle = new Bundle();
+                bundle.putString("url", url);
+                CommonUtil.gotoActivityWithData(getActivity(), WebContentActivity.class, bundle, false);
+                break;
             case R.id.ll_car:
                 //选择车辆
                 Intent intent1 = new Intent(getActivity(), MyGarageActivity.class);
@@ -558,6 +576,15 @@ public class Fragment2 extends BaseFragment {
                 RequestSave(params);
 
                 break;
+            case R.id.tv_tabs:
+                //选择的服务
+                isShowList = !isShowList;
+                if (isShowList){
+                    rv_tabs.setVisibility(View.VISIBLE);
+                }else {
+                    rv_tabs.setVisibility(View.GONE);
+                }
+                break;
             case R.id.tv_pipei_penqi:
                 //匹配-喷漆
             case R.id.tv_pipei:
@@ -571,7 +598,7 @@ public class Fragment2 extends BaseFragment {
 //                ll_tab.setVisibility(View.GONE);
 //                mAdapter_sv.notifyDataSetChanged();
 
-                if (tv_pipei.getText().toString().equals("确认")) {
+                if (tv_pipei.getText().toString().equals("匹配")) {
                     service_name = v_strs;
                     requestServer();
 //                tv_pipei.setClickable(false);
@@ -616,13 +643,12 @@ public class Fragment2 extends BaseFragment {
 
                 }
 
-
                 break;
             case R.id.tv_xiugai:
                 //修改
                 isXiuGai = true;
                 tv_pipei.setClickable(true);
-                tv_pipei.setText("确认");
+                tv_pipei.setText("匹配");
                 tv_pipei.setBackgroundResource(R.drawable.yuanjiao_5_lanse);
 
                 tv_xiugai.setVisibility(View.GONE);
@@ -1369,16 +1395,37 @@ public class Fragment2 extends BaseFragment {
                 tv_xiugai.setVisibility(View.VISIBLE);
             } else {
                 tv_pipei.setClickable(true);
-                tv_pipei.setText("确认");
+                tv_pipei.setText("匹配");
                 tv_pipei.setBackgroundResource(R.drawable.yuanjiao_5_lanse);
 
                 //隐藏修改
                 isXiuGai = true;
                 tv_xiugai.setVisibility(View.GONE);
             }
+
+            //列表
+            String[] strArr = v_strs.split("\\|\\|");
+            List arrList = new ArrayList();
+            arrList.clear();
+            for (String s:strArr){
+                arrList.add(s);
+            }
+            ca_tabs = new CommonAdapter<String>
+                    (getActivity(), R.layout.item_fragment2_tabs_item, arrList) {
+                @Override
+                protected void convert(ViewHolder holder, String s, int i) {
+                    holder.setText(R.id.title, s);
+                }
+            };
+            rv_tabs.setAdapter(ca_tabs);
+
         } else {
             ll_xuanfu.setVisibility(View.GONE);
         }
+
+
+
+
 
     }
 

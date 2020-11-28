@@ -23,6 +23,8 @@ public class StoreDetailModel implements Serializable {
 
     private KfUserInfoBean kf_user_info;
     private List<IsServiceListBean> is_service_list;
+    private List<GoodsListBean> goods_list;
+
 
     public InfoBean getInfo() {
         return info;
@@ -62,6 +64,14 @@ public class StoreDetailModel implements Serializable {
 
     public void setIs_service_list(List<IsServiceListBean> is_service_list) {
         this.is_service_list = is_service_list;
+    }
+
+    public List<GoodsListBean> getGoods_list() {
+        return goods_list;
+    }
+
+    public void setGoods_list(List<GoodsListBean> goods_list) {
+        this.goods_list = goods_list;
     }
 
     public static class InfoBean implements Serializable{
@@ -862,6 +872,192 @@ public class StoreDetailModel implements Serializable {
 
         public void setParentId(String parentId) {
             this.parentId = parentId;
+        }
+    }
+
+    public static class GoodsListBean {
+        /**
+         * id : 1019
+         * yGoodsId : 692341585785913346
+         * yClassifyId : 692341585785913344
+         * yStoreId : 692341585785913346
+         * gName : 汽车行车记录仪降压线通用小米70迈360专用停车监控车载usb电源线
+         * gDesc : 现代名图后备箱垫全包围专用防水定制装饰垫现代名图汽车尾箱垫子
+         * gPrice : 1000.0
+         * orPrice : 3000.0
+         * gDetails :
+         * imgStr : /upload/2020-07-09/20200709100328_746898.png||/upload/2020-07-09/20200709100325_581730.png
+         * gState : 1
+         * isPopular : 0
+         * isTechn : 0
+         * isIntegral : 0
+         * gIntegral : 0
+         * createDate : 2019-09-27 10:31:19
+         * isSoffer : 1
+         */
+
+        private String id;
+        private String yGoodsId;
+        private String yClassifyId;
+        private String yStoreId;
+        private String gName;
+        private String gDesc;
+        private double gPrice;
+        private double orPrice;
+        private String gDetails;
+        private String imgStr;
+        private String gImg;
+
+        public String getgImg() {
+            return gImg;
+        }
+
+        public void setgImg(String gImg) {
+            this.gImg = gImg;
+        }
+
+        private int gState;
+        private int isPopular;
+        private int isTechn;
+        private int isIntegral;
+        private int gIntegral;
+        private String createDate;
+        private int isSoffer;
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getYGoodsId() {
+            return yGoodsId;
+        }
+
+        public void setYGoodsId(String yGoodsId) {
+            this.yGoodsId = yGoodsId;
+        }
+
+        public String getYClassifyId() {
+            return yClassifyId;
+        }
+
+        public void setYClassifyId(String yClassifyId) {
+            this.yClassifyId = yClassifyId;
+        }
+
+        public String getYStoreId() {
+            return yStoreId;
+        }
+
+        public void setYStoreId(String yStoreId) {
+            this.yStoreId = yStoreId;
+        }
+
+        public String getGName() {
+            return gName;
+        }
+
+        public void setGName(String gName) {
+            this.gName = gName;
+        }
+
+        public String getGDesc() {
+            return gDesc;
+        }
+
+        public void setGDesc(String gDesc) {
+            this.gDesc = gDesc;
+        }
+
+        public double getGPrice() {
+            return gPrice;
+        }
+
+        public void setGPrice(double gPrice) {
+            this.gPrice = gPrice;
+        }
+
+        public double getOrPrice() {
+            return orPrice;
+        }
+
+        public void setOrPrice(double orPrice) {
+            this.orPrice = orPrice;
+        }
+
+        public String getGDetails() {
+            return gDetails;
+        }
+
+        public void setGDetails(String gDetails) {
+            this.gDetails = gDetails;
+        }
+
+        public String getImgStr() {
+            return imgStr;
+        }
+
+        public void setImgStr(String imgStr) {
+            this.imgStr = imgStr;
+        }
+
+        public int getGState() {
+            return gState;
+        }
+
+        public void setGState(int gState) {
+            this.gState = gState;
+        }
+
+        public int getIsPopular() {
+            return isPopular;
+        }
+
+        public void setIsPopular(int isPopular) {
+            this.isPopular = isPopular;
+        }
+
+        public int getIsTechn() {
+            return isTechn;
+        }
+
+        public void setIsTechn(int isTechn) {
+            this.isTechn = isTechn;
+        }
+
+        public int getIsIntegral() {
+            return isIntegral;
+        }
+
+        public void setIsIntegral(int isIntegral) {
+            this.isIntegral = isIntegral;
+        }
+
+        public int getGIntegral() {
+            return gIntegral;
+        }
+
+        public void setGIntegral(int gIntegral) {
+            this.gIntegral = gIntegral;
+        }
+
+        public String getCreateDate() {
+            return createDate;
+        }
+
+        public void setCreateDate(String createDate) {
+            this.createDate = createDate;
+        }
+
+        public int getIsSoffer() {
+            return isSoffer;
+        }
+
+        public void setIsSoffer(int isSoffer) {
+            this.isSoffer = isSoffer;
         }
     }
 }

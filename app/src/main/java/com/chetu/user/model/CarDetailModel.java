@@ -60,9 +60,8 @@ public class CarDetailModel implements Serializable {
         private PoliceInfoBean policeInfo;
         private JpoliceInfoBean jpoliceInfo;
         private BrandInfoBean brandInfo;
-        private String compInsuranceTime;
+        private String maintainTime;
         private String comInsuranceTime;
-        private String annualReviewTime;
         private String createDate;
 
         public String getId() {
@@ -193,13 +192,6 @@ public class CarDetailModel implements Serializable {
             this.brandInfo = brandInfo;
         }
 
-        public String getCompInsuranceTime() {
-            return compInsuranceTime;
-        }
-
-        public void setCompInsuranceTime(String compInsuranceTime) {
-            this.compInsuranceTime = compInsuranceTime;
-        }
 
         public String getComInsuranceTime() {
             return comInsuranceTime;
@@ -209,12 +201,12 @@ public class CarDetailModel implements Serializable {
             this.comInsuranceTime = comInsuranceTime;
         }
 
-        public String getAnnualReviewTime() {
-            return annualReviewTime;
+        public String getMaintainTime() {
+            return maintainTime;
         }
 
-        public void setAnnualReviewTime(String annualReviewTime) {
-            this.annualReviewTime = annualReviewTime;
+        public void setMaintainTime(String maintainTime) {
+            this.maintainTime = maintainTime;
         }
 
         public String getCreateDate() {

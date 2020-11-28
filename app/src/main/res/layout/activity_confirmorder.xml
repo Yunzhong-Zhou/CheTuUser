@@ -298,6 +298,37 @@
                             android:layout_height="wrap_content" />
 
                     </LinearLayout>
+                    <!--到店排队-->
+                    <LinearLayout
+                        android:id="@+id/ll_daodianpaidui"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="13dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="13dp"
+                        android:background="@drawable/yuanjiao_10_baise"
+                        android:gravity="center_vertical"
+                        android:onClick="onClick"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:paddingLeft="10dp"
+                            android:paddingTop="16dp"
+                            android:paddingRight="10dp"
+                            android:paddingBottom="16dp"
+                            android:text="到店排队" />
+
+                        <ImageView
+                            android:id="@+id/iv_daodianpaidui"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="13dp"
+                            android:src="@mipmap/ic_xuanzhong" />
+
+                    </LinearLayout>
                     <!--预约到店-->
                     <LinearLayout
                         android:id="@+id/ll_yuyuedaodian"
@@ -380,6 +411,7 @@
                         android:background="@drawable/yuanjiao_10_baise"
                         android:gravity="center_vertical"
                         android:onClick="onClick"
+                        android:visibility="gone"
                         android:orientation="horizontal">
 
                         <TextView
@@ -390,7 +422,7 @@
                             android:paddingTop="16dp"
                             android:paddingRight="10dp"
                             android:paddingBottom="16dp"
-                            android:text="接车到店" />
+                            android:text="上门接车" />
 
                         <ImageView
                             android:id="@+id/iv_jiechedaodian"
@@ -411,6 +443,7 @@
                         android:background="@drawable/yuanjiao_10_baise"
                         android:gravity="center_vertical"
                         android:onClick="onClick"
+                        android:visibility="gone"
                         android:orientation="horizontal">
 
                         <TextView
@@ -450,6 +483,7 @@
                         android:background="@drawable/yuanjiao_10_baise"
                         android:gravity="center_vertical"
                         android:onClick="onClick"
+                        android:visibility="gone"
                         android:orientation="horizontal">
 
                         <TextView
@@ -490,6 +524,7 @@
                         android:background="@drawable/yuanjiao_10_baise"
                         android:gravity="center_vertical"
                         android:onClick="onClick"
+                        android:visibility="gone"
                         android:orientation="horizontal">
 
                         <TextView

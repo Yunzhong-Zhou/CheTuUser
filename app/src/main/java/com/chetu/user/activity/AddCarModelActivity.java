@@ -196,7 +196,7 @@ public class AddCarModelActivity extends BaseActivity implements PopupWindow.OnD
                                         Map<String, String> params = new HashMap<>();
                                         params.put("parent_id", list1.get(i).getYSedanBrandId());
                                         params.put("u_token", localUserInfo.getToken());
-                                        Request1(params,URLs.IMGHOST + list1.get(i).getSLogo(),list1.get(i).getSName());
+                                        Request1(params, list1.get(i).getYSedanBrandId(), URLs.IMGHOST + list1.get(i).getSLogo(), list1.get(i).getSName());
                                     }
 
                                     @Override
@@ -278,7 +278,7 @@ public class AddCarModelActivity extends BaseActivity implements PopupWindow.OnD
                                         Map<String, String> params = new HashMap<>();
                                         params.put("parent_id", datas.get(position - 1).getId());
                                         params.put("u_token", localUserInfo.getToken());
-                                        Request1(params,datas.get(position - 1).getUrl(),datas.get(position - 1).getName());
+                                        Request1(params, datas.get(position - 1).getId(), datas.get(position - 1).getUrl(), datas.get(position - 1).getName());
                                     }
                                 });
 
@@ -292,7 +292,7 @@ public class AddCarModelActivity extends BaseActivity implements PopupWindow.OnD
         });
     }
 
-    private void Request1(Map<String, String> params,String logo,String brand) {
+    private void Request1(Map<String, String> params, String id, String logo, String brand) {
         OkhttpUtil.okHttpPost(URLs.CarNameList, params, headerMap, new CallBackUtil<AddCarModelBean>() {
             @Override
             public AddCarModelBean onParseResponse(Call call, Response response) {
@@ -311,7 +311,7 @@ public class AddCarModelActivity extends BaseActivity implements PopupWindow.OnD
                 /**
                  * 弹出弹窗
                  */
-                AddCarPopupWindow popupwindow = new AddCarPopupWindow(AddCarModelActivity.this, response.getList(), logo, brand);
+                AddCarPopupWindow popupwindow = new AddCarPopupWindow(AddCarModelActivity.this, response.getList(), id, logo, brand);
                 popupwindow.showAtLocation(AddCarModelActivity.this.findViewById(R.id.linearLayout), Gravity.CENTER, 0, 0);
                 popupwindow.setOnDismissListener(AddCarModelActivity.this);
             }
@@ -326,8 +326,8 @@ public class AddCarModelActivity extends BaseActivity implements PopupWindow.OnD
     @Override
     public void onDismiss() {
         //popupwindow 消失监听
-        MyLogger.i("选择的车型","id:"+AddCarPopupWindow.y_sedan_brand_id+"\n车型："+AddCarPopupWindow.pingpai+AddCarPopupWindow.xinghao);
-        if (!AddCarPopupWindow.xinghao.equals("")){
+        MyLogger.i("选择的车型", "id:" + AddCarPopupWindow.y_sedan_brand_id + "\n车型：" + AddCarPopupWindow.pingpai + AddCarPopupWindow.xinghao);
+        if (!AddCarPopupWindow.xinghao.equals("")) {
             Intent resultIntent = new Intent();
             Bundle bundle = new Bundle();
             bundle.putString("y_sedan_brand_id", AddCarPopupWindow.y_sedan_brand_id);

@@ -94,6 +94,9 @@
             android:name=".activity.WebContentActivity"
             android:label="网页" />
         <activity
+            android:name=".activity.WebHTMLContentActivity"
+            android:label="网页" />
+        <activity
             android:name=".activity.SelectAddressActivity"
             android:label="选择地址"
             android:theme="@style/DefaultCityPickerTheme" />

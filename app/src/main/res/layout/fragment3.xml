@@ -33,7 +33,7 @@
             android:layout_weight="1"
             android:background="@drawable/yuanjiao_15_huise1"
             android:paddingLeft="10dp"
-            android:layout_marginRight="13dp"
+            android:layout_marginRight="7dp"
             android:paddingRight="10dp"
             android:visibility="visible">
 
@@ -55,6 +55,33 @@
                 android:textColor="@color/black"
                 android:textColorHint="#B2B2B2"
                 android:textSize="12sp" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/rl_xiaoxi"
+            android:layout_width="44dp"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="8dp"
+                android:paddingTop="14dp"
+                android:paddingRight="14dp"
+                android:paddingBottom="14dp"
+                android:src="@mipmap/ic_message_black1" />
+
+            <TextView
+                android:id="@+id/tv_xiaoxinum"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="5dp"
+                android:background="@drawable/yuanxing_hongse"
+                android:gravity="center"
+                android:text="0"
+                android:textColor="@color/white"
+                android:textSize="10sp" />
         </RelativeLayout>
     </LinearLayout>
 

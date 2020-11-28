@@ -23,6 +23,7 @@ import com.bumptech.glide.Glide;
 import com.chetu.user.R;
 import com.chetu.user.activity.SearchActivity;
 import com.chetu.user.activity.StoreDetailActivity;
+import com.chetu.user.activity.WebContentActivity;
 import com.chetu.user.adapter.Pop_ListAdapter;
 import com.chetu.user.adapter.Pop_ListAdapter1;
 import com.chetu.user.base.BaseFragment;
@@ -59,7 +60,8 @@ import okhttp3.Response;
  */
 public class Fragment3 extends BaseFragment {
     //搜索
-    RelativeLayout rl_search;
+    RelativeLayout rl_search,rl_xiaoxi;
+    TextView tv_xiaoxinum;
     EditText et_search;
 
     //筛选
@@ -173,6 +175,10 @@ public class Fragment3 extends BaseFragment {
         et_search = findViewByID_My(R.id.et_search);
         et_search.setOnClickListener(this);
 
+        rl_xiaoxi = findViewByID_My(R.id.rl_xiaoxi);
+        rl_xiaoxi.setOnClickListener(this);
+        tv_xiaoxinum = findViewByID_My(R.id.tv_xiaoxinum);
+
         tv_pingfen = findViewByID_My(R.id.tv_pingfen);
         tv_pingfen.setOnClickListener(this);
         tv_juli = findViewByID_My(R.id.tv_juli);
@@ -278,7 +284,13 @@ public class Fragment3 extends BaseFragment {
                 //搜索
                 CommonUtil.gotoActivity(getActivity(), SearchActivity.class);
                 break;
-
+            case R.id.rl_xiaoxi:
+                //消息
+                String url = URLs.KFHOST + "/#/pages/chetu-kf/chat_list?token=" + localUserInfo.getToken();
+                Bundle bundle = new Bundle();
+                bundle.putString("url", url);
+                CommonUtil.gotoActivityWithData(getActivity(), WebContentActivity.class, bundle, false);
+                break;
             case R.id.tv_pingfen:
                 //评分
                 if (is_review.equals("0")) {

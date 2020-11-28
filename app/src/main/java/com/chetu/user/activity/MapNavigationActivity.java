@@ -14,7 +14,6 @@ import com.amap.api.navi.model.AMapLaneInfo;
 import com.amap.api.navi.model.AMapModelCross;
 import com.amap.api.navi.model.AMapNaviCameraInfo;
 import com.amap.api.navi.model.AMapNaviCross;
-import com.amap.api.navi.model.AMapNaviInfo;
 import com.amap.api.navi.model.AMapNaviLocation;
 import com.amap.api.navi.model.AMapNaviRouteNotifyData;
 import com.amap.api.navi.model.AMapNaviTrafficFacilityInfo;
@@ -23,7 +22,6 @@ import com.amap.api.navi.model.AimLessModeCongestionInfo;
 import com.amap.api.navi.model.AimLessModeStat;
 import com.amap.api.navi.model.NaviInfo;
 import com.amap.api.navi.model.NaviLatLng;
-import com.autonavi.tbt.TrafficFacilityInfo;
 import com.chetu.user.R;
 import com.chetu.user.base.BaseActivity;
 import com.chetu.user.utils.MyLogger;
@@ -443,10 +441,10 @@ public class MapNavigationActivity extends BaseActivity implements AMapNaviListe
         }*/
     }
 
-    @Override
-    public void onNaviInfoUpdated(AMapNaviInfo aMapNaviInfo) {
+    /*@Override
+    public void onNaviInfoUpdated(AMapNaviInf aMapNaviInfo) {
 
-    }
+    }*/
 
     @Override
     public void updateCameraInfo(AMapNaviCameraInfo[] aMapNaviCameraInfos) {
@@ -523,10 +521,10 @@ public class MapNavigationActivity extends BaseActivity implements AMapNaviListe
 
     }
 
-    @Override
+   /* @Override
     public void OnUpdateTrafficFacility(TrafficFacilityInfo trafficFacilityInfo) {
 
-    }
+    }*/
 
     @Override
     public void updateAimlessModeStatistics(AimLessModeStat aimLessModeStat) {

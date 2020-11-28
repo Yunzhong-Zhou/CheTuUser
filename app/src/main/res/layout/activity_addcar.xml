@@ -92,7 +92,7 @@
                     android:paddingTop="5dp"
                     android:paddingRight="10dp"
                     android:paddingBottom="5dp"
-                    android:text="粤"
+                    android:text="粤B"
                     android:textColor="@color/blue"
                     android:textSize="15sp" />
 
@@ -104,12 +104,16 @@
                     android:layout_weight="1"
                     android:background="@color/transparent"
                     android:hint="输入车牌号"
-                    android:singleLine="true"
+                    android:onClick="onClick"
                     android:paddingTop="15dp"
+                    android:focusable="false"
+                    android:maxLength="6"
                     android:paddingBottom="15dp"
+                    android:singleLine="true"
                     android:textColor="@color/black"
                     android:textColorHint="@color/grey"
                     android:textSize="15sp" />
+
 
             </LinearLayout>
 
@@ -270,8 +274,8 @@
                     android:layout_weight="1"
                     android:background="@color/transparent"
                     android:hint="输入手机号"
-                    android:lines="1"
                     android:inputType="phone"
+                    android:lines="1"
                     android:paddingTop="15dp"
                     android:paddingBottom="15dp"
                     android:textColor="@color/black"
@@ -413,6 +417,7 @@
                     android:textSize="15sp" />
 
             </LinearLayout>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
@@ -449,6 +454,7 @@
                     android:textSize="15sp" />
 
             </LinearLayout>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
@@ -495,7 +501,6 @@
 
         <TextView
             android:id="@+id/tv_confirm"
-            android:onClick="onClick"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="13dp"
@@ -504,6 +509,7 @@
             android:layout_marginBottom="20dp"
             android:background="@drawable/yuanjiao_5_lanse"
             android:gravity="center"
+            android:onClick="onClick"
             android:paddingTop="14dp"
             android:paddingBottom="14dp"
             android:text="确认添加"
