@@ -72,7 +72,6 @@
                 android:text="草稿"
                 android:textColor="@color/black"
                 android:textSize="15sp" />
-
             <RelativeLayout
                 android:id="@+id/rl_xiaoxi"
                 android:layout_width="44dp"
@@ -172,12 +171,6 @@
             android:layout_height="wrap_content"
             android:background="@color/white" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_tab1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white" />
-
         <com.liaoinstan.springview.widget.SpringView
             android:id="@+id/springView"
             android:layout_width="match_parent"
@@ -205,7 +198,7 @@
                         android:visibility="visible">
 
                         <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/rv_tab2"
+                            android:id="@+id/rv_tab1"
                             android:layout_width="100dp"
                             android:layout_height="match_parent"
                             android:background="@color/white" />
@@ -219,11 +212,21 @@
                             android:orientation="horizontal">
 
                             <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/rv_tab2"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1" />
+                            <View
+                                android:layout_width="0.5dp"
+                                android:layout_height="match_parent"
+                                android:background="@color/xian"/>
+
+                            <androidx.recyclerview.widget.RecyclerView
                                 android:id="@+id/rv_tab3"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
-                                android:visibility="visible" />
+                                android:visibility="gone"/>
                         </LinearLayout>
 
                     </LinearLayout>
@@ -319,21 +322,21 @@
                                 android:id="@+id/rv_penqi"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginBottom="15dp" />
+                                android:layout_marginBottom="15dp"/>
 
                             <TextView
                                 android:id="@+id/tv_quancepenqi"
                                 android:layout_width="170dp"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_horizontal"
-                                android:layout_marginBottom="15dp"
                                 android:background="@drawable/yuanjiaobiankuang_5_huise"
                                 android:gravity="center"
                                 android:padding="8dp"
                                 android:text="全车喷漆"
+                                android:visibility="gone"
+                                android:layout_marginBottom="15dp"
                                 android:textColor="@color/black"
-                                android:textSize="15sp"
-                                android:visibility="gone" />
+                                android:textSize="15sp" />
 
                             <TextView
                                 android:id="@+id/tv_pipei_penqi"
@@ -348,9 +351,9 @@
                                 android:gravity="center"
                                 android:padding="10dp"
                                 android:text="匹配门店"
+                                android:visibility="gone"
                                 android:textColor="@color/white"
-                                android:textSize="15sp"
-                                android:visibility="gone" />
+                                android:textSize="15sp" />
 
                         </LinearLayout>
 
@@ -436,13 +439,12 @@
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:background="@color/xian" />
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:visibility="gone" />
+            android:visibility="gone"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -466,10 +468,10 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/yuanjiao_5_heise"
                 android:gravity="center"
-                android:paddingLeft="15dp"
                 android:paddingTop="8dp"
-                android:paddingRight="15dp"
                 android:paddingBottom="8dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
                 android:text="保存"
                 android:textColor="@color/white"
                 android:textSize="15sp"
@@ -482,15 +484,14 @@
                 android:layout_marginLeft="15dp"
                 android:background="@drawable/yuanjiao_5_lanse"
                 android:gravity="center"
-                android:paddingLeft="15dp"
                 android:paddingTop="8dp"
-                android:paddingRight="15dp"
                 android:paddingBottom="8dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
                 android:text="匹配"
                 android:textColor="@color/white"
                 android:textSize="15sp"
                 android:textStyle="bold" />
-
             <TextView
                 android:id="@+id/tv_xiugai"
                 android:layout_width="wrap_content"
@@ -498,15 +499,15 @@
                 android:layout_marginLeft="15dp"
                 android:background="@drawable/yuanjiao_5_lanse"
                 android:gravity="center"
-                android:paddingLeft="15dp"
                 android:paddingTop="8dp"
-                android:paddingRight="15dp"
                 android:paddingBottom="8dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
                 android:text="修改"
+                android:visibility="gone"
                 android:textColor="@color/white"
                 android:textSize="15sp"
-                android:textStyle="bold"
-                android:visibility="gone" />
+                android:textStyle="bold" />
 
         </LinearLayout>
 

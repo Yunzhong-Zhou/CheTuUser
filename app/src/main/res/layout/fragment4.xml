@@ -414,6 +414,7 @@
                         android:onClick="onClick"
                         android:orientation="horizontal"
                         android:paddingTop="16dp"
+                        android:visibility="gone"
                         android:paddingBottom="16dp">
 
                         <ImageView
@@ -442,6 +443,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="0.5dp"
                         android:layout_marginLeft="40dp"
+                        android:visibility="gone"
                         android:background="@color/xian" />
                     <LinearLayout
                         android:id="@+id/linearLayout8"

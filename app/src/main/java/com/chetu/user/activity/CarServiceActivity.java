@@ -3,12 +3,12 @@ package com.chetu.user.activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -346,6 +346,9 @@ public class CarServiceActivity extends BaseActivity {
                                     (CarServiceActivity.this, R.layout.item_carservice_sv_child, model.getV_list()) {
                                 @Override
                                 protected void convert(ViewHolder holder, ServiceListModel_All.ListBean.VListBeanXX listBean, int item) {
+                                    //        强行关闭复用
+                                    holder.setIsRecyclable(false);
+
                                     holder.setText(R.id.textView, listBean.getVName());
 
                                     EditText et_content = holder.getView(R.id.et_content);
@@ -361,7 +364,7 @@ public class CarServiceActivity extends BaseActivity {
                                     }
 
                                     //提交
-                                    et_content.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                                    /*et_content.setOnEditorActionListener(new TextView.OnEditorActionListener() {
                                         @Override
                                         public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                                             if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -373,8 +376,8 @@ public class CarServiceActivity extends BaseActivity {
                                             }
                                             return true;
                                         }
-                                    });
-                                    /*et_content.addTextChangedListener(new TextWatcher() {
+                                    });*/
+                                    et_content.addTextChangedListener(new TextWatcher() {
                                         @Override
                                         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -387,24 +390,48 @@ public class CarServiceActivity extends BaseActivity {
 
                                         @Override
                                         public void afterTextChanged(Editable editable) {
-                                            if (!et_content.getText().toString().trim().equals("")) {
-                                                listBean.setContent(et_content.getText().toString().trim());
+                                            if (!editable.toString().trim().equals("")) {
+                                                listBean.setContent(editable.toString().trim());
                                                 MyLogger.i(">>>>>>>" + listBean.getContent());
                                             }
                                         }
-                                    });*/
+                                    });
 
                                 }
                             };
                             ca.setOnItemClickListener(new OnItemClickListener() {
                                 @Override
                                 public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
-
                                     if (!model.getV_list().get(i).isIsgouxuan())
                                         model.getV_list().get(i).setIsgouxuan(true);
                                     else model.getV_list().get(i).setIsgouxuan(false);
 
                                     ca.notifyDataSetChanged();
+
+
+                                    //选择的服务
+                                    service_name = "";
+                                    for (ServiceListModel_All.ListBean listBean : list_sv) {
+                                        for (ServiceListModel_All.ListBean.VListBeanXX vListBean : listBean.getV_list()) {
+                                            if (vListBean.isIsgouxuan()) {
+                                                service_name += vListBean.getVName() + "||";
+                                            }
+                                        }
+                                    }
+                                    if (!service_name.equals("")) {
+                                        service_name = service_name.substring(0, service_name.length() - 2);
+                                        MyLogger.i(">>>>>>>>服务名称：" + service_name);
+                                    }
+                                    showProgress(true, "正在匹配门店，请稍候...");
+                                    //匹配店铺列表
+                                    Map<String, String> params = new HashMap<>();
+                                    params.put("service_name", service_name);
+                                    params.put("page", "0");
+                                    params.put("longitude", "");
+                                    params.put("latitude", "");
+                                    params.put("is_review", "1");
+                                    params.put("is_index", "1");
+                                    RequestList(params);
                                 }
 
                                 @Override
@@ -668,6 +695,78 @@ public class CarServiceActivity extends BaseActivity {
                 ll_tab1.setVisibility(View.GONE);
                 ll_tab2.setVisibility(View.VISIBLE);
                 break;
+            case R.id.tv_baocun:
+                //保存
+                //选择的服务
+                service_name = "";
+                y_service_id_str="";
+                y_service_id_msg = "";
+                v_msg = et_qingkuang.getText().toString().trim();
+                for (ServiceListModel_All.ListBean listBean : list_sv) {
+                    for (ServiceListModel_All.ListBean.VListBeanXX vListBean : listBean.getV_list()) {
+                        if (vListBean.isIsgouxuan()) {
+                            service_name += vListBean.getVName() + "||";
+                            y_service_id_str += vListBean.getYServiceId() + ",";
+                            if (!vListBean.getContent().equals("")) {
+                                y_service_id_msg += vListBean.getContent() + "||";
+                            } else {
+                                y_service_id_msg += "#" + "||";
+                            }
+                        }
+                    }
+                }
+                if (!service_name.equals("")) {
+                    service_name = service_name.substring(0, service_name.length() - 2);
+                    MyLogger.i(">>>>>>>>服务名称：" + service_name);
+                    y_service_id_str = y_service_id_str.substring(0, y_service_id_str.length() - 1);
+                    MyLogger.i(">>>>>>>>服务ID：" + y_service_id_str);
+
+                    y_service_id_msg = y_service_id_msg.substring(0, y_service_id_msg.length() - 2);
+                    MyLogger.i(">>>>>>>>服务ID描述：" + y_service_id_msg);
+                }
+                //选择的门店
+                for (Fragment3Model.ListBean listBean : list2) {
+                    if (listBean.isIsgouxuan()) {
+                        y_store_id_str = listBean.getYStoreId() + ",";
+                    }
+                }
+                if (!y_store_id_str.equals("")) {
+                    y_store_id_str = y_store_id_str.substring(0, y_store_id_str.length() - 1);
+                    MyLogger.i(">>>>>>>>店铺ID：" + y_store_id_str);
+                }
+                //添加项目
+                v_list_str = jsonArray.toString();
+
+                //保存
+                if (!y_user_sedan_id.equals("") && !service_name.equals("") && !v_list_str.equals("")) {
+                    showToast("是否保存到待发布？", "是", "否", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                            showProgress(true, getString(R.string.app_loading1));
+                            Map<String, String> params = new HashMap<>();
+                            params.put("u_token", localUserInfo.getToken());
+                            params.put("y_user_sedan_id", y_user_sedan_id);
+                            params.put("service_name", service_name);
+                            params.put("y_service_id_str", y_service_id_str);
+                            params.put("y_service_id_msg", y_service_id_msg);
+                            params.put("y_store_id_str", y_store_id_str);
+                            params.put("v_list_str", v_list_str);
+                            params.put("is_ok", "0");//1是发布 0保存
+                            params.put("v_msg", v_msg);
+                            RequestUpData1(params, 0);
+                        }
+                    }, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                            finish();
+                        }
+                    });
+                } else {
+                    myToast("请选择了服务或项目才可以保存");
+                }
+                break;
             case R.id.tv_upload1:
                 //自选门店
                 isZiXuan = 1;
@@ -734,10 +833,13 @@ public class CarServiceActivity extends BaseActivity {
             return false;
         }
         //选择的服务
+        service_name = "";
+        y_service_id_str="";
+        y_service_id_msg = "";
         for (ServiceListModel_All.ListBean listBean : list_sv) {
             for (ServiceListModel_All.ListBean.VListBeanXX vListBean : listBean.getV_list()) {
                 if (vListBean.isIsgouxuan()) {
-                    service_name += vListBean.getVName() + "/";
+                    service_name += vListBean.getVName() + "||";
                     y_service_id_str += vListBean.getYServiceId() + ",";
 
                     if (!vListBean.getContent().equals("")) {
@@ -750,13 +852,13 @@ public class CarServiceActivity extends BaseActivity {
             }
         }
         if (!service_name.equals("")) {
-            service_name = service_name.substring(0, service_name.length() - 1);
+            service_name = service_name.substring(0, service_name.length() - 2);
             MyLogger.i(">>>>>>>>服务名称：" + service_name);
             y_service_id_str = y_service_id_str.substring(0, y_service_id_str.length() - 1);
             MyLogger.i(">>>>>>>>服务ID：" + y_service_id_str);
 
             y_service_id_msg = y_service_id_msg.substring(0, y_service_id_msg.length() - 2);
-            MyLogger.i(">>>>>>>>服务ID描述：" + y_service_id_str);
+            MyLogger.i(">>>>>>>>服务ID描述：" + y_service_id_msg);
 
         } else {
             myToast("请选择服务");
@@ -859,19 +961,31 @@ public class CarServiceActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 //选择的服务
+                service_name = "";
+                y_service_id_str="";
+                y_service_id_msg = "";
+                v_msg = et_qingkuang.getText().toString().trim();
                 for (ServiceListModel_All.ListBean listBean : list_sv) {
                     for (ServiceListModel_All.ListBean.VListBeanXX vListBean : listBean.getV_list()) {
                         if (vListBean.isIsgouxuan()) {
-                            service_name += vListBean.getVName() + "/";
+                            service_name += vListBean.getVName() + "||";
                             y_service_id_str += vListBean.getYServiceId() + ",";
+                            if (!vListBean.getContent().equals("")) {
+                                y_service_id_msg += vListBean.getContent() + "||";
+                            } else {
+                                y_service_id_msg += "#" + "||";
+                            }
                         }
                     }
                 }
                 if (!service_name.equals("")) {
-                    service_name = service_name.substring(0, service_name.length() - 1);
+                    service_name = service_name.substring(0, service_name.length() - 2);
                     MyLogger.i(">>>>>>>>服务名称：" + service_name);
                     y_service_id_str = y_service_id_str.substring(0, y_service_id_str.length() - 1);
                     MyLogger.i(">>>>>>>>服务ID：" + y_service_id_str);
+
+                    y_service_id_msg = y_service_id_msg.substring(0, y_service_id_msg.length() - 2);
+                    MyLogger.i(">>>>>>>>服务ID描述：" + y_service_id_msg);
                 }
                 //选择的门店
                 for (Fragment3Model.ListBean listBean : list2) {
@@ -887,7 +1001,7 @@ public class CarServiceActivity extends BaseActivity {
                 v_list_str = jsonArray.toString();
 
                 //保存
-                if (!y_user_sedan_id.equals("") && !service_name.equals("")) {
+                if (!y_user_sedan_id.equals("") && !service_name.equals("")&& !v_list_str.equals("")) {
                     showToast("是否保存到待发布？", "是", "否", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -902,6 +1016,7 @@ public class CarServiceActivity extends BaseActivity {
                             params.put("y_store_id_str", y_store_id_str);
                             params.put("v_list_str", v_list_str);
                             params.put("is_ok", "0");//1是发布 0保存
+                            params.put("v_msg", v_msg);
                             RequestUpData1(params, 0);
                         }
                     }, new View.OnClickListener() {

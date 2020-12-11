@@ -36,6 +36,7 @@ import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.zhy.adapter.recyclerview.CommonAdapter;
+import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.util.ArrayList;
@@ -43,6 +44,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import okhttp3.Call;
@@ -62,7 +64,7 @@ public class OrderDetailActivity extends BaseActivity {
     private TextView textView1, textView2, textView3;
     private View view1, view2, view3;
 
-    TextView tv_storename, tv_addr, tv_juli, tv_jiecheren, tv_wanchengtime, tv_yujiwanchengtime, tv_carname, tv_carcontent,
+    TextView tv_storename, tv_addr, tv_juli, tv_jiecheren, tv_wanchengtime, tv_yujiwanchengtime, tv_dingdannum, tv_carname, tv_carcontent,
             tv_beizhu, tv_servicenum, tv_goodsnum, tv_allmoney1,
             tv_servicemoney, tv_jiancemoney, tv_allmoney, tv_servicemoney2, tv_jiancemoney2, tv_allmoney2,
             tv_fukuan, tv_dashang, tv_pinglun, tv_jiancenum, tv_jiancemoney1;
@@ -77,6 +79,7 @@ public class OrderDetailActivity extends BaseActivity {
     List<OrderDetailModel.TestingDetailsListBean> list_jiance = new ArrayList<>();
     CommonAdapter<OrderDetailModel.TestingDetailsListBean> mAdapter_jiance;
 
+    int i = 1;
     int payment = 2;//1为支付宝 2为微信支付 3为余额支付
     private static final int SDK_PAY_FLAG = 1;
     @SuppressLint("HandlerLeak")
@@ -184,6 +187,7 @@ public class OrderDetailActivity extends BaseActivity {
         tv_pinglun = findViewByID_My(R.id.tv_pinglun);
         tv_jiancenum = findViewByID_My(R.id.tv_jiancenum);
         tv_jiancemoney1 = findViewByID_My(R.id.tv_jiancemoney1);
+        tv_dingdannum = findViewByID_My(R.id.tv_dingdannum);
 
         flowLayout1 = findViewByID_My(R.id.flowLayout1);
         rv_service = findViewByID_My(R.id.rv_service);
@@ -198,7 +202,9 @@ public class OrderDetailActivity extends BaseActivity {
     @Override
     protected void initData() {
         y_order_id = getIntent().getStringExtra("y_order_id");
-        g_state = getIntent().getIntExtra("g_state", 0);
+        tv_dingdannum.setText("订单编号：" + y_order_id);
+
+//        g_state = getIntent().getIntExtra("g_state", 0);
         requestServer();
     }
 
@@ -284,31 +290,89 @@ public class OrderDetailActivity extends BaseActivity {
                 //时间
                 switch (model.getOrder_info().getGState()) {
                     case 0:
+                        //待接车
+                        titleView.setTitle("待接车");
+                        tv_jiecheren.setVisibility(View.GONE);
+                        ll_heji1.setVisibility(View.VISIBLE);
+                        ll_heji2.setVisibility(View.GONE);
+                        ll_btn.setVisibility(View.GONE);
+
                         tv_wanchengtime.setText("预约时间：" + model.getOrder_info().getAppoinTime());//预约时间
                         tv_yujiwanchengtime.setVisibility(View.GONE);
                         break;
                     case 1:
+                        //待分配
+                        titleView.setTitle("待分配");
+                        ll_heji1.setVisibility(View.VISIBLE);
+                        ll_heji2.setVisibility(View.GONE);
+                        ll_btn.setVisibility(View.GONE);
+
                         tv_wanchengtime.setText("接车时间：" + model.getTechn_sedan_info().getCreateDate());//预约时间
                         tv_yujiwanchengtime.setVisibility(View.GONE);
                         break;
                     case 2:
+                        //待施工
+                        titleView.setTitle("待施工");
+                        ll_heji1.setVisibility(View.GONE);
+                        ll_heji2.setVisibility(View.VISIBLE);
+                        ll_btn.setVisibility(View.VISIBLE);
+                        tv_fukuan.setVisibility(View.GONE);
+                        tv_dashang.setVisibility(View.VISIBLE);
+                        tv_pinglun.setVisibility(View.GONE);
+
                         tv_wanchengtime.setText("分配时间：" + model.getTechn_sedan_info().getCreateDate());//预约时间
                         tv_yujiwanchengtime.setVisibility(View.GONE);
                         break;
                     case 3:
+                        //进行中
+                        titleView.setTitle("进行中");
+                        ll_heji1.setVisibility(View.GONE);
+                        ll_heji2.setVisibility(View.VISIBLE);
+                        ll_btn.setVisibility(View.VISIBLE);
+                        tv_fukuan.setVisibility(View.GONE);
+                        tv_dashang.setVisibility(View.VISIBLE);
+                        tv_pinglun.setVisibility(View.GONE);
+
                         tv_wanchengtime.setText("施工时间：" + model.getTechn_sedan_info().getCreateDate());//预约时间
                         tv_yujiwanchengtime.setVisibility(View.VISIBLE);
                         tv_yujiwanchengtime.setText("预计完成时间：" + model.getTechn_sedan_info().getEstimateTime());
                         break;
                     case 4:
+                        //待复检
+                        titleView.setTitle("待复检");
+                        ll_heji1.setVisibility(View.GONE);
+                        ll_heji2.setVisibility(View.VISIBLE);
+                        ll_btn.setVisibility(View.VISIBLE);
+                        tv_fukuan.setVisibility(View.GONE);
+                        tv_dashang.setVisibility(View.VISIBLE);
+                        tv_pinglun.setVisibility(View.GONE);
+
                         tv_wanchengtime.setText("完工时间：" + model.getTechn_sedan_info().getCreateDate());//预约时间
                         tv_yujiwanchengtime.setVisibility(View.GONE);
                         break;
                     case 5:
+                        //已完工
+                        titleView.setTitle("已完工");
+                        ll_heji1.setVisibility(View.GONE);
+                        ll_heji2.setVisibility(View.VISIBLE);
+                        ll_btn.setVisibility(View.VISIBLE);
+                        tv_fukuan.setVisibility(View.VISIBLE);
+                        tv_dashang.setVisibility(View.VISIBLE);
+                        tv_pinglun.setVisibility(View.GONE);
+
                         tv_wanchengtime.setText("复检时间：" + model.getTechn_sedan_info().getCreateDate());//预约时间
                         tv_yujiwanchengtime.setVisibility(View.GONE);
                         break;
                     case 6:
+                        //已提车
+                        titleView.setTitle("已提车");
+                        ll_heji1.setVisibility(View.GONE);
+                        ll_heji2.setVisibility(View.VISIBLE);
+                        ll_btn.setVisibility(View.VISIBLE);
+                        tv_fukuan.setVisibility(View.VISIBLE);
+                        tv_dashang.setVisibility(View.VISIBLE);
+                        tv_pinglun.setVisibility(View.VISIBLE);
+
                         tv_wanchengtime.setText("提车时间：" + model.getTechn_sedan_info().getCreateDate());//预约时间
                         tv_yujiwanchengtime.setVisibility(View.GONE);
                         break;
@@ -318,7 +382,7 @@ public class OrderDetailActivity extends BaseActivity {
                     tv_fukuan.setText("已付款");
                     tv_fukuan.setClickable(false);
                 } else {
-                    tv_fukuan.setText("未付款");
+                    tv_fukuan.setText("付款");
                     tv_fukuan.setClickable(true);
                 }
 
@@ -360,8 +424,11 @@ public class OrderDetailActivity extends BaseActivity {
                 tv_goodsnum.setText(goodsnum + "");//商品个数
                 tv_allmoney1.setText("¥" + (model.getOrder_service_total_price() + model.getV_order_goods_total_price()));//服务和商品总价格
 
-                if (model.getTechn_sedan_info() != null)
+                if (model.getTechn_sedan_info() != null) {
                     tv_beizhu.setText(model.getTechn_sedan_info().getVRemarks());//备注
+                } else {
+                    tv_beizhu.setText(model.getOrder_info().getcMsg());//备注
+                }
 
                 /**
                  * 服务和商品
@@ -673,12 +740,17 @@ public class OrderDetailActivity extends BaseActivity {
                 bundle.putString("url", url);
                 CommonUtil.gotoActivityWithData(OrderDetailActivity.this, WebContentActivity.class, bundle, false);
                 break;
-            /*case R.id.tv_fukuan:
-                //付款
-                showToast("确认付款吗？", "确认", "取消", new View.OnClickListener() {
+            case R.id.tv_quxiao:
+                //取消
+                showToast("确认取消该订单吗？", "确认", "取消", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         dialog.dismiss();
+                        showProgress(true, "正在删除订单，请稍候...");
+                        Map<String, String> params = new HashMap<>();
+                        params.put("u_token", localUserInfo.getToken());
+                        params.put("y_order_id", model.getOrder_info().getYOrderId());
+                        RequestDelete(params);
                     }
                 }, new View.OnClickListener() {
                     @Override
@@ -686,7 +758,24 @@ public class OrderDetailActivity extends BaseActivity {
                         dialog.dismiss();
                     }
                 });
-                break;*/
+
+                break;
+            case R.id.tv_fukuan:
+                //付款
+                showToast("确认付款吗？", "确认", "取消", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                        showToast("请技师端确认收款");
+                    }
+                }, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+                break;
+
             case R.id.tv_dashang:
                 //打赏
                 BaseDialog dialog1 = new BaseDialog(OrderDetailActivity.this);
@@ -698,11 +787,47 @@ public class OrderDetailActivity extends BaseActivity {
                         .gravity(Gravity.BOTTOM)
                         .dimAmount(0.7f)
                         .show();
-
                 EditText et_money = dialog1.findViewById(R.id.et_money);
-
                 ImageView ic_wechat = dialog1.findViewById(R.id.ic_wechat);
                 ImageView ic_ali = dialog1.findViewById(R.id.ic_ali);
+                List<String> abcList = new ArrayList<>();
+                abcList.add("1.88");
+                abcList.add("8.88");
+                abcList.add("18.8");
+                abcList.add("88.8");
+                abcList.add("98.8");
+                RecyclerView rv_carnum1 = dialog1.findViewById(R.id.rv_carnum);
+                rv_carnum1.setLayoutManager(new GridLayoutManager(this, 5));
+                CommonAdapter<String> adapter_abc = new CommonAdapter<String>
+                        (OrderDetailActivity.this, R.layout.item_textview_yuanjiaobiankuang, abcList) {
+                    @Override
+                    protected void convert(ViewHolder holder, String model, int position) {
+                        TextView tv = holder.getView(R.id.tv);
+                        tv.setText("¥" + model);
+                        if (i == position) {
+                            et_money.setText("" + model);
+                            tv.setTextColor(getResources().getColor(R.color.red));
+                            tv.setBackgroundResource(R.drawable.yuanjiaobiankuang_5_hongse);
+                        } else {
+                            tv.setTextColor(getResources().getColor(R.color.black));
+                            tv.setBackgroundResource(R.drawable.yuanjiaobiankuang_5_huise);
+                        }
+                    }
+                };
+                adapter_abc.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int item) {
+                        i = item;
+//                        et_money.setText(abcList.get(item));
+                        adapter_abc.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                        return false;
+                    }
+                });
+                rv_carnum1.setAdapter(adapter_abc);
                 dialog1.findViewById(R.id.ll_wechat).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -795,7 +920,7 @@ public class OrderDetailActivity extends BaseActivity {
     @Override
     protected void updateView() {
         titleView.setBackground(R.color.background);
-        switch (g_state) {
+        /*switch (g_state) {
             case 0:
                 //待接车
                 titleView.setTitle("待接车");
@@ -861,7 +986,7 @@ public class OrderDetailActivity extends BaseActivity {
                 tv_dashang.setVisibility(View.VISIBLE);
                 tv_pinglun.setVisibility(View.VISIBLE);
                 break;
-        }
+        }*/
     }
 
     /**
@@ -945,6 +1070,33 @@ public class OrderDetailActivity extends BaseActivity {
                     Thread payThread = new Thread(payRunnable);
                     payThread.start();
                 }
+            }
+        });
+    }
+
+    /**
+     * 删除订单
+     *
+     * @param params
+     */
+    private void RequestDelete(Map<String, String> params) {
+        OkhttpUtil.okHttpPost(URLs.OrderDelete, params, headerMap, new CallBackUtil<String>() {
+            @Override
+            public String onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+                hideProgress();
+                myToast(err);
+            }
+
+            @Override
+            public void onResponse(String response) {
+                hideProgress();
+                myToast("删除成功");
+                finish();
             }
         });
     }

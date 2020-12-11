@@ -122,13 +122,17 @@ public class DraftActivity extends BaseActivity {
                                 @Override
                                 protected void convert(ViewHolder holder, String s, int i) {
                                     holder.setText(R.id.title, s);
-                                    /*holder.getView(R.id.delete).setOnClickListener(new View.OnClickListener() {
+                                    holder.getView(R.id.delete).setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
-                                            arrList.remove(i);
-                                            ca.notifyDataSetChanged();
+                                            showProgress(true, "正在删除，请稍候...");
+                                            Map<String, String> params = new HashMap<>();
+                                            params.put("u_token", localUserInfo.getToken());
+                                            params.put("y_draft_id", model.getYDraftId());
+                                            params.put("v_strs", s);
+                                            RequestDelete(params);
                                         }
-                                    });*/
+                                    });
                                 }
                             };
                             rv.setAdapter(ca);
@@ -137,10 +141,10 @@ public class DraftActivity extends BaseActivity {
                             iv_tab.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    if (rv.getVisibility() == View.VISIBLE){
+                                    if (rv.getVisibility() == View.VISIBLE) {
                                         rv.setVisibility(View.GONE);
                                         iv_tab.setImageResource(R.mipmap.ic_next_black);
-                                    }else {
+                                    } else {
                                         rv.setVisibility(View.VISIBLE);
                                         iv_tab.setImageResource(R.mipmap.ic_down_black);
                                     }
@@ -159,6 +163,7 @@ public class DraftActivity extends BaseActivity {
                                             Map<String, String> params = new HashMap<>();
                                             params.put("u_token", localUserInfo.getToken());
                                             params.put("y_draft_id", model.getYDraftId());
+                                            params.put("v_strs", "");
                                             RequestDelete(params);
                                         }
                                     }, new View.OnClickListener() {
@@ -242,5 +247,17 @@ public class DraftActivity extends BaseActivity {
     protected void updateView() {
         titleView.setTitle("草稿");
         titleView.setBackground(R.color.background);
+        titleView.setBack(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent resultIntent = new Intent();
+                Bundle bundle = new Bundle();
+                bundle.putString("msg", "");
+                bundle.putString("y_draft_id", "0");
+                resultIntent.putExtras(bundle);
+                DraftActivity.this.setResult(RESULT_OK, resultIntent);
+                finish();
+            }
+        });
     }
 }

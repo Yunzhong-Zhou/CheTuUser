@@ -20,6 +20,7 @@ import com.bumptech.glide.Glide;
 import com.chetu.user.R;
 import com.chetu.user.base.BaseActivity;
 import com.chetu.user.model.ConfirmOrderModel;
+import com.chetu.user.model.ConfirmOrderNumModel;
 import com.chetu.user.net.URLs;
 import com.chetu.user.okhttp.CallBackUtil;
 import com.chetu.user.okhttp.OkhttpUtil;
@@ -772,9 +773,9 @@ public class ConfirmOrderActivity extends BaseActivity {
      * @param params
      */
     private void RequestAdd(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.ADDOrder, params, headerMap, new CallBackUtil<Object>() {
+        OkhttpUtil.okHttpPost(URLs.ADDOrder, params, headerMap, new CallBackUtil<ConfirmOrderNumModel>() {
             @Override
-            public Object onParseResponse(Call call, Response response) {
+            public ConfirmOrderNumModel onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -784,17 +785,22 @@ public class ConfirmOrderActivity extends BaseActivity {
             }
 
             @Override
-            public void onResponse(Object response) {
+            public void onResponse(ConfirmOrderNumModel response) {
                 hideProgress();
-                showToast("订单提交成功", new View.OnClickListener() {
+                /*showToast("订单提交成功", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         dialog.dismiss();
 
 //                        finish();
-                        CommonUtil.gotoActivityWithFinishOtherAll(ConfirmOrderActivity.this, MainActivity.class, true);
+//                        CommonUtil.gotoActivityWithFinishOtherAll(ConfirmOrderActivity.this, MainActivity.class, true);
                     }
-                });
+                });*/
+                //
+                myToast("订单提交成功");
+                Bundle bundle = new Bundle();
+                bundle.putString("y_order_id", response.getY_order_id());
+                CommonUtil.gotoActivityWithData(ConfirmOrderActivity.this, MyOrderActivity.class,bundle, true);
             }
         });
     }

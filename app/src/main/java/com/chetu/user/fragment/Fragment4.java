@@ -312,14 +312,16 @@ public class Fragment4 extends BaseFragment {
 
             case R.id.linearLayout7:
                 //我的订单
-                CommonUtil.gotoActivity(getActivity(), MyOrderActivity.class);
+                Bundle bundle7 = new Bundle();
+                bundle7.putString("y_order_id", "");
+                CommonUtil.gotoActivityWithData(getActivity(), MyOrderActivity.class,bundle7, false);
                 break;
             case R.id.linearLayout8:
                 //优惠券
                 CommonUtil.gotoActivity(getActivity(), CouponActivity.class);
                 break;
             case R.id.linearLayout9:
-                //待发布
+                //询价订单
                 CommonUtil.gotoActivity(getActivity(), WaitingReleaseActivity.class);
                 break;
             case R.id.linearLayout10:

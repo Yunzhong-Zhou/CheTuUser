@@ -561,8 +561,8 @@ public class MyProfileActivity extends BaseActivity {
 //                listFileNames = new ArrayList<>();
 //                listFileNames.add("head");
 
-                Uri uri1 = Uri.parse("");
-                /*uri1 = Uri.fromFile(new File(imagePath));
+                /*Uri uri1 = Uri.parse("");
+                uri1 = Uri.fromFile(new File(imagePath));
                 File file1 = new File(FileUtil.getPath(this, uri1));*/
                 File file1 = new File(imagePath);
                 listFiles = new ArrayList<>();

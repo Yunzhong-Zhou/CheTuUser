@@ -832,7 +832,7 @@ public class Fragment2_1 extends BaseFragment {
                     count++;
                     v_strs += bean2.getVName() + "||";
                 }
-                for (ServiceListModel_All.ListBean.VListBeanXX.VListBeanX bean3 : bean2.getV_list()) {//第二级
+                for (ServiceListModel_All.ListBean.VListBeanXX.VListBeanX bean3 : bean2.getV_list()) {//第三级
                     if (bean3.isIsgouxuan()) {
                         count++;
                         v_strs += bean3.getVName() + "||";

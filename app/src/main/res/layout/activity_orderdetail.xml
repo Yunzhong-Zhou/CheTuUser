@@ -132,7 +132,14 @@
                                 android:textSize="12sp" />
 
                         </LinearLayout>
-
+                        <TextView
+                            android:id="@+id/tv_dingdannum"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="订单编号："
+                            android:textColor="@color/black"
+                            android:textSize="13sp" />
                         <TextView
                             android:id="@+id/tv_jiecheren"
                             android:layout_width="wrap_content"
@@ -621,7 +628,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="13dp"
             android:text="检测项目："
             android:textColor="@color/black"
             android:textSize="10sp" />
@@ -651,6 +658,22 @@
             android:textColor="@color/red"
             android:textSize="15sp"
             android:textStyle="bold" />
+        <TextView
+            android:id="@+id/tv_quxiao"
+            android:onClick="onClick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="13dp"
+            android:paddingRight="13dp"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/yuanjiaobiankuang_5_hongse"
+            android:gravity="center"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="取消"
+            android:textStyle="bold"
+            android:textColor="@color/red"
+            android:textSize="15sp" />
 
     </LinearLayout>
     <!--合计-->

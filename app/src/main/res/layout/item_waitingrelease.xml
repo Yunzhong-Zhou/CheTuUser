@@ -47,6 +47,14 @@
         android:text="Content"
         android:textColor="#535353"
         android:textSize="13sp" />
+    <TextView
+        android:id="@+id/tv_qingkuangshuoming"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="情况说明："
+        android:textColor="#535353"
+        android:textSize="13sp" />
 
     <LinearLayout
         android:layout_width="match_parent"

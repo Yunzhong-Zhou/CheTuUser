@@ -122,6 +122,7 @@
             android:label="车险查询列表" />
         <activity
             android:name=".activity.CarServiceActivity"
+            android:windowSoftInputMode="adjustPan"
             android:label="维修保养询价-发布救援" />
         <activity
             android:name=".activity.AddXunJiaActivity"
@@ -231,7 +232,10 @@
             android:label="二维码" />
         <activity
             android:name=".activity.WaitingReleaseActivity"
-            android:label="待发布" />
+            android:label="询价订单" />
+        <activity
+            android:name=".activity.JiuYuanActivity"
+            android:label="救援" />
         <activity
             android:name=".activity.QuotedPriceActivity"
             android:label="已报价" />

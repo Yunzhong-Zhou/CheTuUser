@@ -13,9 +13,8 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:background="@color/white">
-
         <TextView
-            android:id="@+id/tv_type1"
+            android:id="@+id/tv_type0"
             android:onClick="onClick"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -24,9 +23,24 @@
             android:background="@mipmap/bg_myorder_tab1_1"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
-            android:text="待接车"
+            android:text="需求订单"
             android:layout_marginRight="-4dp"
             android:textColor="@color/white"
+            android:textSize="12sp" />
+        <TextView
+            android:id="@+id/tv_type1"
+            android:onClick="onClick"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:background="@mipmap/bg_myorder_tab2_0"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:layout_marginLeft="-4dp"
+            android:layout_marginRight="-4dp"
+            android:text="待接车"
+            android:textColor="@color/black3"
             android:textSize="12sp" />
         <TextView
             android:id="@+id/tv_type2"

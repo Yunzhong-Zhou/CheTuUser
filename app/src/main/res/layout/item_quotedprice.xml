@@ -33,6 +33,17 @@
             android:textSize="14sp" />
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/tv_qingkuangshuoming"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="13dp"
+        android:layout_marginRight="13dp"
+        android:text="项目说明："
+        android:textColor="#535353"
+        android:textSize="13sp" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_tupian"
         android:layout_width="match_parent"

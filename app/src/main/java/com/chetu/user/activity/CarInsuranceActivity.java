@@ -195,6 +195,13 @@ public class CarInsuranceActivity extends BaseActivity {
     public void onClick(View v) {
         super.onClick(v);
         switch (v.getId()) {
+            case R.id.editText7:
+                Intent intent4 = new Intent(CarInsuranceActivity.this, SelectAddressActivity.class);
+                Bundle bundle4 = new Bundle();
+                bundle4.putInt("type", 10004);
+                intent4.putExtras(bundle4);
+                startActivityForResult(intent4, 10004, bundle4);
+                break;
             case R.id.linearLayout1:
                 //车险询价
                 view1.setVisibility(View.VISIBLE);
@@ -278,10 +285,10 @@ public class CarInsuranceActivity extends BaseActivity {
             return false;
         }
         frame_no = editText2.getText().toString().trim();
-        if (TextUtils.isEmpty(frame_no)) {
+        /*if (TextUtils.isEmpty(frame_no)) {
             myToast("请输入车架号");
             return false;
-        }
+        }*/
         full_name = editText3.getText().toString().trim();
         if (TextUtils.isEmpty(full_name)) {
             myToast("请输入姓名");
@@ -293,15 +300,15 @@ public class CarInsuranceActivity extends BaseActivity {
             return false;
         }
         t_number = editText5.getText().toString().trim();
-        if (TextUtils.isEmpty(t_number)) {
+       /* if (TextUtils.isEmpty(t_number)) {
             myToast("请输入身份证号");
             return false;
-        }
+        }*/
         i_company = editText6.getText().toString().trim();
-        if (TextUtils.isEmpty(i_company)) {
+        /*if (TextUtils.isEmpty(i_company)) {
             myToast("请输入商业保险公司名称");
             return false;
-        }
+        }*/
         v_insure_city = editText7.getText().toString().trim();
         if (TextUtils.isEmpty(v_insure_city)) {
             myToast("请输入输入投保城市");
@@ -315,14 +322,14 @@ public class CarInsuranceActivity extends BaseActivity {
             myToast("请上传行驶证副页");
             return false;
         }
-        if (TextUtils.isEmpty(number_img1)) {
+        /*if (TextUtils.isEmpty(number_img1)) {
             myToast("请上传身份证正面");
             return false;
         }
         if (TextUtils.isEmpty(number_img2)) {
             myToast("请上传身份证反面");
             return false;
-        }
+        }*/
         return true;
     }
 
@@ -399,6 +406,16 @@ public class CarInsuranceActivity extends BaseActivity {
 
                     } else {
                         imagePath = uri.getPath();
+                    }
+                    break;
+                case 10004:
+                    //选择地址
+                    if (data != null) {
+                        Bundle bundle3 = data.getExtras();
+//                    longitude = bundle3.getString("lng");
+//                    latitude = bundle3.getString("lat");
+//                    editText7.setText(bundle3.getString("addr"));
+                        editText7.setText(bundle3.getString("city"));
                     }
                     break;
             }
@@ -497,4 +514,5 @@ public class CarInsuranceActivity extends BaseActivity {
             }
         });
     }
+
 }

@@ -76,7 +76,16 @@
         </LinearLayout>
 
     </LinearLayout>
-
+    <TextView
+        android:id="@+id/tv_qingkuangshuoming"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="13dp"
+        android:layout_marginRight="13dp"
+        android:text="情况说明："
+        android:textColor="#535353"
+        android:textSize="13sp" />
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"

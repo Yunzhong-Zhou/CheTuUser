@@ -42,6 +42,16 @@ public class WaitingReleaseModel implements Serializable {
         private String storeIdStr;
         private String userSedanJson;
         private int isOk;
+        private String vMsg;
+
+        public String getvMsg() {
+            return vMsg;
+        }
+
+        public void setvMsg(String vMsg) {
+            this.vMsg = vMsg;
+        }
+
         private String createDate;
         private UserSedanInfoBean user_sedan_info;
         private List<ProjectListBean> project_list;
@@ -406,6 +416,15 @@ public class WaitingReleaseModel implements Serializable {
             private int isService;
             private List<String> imgArr;
             private List<OfferListBean> offer_list;
+            private String vMsg;
+
+            public String getvMsg() {
+                return vMsg;
+            }
+
+            public void setvMsg(String vMsg) {
+                this.vMsg = vMsg;
+            }
 
             public String getId() {
                 return id;

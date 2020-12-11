@@ -2,12 +2,12 @@
 <com.mcxtzhang.swipemenulib.SwipeMenuLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:clickable="true"
     android:layout_marginLeft="13dp"
     android:layout_marginTop="10dp"
     android:layout_marginRight="13dp">
 
     <LinearLayout
+        android:id="@+id/ll_store"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/yuanjiao_10_baise"

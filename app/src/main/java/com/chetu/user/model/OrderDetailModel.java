@@ -353,6 +353,15 @@ public class OrderDetailModel implements Serializable {
         private KfUserInfoBean kf_user_info;
         private int isDelivery;
         private int isPick;
+        private String cMsg;
+
+        public String getcMsg() {
+            return cMsg;
+        }
+
+        public void setcMsg(String cMsg) {
+            this.cMsg = cMsg;
+        }
 
         public String getId() {
             return id;

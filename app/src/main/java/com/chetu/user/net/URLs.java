@@ -58,6 +58,8 @@ public class URLs {
     public static final String ChangeStore = HOST+"/api/v1/public/user_cart_store_id";
     //支付
     public static final String Pay = HOST+"/api/v1/pay/online_payment";
+    //删除
+    public static final String OrderDelete = HOST+"/api/v1/user/del_order";
     //评价列表
     public static final String PingJiaList = HOST+"/api/v1/public/get_goods_eval_list";
     //门店评价列表
@@ -150,10 +152,14 @@ public class URLs {
     public static final String Coupon_QRCode = HOST+"/api/v1/user/user_coupon_qrcode";
     //待发布
     public static final String WaitingRelease = HOST+"/api/v1/user/inquiry_demand_list";
+    //待发布-救援
+    public static final String WaitingRelease_JiuYuan = HOST+"/api/v1/techn/techn_rescue_list";
     //删除询价
     public static final String DeleteXunJia = HOST+"/api/v1/user/inquiry_demand_del";
     //发布询价
     public static final String FaBuXunJia = HOST+"/api/v1/user/inquiry_demand_start";
+    //救援状态
+    public static final String JiuYuan_Type = HOST + "/api/v1/techn/techn_rescue_query";
     //我的车辆
     public static final String MyCar = HOST+"/api/v1/user/user_sedan_list";
     //我的车辆详情

@@ -28,7 +28,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class QuotedPriceActivity extends BaseActivity {
     WaitingReleaseModel.ListBean model;
     ImageView iv_carlogo;
-    TextView tv_carname, tv_carnum, tv_cardetail;
+    TextView tv_carname, tv_carnum, tv_cardetail, tv_qingkuangshuoming;
     RecyclerView recyclerView;
 
     @Override
@@ -51,6 +51,7 @@ public class QuotedPriceActivity extends BaseActivity {
         tv_cardetail = findViewByID_My(R.id.tv_cardetail);
         recyclerView = findViewByID_My(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        tv_qingkuangshuoming = findViewByID_My(R.id.tv_qingkuangshuoming);
     }
 
     @Override
@@ -63,12 +64,18 @@ public class QuotedPriceActivity extends BaseActivity {
         Glide.with(this).load(URLs.IMGHOST + model.getUser_sedan_info().getSLogo())
                 .centerCrop()
                 .into(iv_carlogo);//加载图片
-
+        tv_qingkuangshuoming.setText("情况说明：" + model.getvMsg());
         CommonAdapter<WaitingReleaseModel.ListBean.ProjectListBean> mAdapter = new CommonAdapter<WaitingReleaseModel.ListBean.ProjectListBean>
                 (QuotedPriceActivity.this, R.layout.item_quotedprice, model.getProject_list()) {
             @Override
             protected void convert(ViewHolder holder, WaitingReleaseModel.ListBean.ProjectListBean model, int position) {
                 holder.setText(R.id.tv_title, model.getVTitle());
+                if (model.getvMsg() != null && !model.getvMsg().equals("#")) {
+                    holder.setText(R.id.tv_qingkuangshuoming, "项目说明：" + model.getvMsg());
+                } else {
+                    holder.setText(R.id.tv_qingkuangshuoming, "项目说明：暂无项目说明");
+                }
+
                 TextView tv_daibaojia = holder.getView(R.id.tv_daibaojia);
                 //是否有图片
                 RecyclerView rv_tupian = holder.getView(R.id.rv_tupian);
@@ -128,7 +135,7 @@ public class QuotedPriceActivity extends BaseActivity {
                         @Override
                         protected void convert(ViewHolder holder, WaitingReleaseModel.ListBean.ProjectListBean.OfferListBean model, int position) {
                             holder.setText(R.id.title, model.getStore_info().getVName());
-                            holder.setText(R.id.money, ""+model.getVPrice());
+                            holder.setText(R.id.money, "" + model.getVPrice());
                         }
                     };
                     rv_baojia.setAdapter(mAdapter_baojia);

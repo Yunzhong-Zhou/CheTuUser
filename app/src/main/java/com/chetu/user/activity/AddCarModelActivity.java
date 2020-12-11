@@ -320,7 +320,7 @@ public class AddCarModelActivity extends BaseActivity implements PopupWindow.OnD
 
     @Override
     protected void updateView() {
-        titleView.setTitle("添加车辆");
+        titleView.setTitle("选择车型");
     }
 
     @Override

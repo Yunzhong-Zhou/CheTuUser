@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide;
 import com.chetu.user.R;
 import com.chetu.user.base.BaseActivity;
 import com.chetu.user.model.MyOrderModel;
+import com.chetu.user.model.XuQiuOrderModel;
 import com.chetu.user.net.URLs;
 import com.chetu.user.okhttp.CallBackUtil;
 import com.chetu.user.okhttp.OkhttpUtil;
@@ -37,18 +38,30 @@ import okhttp3.Response;
  * 我的订单
  */
 public class MyOrderActivity extends BaseActivity {
-    int type = 1;
+    String y_order_id = "";
+
+    int type = 0;
     int page = 0;
     private RecyclerView recyclerView;
     List<MyOrderModel.ListBean> list = new ArrayList<>();
     CommonAdapter<MyOrderModel.ListBean> mAdapter;
 
-    TextView tv_type1, tv_type2, tv_type3, tv_type4, tv_type5, tv_type6, tv_type7;
+
+    List<XuQiuOrderModel.ListBean> list_xuqiu = new ArrayList<>();
+    CommonAdapter<XuQiuOrderModel.ListBean> mAdapter_xuqiu;
+
+    TextView tv_type0, tv_type1, tv_type2, tv_type3, tv_type4, tv_type5, tv_type6, tv_type7;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_myorder);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        requestServer();
     }
 
     @Override
@@ -61,9 +74,14 @@ public class MyOrderActivity extends BaseActivity {
                 page = 0;
                 Map<String, String> params = new HashMap<>();
                 params.put("page", page + "");
-                params.put("g_state", (type - 1) + "");
                 params.put("u_token", localUserInfo.getToken());
-                Request(params);
+                if (type == 0) {
+                    //需求订单
+                    RequestXuQiu(params);
+                } else {
+                    params.put("g_state", (type - 1) + "");
+                    Request(params);
+                }
             }
 
             @Override
@@ -72,8 +90,13 @@ public class MyOrderActivity extends BaseActivity {
                 Map<String, String> params = new HashMap<>();
                 params.put("u_token", localUserInfo.getToken());
                 params.put("page", page + "");
-                params.put("g_state", (type - 1) + "");
-                RequestMore(params);
+                if (type == 0) {
+                    //需求订单
+                    RequestXuQiuMore(params);
+                } else {
+                    params.put("g_state", (type - 1) + "");
+                    RequestMore(params);
+                }
             }
         });
 
@@ -81,6 +104,7 @@ public class MyOrderActivity extends BaseActivity {
         LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(mLinearLayoutManager);
 
+        tv_type0 = findViewByID_My(R.id.tv_type0);
         tv_type1 = findViewByID_My(R.id.tv_type1);
         tv_type2 = findViewByID_My(R.id.tv_type2);
         tv_type3 = findViewByID_My(R.id.tv_type3);
@@ -94,7 +118,26 @@ public class MyOrderActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        requestServer();
+        y_order_id = getIntent().getStringExtra("y_order_id");
+        if (!y_order_id.equals("")) {
+            showToast("下单成功\n订单编号：" + y_order_id, "查看订单", "返回首页", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("y_order_id", y_order_id);
+//                            bundle.putInt("g_state", type - 1);
+                    CommonUtil.gotoActivityWithData(MyOrderActivity.this, OrderDetailActivity.class, bundle, false);
+                }
+            }, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                    CommonUtil.gotoActivityWithFinishOtherAll(MyOrderActivity.this, MainActivity.class, true);
+                }
+            });
+        }
+
     }
 
     @Override
@@ -105,10 +148,22 @@ public class MyOrderActivity extends BaseActivity {
         Map<String, String> params = new HashMap<>();
         params.put("page", page + "");
         params.put("u_token", localUserInfo.getToken());
-        params.put("g_state", (type - 1) + "");
-        Request(params);
+
+        if (type == 0) {
+            //需求订单
+            RequestXuQiu(params);
+        } else {
+            params.put("g_state", (type - 1) + "");
+            Request(params);
+        }
+
     }
 
+    /**
+     * 我的订单
+     *
+     * @param params
+     */
     private void Request(Map<String, String> params) {
         OkhttpUtil.okHttpPost(URLs.MyOrder, params, headerMap, new CallBackUtil<MyOrderModel>() {
             @Override
@@ -286,7 +341,7 @@ public class MyOrderActivity extends BaseActivity {
                                 @Override
                                 public void onClick(View v) {
                                     String url = URLs.KFHOST + "/#/pages/chetu-kf/chetu-kf?token=" + localUserInfo.getToken() +
-                                            "&kf_userHash=" + model.getKf_user_info().getUserHash()+
+                                            "&kf_userHash=" + model.getKf_user_info().getUserHash() +
                                             "&nickName=" + model.getKf_user_info().getUserName() +
                                             "&headerPic=" + URLs.IMGHOST + model.getKf_user_info().getHeadPortrait();
                                     Bundle bundle = new Bundle();
@@ -302,7 +357,7 @@ public class MyOrderActivity extends BaseActivity {
                         public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
                             Bundle bundle = new Bundle();
                             bundle.putString("y_order_id", list.get(i).getYOrderId());
-                            bundle.putInt("g_state", type - 1);
+//                            bundle.putInt("g_state", type - 1);
                             CommonUtil.gotoActivityWithData(MyOrderActivity.this, OrderDetailActivity.class, bundle, false);
                             /*switch (type) {
                                 case 1:
@@ -349,6 +404,11 @@ public class MyOrderActivity extends BaseActivity {
         });
     }
 
+    /**
+     * 我的订单更多
+     *
+     * @param params
+     */
     private void RequestMore(Map<String, String> params) {
         OkhttpUtil.okHttpPost(URLs.Fragment3, params, headerMap, new CallBackUtil<MyOrderModel>() {
             @Override
@@ -379,14 +439,263 @@ public class MyOrderActivity extends BaseActivity {
         });
     }
 
+    /**
+     * 需求订单
+     *
+     * @param params
+     */
+    private void RequestXuQiu(Map<String, String> params) {
+        OkhttpUtil.okHttpPost(URLs.XuQiuOrder, params, headerMap, new CallBackUtil<XuQiuOrderModel>() {
+            @Override
+            public XuQiuOrderModel onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+                hideProgress();
+                showEmptyPage();
+//                myToast(err);
+            }
+
+            @Override
+            public void onResponse(XuQiuOrderModel response) {
+                hideProgress();
+                list_xuqiu = response.getList();
+                if (list_xuqiu.size() > 0) {
+                    showContentPage();
+                    mAdapter_xuqiu = new CommonAdapter<XuQiuOrderModel.ListBean>
+                            (MyOrderActivity.this, R.layout.item_xuqiuorder, list_xuqiu) {
+                        @Override
+                        protected void convert(ViewHolder holder, XuQiuOrderModel.ListBean model, int position) {
+                            ImageView iv_storelogo = holder.getView(R.id.iv_storelogo);
+                            Glide.with(MyOrderActivity.this)
+                                    .load(URLs.IMGHOST + model.getStore_info().getPicture())
+                                    .centerCrop()
+                                    .placeholder(R.mipmap.loading)//加载站位图
+                                    .error(R.mipmap.zanwutupian)//加载失败
+                                    .into(iv_storelogo);//加载图片
+                            holder.setText(R.id.tv_storename, model.getStore_info().getVName());
+                            ImageView iv_carlogo = holder.getView(R.id.iv_carlogo);
+                            Glide.with(MyOrderActivity.this)
+                                    .load(URLs.IMGHOST + localUserInfo.getCarlogo())
+                                    .centerCrop()
+                                    .placeholder(R.mipmap.loading)//加载站位图
+                                    .error(R.mipmap.zanwutupian)//加载失败
+                                    .into(iv_carlogo);//加载图片
+
+                            holder.setText(R.id.tv_carname, localUserInfo.getCarname());
+                            holder.setText(R.id.tv_carnum, localUserInfo.getCarnum());
+                            holder.setText(R.id.tv_cardetail, localUserInfo.getCardetail());
+
+                            FlowLayoutAdapter<XuQiuOrderModel.ListBean.ServiceListBean> flowLayoutAdapter1 =
+                                    new FlowLayoutAdapter<XuQiuOrderModel.ListBean.ServiceListBean>
+                                            (model.getService_list()) {
+                                        @Override
+                                        public void bindDataToView(FlowLayoutAdapter.ViewHolder holder, int position,
+                                                                   XuQiuOrderModel.ListBean.ServiceListBean bean) {
+//                                holder.setText(R.id.tv,bean);
+                                            TextView tv = holder.getView(R.id.tv);
+                                            tv.setText(bean.getStore_service_info().getYStateValue());
+                                    /*tv.setTextColor(getResources().getColor(R.color.black1));
+                                    tv.setBackgroundResource(R.drawable.yuanjiao_3_huise);*/
+                                        }
+
+                                        @Override
+                                        public void onItemClick(int position, XuQiuOrderModel.ListBean.ServiceListBean bean) {
+//                        showToast("点击" + position);
+                                            Bundle bundle2 = new Bundle();
+//                bundle2.putSerializable("XuanZeFuWuModel", (Serializable) list_xuanze);
+                                            bundle2.putString("y_store_id", model.getYStoreId());
+                                            bundle2.putString("longitude", localUserInfo.getLongitude());
+                                            bundle2.putString("latitude", localUserInfo.getLatitude());
+                                            CommonUtil.gotoActivityWithData(MyOrderActivity.this, ConfirmOrderActivity.class, bundle2, false);
+                                        }
+
+                                        @Override
+                                        public int getItemLayoutID(int position, XuQiuOrderModel.ListBean.ServiceListBean bean) {
+                                            return R.layout.item_xuqiuorder_flowlayout;
+                                        }
+                                    };
+                            ((FlowLayout) holder.getView(R.id.flowLayout1)).setAdapter(flowLayoutAdapter1);
+
+                            holder.getView(R.id.tv_quxiao).setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    //取消订单
+                                    showToast("确认取消该订单吗？", "确认", "取消", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            dialog.dismiss();
+                                            Map<String, String> params = new HashMap<>();
+                                            params.put("u_token", localUserInfo.getToken());
+                                            params.put("y_store_id", model.getYStoreId());
+                                            RequestDelete(params);
+                                        }
+                                    }, new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            dialog.dismiss();
+                                        }
+                                    });
+                                }
+                            });
+                            holder.getView(R.id.tv_xunjia).setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    //立即询价
+                                    showToast("确认立即询价吗？", "确认", "取消", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            dialog.dismiss();
+                                            showProgress(true, getString(R.string.app_loading1));
+                                            Map<String, String> params = new HashMap<>();
+                                            params.put("u_token", localUserInfo.getToken());
+                                            params.put("y_store_id", model.getYStoreId());
+                                            params.put("y_user_sedan_id", localUserInfo.getCarid());
+                                            RequestAddXunJia(params);
+                                        }
+                                    }, new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            dialog.dismiss();
+                                        }
+                                    });
+                                }
+                            });
+                            /*holder.getView(R.id.tv_xiadan).setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    //立即下单
+                                    showToast("确认提交订单吗？", "确认", "取消", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            dialog.dismiss();
+                                            showProgress(true, getString(R.string.app_loading1));
+                                            Map<String, String> params = new HashMap<>();
+                                            params.put("u_token", localUserInfo.getToken());
+                                            params.put("y_store_id", y_store_id);
+                                            params.put("longitude", longitude);
+                                            params.put("latitude", latitude);
+                                            params.put("y_user_sedan_id", y_user_sedan_id);
+                                            params.put("appoin_time", "");
+                                            params.put("is_pick", is_pick);
+                                            params.put("is_delivery", is_delivery);
+                                            RequestAdd(params);
+                                        }
+                                    }, new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            dialog.dismiss();
+                                        }
+                                    });
+                                }
+                            });*/
+
+                        }
+                    };
+                    mAdapter_xuqiu.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                            /*if (type == 10003) {
+                                //保存
+                                Intent resultIntent = new Intent();
+                                Bundle bundle = new Bundle();
+                                bundle.putString("y_store_id", list.get(i).getYStoreId());
+                                bundle.putString("longitude", localUserInfo.getLongitude());
+                                bundle.putString("latitude", localUserInfo.getLatitude());
+                                resultIntent.putExtras(bundle);
+                                MyOrderActivity.this.setResult(RESULT_OK, resultIntent);
+                                finish();
+                            } else {*/
+                            Bundle bundle2 = new Bundle();
+//                bundle2.putSerializable("XuanZeFuWuModel", (Serializable) list_xuanze);
+                            bundle2.putString("y_store_id", list.get(i).getYStoreId());
+                            bundle2.putString("longitude", localUserInfo.getLongitude());
+                            bundle2.putString("latitude", localUserInfo.getLatitude());
+                            CommonUtil.gotoActivityWithData(MyOrderActivity.this, ConfirmOrderActivity.class, bundle2, false);
+//                            }
+
+                        }
+
+                        @Override
+                        public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                            return false;
+                        }
+                    });
+                    recyclerView.setAdapter(mAdapter_xuqiu);
+                } else {
+                    showEmptyPage();
+                }
+            }
+        });
+    }
+
+    /**
+     * 需求订单更多
+     *
+     * @param params
+     */
+    private void RequestXuQiuMore(Map<String, String> params) {
+        OkhttpUtil.okHttpPost(URLs.XuQiuOrder, params, headerMap, new CallBackUtil<XuQiuOrderModel>() {
+            @Override
+            public XuQiuOrderModel onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+                hideProgress();
+                myToast(err);
+                page--;
+            }
+
+            @Override
+            public void onResponse(XuQiuOrderModel response) {
+                hideProgress();
+                List<XuQiuOrderModel.ListBean> list1 = new ArrayList<>();
+                list1 = response.getList();
+                if (list1.size() == 0) {
+                    page--;
+                    myToast(getString(R.string.app_nomore));
+                } else {
+                    list_xuqiu.addAll(list1);
+                    mAdapter_xuqiu.notifyDataSetChanged();
+                }
+            }
+        });
+    }
+
     @Override
     public void onClick(View v) {
         super.onClick(v);
         switch (v.getId()) {
+            case R.id.tv_type0:
+                //需求订单
+                type = 0;
+                tv_type0.setBackgroundResource(R.mipmap.bg_myorder_tab1_1);
+                tv_type0.setTextColor(getResources().getColor(R.color.white));
+                tv_type1.setBackgroundResource(R.mipmap.bg_myorder_tab2_0);
+                tv_type1.setTextColor(getResources().getColor(R.color.black3));
+                tv_type2.setBackgroundResource(R.mipmap.bg_myorder_tab2_0);
+                tv_type2.setTextColor(getResources().getColor(R.color.black3));
+                tv_type3.setBackgroundResource(R.mipmap.bg_myorder_tab2_0);
+                tv_type3.setTextColor(getResources().getColor(R.color.black3));
+                tv_type4.setBackgroundResource(R.mipmap.bg_myorder_tab2_0);
+                tv_type4.setTextColor(getResources().getColor(R.color.black3));
+                tv_type5.setBackgroundResource(R.mipmap.bg_myorder_tab2_0);
+                tv_type5.setTextColor(getResources().getColor(R.color.black3));
+                tv_type6.setBackgroundResource(R.mipmap.bg_myorder_tab2_0);
+                tv_type6.setTextColor(getResources().getColor(R.color.black3));
+                tv_type7.setBackgroundResource(R.mipmap.bg_myorder_tab3_0);
+                tv_type7.setTextColor(getResources().getColor(R.color.black3));
+                break;
             case R.id.tv_type1:
                 //待接车
                 type = 1;
-                tv_type1.setBackgroundResource(R.mipmap.bg_myorder_tab1_1);
+                tv_type0.setBackgroundResource(R.mipmap.bg_myorder_tab1_0);
+                tv_type0.setTextColor(getResources().getColor(R.color.black3));
+                tv_type1.setBackgroundResource(R.mipmap.bg_myorder_tab2_1);
                 tv_type1.setTextColor(getResources().getColor(R.color.white));
                 tv_type2.setBackgroundResource(R.mipmap.bg_myorder_tab2_0);
                 tv_type2.setTextColor(getResources().getColor(R.color.black3));
@@ -404,6 +713,8 @@ public class MyOrderActivity extends BaseActivity {
             case R.id.tv_type2:
                 //待分配
                 type = 2;
+                tv_type0.setBackgroundResource(R.mipmap.bg_myorder_tab1_0);
+                tv_type0.setTextColor(getResources().getColor(R.color.black3));
                 tv_type1.setBackgroundResource(R.mipmap.bg_myorder_tab1_0);
                 tv_type1.setTextColor(getResources().getColor(R.color.black3));
                 tv_type2.setBackgroundResource(R.mipmap.bg_myorder_tab2_1);
@@ -422,6 +733,8 @@ public class MyOrderActivity extends BaseActivity {
             case R.id.tv_type3:
                 //待施工
                 type = 3;
+                tv_type0.setBackgroundResource(R.mipmap.bg_myorder_tab1_0);
+                tv_type0.setTextColor(getResources().getColor(R.color.black3));
                 tv_type1.setBackgroundResource(R.mipmap.bg_myorder_tab1_0);
                 tv_type1.setTextColor(getResources().getColor(R.color.black3));
                 tv_type2.setBackgroundResource(R.mipmap.bg_myorder_tab2_0);
@@ -440,6 +753,8 @@ public class MyOrderActivity extends BaseActivity {
             case R.id.tv_type4:
                 //进行中
                 type = 4;
+                tv_type0.setBackgroundResource(R.mipmap.bg_myorder_tab1_0);
+                tv_type0.setTextColor(getResources().getColor(R.color.black3));
                 tv_type1.setBackgroundResource(R.mipmap.bg_myorder_tab1_0);
                 tv_type1.setTextColor(getResources().getColor(R.color.black3));
                 tv_type2.setBackgroundResource(R.mipmap.bg_myorder_tab2_0);
@@ -458,6 +773,8 @@ public class MyOrderActivity extends BaseActivity {
             case R.id.tv_type5:
                 //待复检
                 type = 5;
+                tv_type0.setBackgroundResource(R.mipmap.bg_myorder_tab1_0);
+                tv_type0.setTextColor(getResources().getColor(R.color.black3));
                 tv_type1.setBackgroundResource(R.mipmap.bg_myorder_tab1_0);
                 tv_type1.setTextColor(getResources().getColor(R.color.black3));
                 tv_type2.setBackgroundResource(R.mipmap.bg_myorder_tab2_0);
@@ -476,6 +793,8 @@ public class MyOrderActivity extends BaseActivity {
             case R.id.tv_type6:
                 //已完工
                 type = 6;
+                tv_type0.setBackgroundResource(R.mipmap.bg_myorder_tab1_0);
+                tv_type0.setTextColor(getResources().getColor(R.color.black3));
                 tv_type1.setBackgroundResource(R.mipmap.bg_myorder_tab1_0);
                 tv_type1.setTextColor(getResources().getColor(R.color.black3));
                 tv_type2.setBackgroundResource(R.mipmap.bg_myorder_tab2_0);
@@ -494,6 +813,8 @@ public class MyOrderActivity extends BaseActivity {
             case R.id.tv_type7:
                 //已提车
                 type = 7;
+                tv_type0.setBackgroundResource(R.mipmap.bg_myorder_tab1_0);
+                tv_type0.setTextColor(getResources().getColor(R.color.black3));
                 tv_type1.setBackgroundResource(R.mipmap.bg_myorder_tab1_0);
                 tv_type1.setTextColor(getResources().getColor(R.color.black3));
                 tv_type2.setBackgroundResource(R.mipmap.bg_myorder_tab2_0);
@@ -516,5 +837,67 @@ public class MyOrderActivity extends BaseActivity {
     @Override
     protected void updateView() {
         titleView.setTitle("我的订单");
+    }
+
+    /**
+     * 取消订单
+     *
+     * @param params
+     */
+    private void RequestDelete(Map<String, String> params) {
+        OkhttpUtil.okHttpPost(URLs.DeleteOrder, params, headerMap, new CallBackUtil<Object>() {
+            @Override
+            public Object onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+                hideProgress();
+            }
+
+            @Override
+            public void onResponse(Object response) {
+                hideProgress();
+                showToast("取消成功", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                        requestServer();
+                    }
+                });
+            }
+        });
+    }
+
+    /**
+     * 发布询价
+     *
+     * @param params
+     */
+    private void RequestAddXunJia(Map<String, String> params) {
+        OkhttpUtil.okHttpPost(URLs.ADDXunJia, params, headerMap, new CallBackUtil<Object>() {
+            @Override
+            public Object onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+                hideProgress();
+            }
+
+            @Override
+            public void onResponse(Object response) {
+                hideProgress();
+                showToast("发布询价成功", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                        requestServer();
+                    }
+                });
+            }
+        });
     }
 }

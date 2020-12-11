@@ -166,13 +166,13 @@ public class AddCarActivity extends BaseActivity {
                         response.getInfo().getBrandInfo().getSName());*/
                 //车牌号
                 String s1 = response.getInfo().getSNumber().substring(0, 1);//提取第一个文字
-                tv_chepai.setText(s1);
+                tv_chepai.setText(response.getInfo().getSNumber().substring(0, 2));
                 for (int j = 0; j < provinceList.size(); j++) {
                     if (s1.equals(provinceList.get(j))) {
                         i_province = j;
                     }
                 }
-                String s2 = response.getInfo().getSNumber().substring(1);//提取第一个文字后面的文字
+                String s2 = response.getInfo().getSNumber().substring(2);//提取第一个文字后面的文字
                 et_carnum.setText(s2);
                 //车辆归属
                 if (response.getInfo().getSCy() == 1) {

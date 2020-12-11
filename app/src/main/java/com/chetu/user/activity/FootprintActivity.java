@@ -232,6 +232,14 @@ public class FootprintActivity extends BaseActivity {
                                     });
                                 }
                             });
+                            holder.getView(R.id.ll_goods).setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString("y_goods_id", model.getGoods_info().getYGoodsId());
+                                    CommonUtil.gotoActivityWithData(FootprintActivity.this, ProductDetailActivity.class, bundle, false);
+                                }
+                            });
                         }
                     };
                     mAdapter1.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
@@ -367,6 +375,17 @@ public class FootprintActivity extends BaseActivity {
                                             dialog.dismiss();
                                         }
                                     });
+                                }
+                            });
+                            holder.getView(R.id.ll_store).setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString("id", model.getStore_info().getYStoreId());
+                                    bundle.putString("longitude", localUserInfo.getLongitude());
+                                    bundle.putString("latitude", localUserInfo.getLatitude());
+                                    bundle.putString("keys", "");
+                                    CommonUtil.gotoActivityWithData(FootprintActivity.this, StoreDetailActivity.class, bundle, false);
                                 }
                             });
                         }

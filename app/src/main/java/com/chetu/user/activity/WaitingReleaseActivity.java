@@ -2,15 +2,19 @@ package com.chetu.user.activity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.chetu.user.R;
 import com.chetu.user.base.BaseActivity;
 import com.chetu.user.model.WaitingReleaseModel;
+import com.chetu.user.model.WaitingReleaseModel_JiuYuan;
 import com.chetu.user.net.URLs;
 import com.chetu.user.okhttp.CallBackUtil;
 import com.chetu.user.okhttp.OkhttpUtil;
+import com.chetu.user.popupwindow.PhotoShowDialog;
 import com.chetu.user.utils.CommonUtil;
 import com.liaoinstan.springview.widget.SpringView;
 import com.zhy.adapter.recyclerview.CommonAdapter;
@@ -29,10 +33,10 @@ import okhttp3.Response;
 
 /**
  * Created by zyz on 2020/5/27.
- * 待发布
+ * 询价订单
  */
 public class WaitingReleaseActivity extends BaseActivity {
-    int type = 1, is_ok = 2;// 0、待发布  1、已发布  2、全部
+    int type = 1, is_ok = 0;// 0、待发布  1、已发布  2、全部
     LinearLayout linearLayout1, linearLayout2, linearLayout3, linearLayout4;
     TextView textView1, textView2, textView3, textView4;
     View view1, view2, view3, view4;
@@ -41,6 +45,9 @@ public class WaitingReleaseActivity extends BaseActivity {
     List<WaitingReleaseModel.ListBean> list = new ArrayList<>();
     CommonAdapter<WaitingReleaseModel.ListBean> mAdapter;
 
+    //救援数据
+    List<WaitingReleaseModel_JiuYuan.ListBean> list_JiuYuan = new ArrayList<>();
+    CommonAdapter<WaitingReleaseModel_JiuYuan.ListBean> mAdapter_JiuYuan;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,14 +62,14 @@ public class WaitingReleaseActivity extends BaseActivity {
             @Override
             public void onRefresh() {
                 page = 0;
-                if (type ==4){
-
-                }else {
-
-                    Map<String, String> params = new HashMap<>();
-                    params.put("page", page + "");
+                Map<String, String> params = new HashMap<>();
+                params.put("page", page + "");
+                params.put("u_token", localUserInfo.getToken());
+                if (type == 4) {
+                    params.put("is_wo", "1");
+                    RequestJiuYuan(params);
+                } else {
                     params.put("is_ok", is_ok + "");
-                    params.put("u_token", localUserInfo.getToken());
                     Request(params);
                 }
             }
@@ -71,10 +78,15 @@ public class WaitingReleaseActivity extends BaseActivity {
             public void onLoadmore() {
                 page++;
                 Map<String, String> params = new HashMap<>();
-                params.put("u_token", localUserInfo.getToken());
                 params.put("page", page + "");
-                params.put("is_ok", is_ok + "");
-                RequestMore(params);
+                params.put("u_token", localUserInfo.getToken());
+                if (type == 4) {
+                    params.put("is_wo", "1");
+                    RequestJiuYuanMore(params);
+                } else {
+                    params.put("is_ok", is_ok + "");
+                    RequestMore(params);
+                }
             }
         });
 
@@ -103,13 +115,14 @@ public class WaitingReleaseActivity extends BaseActivity {
         super.requestServer();
         this.showLoadingPage();
         page = 0;
-        if (type ==4){
-
-        }else {
-            Map<String, String> params = new HashMap<>();
-            params.put("page", page + "");
+        Map<String, String> params = new HashMap<>();
+        params.put("page", page + "");
+        params.put("u_token", localUserInfo.getToken());
+        if (type == 4) {
+            params.put("is_wo", "1");
+            RequestJiuYuan(params);
+        } else {
             params.put("is_ok", is_ok + "");
-            params.put("u_token", localUserInfo.getToken());
             Request(params);
         }
     }
@@ -142,6 +155,8 @@ public class WaitingReleaseActivity extends BaseActivity {
                             holder.setText(R.id.tv_num, model.getUser_sedan_info().getSNumber());
                             holder.setText(R.id.tv_content, model.getServiceName());
                             holder.setText(R.id.tv_time, model.getCreateDate());
+                            holder.setText(R.id.tv_qingkuangshuoming,"情况说明："+model.getvMsg());
+
                             TextView tv_delete = holder.getView(R.id.tv_delete);
                             TextView tv_fabu = holder.getView(R.id.tv_fabu);
                             TextView tv_baojia = holder.getView(R.id.tv_baojia);
@@ -264,7 +279,126 @@ public class WaitingReleaseActivity extends BaseActivity {
             }
         });
     }
+    /**
+     * 救援数据
+     */
+    private void RequestJiuYuan(Map<String, String> params) {
+        OkhttpUtil.okHttpPost(URLs.WaitingRelease_JiuYuan, params, headerMap, new CallBackUtil<WaitingReleaseModel_JiuYuan>() {
+            @Override
+            public WaitingReleaseModel_JiuYuan onParseResponse(Call call, Response response) {
+                return null;
+            }
 
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+                hideProgress();
+                showEmptyPage();
+//                myToast(err);
+            }
+
+            @Override
+            public void onResponse(WaitingReleaseModel_JiuYuan response) {
+                hideProgress();
+                list_JiuYuan = response.getList();
+                if (list_JiuYuan.size() > 0) {
+                    showContentPage();
+                    mAdapter_JiuYuan = new CommonAdapter<WaitingReleaseModel_JiuYuan.ListBean>
+                            (WaitingReleaseActivity.this, R.layout.item_waitingrelease_jiuyuan, list_JiuYuan) {
+                        @Override
+                        protected void convert(ViewHolder holder, WaitingReleaseModel_JiuYuan.ListBean model, int position) {
+                            holder.setText(R.id.tv_carnum, model.getUser_sedan_info().getSNumber());//车牌
+                            holder.setText(R.id.tv_name, model.getFullName());//昵称
+                            holder.setText(R.id.tv_type, "类型：" + model.getMType());//类型
+                            holder.setText(R.id.tv_content, "描述：" + model.getCarCondition());//描述
+                            holder.setText(R.id.tv_addr, "地址：" + model.getAddress());//地址
+
+                            ArrayList<String> images = new ArrayList<>();
+                            for (String s : model.getImgArr()) {
+                                images.add(URLs.IMGHOST + s);
+                            }
+                            RecyclerView rv = holder.getView(R.id.rv);
+                            LinearLayoutManager llm1 = new LinearLayoutManager(WaitingReleaseActivity.this);
+                            llm1.setOrientation(LinearLayoutManager.HORIZONTAL);// 设置 recyclerview 布局方式为横向布局
+                            rv.setLayoutManager(llm1);
+                            CommonAdapter<String> ca = new CommonAdapter<String>
+                                    (WaitingReleaseActivity.this, R.layout.item_img_80_80, images) {
+                                @Override
+                                protected void convert(ViewHolder holder, String s, int item) {
+                                    ImageView iv = holder.getView(R.id.iv);
+                                    Glide.with(WaitingReleaseActivity.this).load(s)
+                                            .centerCrop()
+//                            .apply(RequestOptions.bitmapTransform(new RoundedCorners(10)))
+                                            .placeholder(R.mipmap.loading)//加载站位图
+                                            .error(R.mipmap.zanwutupian)//加载失败
+                                            .into(iv);//加载图片
+                                }
+                            };
+                            ca.setOnItemClickListener(new OnItemClickListener() {
+                                @Override
+                                public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                                    PhotoShowDialog photoShowDialog = new PhotoShowDialog(WaitingReleaseActivity.this, images, i);
+                                    photoShowDialog.show();
+                                }
+
+                                @Override
+                                public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                                    return false;
+                                }
+                            });
+                            rv.setAdapter(ca);
+                        }
+                    };
+                    mAdapter_JiuYuan.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable("jiuyuan", list_JiuYuan.get(i));
+                            CommonUtil.gotoActivityWithData(WaitingReleaseActivity.this, JiuYuanActivity.class, bundle, false);
+                        }
+
+                        @Override
+                        public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                            return false;
+                        }
+                    });
+                    recyclerView.setAdapter(mAdapter_JiuYuan);
+
+                } else {
+                    showEmptyPage();
+                }
+            }
+        });
+    }
+
+    private void RequestJiuYuanMore(Map<String, String> params) {
+        OkhttpUtil.okHttpPost(URLs.WaitingRelease_JiuYuan, params, headerMap, new CallBackUtil<WaitingReleaseModel_JiuYuan>() {
+            @Override
+            public WaitingReleaseModel_JiuYuan onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+                hideProgress();
+                myToast(err);
+                page--;
+            }
+
+            @Override
+            public void onResponse(WaitingReleaseModel_JiuYuan response) {
+                hideProgress();
+                List<WaitingReleaseModel_JiuYuan.ListBean> list1 = new ArrayList<>();
+                list1 = response.getList();
+                if (list1.size() == 0) {
+                    page--;
+                    myToast(getString(R.string.app_nomore));
+                } else {
+                    list_JiuYuan.addAll(list1);
+                    mAdapter_JiuYuan.notifyDataSetChanged();
+                }
+            }
+        });
+    }
     /**
      * 删除
      *
@@ -344,7 +478,7 @@ public class WaitingReleaseActivity extends BaseActivity {
                 changeUI();
                 break;
             case R.id.linearLayout4:
-                //已发布
+                //救援列表
                 type = 4;
                 is_ok = 4;
                 changeUI();
