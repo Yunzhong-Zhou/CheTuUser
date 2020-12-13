@@ -1,5 +1,7 @@
 package com.chetu.user.activity;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -89,8 +91,73 @@ public class QuotedPriceActivity extends BaseActivity {
                 @Override
                 protected void convert(ViewHolder holder, WaitingReleaseModel.ListBean.SelectStorelistBean model, int position) {
                     LinearLayout ll_store = holder.getView(R.id.ll_store);
+                    ll_store.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Bundle bundle = new Bundle();
+                            bundle.putString("id", model.getYStoreId());
+                            bundle.putString("longitude", localUserInfo.getLongitude());
+                            bundle.putString("latitude", localUserInfo.getLatitude());
+                            bundle.putString("keys", "");
+                            CommonUtil.gotoActivityWithData(QuotedPriceActivity.this, StoreDetailActivity.class, bundle, false);
+                        }
+                    });
                     TextView tv_storename = holder.getView(R.id.tv_storename);
                     tv_storename.setText(model.getStore_info().getVName());
+
+                    TextView tv_addr = holder.getView(R.id.tv_addr);
+                    tv_addr.setText(model.getStore_info().getAddress());
+                    tv_addr.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Bundle bundle_m = new Bundle();
+                            bundle_m.putDouble("startlat", Double.valueOf(localUserInfo.getLatitude()));
+                            bundle_m.putDouble("startlng", Double.valueOf(localUserInfo.getLongitude()));
+                            bundle_m.putDouble("endlat", Double.valueOf(model.getStore_info().getLatitude()));
+                            bundle_m.putDouble("endlng", Double.valueOf(model.getStore_info().getLongitude()));
+                            CommonUtil.gotoActivityWithData(QuotedPriceActivity.this, MapNavigationActivity.class, bundle_m, false);
+                        }
+                    });
+                    holder.getView(R.id.tv_call).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            //拨打电话
+                            showToast("确认拨打 " + model.getStore_info().getPhone() + " 吗？", "确认", "取消",
+                                    new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            dialog.dismiss();
+                                            //创建打电话的意图
+                                            Intent intent = new Intent();
+                                            //设置拨打电话的动作
+                                            intent.setAction(Intent.ACTION_CALL);//直接拨出电话
+//                               intent.setAction(Intent.ACTION_DIAL);//只调用拨号界面，不拨出电话
+                                            //设置拨打电话的号码
+                                            intent.setData(Uri.parse("tel:" + model.getStore_info().getPhone()));
+                                            //开启打电话的意图
+                                            startActivity(intent);
+                                        }
+                                    }, new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            dialog.dismiss();
+                                        }
+                                    });
+                        }
+                    });
+                    holder.getView(R.id.tv_message).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            /*String url = URLs.KFHOST + "/#/pages/chetu-kf/chetu-kf?token=" + localUserInfo.getToken() +
+                                    "&kf_userHash=" + storeDetailModel.getKf_user_info().getUserHash() +
+                                    "&nickName=" + storeDetailModel.getKf_user_info().getUserName() +
+                                    "&headerPic=" + URLs.IMGHOST + storeDetailModel.getKf_user_info().getHeadPortrait();
+                            Bundle bundle = new Bundle();
+                            bundle.putString("url", url);
+                            CommonUtil.gotoActivityWithData(StoreDetailActivity.this, WebContentActivity.class, bundle, false);*/
+                        }
+                    });
+
                     //第一个直接显示
                     /*if (position == 0) {
                         storename_temp = model.getStore_info().getVName();
