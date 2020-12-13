@@ -2,32 +2,61 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center_vertical"
-    android:orientation="horizontal">
-
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/white">
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="3dp"
-        android:drawableLeft="@mipmap/ic_message_blue"
-        android:drawablePadding="7dp"
         android:gravity="center_vertical"
-        android:padding="10dp"
-        android:singleLine="true"
-        android:text="Title"
-        android:textColor="#2D2D2D"
-        android:textSize="12sp" />
+        android:orientation="horizontal"
+        android:paddingLeft="13dp">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Title"
+            android:textColor="@color/black"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tv_baojia"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="报价"
+            android:textColor="@color/red"
+            android:textSize="14sp" />
+
+        <ImageView
+            android:id="@+id/iv_xuanze"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="13dp"
+            android:paddingTop="10dp"
+            android:paddingRight="13dp"
+            android:paddingBottom="10dp"
+            android:src="@mipmap/ic_xuanzhong" />
+
+    </LinearLayout>
 
     <TextView
-        android:id="@+id/money"
-        android:layout_width="wrap_content"
+        android:id="@+id/tv_qingkuangshuoming"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginRight="20dp"
-        android:layout_weight="1"
-        android:gravity="right"
-        android:text="¥0"
-        android:textColor="@color/red"
-        android:textSize="14sp" />
+        android:paddingLeft="13dp"
+        android:paddingRight="13dp"
+        android:paddingBottom="10dp"
+        android:text="项目说明："
+        android:textColor="@color/black"
+        android:textSize="13sp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_tupian"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="7dp"
+        android:paddingRight="7dp"
+        android:paddingBottom="10dp"/>
 
 </LinearLayout>

@@ -315,10 +315,8 @@ public class OrderDetailActivity extends BaseActivity {
                         titleView.setTitle("待施工");
                         ll_heji1.setVisibility(View.GONE);
                         ll_heji2.setVisibility(View.VISIBLE);
-                        ll_btn.setVisibility(View.VISIBLE);
-                        tv_fukuan.setVisibility(View.GONE);
-                        tv_dashang.setVisibility(View.VISIBLE);
-                        tv_pinglun.setVisibility(View.GONE);
+                        ll_btn.setVisibility(View.GONE);
+
 
                         tv_wanchengtime.setText("分配时间：" + model.getTechn_sedan_info().getCreateDate());//预约时间
                         tv_yujiwanchengtime.setVisibility(View.GONE);
@@ -328,10 +326,7 @@ public class OrderDetailActivity extends BaseActivity {
                         titleView.setTitle("进行中");
                         ll_heji1.setVisibility(View.GONE);
                         ll_heji2.setVisibility(View.VISIBLE);
-                        ll_btn.setVisibility(View.VISIBLE);
-                        tv_fukuan.setVisibility(View.GONE);
-                        tv_dashang.setVisibility(View.VISIBLE);
-                        tv_pinglun.setVisibility(View.GONE);
+                        ll_btn.setVisibility(View.GONE);
 
                         tv_wanchengtime.setText("施工时间：" + model.getTechn_sedan_info().getCreateDate());//预约时间
                         tv_yujiwanchengtime.setVisibility(View.VISIBLE);
@@ -342,10 +337,7 @@ public class OrderDetailActivity extends BaseActivity {
                         titleView.setTitle("待复检");
                         ll_heji1.setVisibility(View.GONE);
                         ll_heji2.setVisibility(View.VISIBLE);
-                        ll_btn.setVisibility(View.VISIBLE);
-                        tv_fukuan.setVisibility(View.GONE);
-                        tv_dashang.setVisibility(View.VISIBLE);
-                        tv_pinglun.setVisibility(View.GONE);
+                        ll_btn.setVisibility(View.GONE);
 
                         tv_wanchengtime.setText("完工时间：" + model.getTechn_sedan_info().getCreateDate());//预约时间
                         tv_yujiwanchengtime.setVisibility(View.GONE);
@@ -356,6 +348,7 @@ public class OrderDetailActivity extends BaseActivity {
                         ll_heji1.setVisibility(View.GONE);
                         ll_heji2.setVisibility(View.VISIBLE);
                         ll_btn.setVisibility(View.VISIBLE);
+
                         tv_fukuan.setVisibility(View.VISIBLE);
                         tv_dashang.setVisibility(View.VISIBLE);
                         tv_pinglun.setVisibility(View.GONE);
@@ -369,7 +362,8 @@ public class OrderDetailActivity extends BaseActivity {
                         ll_heji1.setVisibility(View.GONE);
                         ll_heji2.setVisibility(View.VISIBLE);
                         ll_btn.setVisibility(View.VISIBLE);
-                        tv_fukuan.setVisibility(View.VISIBLE);
+
+                        tv_fukuan.setVisibility(View.GONE);
                         tv_dashang.setVisibility(View.VISIBLE);
                         tv_pinglun.setVisibility(View.VISIBLE);
 
@@ -598,7 +592,8 @@ public class OrderDetailActivity extends BaseActivity {
                     list_jiance = model.getTesting_details_list();
                     tv_jiancenum.setText(list_jiance.size() + "项");
                     tv_jiancemoney1.setText("¥" + model.getTesting_details_total_price());
-                    mAdapter_jiance = new CommonAdapter<OrderDetailModel.TestingDetailsListBean>(OrderDetailActivity.this, R.layout.item_orderdetail_jiance, list_jiance) {
+                    mAdapter_jiance = new CommonAdapter<OrderDetailModel.TestingDetailsListBean>(OrderDetailActivity.this,
+                            R.layout.item_orderdetail_jiance, list_jiance) {
                         @Override
                         protected void convert(ViewHolder holder, OrderDetailModel.TestingDetailsListBean jianceBean, int position) {
                             holder.setText(R.id.tv_time, "提交时间:" + jianceBean.getCreateDate());
@@ -649,6 +644,7 @@ public class OrderDetailActivity extends BaseActivity {
                             rv.setAdapter(ca);
 
                             TextView tv_btn = holder.getView(R.id.tv_btn);
+                            TextView tv_btn_fangqi = holder.getView(R.id.tv_btn_fangqi);
                             if (jianceBean.getIsConfirm() == 0) {//待确认
                                 tv_btn.setText("确认报告");
                                 tv_btn.setBackgroundResource(R.drawable.yuanjiao_5_lanse);
@@ -663,11 +659,19 @@ public class OrderDetailActivity extends BaseActivity {
                                         RequestConfirm(params);
                                     }
                                 });
+                                tv_btn_fangqi.setVisibility(View.VISIBLE);
+                                tv_btn_fangqi.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+
+                                    }
+                                });
                             } else {
                                 tv_btn.setText("已确认");
                                 tv_btn.setBackgroundResource(R.drawable.yuanjiaobiankuang_5_huise);
                                 tv_btn.setTextColor(getResources().getColor(R.color.black3));
                                 tv_btn.setClickable(false);
+                                tv_btn_fangqi.setVisibility(View.GONE);
                             }
 
                         }

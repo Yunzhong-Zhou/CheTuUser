@@ -155,7 +155,7 @@ public class WaitingReleaseActivity extends BaseActivity {
                             holder.setText(R.id.tv_num, model.getUser_sedan_info().getSNumber());
                             holder.setText(R.id.tv_content, model.getServiceName());
                             holder.setText(R.id.tv_time, model.getCreateDate());
-                            holder.setText(R.id.tv_qingkuangshuoming,"情况说明："+model.getvMsg());
+                            holder.setText(R.id.tv_qingkuangshuoming,"情况说明："+model.getVMsg());
 
                             TextView tv_delete = holder.getView(R.id.tv_delete);
                             TextView tv_fabu = holder.getView(R.id.tv_fabu);

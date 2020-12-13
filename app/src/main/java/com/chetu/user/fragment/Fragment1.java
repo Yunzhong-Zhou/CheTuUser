@@ -24,6 +24,7 @@ import com.chetu.user.activity.CarInsuranceActivity;
 import com.chetu.user.activity.CarServiceActivity;
 import com.chetu.user.activity.MainActivity;
 import com.chetu.user.activity.MyGarageActivity;
+import com.chetu.user.activity.OrderDetailActivity;
 import com.chetu.user.activity.ProductDetailActivity;
 import com.chetu.user.activity.ProductListActivity;
 import com.chetu.user.activity.SearchActivity;
@@ -31,7 +32,7 @@ import com.chetu.user.activity.StoreDetailActivity;
 import com.chetu.user.activity.WebContentActivity;
 import com.chetu.user.adapter.CircleImageAdapter;
 import com.chetu.user.base.BaseFragment;
-import com.chetu.user.model.Fragment1ServiceListModel;
+import com.chetu.user.model.Fragment1DataModel;
 import com.chetu.user.model.Fragment1TabModel;
 import com.chetu.user.model.Fragment3Model;
 import com.chetu.user.model.ProductListModel;
@@ -98,8 +99,11 @@ public class Fragment1 extends BaseFragment {
 
     //车辆信息
     LinearLayout ll_car;
-    TextView tv_carname, tv_carnum,tv_daiban;
+    TextView tv_carname, tv_carnum, tv_daiban;
     ImageView iv_carlogo;
+    RelativeLayout rl_daiban;
+
+    Fragment1DataModel model;
 
     //定位
     //声明AMapLocationClient类对象
@@ -128,7 +132,7 @@ public class Fragment1 extends BaseFragment {
                 ll_car.setVisibility(View.VISIBLE);
 //                y_user_sedan_id = localUserInfo.getCarid();
                 tv_carname.setText(localUserInfo.getCarname());
-                tv_carnum.setText(localUserInfo.getCarnum());
+//                tv_carnum.setText(localUserInfo.getCarnum());
                 Glide.with(getActivity()).load(URLs.IMGHOST + localUserInfo.getCarlogo())
                         .centerCrop()
                         .into(iv_carlogo);//加载图片
@@ -152,7 +156,7 @@ public class Fragment1 extends BaseFragment {
         if (MainActivity.item == 0) {
             if (!localUserInfo.getCarname().equals("")) {
                 tv_carname.setText(localUserInfo.getCarname());
-                tv_carnum.setText(localUserInfo.getCarnum());
+//                tv_carnum.setText(localUserInfo.getCarnum());
                 Glide.with(getActivity()).load(URLs.IMGHOST + localUserInfo.getCarlogo())
                         .centerCrop()
                         .into(iv_carlogo);//加载图片
@@ -180,7 +184,8 @@ public class Fragment1 extends BaseFragment {
                 //获取服务项目和banner
                 HashMap<String, String> params2 = new HashMap<>();
                 params2.put("y_parent_id", "0");
-                RequestService(params2, 0);
+                params2.put("u_token", localUserInfo.getToken());
+                RequestData(params2, 0);
                 //获取附近活动列表数据
                 page1 = 0;
                 Map<String, String> params1 = new HashMap<>();
@@ -243,6 +248,8 @@ public class Fragment1 extends BaseFragment {
         tv_carnum = findViewByID_My(R.id.tv_carnum);
         iv_carlogo = findViewByID_My(R.id.iv_carlogo);
         tv_daiban = findViewByID_My(R.id.tv_daiban);
+        rl_daiban = findViewByID_My(R.id.rl_daiban);
+        rl_daiban.setOnClickListener(this);
     }
 
     @Override
@@ -349,7 +356,8 @@ public class Fragment1 extends BaseFragment {
         //获取服务项目和banner
         HashMap<String, String> params2 = new HashMap<>();
         params2.put("y_parent_id", "0");
-        RequestService(params2, 0);
+        params2.put("u_token", localUserInfo.getToken());
+        RequestData(params2, 0);
 
         //获取附近活动列表数据
         if (!localUserInfo.getCityname().equals("")) {
@@ -604,10 +612,10 @@ public class Fragment1 extends BaseFragment {
      * @param params
      * @param type
      */
-    private void RequestService(HashMap<String, String> params, int type) {
-        OkhttpUtil.okHttpPost(URLs.Fragment1_Service, params, headerMap, new CallBackUtil<Fragment1ServiceListModel>() {
+    private void RequestData(HashMap<String, String> params, int type) {
+        OkhttpUtil.okHttpPost(URLs.Fragment1_data, params, headerMap, new CallBackUtil<Fragment1DataModel>() {
             @Override
-            public Fragment1ServiceListModel onParseResponse(Call call, Response response) {
+            public Fragment1DataModel onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -617,7 +625,8 @@ public class Fragment1 extends BaseFragment {
             }
 
             @Override
-            public void onResponse(Fragment1ServiceListModel response) {
+            public void onResponse(Fragment1DataModel response) {
+                model = response;
                 //banner
                 /*images.add("http://file02.16sucai.com/d/file/2014/0825/dcb017b51479798f6c60b7b9bd340728.jpg");
                 images.add("http://file02.16sucai.com/d/file/2014/0825/dcb017b51479798f6c60b7b9bd340728.jpg");
@@ -647,11 +656,11 @@ public class Fragment1 extends BaseFragment {
 
                 //tab
                 list_tab.clear();
-                for (Fragment1ServiceListModel.IndexCustomListBean bean : response.getIndex_custom_list()) {
-                    list_tab.add(new Fragment1TabModel(bean.getYServiceId(), bean.getCategory(), bean.getMsg(), bean.getImgurl(),0));
+                for (Fragment1DataModel.IndexCustomListBean bean : response.getIndex_custom_list()) {
+                    list_tab.add(new Fragment1TabModel(bean.getYServiceId(), bean.getCategory(), bean.getMsg(), bean.getImgurl(), 0));
                 }
-                for (Fragment1ServiceListModel.IndexServiceListBean bean : response.getIndex_service_list()) {
-                    list_tab.add(new Fragment1TabModel(bean.getYServiceId(), -1, bean.getVName(), bean.getVImg(),bean.getIsSheet()));
+                for (Fragment1DataModel.IndexServiceListBean bean : response.getIndex_service_list()) {
+                    list_tab.add(new Fragment1TabModel(bean.getYServiceId(), -1, bean.getVName(), bean.getVImg(), bean.getIsSheet()));
                 }
                 mAdapter_tab = new CommonAdapter<Fragment1TabModel>
                         (getActivity(), R.layout.item_fragment1_tab, list_tab) {
@@ -708,6 +717,45 @@ public class Fragment1 extends BaseFragment {
                     }
                 });
                 rv_tab.setAdapter(mAdapter_tab);
+
+                //待办
+                if (response.getOrder_info() != null) {
+                    tv_carnum.setBackgroundResource(R.color.transparent);
+                    switch (response.getOrder_info().getGState()) {
+                        case 0:
+                            //待接车
+                            tv_carnum.setText("待接车");
+                            break;
+                        case 1:
+                            //待分配
+                            tv_carnum.setText("待分配");
+                            break;
+                        case 2:
+                            //待施工
+                            tv_carnum.setText("待施工");
+                            break;
+                        case 3:
+                            //进行中
+                            tv_carnum.setText("进行中");
+
+                            break;
+                        case 4:
+                            //待复检
+                            tv_carnum.setText("待复检");
+                            break;
+                        case 5:
+                            //已完工
+                            tv_carnum.setText("已完工");
+                            break;
+                        case 6:
+                            //已提车
+                            tv_carnum.setText("已提车");
+                            break;
+                    }
+                } else {
+                    tv_carnum.setText(localUserInfo.getCarnum());
+                    tv_carnum.setBackgroundResource(R.drawable.yuanjiaobiankuang_3_huise);
+                }
             }
         });
     }
@@ -781,6 +829,15 @@ public class Fragment1 extends BaseFragment {
                 intent1.putExtras(bundle1);
                 startActivityForResult(intent1, 10001, bundle1);
                 break;
+            case R.id.rl_daiban:
+                //待办
+                if (model.getOrder_info() != null) {
+                    Bundle bundle2 = new Bundle();
+                    bundle2.putString("y_order_id", model.getOrder_info().getYOrderId());
+//                            bundle.putInt("g_state", type - 1);
+                    CommonUtil.gotoActivityWithData(getActivity(), OrderDetailActivity.class, bundle2, false);
+                }
+                break;
             case R.id.tv_more1:
                 //更多1
                 showProgress(true, getString(R.string.app_loading4));
@@ -805,6 +862,7 @@ public class Fragment1 extends BaseFragment {
                 params.put("is_index", "1");
                 RequestListMore2(params);
                 break;
+
         }
     }
 
@@ -853,6 +911,7 @@ public class Fragment1 extends BaseFragment {
 //                    y_user_sedan_id = bundle1.getString("car_id");
                     tv_carname.setText(bundle1.getString("carname") + "\n" + bundle1.getString("cardetail"));
                     tv_carnum.setText(bundle1.getString("carnum"));
+                    tv_carnum.setBackgroundResource(R.drawable.yuanjiaobiankuang_3_huise);
                     Glide.with(getActivity()).load(URLs.IMGHOST + bundle1.getString("carlogo"))
                             .centerCrop()
                             .into(iv_carlogo);//加载图片
