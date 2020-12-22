@@ -610,7 +610,7 @@ public class MyOrderActivity extends BaseActivity {
                             } else {*/
                             Bundle bundle2 = new Bundle();
 //                bundle2.putSerializable("XuanZeFuWuModel", (Serializable) list_xuanze);
-                            bundle2.putString("y_store_id", list.get(i).getYStoreId());
+                            bundle2.putString("y_store_id", list_xuqiu.get(i).getYStoreId());
                             bundle2.putString("longitude", localUserInfo.getLongitude());
                             bundle2.putString("latitude", localUserInfo.getLatitude());
                             CommonUtil.gotoActivityWithData(MyOrderActivity.this, ConfirmOrderActivity.class, bundle2, false);
@@ -715,7 +715,7 @@ public class MyOrderActivity extends BaseActivity {
                 type = 2;
                 tv_type0.setBackgroundResource(R.mipmap.bg_myorder_tab1_0);
                 tv_type0.setTextColor(getResources().getColor(R.color.black3));
-                tv_type1.setBackgroundResource(R.mipmap.bg_myorder_tab1_0);
+                tv_type1.setBackgroundResource(R.mipmap.bg_myorder_tab2_0);
                 tv_type1.setTextColor(getResources().getColor(R.color.black3));
                 tv_type2.setBackgroundResource(R.mipmap.bg_myorder_tab2_1);
                 tv_type2.setTextColor(getResources().getColor(R.color.white));
@@ -735,7 +735,7 @@ public class MyOrderActivity extends BaseActivity {
                 type = 3;
                 tv_type0.setBackgroundResource(R.mipmap.bg_myorder_tab1_0);
                 tv_type0.setTextColor(getResources().getColor(R.color.black3));
-                tv_type1.setBackgroundResource(R.mipmap.bg_myorder_tab1_0);
+                tv_type1.setBackgroundResource(R.mipmap.bg_myorder_tab2_0);
                 tv_type1.setTextColor(getResources().getColor(R.color.black3));
                 tv_type2.setBackgroundResource(R.mipmap.bg_myorder_tab2_0);
                 tv_type2.setTextColor(getResources().getColor(R.color.black3));
@@ -755,7 +755,7 @@ public class MyOrderActivity extends BaseActivity {
                 type = 4;
                 tv_type0.setBackgroundResource(R.mipmap.bg_myorder_tab1_0);
                 tv_type0.setTextColor(getResources().getColor(R.color.black3));
-                tv_type1.setBackgroundResource(R.mipmap.bg_myorder_tab1_0);
+                tv_type1.setBackgroundResource(R.mipmap.bg_myorder_tab2_0);
                 tv_type1.setTextColor(getResources().getColor(R.color.black3));
                 tv_type2.setBackgroundResource(R.mipmap.bg_myorder_tab2_0);
                 tv_type2.setTextColor(getResources().getColor(R.color.black3));
@@ -775,7 +775,7 @@ public class MyOrderActivity extends BaseActivity {
                 type = 5;
                 tv_type0.setBackgroundResource(R.mipmap.bg_myorder_tab1_0);
                 tv_type0.setTextColor(getResources().getColor(R.color.black3));
-                tv_type1.setBackgroundResource(R.mipmap.bg_myorder_tab1_0);
+                tv_type1.setBackgroundResource(R.mipmap.bg_myorder_tab2_0);
                 tv_type1.setTextColor(getResources().getColor(R.color.black3));
                 tv_type2.setBackgroundResource(R.mipmap.bg_myorder_tab2_0);
                 tv_type2.setTextColor(getResources().getColor(R.color.black3));
@@ -795,7 +795,7 @@ public class MyOrderActivity extends BaseActivity {
                 type = 6;
                 tv_type0.setBackgroundResource(R.mipmap.bg_myorder_tab1_0);
                 tv_type0.setTextColor(getResources().getColor(R.color.black3));
-                tv_type1.setBackgroundResource(R.mipmap.bg_myorder_tab1_0);
+                tv_type1.setBackgroundResource(R.mipmap.bg_myorder_tab2_0);
                 tv_type1.setTextColor(getResources().getColor(R.color.black3));
                 tv_type2.setBackgroundResource(R.mipmap.bg_myorder_tab2_0);
                 tv_type2.setTextColor(getResources().getColor(R.color.black3));
@@ -815,7 +815,7 @@ public class MyOrderActivity extends BaseActivity {
                 type = 7;
                 tv_type0.setBackgroundResource(R.mipmap.bg_myorder_tab1_0);
                 tv_type0.setTextColor(getResources().getColor(R.color.black3));
-                tv_type1.setBackgroundResource(R.mipmap.bg_myorder_tab1_0);
+                tv_type1.setBackgroundResource(R.mipmap.bg_myorder_tab2_0);
                 tv_type1.setTextColor(getResources().getColor(R.color.black3));
                 tv_type2.setBackgroundResource(R.mipmap.bg_myorder_tab2_0);
                 tv_type2.setTextColor(getResources().getColor(R.color.black3));

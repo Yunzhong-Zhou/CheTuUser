@@ -246,6 +246,7 @@ public class Fragment1 extends BaseFragment {
         ll_car.setOnClickListener(this);
         tv_carname = findViewByID_My(R.id.tv_carname);
         tv_carnum = findViewByID_My(R.id.tv_carnum);
+        tv_carnum.setOnClickListener(this);
         iv_carlogo = findViewByID_My(R.id.iv_carlogo);
         tv_daiban = findViewByID_My(R.id.tv_daiban);
         rl_daiban = findViewByID_My(R.id.rl_daiban);
@@ -836,6 +837,20 @@ public class Fragment1 extends BaseFragment {
                     bundle2.putString("y_order_id", model.getOrder_info().getYOrderId());
 //                            bundle.putInt("g_state", type - 1);
                     CommonUtil.gotoActivityWithData(getActivity(), OrderDetailActivity.class, bundle2, false);
+                }
+                break;
+            case R.id.tv_carnum:
+                if (model.getOrder_info() != null) {
+                    Bundle bundle2 = new Bundle();
+                    bundle2.putString("y_order_id", model.getOrder_info().getYOrderId());
+//                            bundle.putInt("g_state", type - 1);
+                    CommonUtil.gotoActivityWithData(getActivity(), OrderDetailActivity.class, bundle2, false);
+                }else {
+                    Intent intent2 = new Intent(getActivity(), MyGarageActivity.class);
+                    Bundle bundle2 = new Bundle();
+                    bundle2.putInt("type", 10001);
+                    intent2.putExtras(bundle2);
+                    startActivityForResult(intent2, 10001, bundle2);
                 }
                 break;
             case R.id.tv_more1:

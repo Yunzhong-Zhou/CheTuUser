@@ -653,17 +653,43 @@ public class OrderDetailActivity extends BaseActivity {
                                 tv_btn.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
-                                        Map<String, String> params = new HashMap<>();
-                                        params.put("u_token", localUserInfo.getToken());
-                                        params.put("y_testing_details_id", jianceBean.getYTestingDetailsId());
-                                        RequestConfirm(params);
+                                        showToast("确认报告吗？", "确认", "取消", new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                dialog.dismiss();
+                                                Map<String, String> params = new HashMap<>();
+                                                params.put("u_token", localUserInfo.getToken());
+                                                params.put("y_testing_details_id", jianceBean.getYTestingDetailsId());
+                                                RequestConfirm(params);
+                                            }
+                                        }, new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                dialog.dismiss();
+                                            }
+                                        });
+
                                     }
                                 });
                                 tv_btn_fangqi.setVisibility(View.VISIBLE);
                                 tv_btn_fangqi.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
-
+                                        showToast("确认放弃吗？", "确认", "取消", new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                dialog.dismiss();
+                                                Map<String, String> params = new HashMap<>();
+                                                params.put("u_token", localUserInfo.getToken());
+                                                params.put("y_testing_details_id", jianceBean.getYTestingDetailsId());
+                                                RequestDeleteProject(params);
+                                            }
+                                        }, new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                dialog.dismiss();
+                                            }
+                                        });
                                     }
                                 });
                             } else {
@@ -1104,5 +1130,32 @@ public class OrderDetailActivity extends BaseActivity {
             }
         });
     }
+    /**
+     * 删除项目
+     *
+     * @param params
+     */
+    private void RequestDeleteProject(Map<String, String> params) {
+        OkhttpUtil.okHttpPost(URLs.DeleteProject, params, headerMap, new CallBackUtil<String>() {
+            @Override
+            public String onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+                hideProgress();
+                myToast(err);
+            }
+
+            @Override
+            public void onResponse(String response) {
+                hideProgress();
+                myToast("放弃成功");
+                requestServer();
+            }
+        });
+    }
+
 
 }
