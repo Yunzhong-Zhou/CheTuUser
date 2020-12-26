@@ -172,10 +172,10 @@ public class AddPingLunActivity extends BaseActivity {
             showToast("请输入门店评价内容");
             return false;
         }
-        if (listFiles1.size() == 0) {
+        /*if (listFiles1.size() == 0) {
             showToast("请上传门店评价图片");
             return false;
-        }
+        }*/
         return true;
     }
 
@@ -191,10 +191,10 @@ public class AddPingLunActivity extends BaseActivity {
             showToast("请输入技师评价内容");
             return false;
         }
-        if (listFiles2.size() == 0) {
+        /*if (listFiles2.size() == 0) {
             showToast("请上传技师评价图片");
             return false;
-        }
+        }*/
         return true;
     }
 

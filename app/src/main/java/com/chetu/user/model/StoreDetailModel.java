@@ -759,7 +759,7 @@ public class StoreDetailModel implements Serializable {
         }
     }
 
-    public static class IsServiceListBean {
+    public static class IsServiceListBean implements Serializable{
         /**
          * id : 1049
          * yStoreServiceId : 692341585785913359
@@ -875,7 +875,7 @@ public class StoreDetailModel implements Serializable {
         }
     }
 
-    public static class GoodsListBean {
+    public static class GoodsListBean implements Serializable{
         /**
          * id : 1019
          * yGoodsId : 692341585785913346

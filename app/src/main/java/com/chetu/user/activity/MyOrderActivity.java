@@ -257,35 +257,35 @@ public class MyOrderActivity extends BaseActivity {
                             TextView type1 = holder.getView(R.id.type1);
                             TextView type2 = holder.getView(R.id.type2);
                             TextView type3 = holder.getView(R.id.type3);
+                            if (model.getTechn_sedan_info().getIsPay() ==1){
+                                type2.setText("已付款");
+                            }else {
+                                type2.setText("未付款");
+                            }
                             switch (model.getGState()) {
                                 case 0:
                                     //待接车
                                     type1.setText("待接车");
-                                    type2.setText("未付款");
                                     type3.setVisibility(View.GONE);
                                     break;
                                 case 1:
                                     //待分配
                                     type1.setText("待分配");
-                                    type2.setText("未付款");
                                     type3.setVisibility(View.GONE);
                                     break;
                                 case 2:
                                     //待施工
                                     type1.setText("待施工");
-                                    type2.setText("未付款");
                                     type3.setVisibility(View.GONE);
                                     break;
                                 case 3:
                                     //进行中
                                     type1.setText("进行中");
-                                    type2.setText("未付款");
                                     type3.setVisibility(View.GONE);
                                     break;
                                 case 4:
                                     //待复检
                                     type1.setText("待复检");
-                                    type2.setText("未付款");
                                     type3.setVisibility(View.GONE);
                                     break;
                                 case 5:

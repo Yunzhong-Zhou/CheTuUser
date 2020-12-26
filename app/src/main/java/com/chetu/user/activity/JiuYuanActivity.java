@@ -47,7 +47,7 @@ public class JiuYuanActivity extends BaseActivity {
     //    String id = "";
     WaitingReleaseModel_JiuYuan.ListBean model;
 
-    TextView tv_carnum, tv_name, tv_carname, tv_carpailiang, tv_carnianfen, tv_carlicheng, tv_phonenum, tv_addr, tv_content,tv_type;
+    TextView tv_carnum, tv_name, tv_carname, tv_carpailiang, tv_carnianfen, tv_carlicheng, tv_phonenum, tv_addr, tv_content, tv_type;
 
     RecyclerView rv;
 
@@ -57,7 +57,7 @@ public class JiuYuanActivity extends BaseActivity {
     //声明AMapLocationClient类对象
     private AMapLocationClient mLocationClient = null;
 
-    TextView tv_jiedan,tv_storename,tv_storefen,tv_storecontent,tv_storeaddr;
+    TextView tv_jiedan, tv_storename, tv_storefen, tv_storecontent, tv_storeaddr;
     ImageView iv_storelogo;
     LinearLayout ll_store;
 
@@ -196,7 +196,7 @@ public class JiuYuanActivity extends BaseActivity {
         tv_phonenum.setText("联系方式：" + model.getTelephone());
         tv_addr.setText("地址：" + model.getAddress());
         tv_content.setText(model.getCarCondition());
-        tv_type.setText("救援类型："+model.getMType());
+        tv_type.setText("救援类型：" + model.getMType());
 
         ArrayList<String> images = new ArrayList<>();
         for (String s : model.getImgArr()) {
@@ -337,7 +337,7 @@ public class JiuYuanActivity extends BaseActivity {
             @Override
             public void onResponse(JiuYuanTypeModel response) {
                 hideProgress();
-                if (response.getState() < 1) {//可以救援
+                if (response.getState() == 0) {//可以救援
                     ll_store.setVisibility(View.GONE);
                     tv_jiedan.setText("是否接单：暂无门店接单");
                     /*showToast("确认立即救援吗？", "确认", "取消", new View.OnClickListener() {
@@ -356,7 +356,7 @@ public class JiuYuanActivity extends BaseActivity {
                         }
                     });*/
 
-                }else {
+                } else {
 //                    showToast("已经救援，不能再救援了");
                     ll_store.setVisibility(View.VISIBLE);
                     tv_jiedan.setText("是否接单：已接单");
@@ -388,9 +388,9 @@ public class JiuYuanActivity extends BaseActivity {
             }
         });
     }
+
     /**
      * 立即救援
-     *
      */
    /* private void RequestJiuYuan(Map<String, String> params) {
         OkhttpUtil.okHttpPost(URLs.JiuYuan_Now, params, headerMap, new CallBackUtil<JiuYuanTypeModel>() {
@@ -412,7 +412,6 @@ public class JiuYuanActivity extends BaseActivity {
             }
         });
     }*/
-
     @Override
     protected void updateView() {
         titleView.setTitle("救援");

@@ -196,7 +196,9 @@ public class CarInsuranceActivity extends BaseActivity {
         super.onClick(v);
         switch (v.getId()) {
             case R.id.editText7:
-                Intent intent4 = new Intent(CarInsuranceActivity.this, SelectAddressActivity.class);
+
+//                Intent intent4 = new Intent(CarInsuranceActivity.this, SelectAddressActivity.class);
+                Intent intent4 = new Intent(CarInsuranceActivity.this, SelectCityActivity.class);
                 Bundle bundle4 = new Bundle();
                 bundle4.putInt("type", 10004);
                 intent4.putExtras(bundle4);

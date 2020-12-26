@@ -603,9 +603,18 @@ public class MyOrderModel implements Serializable {
             private int isOrder;
             private String createDate;
             private int gState;
+            private int isPay;
             private String appeImgstr;
             private String estimateTime;
             private double rewardMoney;
+
+            public int getIsPay() {
+                return isPay;
+            }
+
+            public void setIsPay(int isPay) {
+                this.isPay = isPay;
+            }
 
             public String getId() {
                 return id;

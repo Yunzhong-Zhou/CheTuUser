@@ -90,6 +90,7 @@ public class CarServiceActivity extends BaseActivity {
     //发布询价
     String service_name = "", y_service_id_str = "", y_service_id_msg = "", y_store_id_str = "", v_list_str = "", v_msg = "";
     EditText et_qingkuang;
+    TextView tv_upload2;
     /**
      * 服务内容
      */
@@ -193,6 +194,7 @@ public class CarServiceActivity extends BaseActivity {
         recyclerView2 = findViewByID_My(R.id.recyclerView2);
         recyclerView2.setLayoutManager(new LinearLayoutManager(CarServiceActivity.this));
 
+        tv_upload2 = findViewByID_My(R.id.tv_upload2);
         //发布救援
         editText1 = findViewByID_My(R.id.editText1);
         editText1.setText(localUserInfo.getNickname());
@@ -564,6 +566,12 @@ public class CarServiceActivity extends BaseActivity {
                                         num++;
                                     }
                                 }
+                                if (num>0){
+                                    tv_upload2.setText("发布");
+                                }else {
+                                    tv_upload2.setText("选择门店");
+                                }
+
                                 if (num > 3) {
                                     list2.get(i).setIsgouxuan(false);
                                     num--;

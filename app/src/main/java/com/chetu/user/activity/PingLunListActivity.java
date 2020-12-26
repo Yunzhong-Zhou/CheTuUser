@@ -10,10 +10,10 @@ import com.bumptech.glide.Glide;
 import com.chetu.user.R;
 import com.chetu.user.base.BaseActivity;
 import com.chetu.user.model.PingJiaModel;
-import com.chetu.user.model.StoreDetailModel;
 import com.chetu.user.net.URLs;
 import com.chetu.user.okhttp.CallBackUtil;
 import com.chetu.user.okhttp.OkhttpUtil;
+import com.chetu.user.popupwindow.PhotoShowDialog;
 import com.liaoinstan.springview.widget.SpringView;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
@@ -33,7 +33,7 @@ import okhttp3.Response;
  * 评论列表
  */
 public class PingLunListActivity extends BaseActivity {
-    StoreDetailModel storeDetailModel;
+//    StoreDetailModel storeDetailModel;
     int page = 0;
     String y_store_id = "";
 
@@ -81,7 +81,7 @@ public class PingLunListActivity extends BaseActivity {
     @Override
     protected void initData() {
         y_store_id = getIntent().getStringExtra("y_store_id");
-        storeDetailModel = (StoreDetailModel) getIntent().getSerializableExtra("storeDetailModel");
+//        storeDetailModel = (StoreDetailModel) getIntent().getSerializableExtra("storeDetailModel");
         requestServer();
     }
 
@@ -169,6 +169,18 @@ public class PingLunListActivity extends BaseActivity {
                                 }
                             };
                             rv.setAdapter(ca);
+                            ca.setOnItemClickListener(new OnItemClickListener() {
+                                @Override
+                                public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                                    PhotoShowDialog photoShowDialog = new PhotoShowDialog(PingLunListActivity.this, list_img, i);
+                                    photoShowDialog.show();
+                                }
+
+                                @Override
+                                public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                                    return false;
+                                }
+                            });
                         }
                     };
                     recyclerView.setAdapter(mAdapter_pinglun);

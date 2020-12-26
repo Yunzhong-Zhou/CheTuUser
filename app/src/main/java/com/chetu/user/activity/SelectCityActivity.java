@@ -1,5 +1,6 @@
 package com.chetu.user.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -124,7 +125,15 @@ public class SelectCityActivity extends BaseActivity {
                     @Override
                     public void onPick(int position, City data) {
                         //选择的城市
-                        localUserInfo.setCityname(data.getName());
+//                        localUserInfo.setCityname(data.getName());
+                        Intent resultIntent = new Intent();
+                        Bundle bundle = new Bundle();
+//                        bundle.putString("lat", lat);
+//                        bundle.putString("lng", lng);
+//                        bundle.putString("addr", addr);
+                        bundle.putString("city", data.getName());
+                        resultIntent.putExtras(bundle);
+                        SelectCityActivity.this.setResult(RESULT_OK, resultIntent);
                         finish();
                     }
 

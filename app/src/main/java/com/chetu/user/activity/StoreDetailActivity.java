@@ -1085,7 +1085,7 @@ public class StoreDetailActivity extends BaseActivity {
                 //获取店铺评论
                 Bundle bundle1 = new Bundle();
                 bundle1.putString("y_store_id", y_store_id);
-                bundle1.putSerializable("storeDetailModel", storeDetailModel);
+//                bundle1.putSerializable("storeDetailModel", storeDetailModel);
                 CommonUtil.gotoActivityWithData(StoreDetailActivity.this, PingLunListActivity.class, bundle1, false);
                 /*page++;
                 Map<String, String> params2 = new HashMap<>();
