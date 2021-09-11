@@ -48,6 +48,7 @@ public class WaitingReleaseActivity extends BaseActivity {
     //救援数据
     List<WaitingReleaseModel_JiuYuan.ListBean> list_JiuYuan = new ArrayList<>();
     CommonAdapter<WaitingReleaseModel_JiuYuan.ListBean> mAdapter_JiuYuan;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -155,7 +156,7 @@ public class WaitingReleaseActivity extends BaseActivity {
                             holder.setText(R.id.tv_num, model.getUser_sedan_info().getSNumber());
                             holder.setText(R.id.tv_content, model.getServiceName());
                             holder.setText(R.id.tv_time, model.getCreateDate());
-                            holder.setText(R.id.tv_qingkuangshuoming,"情况说明："+model.getVMsg());
+                            holder.setText(R.id.tv_qingkuangshuoming, "情况说明：" + model.getVMsg());
 
                             TextView tv_delete = holder.getView(R.id.tv_delete);
                             TextView tv_fabu = holder.getView(R.id.tv_fabu);
@@ -279,6 +280,7 @@ public class WaitingReleaseActivity extends BaseActivity {
             }
         });
     }
+
     /**
      * 救援数据
      */
@@ -313,9 +315,12 @@ public class WaitingReleaseActivity extends BaseActivity {
                             holder.setText(R.id.tv_addr, "地址：" + model.getAddress());//地址
 
                             ArrayList<String> images = new ArrayList<>();
-                            for (String s : model.getImgArr()) {
-                                images.add(URLs.IMGHOST + s);
+                            if (model.getImgArr() != null) {
+                                for (String s : model.getImgArr()) {
+                                    images.add(URLs.IMGHOST + s);
+                                }
                             }
+
                             RecyclerView rv = holder.getView(R.id.rv);
                             LinearLayoutManager llm1 = new LinearLayoutManager(WaitingReleaseActivity.this);
                             llm1.setOrientation(LinearLayoutManager.HORIZONTAL);// 设置 recyclerview 布局方式为横向布局
@@ -399,6 +404,7 @@ public class WaitingReleaseActivity extends BaseActivity {
             }
         });
     }
+
     /**
      * 删除
      *

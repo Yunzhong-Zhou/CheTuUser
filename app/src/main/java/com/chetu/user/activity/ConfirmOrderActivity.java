@@ -469,6 +469,7 @@ public class ConfirmOrderActivity extends BaseActivity {
             @Override
             public void onFailure(Call call, Exception e, String err) {
                 hideProgress();
+                myToast(err);
             }
 
             @Override
@@ -501,6 +502,7 @@ public class ConfirmOrderActivity extends BaseActivity {
             @Override
             public void onFailure(Call call, Exception e, String err) {
                 hideProgress();
+                myToast(err);
             }
 
             @Override
@@ -782,6 +784,7 @@ public class ConfirmOrderActivity extends BaseActivity {
             @Override
             public void onFailure(Call call, Exception e, String err) {
                 hideProgress();
+                myToast(err);
             }
 
             @Override
@@ -820,6 +823,7 @@ public class ConfirmOrderActivity extends BaseActivity {
             @Override
             public void onFailure(Call call, Exception e, String err) {
                 hideProgress();
+                myToast(err);
             }
 
             @Override
@@ -850,6 +854,7 @@ public class ConfirmOrderActivity extends BaseActivity {
             @Override
             public void onFailure(Call call, Exception e, String err) {
                 hideProgress();
+                myToast(err);
             }
 
             @Override

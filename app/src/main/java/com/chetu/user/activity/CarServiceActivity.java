@@ -776,12 +776,12 @@ public class CarServiceActivity extends BaseActivity {
                 }
                 break;
             case R.id.tv_upload1:
-                //自选门店
+                //一键发布
                 isZiXuan = 1;
                 upData();
                 break;
             case R.id.tv_upload2:
-                //发布
+                //选择门店
                 isZiXuan = 0;
                 upData();
                 break;

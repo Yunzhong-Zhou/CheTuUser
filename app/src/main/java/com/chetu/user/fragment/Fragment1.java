@@ -98,7 +98,7 @@ public class Fragment1 extends BaseFragment {
     CommonAdapter<Fragment1TabModel> mAdapter_tab;
 
     //车辆信息
-    LinearLayout ll_car;
+    LinearLayout ll_car,ll_daiban;
     TextView tv_carname, tv_carnum, tv_daiban;
     ImageView iv_carlogo;
     RelativeLayout rl_daiban;
@@ -114,7 +114,6 @@ public class Fragment1 extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment1, container, false);
-
         return view;
     }
 
@@ -130,6 +129,7 @@ public class Fragment1 extends BaseFragment {
             if (!localUserInfo.getCarname().equals("")) {
                 rl_addcar.setVisibility(View.GONE);
                 ll_car.setVisibility(View.VISIBLE);
+                ll_daiban.setVisibility(View.VISIBLE);
 //                y_user_sedan_id = localUserInfo.getCarid();
                 tv_carname.setText(localUserInfo.getCarname());
 //                tv_carnum.setText(localUserInfo.getCarnum());
@@ -139,6 +139,7 @@ public class Fragment1 extends BaseFragment {
             } else {
                 rl_addcar.setVisibility(View.VISIBLE);
                 ll_car.setVisibility(View.GONE);
+                ll_daiban.setVisibility(View.GONE);
             }
             /*requestServer();
             tv_addr.setText(localUserInfo.getCityname());*/
@@ -248,6 +249,7 @@ public class Fragment1 extends BaseFragment {
         tv_carnum = findViewByID_My(R.id.tv_carnum);
         tv_carnum.setOnClickListener(this);
         iv_carlogo = findViewByID_My(R.id.iv_carlogo);
+        ll_daiban = findViewByID_My(R.id.ll_daiban);
         tv_daiban = findViewByID_My(R.id.tv_daiban);
         rl_daiban = findViewByID_My(R.id.rl_daiban);
         rl_daiban.setOnClickListener(this);
