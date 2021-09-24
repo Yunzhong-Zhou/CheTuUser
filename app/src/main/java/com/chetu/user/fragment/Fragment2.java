@@ -1284,12 +1284,12 @@ public class Fragment2 extends BaseFragment {
 
         if (ll_penqi.getVisibility() == View.VISIBLE) {//是喷漆
             count++;
-            if (isleft) {
-                v_strs += "喷漆||";
-            } else {
-                count++;
-                v_strs += "喷漆||钣金||";
-            }
+//            if (isleft) {
+//                v_strs += "喷漆||";
+//            } else {
+//                count++;
+//                v_strs += "喷漆||钣金||";
+//            }
 
             if (isSheet == 1) {//喷漆服务
                 for (ServiceListModel_All.ListBean bean1 : list_sv) {
@@ -1335,7 +1335,6 @@ public class Fragment2 extends BaseFragment {
 
 
         MyLogger.i(">>>>>>" + v_strs + count);
-
         if (!v_strs.equals("")) {
             ll_xuanfu.setVisibility(View.VISIBLE);
             v_strs = v_strs.substring(0, v_strs.length() - 2);

@@ -120,7 +120,7 @@ public class StoreDetailActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        requestServer();
+//        requestServer();
     }
 
     @Override
